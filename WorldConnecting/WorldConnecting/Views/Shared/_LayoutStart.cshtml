@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <title>Cyber - World Connecting</title> 
+</head>
+<body>
+    <div id="firefly"></div>
+    <div id="mainDiv" class="body-content">
+        @RenderBody()
+    </div>
+    <script src="~/Content/Script/stopExecutionOnTimeout.js?t=1"></script>
+    <script src="~/Content/Script/TweenMax.min.js"></script>
+    <script>
+        TweenMax.set('img', {
+            xPercent: '-50%',
+            yPercent: '-50%'
+        });
+        var total = 70;
+        var w = $(window).width();
+        var h = $(window).height()*0.8;
+        for (i = 0; i < total; i++) {
+            if (window.CP.shouldStopExecution(1)) {
+                break;
+            }
+            $('#firefly').append('<div class="dot"></div>');
+            TweenMax.set($('.dot')[i], {
+                x: Random(w),
+                y: Random(h),
+                opacity: 0,
+                force3D: 'auto'
+            });
+            animm($('.dot')[i]);
+        }
+        window.CP.exitedLoop(1);
+        function animm(elm) {
+            TweenMax.killTweensOf(elm);
+            TweenMax.to(elm, Random(20) * 5 + 5, {
+                bezier: {
+                    values: [
+                        {
+                            x: Random(w),
+                            y: Random(h)
+                        },
+                        {
+                            x: Random(w),
+                            y: Random(h)
+                        }
+                    ]
+                },
+                x: Random(w),
+                y: Random(h),
+                opacity: Random(1),
+                scale: Random(1) + 0.5,
+                onComplete: function () {
+                    TweenMax.delayedCall(Random(2), animm, [elm]);
+                }
+            });
+        }
+        ;
+        function Random(max) {
+            return Math.random() * max;
+        } 
+    </script> 
+</body>
+</html>
