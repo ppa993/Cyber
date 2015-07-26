@@ -184,7 +184,9 @@
     position:absolute;
 
 }
-
+.wrapper{
+    margin-bottom: 70px;
+}
 /*=== 5. Login Button ===*/
 .login-form-1 .login-button {
     position: absolute;
