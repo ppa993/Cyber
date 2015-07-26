@@ -1,0 +1,502 @@
+﻿.gm-style .gm-style-cc span,
+.gm-style .gm-style-cc a,
+.gm-style .gm-style-mtc div {
+    font-size: 10px;
+}
+
+@media print {
+    .gm-style .gmnoprint,
+    .gmnoprint {
+        display: none;
+    }
+}
+
+@media screen {
+    .gm-style .gmnoscreen,
+    .gmnoscreen {
+        display: none;
+    }
+}
+
+.gm-style {
+    font-family: Roboto,Arial,sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+    .gm-style img {
+        max-width: none;
+    }
+
+.jqstooltip {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    visibility: hidden;
+    background: rgb(0, 0, 0) transparent;
+    background-color: rgba(0,0,0,0.6);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+    color: white;
+    font: 10px arial, san serif;
+    text-align: left;
+    white-space: nowrap;
+    padding: 5px;
+    border: 1px solid white;
+    z-index: 10000;
+}
+
+.jqsfield {
+    color: white;
+    font: 10px arial, san serif;
+    text-align: left;
+}
+
+
+/*----- Content of Tabs -----*/
+.tab-content {
+    border-radius: 3px; 
+    background:rgba(255, 255, 255, 0.70) 
+}
+
+.tab {
+    display: none; 
+}
+.active{
+    display:block;
+} 
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 2s linear;
+}
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear;
+} 
+/*-------------------*/
+.content-box-color {
+    color: white;
+    text-shadow: 0px 0px 3px #000;
+}
+
+.content-box-title {
+    height: 70px;
+    display: table-cell;
+    font-family: Raleway;
+    font-weight: bold;
+    font-size: 48px;
+    vertical-align: bottom;
+    transition: all 0.5s ease;
+}
+
+.content-box-title-line {
+    border-bottom: 2px solid #fff;
+    margin-bottom: 20px;
+}
+
+.content-box-padding {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.content-box-content {
+    font-family: Raleway;
+    font-size: 12px;
+    color: #fff;
+    text-shadow: 0px 0px 3px #000;
+}
+
+    .content-box-content p {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+.text-bold {
+    font-weight: bold;
+}
+.text-italics{
+    font-style:italic;
+}
+
+
+.activeform {
+    display: block;
+}
+
+.unactiveform {
+    display: none;
+}
+
+#loginform {
+    transition: all 0.5s ease;
+}
+
+#registerform {
+    transition: all 0.5s ease;
+}
+/* LOGIN FORM*/
+.login-form-1 .form-control {
+    border: 0;
+    box-shadow: 0 0 0;
+    border-radius: 0;
+    background: transparent;
+    color: #555555;
+    padding: 7px 0;  
+    height: auto;
+}
+
+    .login-form-1 .form-control::-webkit-input-placeholder {
+        color: #8c8c8c;
+    }
+
+    .login-form-1 .form-control:-moz-placeholder,
+    .login-form-1 .form-control::-moz-placeholder,
+    .login-form-1 .form-control:-ms-input-placeholder {
+        color: #8c8c8c;
+    }
+
+.login-form-1 .form-group {
+    margin-bottom: 10px; 
+    padding-right: 20px;
+    position: relative;
+}
+
+    .login-form-1 .form-group:last-child {
+        border-bottom: 0;
+    }
+
+.login-group { 
+    color: #555555;
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+
+.login-group-checkbox {
+    padding: 5px 0;
+    position:relative;
+}
+.login-group-checkbox .msg{
+    position:absolute;
+
+}
+
+/*=== 5. Login Button ===*/
+.login-form-1 .login-button {
+    position: absolute;
+    right: -20px;
+    top: 38px;
+    background: #fff;
+    color: rgba(0, 0, 0, 0.60);
+    padding-left: 5px;
+    width: 50px;
+    height: 50px;
+    border: 5px solid #efefef;
+    border-radius: 50%;
+    transition: all ease-in-out 500ms;
+}
+
+    .login-form-1 .login-button:hover {
+        color: rgba(0, 0, 0, 1.0);
+        transform: rotate(450deg);
+    }
+
+    .login-form-1 .login-button.clicked {
+        color: #555555;
+    }
+
+        .login-form-1 .login-button.clicked:hover {
+            transform: none;
+        }
+
+        .login-form-1 .login-button.clicked.success {
+            color: #2ecc71;
+        }
+
+        .login-form-1 .login-button.clicked.error {
+            color: #e74c3c;
+        }
+
+label.form-invalid {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    display: block;
+    margin-top: -25px;
+    padding: 7px 9px;
+    background: #777777;
+    color: #ffffff;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+    label.form-invalid:after {
+        top: 100%;
+        right: 10px;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: transparent;
+        border-top-color: #777777;
+        border-width: 6px;
+    }
+
+.main-login-form {
+    position: relative;
+}
+/*=== 7. Form - Main Message ===*/
+.login-form-main-message {
+    background: #ffffff;
+    color: #999999;
+    border-left: 3px solid transparent;
+    border-radius: 3px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    height: 0;
+    padding: 0 20px 0 17px;
+    opacity: 0;
+    transition: all ease-in-out 200ms;
+}
+
+    .login-form-main-message.show {
+        height: auto;
+        opacity: 1;
+        padding: 10px 20px 10px 17px;
+    }
+
+    .login-form-main-message.success {
+        border-left-color: #2ecc71;
+    }
+
+    .login-form-main-message.error {
+        border-left-color: #e74c3c;
+    }
+/*=== 8. Custom Checkbox & Radio ===*/
+/* Base for label styling */
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked,
+[type="radio"]:not(:checked),
+[type="radio"]:checked {
+    position: absolute;
+    left: -9999px;
+}
+
+    [type="checkbox"]:not(:checked) + label,
+    [type="checkbox"]:checked + label,
+    [type="radio"]:not(:checked) + label,
+    [type="radio"]:checked + label {
+        position: relative;
+        padding-left: 25px;
+        padding-top: 1px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+        /* checkbox aspect */
+        [type="checkbox"]:not(:checked) + label:before,
+        [type="checkbox"]:checked + label:before,
+        [type="radio"]:not(:checked) + label:before,
+        [type="radio"]:checked + label:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 17px;
+            height: 17px;
+            border: 0px solid #aaa; 
+            font-size: 24px;
+            border-radius: 3px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        /* checked mark aspect */
+        [type="checkbox"]:not(:checked) + label:after,
+        [type="checkbox"]:checked + label:after,
+        [type="radio"]:not(:checked) + label:after,
+        [type="radio"]:checked + label:after {
+            position: absolute;
+            /*color: #fff;*/
+            transition: all .2s;
+        }
+        /* checked mark aspect changes */
+        [type="checkbox"]:not(:checked) + label:after,
+        [type="radio"]:not(:checked) + label:after {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        [type="checkbox"]:checked + label:after,
+        [type="radio"]:checked + label:after {
+            opacity: 1;
+            transform: scale(1);
+        }
+/* disabled checkbox */
+[type="checkbox"]:disabled:not(:checked) + label:before,
+[type="checkbox"]:disabled:checked + label:before,
+[type="radio"]:disabled:not(:checked) + label:before,
+[type="radio"]:disabled:checked + label:before {
+    box-shadow: none;
+    border-color: #8c8c8c;
+    background-color: #878787;
+}
+
+[type="checkbox"]:disabled:checked + label:after,
+[type="radio"]:disabled:checked + label:after {
+    color: #000;
+}
+
+[type="checkbox"]:disabled + label,
+[type="radio"]:disabled + label {
+    color: #8c8c8c;
+}
+/* accessibility */
+[type="checkbox"]:checked:focus + label:before,
+[type="checkbox"]:not(:checked):focus + label:before,
+[type="checkbox"]:checked:focus + label:before,
+[type="checkbox"]:not(:checked):focus + label:before {
+    border: 1px dotted #f6f6f6;
+}
+/* hover style just for information */
+label:hover:before {
+    border: 1px solid #f6f6f6 !important;
+}
+/*=== Customization ===*/
+/* radio aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+    border-radius: 3px;
+}
+
+[type="radio"]:not(:checked) + label:before,
+[type="radio"]:checked + label:before {
+    border-radius: 35px;
+}
+/* selected mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+    content: '✔';
+    top: 0;
+    left: 2px;
+    font-size: 14px;
+}
+
+[type="radio"]:not(:checked) + label:after,
+[type="radio"]:checked + label:after {
+    content: '\2022';
+    top: -2px;
+    left: 3px;
+    font-size: 30px;
+    line-height: 25px;
+}
+/*=== 9. Misc ===*/
+.logo {
+    padding: 0;
+    font-size: 25px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0px 0px 3px #000;
+}
+
+.etc-login-form {
+    color: white;
+    padding: 0 20px;
+    font-size: 13px;
+}
+
+    .etc-login-form p {
+        margin-bottom: 5px;
+    }
+
+        .etc-login-form p a {
+            text-shadow: none;
+            /*color: #428bca;*/
+            font-weight: bold; 
+        }
+
+.text-darklight {
+    text-shadow: 0px 0px 3px #000;
+}
+
+.text-highlight {
+    text-shadow: 0px 0px 3px #fff;
+}
+text-nonhightlight{
+    text-shadow:none;
+}
+body{
+    overflow:auto;
+}
+
+@media screen and (max-width: 400px) {
+    .content-box-padding {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .content-box-title {
+        height: auto;
+    }
+
+    body {
+        background-size: auto; 
+    }
+}
+
+@media (max-width: 640px) {
+    .content-box-title {
+        height: auto;
+    }
+
+    body {
+        background-size: auto 100%; 
+    }
+}
+
+@media (max-width: 767px) {
+    .content-box-padding {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .content-box-title {
+        height: 100px;
+    }
+
+    body {
+        background-size: auto 100%; 
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .content-box-padding {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .content-box-title {
+        height: 100px;
+    }
+
+    body {
+        background-size: auto 100%; 
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    body {
+        background-size: 100% 100%; 
+    }
+}
+
+@media (min-width: 1200px) {
+    body {
+        background-size: 100% 100%;
+    }
+}
