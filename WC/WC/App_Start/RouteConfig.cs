@@ -20,14 +20,14 @@ namespace WC
                 defaults: new
                 { 
                     controller = "Home",
-                    action = "Index",
+                    action = "Wall",
                     id = UrlParameter.Optional
                 });
 
             routes.MapRoute(
                 name: "Basic",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", id = UrlParameter.Optional }
+                defaults: new { controller = "Home" , id = UrlParameter.Optional }
             );
         }
     }

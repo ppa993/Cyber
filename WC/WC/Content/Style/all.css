@@ -3535,7 +3535,7 @@ tbody.collapse.in {
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 0;
+  right: 0;
   z-index: 1000;
   display: none;
   float: left;
@@ -4353,7 +4353,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 @media (min-width: 768px) {
   .navbar-nav {
-    float: left;
+    float: right;
     margin: 0;
   }
   .navbar-nav > li {
@@ -7399,7 +7399,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.active {
 .datepicker.dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 0;
+  right: 0;
   z-index: 1000;
   float: left;
   display: none;

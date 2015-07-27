@@ -169,7 +169,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\Images\avt.jpg" />
+    <Content Include="Content\Images\avt1.jpg" />
     <Content Include="Content\Images\bg.jpeg" />
+    <Content Include="Content\Images\timelime.jpg" />
+    <Content Include="Content\Script\all.js" />
+    <Content Include="Content\Script\app.js" />
+    <Content Include="Content\Script\main.js" />
     <Content Include="Content\Script\script.js" />
     <Content Include="Content\Style\bootstrap.css" />
     <Content Include="Content\Style\bootstrap.min.css" />
@@ -226,6 +232,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutHome.cshtml" />
+    <Content Include="Views\Home\Wall.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

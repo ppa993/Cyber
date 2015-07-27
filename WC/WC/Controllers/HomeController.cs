@@ -14,5 +14,10 @@ namespace WC.Controllers
             if (id != null || id != "") ViewBag.id = id;
             return View();
         }
+
+        public ActionResult Wall()
+        { 
+            return View();
+        }
     }
 }
