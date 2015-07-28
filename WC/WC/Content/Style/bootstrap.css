@@ -3235,18 +3235,18 @@ input[type="button"].btn-block {
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 0;
+  /*left: 0;*/
   z-index: 1000;
   display: none;
   float: left;
-  min-width: 160px;
+  min-width: 137px;
   padding: 5px 0;
   margin: 2px 0 0;
   font-size: 14px;
   list-style: none;
   background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  /*border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);*/
   border-radius: 4px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
@@ -3271,7 +3271,7 @@ input[type="button"].btn-block {
   clear: both;
   font-weight: normal;
   line-height: 1.428571429;
-  color: #333333;
+  color: #999;
   white-space: nowrap;
 }
 
@@ -3812,7 +3812,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .nav > li {
   position: relative;
-  display: block;
+  /*display: block;*/
+  float:left
 }
 
 .nav > li > a {
@@ -4079,6 +4080,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 @media (min-width: 768px) {
   .navbar-header {
     float: left;
+    padding-top:6px;
   }
 }
 
@@ -4220,7 +4222,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   border: 1px solid transparent;
   border-radius: 4px;
 }
-
+.navbar-nav > li > a
 .navbar-toggle .icon-bar {
   display: block;
   width: 22px;
@@ -4245,7 +4247,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-nav > li > a {
   padding-top: 10px;
   padding-bottom: 10px;
-  line-height: 20px;
+  line-height: 25px;
+  
 }
 
 @media (max-width: 767px) {
@@ -4277,7 +4280,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
     margin: 0;
   }
   .navbar-nav > li {
-    float: left;
+    float: left; 
   }
   .navbar-nav > li > a {
     padding-top: 15px;
