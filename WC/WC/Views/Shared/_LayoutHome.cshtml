@@ -32,6 +32,7 @@
     <script src="~/Content/Script/script.js"></script>
     <script src="~/Content/Script/jquery.validate.js"></script>
     <script src="~/Content/Script/main.js"></script>
+    @*<script src="~/Content/Script/jquery.nicescroll.js"></script>*@
     @*<script src="~/Content/Script/app.js"></script>
         <script src="~/Content/Script/all.js"></script>*@
     @* CSS *@
@@ -49,18 +50,27 @@
             padding-right: 10px;
             position: relative;
             padding-top: 56px;
+            overflow-x:hidden;
+        }
+
+        .box{
+            overflow:scroll;
+            background:#ffd800;
+            height:100%;
         }
     </style>
     <script>
-        $(document).ready(function () { 
+        $(document).ready(function () {
             var h = window.innerHeight - 56;
             var isOpenRightMenu = false;
             var isOpenLeftMenu = false;
 
-            $("#right-sb").css("height", h + "px");
-            $("#left-sb").css("height", h + "px"); 
+            //$("#right-sb").css("height", h + "px");
+            //$("#left-sb").css("height", h + "px");
 
             InitializeMenuJS();
+
+            //$(".split-vertical-body").niceScroll({ cursorcolor: "#00F" });
         });
 
     </script>
@@ -183,7 +193,255 @@
     </nav>
 
     <div id="right-sb" class="side-bar side-bar-right">
-        sadsa
+        <div class="split-vertical">
+            <div class="chat-search">
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <ul class="chat-filter">
+                <li><a class="active" href="#">All</a></li>
+                <li><a href="#">Online</a></li>
+                <li><a href="#">Offline</a></li>
+            </ul>
+            <div class="split-vertical-body">
+                <ul class="chat-contacts">
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div> 
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div> 
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="online" data-user-id="1">
+                        <a href="#">
+                            <div class="media">
+                                <div class="pull-left">
+                                    <span class="status"></span>
+                                    <img src="~/Content/Images/avt1.jpg" width="40" class="img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <div class="contact-name">Jonathan S.</div>
+                                    <small>"Free Today"</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+     
+    <div class="chat-window-container">
+        <div class="panel panel-default" data-user-id="3" id="chat-0002" style="display: block;">
+            <div class="panel-heading" data-toggle="chat-collapse">
+                <a href="#" class="close"><i class="fa fa-times"></i></a>
+                <a href="#"> 
+                    <span class="contact-name">Adrian D.</span>
+                </a>
+            </div>
+            <div class="panel-body display-none" id="chat-bill">
+                <div class="media friend">
+                    <div class="media-left">
+                        <img src="~/Content/Images/avt.jpg" width="25" class="img-circle" alt="people">
+                    </div>
+                    <div class="media-body">
+                        <span class="message">Feeling Groovy asd asd asd sadasdasdasdas?</span>
+                    </div>
+                    <div class="media-body-time">1 hour ago</div>
+                </div>
+
+                <div class="media owner">
+                    <div class="media-right pull-right">
+                        <img src="~/Content/Images/avt1.jpg" width="25" class="img-circle" alt="people">
+                    </div>
+                    <div class="media-body">
+                        <span class="message">Feeling Groovy? asd as as das dasd as das dasd asd</span>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="media friend">
+                    <div class="media-left">
+                        <img src="~/Content/Images/avt.jpg" width="25" class="img-circle" alt="people">
+                    </div>
+                    <div class="media-body">
+                        <span class="message">Feeling Groovy asd asd asd sadasdasdasdas?</span>
+                    </div>
+                    <div class="media-body-time">1 hour ago</div>
+                </div>
+
+                <div class="media owner">
+                    <div class="media-right pull-right">
+                        <img src="~/Content/Images/avt1.jpg" width="25" class="img-circle" alt="people">
+                    </div>
+                    <div class="media-body">
+                        <span class="message">Feeling Groovy? asd as as das dasd as das dasd asd</span>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <input type="text" class="form-control display-none" placeholder="Type message...">
+        </div>
     </div>
 
     <div id="left-sb" class="side-bar side-bar-left">

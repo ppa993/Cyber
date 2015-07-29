@@ -175,6 +175,7 @@
     <Content Include="Content\Images\timelime.jpg" />
     <Content Include="Content\Script\all.js" />
     <Content Include="Content\Script\app.js" />
+    <Content Include="Content\Script\jquery.nicescroll.js" />
     <Content Include="Content\Script\main.js" />
     <Content Include="Content\Script\script.js" />
     <Content Include="Content\Style\bootstrap.css" />

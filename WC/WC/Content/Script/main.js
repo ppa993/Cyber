@@ -69,4 +69,10 @@ function InitializeMenuJS() {
         $('#ul-notification').hide();
         $("#ul-small-profile").hide();
     });
+
+    var selector = '.chat-filter li a'; 
+    $(selector).on('click', function () {
+        $(selector).removeClass('active');
+        $(this).addClass('active');
+    });
 }
