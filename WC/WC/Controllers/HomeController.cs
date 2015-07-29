@@ -9,14 +9,30 @@ namespace WC.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        public ActionResult Index(string id)
+        public ActionResult NewFeeds(string id)
         {
             if (id != null || id != "") ViewBag.id = id;
             return View();
         }
 
-        public ActionResult Wall()
-        { 
+        public ActionResult Profile(string id)
+        {
+            if (id != null || id != "") ViewBag.id = id;
+            return View();
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        public ActionResult Forgot()
+        {
             return View();
         }
     }

@@ -1,78 +1,50 @@
-﻿
-function InitializeMenuJS() {
-    /*LEFT SIDE BAR*/
-    $("#bt-right-sb").click(function () {
-        if ($("#right-sb").css('display') === 'block') {
-            $("#right-sb").hide();
-            return;
-        }
+/**
+ * main.js
+ * http://www.codrops.com
+ *
+ * Licensed under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ * 
+ * Copyright 2014, Codrops
+ * http://www.codrops.com
+ */
+(function() {
 
-        $("#right-sb").show(); return false;
-    }); 
+	var bodyEl = document.body,
+		overlay = document.querySelector( '.overlay' ),
+		openbtn = document.getElementById( 'profile-menu-link' ),
+		closebtn = document.getElementById( 'close-button' ),
+		isOpen = false;
 
-    /*LEFT SIDE BAR*/
-    $("#bt-left-sb").click(function () {
-        if ($("#left-sb").css('display') === 'block') {
-            $("#left-sb").hide();
-            return;
-        }
-        $("#left-sb").show(); return false;
-    }); 
+	function init() {
+		initEvents();
+	}
 
-    /*PROFILE*/
-    $("#bt-small-profile").click(function () {
-        if ($("#ul-friend-notify").css('display') === 'block') {
-            $("#ul-friend-notify").hide();
-        }
-        if ($("#ul-notification").css('display') === 'block') {
-            $("#ul-notification").hide();
-        }
-        $("#ul-small-profile").show(); return false;
-    }); 
+	function initEvents() {
+		openbtn.addEventListener( 'click', toggleMenu );
+		if( closebtn ) {
+			closebtn.addEventListener( 'click', toggleMenu );
+		}
 
-    $("#bt-small-profile").click(function (e) {
-        e.stopPropagation();
-    });
+		// close the menu element if the target it´s not the menu element or one of its descendants..
+		overlay.addEventListener( 'click', function(ev) {
+			var target = ev.target;
+			if( isOpen && target !== openbtn ) {
+				toggleMenu();
+			}
+		} );
+	}
 
-    /*NOTIFY*/
-    $('#bt-notification').click(function () {
-        if ($("#ul-friend-notify").css('display') === 'block') {
-            $("#ul-friend-notify").hide();
-        }
-        if ($("#ul-small-profile").css('display') === 'block') {
-            $("#ul-small-profile").hide();
-        }
-        $('#ul-notification').show(); return false;
-    }); 
+	function toggleMenu() {
+		if( isOpen ) {
+			classie.remove( bodyEl, 'show-menu' );
+		}
+		else {
+			classie.add( bodyEl, 'show-menu' );
+		}
+		isOpen = !isOpen;
+	}
 
-    $('#bt-notification').click(function (e) {
-        e.stopPropagation();
-    });
+	init();
 
-    /*FRIEND NOTIFY*/
-    $('#bt-friend-notify').click(function () {
-        if ($("#ul-notification").css('display') === 'block') {
-            $("#ul-notification").hide();
-        }
-        if ($("#ul-small-profile").css('display') === 'block') {
-            $("#ul-small-profile").hide();
-        }
-        $('#ul-friend-notify').show(); return false;
-    }); 
-
-    $('#bt-friend-notify').click(function (e) {
-        e.stopPropagation();
-    });
-
-    $(document).click(function () { 
-        $('#ul-friend-notify').hide();
-        $('#ul-notification').hide();
-        $("#ul-small-profile").hide();
-    });
-
-    var selector = '.chat-filter li a'; 
-    $(selector).on('click', function () {
-        $(selector).removeClass('active');
-        $(this).addClass('active');
-    });
-}
+})();

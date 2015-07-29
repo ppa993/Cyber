@@ -12,22 +12,11 @@ namespace WC
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapRoute
-            (
-                name: "Id route",
-                url: "{id}",
-                defaults: new
-                { 
-                    controller = "Home",
-                    action = "Wall",
-                    id = UrlParameter.Optional
-                });
-
+             
             routes.MapRoute(
-                name: "Basic",
+                name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home" , id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "NewFeeds", id = UrlParameter.Optional }
             );
         }
     }

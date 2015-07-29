@@ -22,6 +22,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -169,58 +170,67 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Fonts\fontawesome-webfont.svg" />
-    <Content Include="Content\Images\avt.jpg" />
-    <Content Include="Content\Images\avt1.jpg" />
-    <Content Include="Content\Images\bg.jpeg" />
-    <Content Include="Content\Images\timelime.jpg" />
-    <Content Include="Content\Script\all.js" />
-    <Content Include="Content\Script\app.js" />
-    <Content Include="Content\Script\jquery.nicescroll.js" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Fonts\Simple-Line-Icons.svg" />
+    <Content Include="Content\Images\avatar1.png" />
+    <Content Include="Content\Images\avatar2.png" />
+    <Content Include="Content\Images\avatar3.png" />
+    <Content Include="Content\Images\avatar4.png" />
+    <Content Include="Content\Images\avatar5.png" />
+    <Content Include="Content\Images\post-image.jpg" />
+    <Content Include="Content\Images\profile-cover.png" />
+    <Content Include="Content\Images\profile-menu-image.png" />
+    <Content Include="Content\Images\profile-picture.png" />
+    <Content Include="Content\Script\bootstrap.min.js" />
+    <Content Include="Content\Script\classie.js" />
+    <Content Include="Content\Script\curvedLines.js" />
+    <Content Include="Content\Script\dashboard.js" />
+    <Content Include="Content\Script\jquery-2.1.4.min.js" />
+    <Content Include="Content\Script\jquery-ui.min.js" />
+    <Content Include="Content\Script\jquery.blockui.js" />
+    <Content Include="Content\Script\jquery.counterup.min.js" />
+    <Content Include="Content\Script\jquery.flot.min.js" />
+    <Content Include="Content\Script\jquery.flot.resize.min.js" />
+    <Content Include="Content\Script\jquery.flot.symbol.min.js" />
+    <Content Include="Content\Script\jquery.flot.time.min.js" />
+    <Content Include="Content\Script\jquery.flot.tooltip.min.js" />
+    <Content Include="Content\Script\jquery.slimscroll.min.js" />
+    <Content Include="Content\Script\jquery.uniform.min.js" />
+    <Content Include="Content\Script\jquery.waypoints.min.js" />
+    <Content Include="Content\Script\main%281%29.js" />
     <Content Include="Content\Script\main.js" />
-    <Content Include="Content\Script\script.js" />
-    <Content Include="Content\Style\bootstrap.css" />
+    <Content Include="Content\Script\MetroJs.min.js" />
+    <Content Include="Content\Script\modern.min.js" />
+    <Content Include="Content\Script\modernizr.js" />
+    <Content Include="Content\Script\pace.min.js" />
+    <Content Include="Content\Script\snap.svg-min.js" />
+    <Content Include="Content\Script\switchery.min.js" />
+    <Content Include="Content\Script\toastr.min.js" />
+    <Content Include="Content\Script\waves.min.js" />
     <Content Include="Content\Style\bootstrap.min.css" />
-    <Content Include="Content\Script\common.js" />
-    <Content Include="Content\Script\controls.js" />
-    <Content Include="Content\Script\infobox_packed.js" />
-    <Content Include="Content\Script\jquery.ui.map.extensions.js" />
-    <Content Include="Content\Script\jquery.ui.map.js" />
-    <Content Include="Content\Script\jquery.ui.map.microdata.js" />
-    <Content Include="Content\Script\jquery.ui.map.microformat.js" />
-    <Content Include="Content\Script\jquery.ui.map.overlays.js" />
-    <Content Include="Content\Script\jquery.ui.map.rdfa.js" />
-    <Content Include="Content\Script\jquery.ui.map.services.js" />
-    <Content Include="Content\Script\map.js" />
-    <Content Include="Content\Script\markerclusterer.min.js" />
-    <Content Include="Content\Script\onion.js" />
-    <Content Include="Content\Script\stats.js" />
-    <Content Include="Content\Script\util.js" />
-    <Content Include="Content\Style\all.css" />
-    <Content Include="Content\Style\app.css" />
+    <Content Include="Content\Style\component.css" />
+    <Content Include="Content\Style\custom.css" />
     <Content Include="Content\Style\font-awesome.css" />
+    <Content Include="Content\Style\green.css" />
+    <Content Include="Content\Style\menu_cornerbox.css" />
+    <Content Include="Content\Style\MetroJs.min.css" />
+    <Content Include="Content\Style\modern.min.css" />
+    <Content Include="Content\Style\pace-theme-flash.css" />
+    <Content Include="Content\Style\simple-line-icons.css" />
     <Content Include="Content\Style\style.css" />
+    <Content Include="Content\Style\switchery.min.css" />
+    <Content Include="Content\Style\toastr.min.css" />
+    <Content Include="Content\Style\uniform.default.min.css" />
+    <Content Include="Content\Style\waves.min.css" />
+    <Content Include="Content\Style\weather-icons.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\Fonts\fontawesome-webfont.eot" />
     <Content Include="Content\Fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\Fonts\fontawesome-webfont.woff" />
     <Content Include="Content\Fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\Fonts\FontAwesome.otf" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Content\Script\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Content\Script\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -230,11 +240,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\_LayoutHome.cshtml" />
-    <Content Include="Views\Home\Wall.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -245,7 +251,19 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\Fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\Fonts\Simple-Line-Icons.eot" />
+    <Content Include="Content\Fonts\Simple-Line-Icons.ttf" />
+    <Content Include="Content\Fonts\Simple-Line-Icons.woff" />
     <None Include="Project_Readme.html" />
+    <Content Include="Views\Shared\_LayoutAccount.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Home\Forgot.cshtml" />
+    <Content Include="Views\Home\Profile.cshtml" />
+    <Content Include="Views\Home\NewFeeds.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
