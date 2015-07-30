@@ -9,7 +9,7 @@ namespace WC.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        public ActionResult NewFeeds(string id)
+        public ActionResult NewsFeed(string id)
         {
             if (id != null || id != "") ViewBag.id = id;
             return View();

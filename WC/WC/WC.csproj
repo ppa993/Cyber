@@ -263,7 +263,7 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\Forgot.cshtml" />
     <Content Include="Views\Home\Profile.cshtml" />
-    <Content Include="Views\Home\NewFeeds.cshtml" />
+    <Content Include="Views\Home\NewsFeed.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
