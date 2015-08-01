@@ -6,19 +6,8 @@ using System.Web.Mvc;
 
 namespace WC.Controllers
 {
-    public class HomeController : Controller
+    public class AccountController : BaseController
     {
-        // GET: Home
-        public ActionResult NewsFeed()
-        {
-            return View();
-        }
-
-        public ActionResult Profile(string id)
-        {
-            if (string.IsNullOrEmpty(id)) ViewBag.id = id;
-            return View();
-        }
 
         public ActionResult Login()
         {
@@ -34,5 +23,5 @@ namespace WC.Controllers
         {
             return View();
         }
-    }
+	}
 }
