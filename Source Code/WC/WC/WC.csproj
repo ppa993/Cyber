@@ -335,7 +335,6 @@
       <DependentUpon>Cyber.edmx</DependentUpon>
       <LastGenOutput>Cyber.cs</LastGenOutput>
     </Content>
-    <None Include="Project_Readme.html" />
     <Content Include="Views\Shared\_LayoutAccount.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
