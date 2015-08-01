@@ -19,7 +19,7 @@
     <link href="http://lambdathemes.in/admin1/assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet">
     <link href="~/Content/Style/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/Style/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="~/Content/Style/font-awesome.css" rel="stylesheet" type="text/css"> 
+    <link href="~/Content/Style/font-awesome.css" rel="stylesheet" type="text/css">
     <link href="~/Content/Style/simple-line-icons.css" rel="stylesheet" />
     <link href="~/Content/Style/menu_cornerbox.css" rel="stylesheet" type="text/css">
     <link href="~/Content/Style/waves.min.css" rel="stylesheet" type="text/css">
@@ -50,7 +50,7 @@
     <div class="pace  pace-inactive">
         <div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
             <div class="pace-progress-inner"></div>
-        </div> 
+        </div>
     </div>
     <div class="overlay"></div>
     <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s1">
@@ -148,7 +148,7 @@
                     </a>
                 </div>
                 <div class="logo-box">
-                    <a href="@Url.Action("Index","Home")" class="logo-text"><span>Cyber</span></a>
+                    <a href="@Url.Action("NewFeed","Home")" class="logo-text"><span>Cyber</span></a>
                 </div><!-- Logo Box -->
                 <div class="search-button">
                     <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
@@ -310,81 +310,13 @@
                         </div>
                     </div>
                     <ul class="menu accordion-menu">
-                        <li><a href="index.html" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>New Feed</p></a></li>
-                         <li  class="active"><a href="@Url.Action("Home","Index")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Mailbox</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="http://lambdathemes.in/admin1/inbox.html">Inbox</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/inbox-alt.html">Inbox Alt</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/message-view.html">View Message</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/message-view-alt.html">View Message Alt</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/compose.html">Compose</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/compose-alt.html">Compose Alt</a></li>
-                            </ul>
-                        </li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>UI Kits</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="http://lambdathemes.in/admin1/ui-alerts.html">Alerts</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-buttons.html">Buttons</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-icons.html">Icons</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-typography.html">Typography</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-notifications.html">Notifications</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-grid.html">Grid</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-tabs-accordions.html">Tabs &amp; Accordions</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-modals.html">Modals</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-panels.html">Panels</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-progress.html">Progress Bars</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-sliders.html">Sliders</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-nestable.html">Nestable</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/ui-tree-view.html">Tree View</a></li>
-                            </ul>
-                        </li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-th"></span><p>Layouts</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="http://lambdathemes.in/admin1/layout-blank.html">Blank Page</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/layout-boxed.html">Boxed Page</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/layout-horizontal-menu.html">Horizontal Menu</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/layout-horizontal-menu-boxed.html">Boxed &amp; Horizontal Menu</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/layout-horizontal-menu-minimal.html">Horizontal Menu Minimal</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/layout-fixed-sidebar.html">Fixed Sidebar</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/layout-static-header.html">Static Header</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/layout-collapsed-sidebar.html">Collapsed Sidebar</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/layout-compact-menu.html">Compact Menu</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/layout-hover-menu.html">Hover Menu</a></li>
-                            </ul>
-                        </li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list"></span><p>Tables</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="http://lambdathemes.in/admin1/table-static.html">Static Tables</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/table-responsive.html">Responsive Tables</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/table-data.html">Data Tables</a></li>
-                            </ul>
-                        </li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-edit"></span><p>Forms</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="http://lambdathemes.in/admin1/form-elements.html">Form Elements</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/form-wizard.html">Form Wizard</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/form-upload.html">File Upload</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/form-image-crop.html">Image Crop</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/form-image-zoom.html">Image Zoom</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/form-select2.html">Select2</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/form-x-editable.html">X-editable</a></li>
-                            </ul>
-                        </li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-stats"></span><p>Charts</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="http://lambdathemes.in/admin1/charts-sparkline.html">Sparkline</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/charts-rickshaw.html">Rickshaw</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/charts-morris.html">Morris</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/charts-flotchart.html">Flotchart</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/charts-chartjs.html">Chart.js</a></li>
-                            </ul>
+                        <li><a href="@Url.Action("NewsFeed","Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>New Feed</p></a></li>
+                        <li><a href="@Url.Action("Profile","Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
+                        @*<li class="droplink">
+                                <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>MessageBox</p></a>
+                            </li>*@
+                        <li>
+                            <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Chat</p></a>
                         </li>
                         <li class="droplink">
                             <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-log-in"></span><p>Login</p><span class="arrow"></span></a>
@@ -397,49 +329,7 @@
                                 <li><a href="http://lambdathemes.in/admin1/lock-screen.html">Lock Screen</a></li>
                             </ul>
                         </li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-map-marker"></span><p>Maps</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="http://lambdathemes.in/admin1/maps-google.html">Google Maps</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/maps-vector.html">Vector Maps</a></li>
-                            </ul>
-                        </li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-gift"></span><p>Extra</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="http://lambdathemes.in/admin1/404.html">404 Page</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/500.html">500 Page</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/invoice.html">Invoice</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/calendar.html">Calendar</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/faq.html">FAQ</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/todo.html">Todo</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/pricing-tables.html">Pricing Tables</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/shop.html">Shop</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/gallery.html">Gallery</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/timeline.html">Timeline</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/search.html">Search Results</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/coming-soon.html">Coming Soon</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/contact.html">Contact</a></li>
-                            </ul>
-                        </li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-flash"></span><p>Levels</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li class="droplink">
-                                    <a href="http://lambdathemes.in/admin1/index.html#"><p>Level 1.1</p><span class="arrow"></span></a>
-                                    <ul class="sub-menu" style="display: none;">
-                                        <li class="droplink">
-                                            <a href="http://lambdathemes.in/admin1/index.html#"><p>Level 2.1</p><span class="arrow"></span></a>
-                                            <ul class="sub-menu" style="display: none;">
-                                                <li><a href="http://lambdathemes.in/admin1/index.html#">Level 3.1</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="http://lambdathemes.in/admin1/index.html#">Level 2.2</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="http://lambdathemes.in/admin1/index.html#">Level 1.2</a></li>
-                            </ul>
-                        </li>
+
                     </ul>
                 </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 1080px; background: rgb(204, 204, 204);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
             </div><!-- Page Sidebar Inner -->
