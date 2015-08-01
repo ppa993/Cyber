@@ -1,0 +1,997 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CyberModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cyber_Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CommentContent" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CommentedDate" Type="datetime" Nullable="false" />
+          <Property Name="CommentedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cyber_Friend">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FriendID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FriendStatus" Type="bit" Nullable="false" />
+          <Property Name="FriendSince" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Cyber_Like">
+          <Key>
+            <PropertyRef Name="LikeID" />
+          </Key>
+          <Property Name="LikeID" Type="varbinary" MaxLength="50" Nullable="false" />
+          <Property Name="LikeOf" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cyber_Membership">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastTimeLogIn" Type="datetime" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cyber_Notification">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NotificationID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NotificationTypeID" Type="int" Nullable="false" />
+          <Property Name="NotificationContent" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NotificationDate" Type="datetime" Nullable="false" />
+          <Property Name="Seen" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cyber_Notification_Type">
+          <Key>
+            <PropertyRef Name="NotificationTypeID" />
+          </Key>
+          <Property Name="NotificationTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NotificationTypeName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cyber_Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostTypeID" Type="int" Nullable="false" />
+          <Property Name="PostContent" Type="text" Nullable="false" />
+          <Property Name="PostedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+          <Property Name="VisibleTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cyber_Post_Type">
+          <Key>
+            <PropertyRef Name="PostTypeID" />
+          </Key>
+          <Property Name="PostTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PostTypeName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cyber_Profile_Photo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProfileImageUrl" Type="varchar" MaxLength="255" />
+          <Property Name="CoverImageUrl" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Cyber_Role">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RoleTypeID" Type="int" Nullable="false" />
+          <Property Name="AssignedDate" Type="datetime" Nullable="false" />
+          <Property Name="AssignedBy" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cyber_Role_Type">
+          <Key>
+            <PropertyRef Name="RoleTypeID" />
+          </Key>
+          <Property Name="RoleTypeID" Type="int" Nullable="false" />
+          <Property Name="RoleTypeName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cyber_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="BirthDay" Type="date" Nullable="false" />
+          <Property Name="About" Type="nvarchar" MaxLength="255" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="Relationship" Type="nvarchar" MaxLength="255" />
+          <Property Name="Work" Type="nvarchar" MaxLength="255" />
+          <Property Name="ContactNumber" Type="varchar" MaxLength="50" />
+          <Property Name="Studied" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Cyber_Visible_Type">
+          <Key>
+            <PropertyRef Name="VisibleTypeID" />
+          </Key>
+          <Property Name="VisibleTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VisibleTypeName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Cyber_Comment_Cyber_Post">
+          <End Role="Cyber_Post" Type="Self.Cyber_Post" Multiplicity="1" />
+          <End Role="Cyber_Comment" Type="Self.Cyber_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Cyber_Comment">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Comment_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Comment" Type="Self.Cyber_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Comment">
+              <PropertyRef Name="CommentedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Friend_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Friend" Type="Self.Cyber_Friend" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Friend">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Friend_Cyber_User1">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Friend" Type="Self.Cyber_Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Friend">
+              <PropertyRef Name="FriendID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Like_Cyber_Comment">
+          <End Role="Cyber_Comment" Type="Self.Cyber_Comment" Multiplicity="1" />
+          <End Role="Cyber_Like" Type="Self.Cyber_Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Comment">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="Cyber_Like">
+              <PropertyRef Name="LikeOf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Like_Cyber_Post">
+          <End Role="Cyber_Post" Type="Self.Cyber_Post" Multiplicity="1" />
+          <End Role="Cyber_Like" Type="Self.Cyber_Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Cyber_Like">
+              <PropertyRef Name="LikeOf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Membership_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Membership" Type="Self.Cyber_Membership" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Membership">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Notification_Cyber_Notification_Type">
+          <End Role="Cyber_Notification_Type" Type="Self.Cyber_Notification_Type" Multiplicity="1" />
+          <End Role="Cyber_Notification" Type="Self.Cyber_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Notification_Type">
+              <PropertyRef Name="NotificationTypeID" />
+            </Principal>
+            <Dependent Role="Cyber_Notification">
+              <PropertyRef Name="NotificationTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Notification_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Notification" Type="Self.Cyber_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Notification">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Post_Cyber_Post_Type">
+          <End Role="Cyber_Post_Type" Type="Self.Cyber_Post_Type" Multiplicity="1" />
+          <End Role="Cyber_Post" Type="Self.Cyber_Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Post_Type">
+              <PropertyRef Name="PostTypeID" />
+            </Principal>
+            <Dependent Role="Cyber_Post">
+              <PropertyRef Name="PostTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Post_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Post" Type="Self.Cyber_Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Post">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Post_Cyber_Visible_Type">
+          <End Role="Cyber_Visible_Type" Type="Self.Cyber_Visible_Type" Multiplicity="1" />
+          <End Role="Cyber_Post" Type="Self.Cyber_Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Visible_Type">
+              <PropertyRef Name="VisibleTypeID" />
+            </Principal>
+            <Dependent Role="Cyber_Post">
+              <PropertyRef Name="VisibleTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Profile_Photo_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Profile_Photo" Type="Self.Cyber_Profile_Photo" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Profile_Photo">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Role_Cyber_Role_Type">
+          <End Role="Cyber_Role_Type" Type="Self.Cyber_Role_Type" Multiplicity="1" />
+          <End Role="Cyber_Role" Type="Self.Cyber_Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Role_Type">
+              <PropertyRef Name="RoleTypeID" />
+            </Principal>
+            <Dependent Role="Cyber_Role">
+              <PropertyRef Name="RoleTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Role_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Role" Type="Self.Cyber_Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Role">
+              <PropertyRef Name="AssignedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CyberModelStoreContainer">
+          <EntitySet Name="Cyber_Comment" EntityType="Self.Cyber_Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Friend" EntityType="Self.Cyber_Friend" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Like" EntityType="Self.Cyber_Like" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Membership" EntityType="Self.Cyber_Membership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Notification" EntityType="Self.Cyber_Notification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Notification_Type" EntityType="Self.Cyber_Notification_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Post" EntityType="Self.Cyber_Post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Post_Type" EntityType="Self.Cyber_Post_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Profile_Photo" EntityType="Self.Cyber_Profile_Photo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Role" EntityType="Self.Cyber_Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Role_Type" EntityType="Self.Cyber_Role_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_User" EntityType="Self.Cyber_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cyber_Visible_Type" EntityType="Self.Cyber_Visible_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Cyber_Comment_Cyber_Post" Association="Self.FK_Cyber_Comment_Cyber_Post">
+            <End Role="Cyber_Post" EntitySet="Cyber_Post" />
+            <End Role="Cyber_Comment" EntitySet="Cyber_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Comment_Cyber_User" Association="Self.FK_Cyber_Comment_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Comment" EntitySet="Cyber_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Friend_Cyber_User" Association="Self.FK_Cyber_Friend_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Friend" EntitySet="Cyber_Friend" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Friend_Cyber_User1" Association="Self.FK_Cyber_Friend_Cyber_User1">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Friend" EntitySet="Cyber_Friend" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Like_Cyber_Comment" Association="Self.FK_Cyber_Like_Cyber_Comment">
+            <End Role="Cyber_Comment" EntitySet="Cyber_Comment" />
+            <End Role="Cyber_Like" EntitySet="Cyber_Like" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Like_Cyber_Post" Association="Self.FK_Cyber_Like_Cyber_Post">
+            <End Role="Cyber_Post" EntitySet="Cyber_Post" />
+            <End Role="Cyber_Like" EntitySet="Cyber_Like" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Membership_Cyber_User" Association="Self.FK_Cyber_Membership_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Membership" EntitySet="Cyber_Membership" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Notification_Cyber_Notification_Type" Association="Self.FK_Cyber_Notification_Cyber_Notification_Type">
+            <End Role="Cyber_Notification_Type" EntitySet="Cyber_Notification_Type" />
+            <End Role="Cyber_Notification" EntitySet="Cyber_Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Notification_Cyber_User" Association="Self.FK_Cyber_Notification_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Notification" EntitySet="Cyber_Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Post_Cyber_Post_Type" Association="Self.FK_Cyber_Post_Cyber_Post_Type">
+            <End Role="Cyber_Post_Type" EntitySet="Cyber_Post_Type" />
+            <End Role="Cyber_Post" EntitySet="Cyber_Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Post_Cyber_User" Association="Self.FK_Cyber_Post_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Post" EntitySet="Cyber_Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Post_Cyber_Visible_Type" Association="Self.FK_Cyber_Post_Cyber_Visible_Type">
+            <End Role="Cyber_Visible_Type" EntitySet="Cyber_Visible_Type" />
+            <End Role="Cyber_Post" EntitySet="Cyber_Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Profile_Photo_Cyber_User" Association="Self.FK_Cyber_Profile_Photo_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Profile_Photo" EntitySet="Cyber_Profile_Photo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Role_Cyber_Role_Type" Association="Self.FK_Cyber_Role_Cyber_Role_Type">
+            <End Role="Cyber_Role_Type" EntitySet="Cyber_Role_Type" />
+            <End Role="Cyber_Role" EntitySet="Cyber_Role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Role_Cyber_User" Association="Self.FK_Cyber_Role_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Role" EntitySet="Cyber_Role" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CyberModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cyber_Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="PostID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CommentID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CommentContent" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CommentedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CommentedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Cyber_Post" Relationship="Self.FK_Cyber_Comment_Cyber_Post" FromRole="Cyber_Comment" ToRole="Cyber_Post" />
+          <NavigationProperty Name="Cyber_User" Relationship="Self.FK_Cyber_Comment_Cyber_User" FromRole="Cyber_Comment" ToRole="Cyber_User" />
+          <NavigationProperty Name="Cyber_Like" Relationship="Self.FK_Cyber_Like_Cyber_Comment" FromRole="Cyber_Comment" ToRole="Cyber_Like" />
+        </EntityType>
+        <EntityType Name="Cyber_Friend">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FriendID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FriendStatus" Type="Boolean" Nullable="false" />
+          <Property Name="FriendSince" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Cyber_User" Relationship="Self.FK_Cyber_Friend_Cyber_User" FromRole="Cyber_Friend" ToRole="Cyber_User" />
+          <NavigationProperty Name="Cyber_User1" Relationship="Self.FK_Cyber_Friend_Cyber_User1" FromRole="Cyber_Friend" ToRole="Cyber_User" />
+        </EntityType>
+        <EntityType Name="Cyber_Like">
+          <Key>
+            <PropertyRef Name="LikeID" />
+          </Key>
+          <Property Name="LikeID" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+          <Property Name="LikeOf" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cyber_Comment" Relationship="Self.FK_Cyber_Like_Cyber_Comment" FromRole="Cyber_Like" ToRole="Cyber_Comment" />
+          <NavigationProperty Name="Cyber_Post" Relationship="Self.FK_Cyber_Like_Cyber_Post" FromRole="Cyber_Like" ToRole="Cyber_Post" />
+        </EntityType>
+        <EntityType Name="Cyber_Membership">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastTimeLogIn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Cyber_User" Relationship="Self.FK_Cyber_Membership_Cyber_User" FromRole="Cyber_Membership" ToRole="Cyber_User" />
+        </EntityType>
+        <EntityType Name="Cyber_Notification">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NotificationID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NotificationTypeID" Type="Int32" Nullable="false" />
+          <Property Name="NotificationContent" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NotificationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Seen" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Cyber_Notification_Type" Relationship="Self.FK_Cyber_Notification_Cyber_Notification_Type" FromRole="Cyber_Notification" ToRole="Cyber_Notification_Type" />
+          <NavigationProperty Name="Cyber_User" Relationship="Self.FK_Cyber_Notification_Cyber_User" FromRole="Cyber_Notification" ToRole="Cyber_User" />
+        </EntityType>
+        <EntityType Name="Cyber_Notification_Type">
+          <Key>
+            <PropertyRef Name="NotificationTypeID" />
+          </Key>
+          <Property Name="NotificationTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NotificationTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cyber_Notification" Relationship="Self.FK_Cyber_Notification_Cyber_Notification_Type" FromRole="Cyber_Notification_Type" ToRole="Cyber_Notification" />
+        </EntityType>
+        <EntityType Name="Cyber_Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PostID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PostTypeID" Type="Int32" Nullable="false" />
+          <Property Name="PostContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VisibleTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cyber_Comment" Relationship="Self.FK_Cyber_Comment_Cyber_Post" FromRole="Cyber_Post" ToRole="Cyber_Comment" />
+          <NavigationProperty Name="Cyber_Like" Relationship="Self.FK_Cyber_Like_Cyber_Post" FromRole="Cyber_Post" ToRole="Cyber_Like" />
+          <NavigationProperty Name="Cyber_Post_Type" Relationship="Self.FK_Cyber_Post_Cyber_Post_Type" FromRole="Cyber_Post" ToRole="Cyber_Post_Type" />
+          <NavigationProperty Name="Cyber_User" Relationship="Self.FK_Cyber_Post_Cyber_User" FromRole="Cyber_Post" ToRole="Cyber_User" />
+          <NavigationProperty Name="Cyber_Visible_Type" Relationship="Self.FK_Cyber_Post_Cyber_Visible_Type" FromRole="Cyber_Post" ToRole="Cyber_Visible_Type" />
+        </EntityType>
+        <EntityType Name="Cyber_Post_Type">
+          <Key>
+            <PropertyRef Name="PostTypeID" />
+          </Key>
+          <Property Name="PostTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PostTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cyber_Post" Relationship="Self.FK_Cyber_Post_Cyber_Post_Type" FromRole="Cyber_Post_Type" ToRole="Cyber_Post" />
+        </EntityType>
+        <EntityType Name="Cyber_Profile_Photo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProfileImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CoverImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cyber_User" Relationship="Self.FK_Cyber_Profile_Photo_Cyber_User" FromRole="Cyber_Profile_Photo" ToRole="Cyber_User" />
+        </EntityType>
+        <EntityType Name="Cyber_Role">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleTypeID" Type="Int32" Nullable="false" />
+          <Property Name="AssignedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AssignedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cyber_Role_Type" Relationship="Self.FK_Cyber_Role_Cyber_Role_Type" FromRole="Cyber_Role" ToRole="Cyber_Role_Type" />
+          <NavigationProperty Name="Cyber_User" Relationship="Self.FK_Cyber_Role_Cyber_User" FromRole="Cyber_Role" ToRole="Cyber_User" />
+        </EntityType>
+        <EntityType Name="Cyber_Role_Type">
+          <Key>
+            <PropertyRef Name="RoleTypeID" />
+          </Key>
+          <Property Name="RoleTypeID" Type="Int32" Nullable="false" />
+          <Property Name="RoleTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cyber_Role" Relationship="Self.FK_Cyber_Role_Cyber_Role_Type" FromRole="Cyber_Role_Type" ToRole="Cyber_Role" />
+        </EntityType>
+        <EntityType Name="Cyber_User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthDay" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="About" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Relationship" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Work" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Studied" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Cyber_Comment" Relationship="Self.FK_Cyber_Comment_Cyber_User" FromRole="Cyber_User" ToRole="Cyber_Comment" />
+          <NavigationProperty Name="Cyber_Friend" Relationship="Self.FK_Cyber_Friend_Cyber_User" FromRole="Cyber_User" ToRole="Cyber_Friend" />
+          <NavigationProperty Name="Cyber_Friend1" Relationship="Self.FK_Cyber_Friend_Cyber_User1" FromRole="Cyber_User" ToRole="Cyber_Friend" />
+          <NavigationProperty Name="Cyber_Membership" Relationship="Self.FK_Cyber_Membership_Cyber_User" FromRole="Cyber_User" ToRole="Cyber_Membership" />
+          <NavigationProperty Name="Cyber_Notification" Relationship="Self.FK_Cyber_Notification_Cyber_User" FromRole="Cyber_User" ToRole="Cyber_Notification" />
+          <NavigationProperty Name="Cyber_Post" Relationship="Self.FK_Cyber_Post_Cyber_User" FromRole="Cyber_User" ToRole="Cyber_Post" />
+          <NavigationProperty Name="Cyber_Profile_Photo" Relationship="Self.FK_Cyber_Profile_Photo_Cyber_User" FromRole="Cyber_User" ToRole="Cyber_Profile_Photo" />
+          <NavigationProperty Name="Cyber_Role" Relationship="Self.FK_Cyber_Role_Cyber_User" FromRole="Cyber_User" ToRole="Cyber_Role" />
+        </EntityType>
+        <EntityType Name="Cyber_Visible_Type">
+          <Key>
+            <PropertyRef Name="VisibleTypeID" />
+          </Key>
+          <Property Name="VisibleTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VisibleTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cyber_Post" Relationship="Self.FK_Cyber_Post_Cyber_Visible_Type" FromRole="Cyber_Visible_Type" ToRole="Cyber_Post" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Cyber_Comment_Cyber_Post">
+          <End Role="Cyber_Post" Type="Self.Cyber_Post" Multiplicity="1" />
+          <End Role="Cyber_Comment" Type="Self.Cyber_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Cyber_Comment">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Comment_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Comment" Type="Self.Cyber_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Comment">
+              <PropertyRef Name="CommentedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Like_Cyber_Comment">
+          <End Role="Cyber_Comment" Type="Self.Cyber_Comment" Multiplicity="1" />
+          <End Role="Cyber_Like" Type="Self.Cyber_Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Comment">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="Cyber_Like">
+              <PropertyRef Name="LikeOf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Friend_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Friend" Type="Self.Cyber_Friend" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Friend">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Friend_Cyber_User1">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Friend" Type="Self.Cyber_Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Friend">
+              <PropertyRef Name="FriendID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Like_Cyber_Post">
+          <End Role="Cyber_Post" Type="Self.Cyber_Post" Multiplicity="1" />
+          <End Role="Cyber_Like" Type="Self.Cyber_Like" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Cyber_Like">
+              <PropertyRef Name="LikeOf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Membership_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Membership" Type="Self.Cyber_Membership" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Membership">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Notification_Cyber_Notification_Type">
+          <End Role="Cyber_Notification_Type" Type="Self.Cyber_Notification_Type" Multiplicity="1" />
+          <End Role="Cyber_Notification" Type="Self.Cyber_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Notification_Type">
+              <PropertyRef Name="NotificationTypeID" />
+            </Principal>
+            <Dependent Role="Cyber_Notification">
+              <PropertyRef Name="NotificationTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Notification_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Notification" Type="Self.Cyber_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Notification">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Post_Cyber_Post_Type">
+          <End Role="Cyber_Post_Type" Type="Self.Cyber_Post_Type" Multiplicity="1" />
+          <End Role="Cyber_Post" Type="Self.Cyber_Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Post_Type">
+              <PropertyRef Name="PostTypeID" />
+            </Principal>
+            <Dependent Role="Cyber_Post">
+              <PropertyRef Name="PostTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Post_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Post" Type="Self.Cyber_Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Post">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Post_Cyber_Visible_Type">
+          <End Role="Cyber_Visible_Type" Type="Self.Cyber_Visible_Type" Multiplicity="1" />
+          <End Role="Cyber_Post" Type="Self.Cyber_Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Visible_Type">
+              <PropertyRef Name="VisibleTypeID" />
+            </Principal>
+            <Dependent Role="Cyber_Post">
+              <PropertyRef Name="VisibleTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Profile_Photo_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Profile_Photo" Type="Self.Cyber_Profile_Photo" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Profile_Photo">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Role_Cyber_Role_Type">
+          <End Role="Cyber_Role_Type" Type="Self.Cyber_Role_Type" Multiplicity="1" />
+          <End Role="Cyber_Role" Type="Self.Cyber_Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_Role_Type">
+              <PropertyRef Name="RoleTypeID" />
+            </Principal>
+            <Dependent Role="Cyber_Role">
+              <PropertyRef Name="RoleTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cyber_Role_Cyber_User">
+          <End Role="Cyber_User" Type="Self.Cyber_User" Multiplicity="1" />
+          <End Role="Cyber_Role" Type="Self.Cyber_Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cyber_User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Cyber_Role">
+              <PropertyRef Name="AssignedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CyberEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cyber_Comment" EntityType="Self.Cyber_Comment" />
+          <EntitySet Name="Cyber_Friend" EntityType="Self.Cyber_Friend" />
+          <EntitySet Name="Cyber_Like" EntityType="Self.Cyber_Like" />
+          <EntitySet Name="Cyber_Membership" EntityType="Self.Cyber_Membership" />
+          <EntitySet Name="Cyber_Notification" EntityType="Self.Cyber_Notification" />
+          <EntitySet Name="Cyber_Notification_Type" EntityType="Self.Cyber_Notification_Type" />
+          <EntitySet Name="Cyber_Post" EntityType="Self.Cyber_Post" />
+          <EntitySet Name="Cyber_Post_Type" EntityType="Self.Cyber_Post_Type" />
+          <EntitySet Name="Cyber_Profile_Photo" EntityType="Self.Cyber_Profile_Photo" />
+          <EntitySet Name="Cyber_Role" EntityType="Self.Cyber_Role" />
+          <EntitySet Name="Cyber_Role_Type" EntityType="Self.Cyber_Role_Type" />
+          <EntitySet Name="Cyber_User" EntityType="Self.Cyber_User" />
+          <EntitySet Name="Cyber_Visible_Type" EntityType="Self.Cyber_Visible_Type" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_Cyber_Comment_Cyber_Post" Association="Self.FK_Cyber_Comment_Cyber_Post">
+            <End Role="Cyber_Post" EntitySet="Cyber_Post" />
+            <End Role="Cyber_Comment" EntitySet="Cyber_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Comment_Cyber_User" Association="Self.FK_Cyber_Comment_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Comment" EntitySet="Cyber_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Like_Cyber_Comment" Association="Self.FK_Cyber_Like_Cyber_Comment">
+            <End Role="Cyber_Comment" EntitySet="Cyber_Comment" />
+            <End Role="Cyber_Like" EntitySet="Cyber_Like" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Friend_Cyber_User" Association="Self.FK_Cyber_Friend_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Friend" EntitySet="Cyber_Friend" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Friend_Cyber_User1" Association="Self.FK_Cyber_Friend_Cyber_User1">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Friend" EntitySet="Cyber_Friend" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Like_Cyber_Post" Association="Self.FK_Cyber_Like_Cyber_Post">
+            <End Role="Cyber_Post" EntitySet="Cyber_Post" />
+            <End Role="Cyber_Like" EntitySet="Cyber_Like" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Membership_Cyber_User" Association="Self.FK_Cyber_Membership_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Membership" EntitySet="Cyber_Membership" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Notification_Cyber_Notification_Type" Association="Self.FK_Cyber_Notification_Cyber_Notification_Type">
+            <End Role="Cyber_Notification_Type" EntitySet="Cyber_Notification_Type" />
+            <End Role="Cyber_Notification" EntitySet="Cyber_Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Notification_Cyber_User" Association="Self.FK_Cyber_Notification_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Notification" EntitySet="Cyber_Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Post_Cyber_Post_Type" Association="Self.FK_Cyber_Post_Cyber_Post_Type">
+            <End Role="Cyber_Post_Type" EntitySet="Cyber_Post_Type" />
+            <End Role="Cyber_Post" EntitySet="Cyber_Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Post_Cyber_User" Association="Self.FK_Cyber_Post_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Post" EntitySet="Cyber_Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Post_Cyber_Visible_Type" Association="Self.FK_Cyber_Post_Cyber_Visible_Type">
+            <End Role="Cyber_Visible_Type" EntitySet="Cyber_Visible_Type" />
+            <End Role="Cyber_Post" EntitySet="Cyber_Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Profile_Photo_Cyber_User" Association="Self.FK_Cyber_Profile_Photo_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Profile_Photo" EntitySet="Cyber_Profile_Photo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Role_Cyber_Role_Type" Association="Self.FK_Cyber_Role_Cyber_Role_Type">
+            <End Role="Cyber_Role_Type" EntitySet="Cyber_Role_Type" />
+            <End Role="Cyber_Role" EntitySet="Cyber_Role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cyber_Role_Cyber_User" Association="Self.FK_Cyber_Role_Cyber_User">
+            <End Role="Cyber_User" EntitySet="Cyber_User" />
+            <End Role="Cyber_Role" EntitySet="Cyber_Role" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CyberModelStoreContainer" CdmEntityContainer="CyberEntities">
+          <EntitySetMapping Name="Cyber_Comment">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Comment">
+              <MappingFragment StoreEntitySet="Cyber_Comment">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
+                <ScalarProperty Name="CommentedDate" ColumnName="CommentedDate" />
+                <ScalarProperty Name="CommentedBy" ColumnName="CommentedBy" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Friend">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Friend">
+              <MappingFragment StoreEntitySet="Cyber_Friend">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FriendID" ColumnName="FriendID" />
+                <ScalarProperty Name="FriendStatus" ColumnName="FriendStatus" />
+                <ScalarProperty Name="FriendSince" ColumnName="FriendSince" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Like">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Like">
+              <MappingFragment StoreEntitySet="Cyber_Like">
+                <ScalarProperty Name="LikeID" ColumnName="LikeID" />
+                <ScalarProperty Name="LikeOf" ColumnName="LikeOf" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Membership">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Membership">
+              <MappingFragment StoreEntitySet="Cyber_Membership">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LastTimeLogIn" ColumnName="LastTimeLogIn" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Notification">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Notification">
+              <MappingFragment StoreEntitySet="Cyber_Notification">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
+                <ScalarProperty Name="NotificationTypeID" ColumnName="NotificationTypeID" />
+                <ScalarProperty Name="NotificationContent" ColumnName="NotificationContent" />
+                <ScalarProperty Name="NotificationDate" ColumnName="NotificationDate" />
+                <ScalarProperty Name="Seen" ColumnName="Seen" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Notification_Type">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Notification_Type">
+              <MappingFragment StoreEntitySet="Cyber_Notification_Type">
+                <ScalarProperty Name="NotificationTypeID" ColumnName="NotificationTypeID" />
+                <ScalarProperty Name="NotificationTypeName" ColumnName="NotificationTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Post">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Post">
+              <MappingFragment StoreEntitySet="Cyber_Post">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="PostTypeID" ColumnName="PostTypeID" />
+                <ScalarProperty Name="PostContent" ColumnName="PostContent" />
+                <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="VisibleTypeID" ColumnName="VisibleTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Post_Type">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Post_Type">
+              <MappingFragment StoreEntitySet="Cyber_Post_Type">
+                <ScalarProperty Name="PostTypeID" ColumnName="PostTypeID" />
+                <ScalarProperty Name="PostTypeName" ColumnName="PostTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Profile_Photo">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Profile_Photo">
+              <MappingFragment StoreEntitySet="Cyber_Profile_Photo">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ProfileImageUrl" ColumnName="ProfileImageUrl" />
+                <ScalarProperty Name="CoverImageUrl" ColumnName="CoverImageUrl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Role">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Role">
+              <MappingFragment StoreEntitySet="Cyber_Role">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RoleTypeID" ColumnName="RoleTypeID" />
+                <ScalarProperty Name="AssignedDate" ColumnName="AssignedDate" />
+                <ScalarProperty Name="AssignedBy" ColumnName="AssignedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Role_Type">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Role_Type">
+              <MappingFragment StoreEntitySet="Cyber_Role_Type">
+                <ScalarProperty Name="RoleTypeID" ColumnName="RoleTypeID" />
+                <ScalarProperty Name="RoleTypeName" ColumnName="RoleTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_User">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_User">
+              <MappingFragment StoreEntitySet="Cyber_User">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
+                <ScalarProperty Name="About" ColumnName="About" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Relationship" ColumnName="Relationship" />
+                <ScalarProperty Name="Work" ColumnName="Work" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="Studied" ColumnName="Studied" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cyber_Visible_Type">
+            <EntityTypeMapping TypeName="CyberModel.Cyber_Visible_Type">
+              <MappingFragment StoreEntitySet="Cyber_Visible_Type">
+                <ScalarProperty Name="VisibleTypeID" ColumnName="VisibleTypeID" />
+                <ScalarProperty Name="VisibleTypeName" ColumnName="VisibleTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CyberModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

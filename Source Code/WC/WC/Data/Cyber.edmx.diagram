@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7cc4dbe49925408d893104b27c051623" Name="Diagram1">
+        <EntityTypeShape EntityType="CyberModel.Cyber_Comment" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Friend" Width="1.5" PointX="3" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Like" Width="1.5" PointX="8.25" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Membership" Width="1.5" PointX="3" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Notification" Width="1.5" PointX="6" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Notification_Type" Width="1.5" PointX="3.75" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Post" Width="1.5" PointX="6" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Post_Type" Width="1.5" PointX="3.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Profile_Photo" Width="1.5" PointX="3" PointY="25.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Role" Width="1.5" PointX="6" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Role_Type" Width="1.5" PointX="3.75" PointY="22" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_User" Width="1.5" PointX="0.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.Cyber_Visible_Type" Width="1.5" PointX="3.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CyberModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Comment_Cyber_Post" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Comment_Cyber_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Like_Cyber_Comment" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Friend_Cyber_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Friend_Cyber_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Like_Cyber_Post" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Membership_Cyber_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Notification_Cyber_Notification_Type" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Notification_Cyber_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Post_Cyber_Post_Type" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Post_Cyber_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Post_Cyber_Visible_Type" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Profile_Photo_Cyber_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Role_Cyber_Role_Type" ManuallyRouted="false" />
+        <AssociationConnector Association="CyberModel.FK_Cyber_Role_Cyber_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

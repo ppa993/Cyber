@@ -9,15 +9,14 @@ namespace WC.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        public ActionResult NewsFeed(string id)
+        public ActionResult NewsFeed()
         {
-            if (id != null || id != "") ViewBag.id = id;
             return View();
         }
 
         public ActionResult Profile(string id)
         {
-            if (id != null || id != "") ViewBag.id = id;
+            if (string.IsNullOrEmpty(id)) ViewBag.id = id;
             return View();
         }
 

@@ -23,6 +23,8 @@
     <IISExpressUseClassicPipelineMode />
     <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
     <UseGlobalApplicationHostFile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +48,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -162,6 +166,63 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Data\Cyber.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cyber.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cyber.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Comment.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Friend.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Like.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Membership.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Notification.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Notification_Type.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Post.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Post_Type.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Profile_Photo.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Role.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Role_Type.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_User.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Cyber_Visible_Type.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\sysdiagram.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -257,6 +318,23 @@
     <Content Include="Content\Fonts\Simple-Line-Icons.eot" />
     <Content Include="Content\Fonts\Simple-Line-Icons.ttf" />
     <Content Include="Content\Fonts\Simple-Line-Icons.woff" />
+    <EntityDeploy Include="Data\Cyber.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Cyber.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Data\Cyber.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Cyber.edmx</DependentUpon>
+      <LastGenOutput>Cyber.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Data\Cyber.edmx.diagram">
+      <DependentUpon>Cyber.edmx</DependentUpon>
+    </Content>
+    <Content Include="Data\Cyber.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Cyber.edmx</DependentUpon>
+      <LastGenOutput>Cyber.cs</LastGenOutput>
+    </Content>
     <None Include="Project_Readme.html" />
     <Content Include="Views\Shared\_LayoutAccount.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
@@ -264,6 +342,9 @@
     <Content Include="Views\Home\Forgot.cshtml" />
     <Content Include="Views\Home\Profile.cshtml" />
     <Content Include="Views\Home\NewsFeed.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -294,6 +375,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
