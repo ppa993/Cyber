@@ -253,6 +253,7 @@
     <Content Include="Content\Script\bootstrap.min.js" />
     <Content Include="Content\Script\classie.js" />
     <Content Include="Content\Script\curvedLines.js" />
+    <Content Include="Content\Script\cyber.common.js" />
     <Content Include="Content\Script\dashboard.js" />
     <Content Include="Content\Script\jquery-2.1.4.min.js" />
     <Content Include="Content\Script\jquery-ui.min.js" />

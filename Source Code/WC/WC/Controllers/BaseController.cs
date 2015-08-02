@@ -74,16 +74,16 @@ namespace WC.Controllers
         }
 
         [HttpPost]
-        public bool IsUsernameExisted(string username)
+        public string IsUsernameExisted(string username)
         {
             var result = db.Memberships.Any(x => x.Username == username);
-            return result;
+            return result ? "Existed" : "Available";
         }
         [HttpPost]
-        public bool IsEmailExisted(string email)
+        public string IsEmailExisted(string email)
         {
             var result = db.Memberships.Any(x => x.Email == email);
-            return result;
+            return result ? "Existed" : "Available";
         }
 	}
 }

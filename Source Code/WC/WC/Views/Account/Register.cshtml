@@ -5,6 +5,7 @@
 }
 
 <script type="text/javascript">
+
     $(document).ready(function () {
         $("#btnSubmit").click(function () {
             var isValid = false;
@@ -18,24 +19,70 @@
             var txtyear = document.getElementById("ddlYear");
             var txtgender = $('input[name=gender]:checked').val();
             var txtconfirm = document.getElementById("txtConfirmPassword");
-            debugger;
-            if (txtpassword.value !== txtconfirm.value) {
-                txtconfirm.setCustomValidity("Confirm password must be match.");
+            if (txtfirstname.value === "") {
+                txtfirstname.setCustomValidity("First Name is required");
                 isValid = false;
             } else {
-                txtconfirm.setCustomValidity("");
+                txtfirstname.setCustomValidity('');
                 isValid = true;
             }
             if (isValid) {
-                if (txtfirstname.value !== "" && txtlastname.value !== "" && txtusername.value !== "" &&
-                    txtpassword.value !== "" && txtday.value !== null && txtmonth.value != null && txtyear.value !== null) {
-                    isValid = true;
-                } else {
+                if (txtlastname.value === "") {
+                    txtlastname.setCustomValidity("Last Name is required");
                     isValid = false;
+                } else {
+                    txtlastname.setCustomValidity('');
+                    isValid = true;
                 }
             }
             if (isValid) {
-                if (validateEmail(txtemail.value)) {
+                if (txtusername.value === "") {
+                    txtusername.setCustomValidity("Username is required");
+                    isValid = false;
+                } else {
+                    txtusername.setCustomValidity('');
+                    isValid = true;
+                }
+            }
+            if (isValid) {
+                if (txtemail.value === "") {
+                    txtemail.setCustomValidity("Email address is required");
+                    isValid = false;
+                } else {
+                    txtemail.setCustomValidity('');
+                    isValid = true;
+                }
+            }
+            if (isValid) {
+                if (validateEmail(txtemail.value) === false) {
+                    txtemail.setCustomValidity("Invalid email address");
+                    isValid = false;
+                } else {
+                    txtemail.setCustomValidity('');
+                    isValid = true;
+                }
+            }
+            if (isValid) {
+                if (minLength(txtpassword.value) === false) {
+                    txtpassword.setCustomValidity("Password must be at least 8 character");
+                    isValid = false;
+                } else {
+                    txtpassword.setCustomValidity('');
+                    isValid = true;
+                }
+            }
+            if (isValid) {
+                if (txtpassword.value !== txtconfirm.value) {
+                    txtconfirm.setCustomValidity("Confirm password must be match.");
+                    isValid = false;
+                } else {
+                    txtconfirm.setCustomValidity("");
+                    isValid = true;
+                }
+            }
+            if (isValid) {
+                if (txtfirstname.value !== "" && txtlastname.value !== "" && txtusername.value !== "" &&
+                    txtpassword.value !== "" && txtday.value !== "" && txtmonth.value !== "" && txtyear.value !== "") {
                     isValid = true;
                 } else {
                     isValid = false;
@@ -59,7 +106,18 @@
                         if (data === "Your new account has been registered successfully!") {
                             alert("Successfully");
                         } else {
-                            alert("Failed");
+                            if (data === "Your username is already existed. Please select another username.") {
+                                alert("Your username is already existed. Please select another username.");
+                                return false;
+                            } else {
+                                if (data === "This email is already in use. Please user another email.") {
+                                    alert("This email is already in use. Please user another email.");
+                                    return false;
+                                } else {
+                                    alert("Unable to register new account. Please try again later.");
+                                    return false;
+                                }
+                            }
                         }
                     },
                     error: function (reponse) {
@@ -68,9 +126,15 @@
                     }
                 });
             }
+            else{return false;}
         });
     });
-
+    function minLength(password) {
+        return (password.length >= 8);
+    }
+    function required(value) {
+        return (value.length > 0);
+    }
 </script>
 
 <div class="row">
@@ -81,16 +145,16 @@
             <form class="m-t-md" action="#">
                 <div class="first-name">
                     <div class="form-group">
-                        <input type="text" id="txtFirstName" class="form-control" placeholder="First Name" required="">
+                        <input type="text" id="txtFirstName" class="form-control" placeholder="First Name" required="" maxlength="250">
                     </div>
                 </div>
                 <div class="last-name">
                     <div class="form-group">
-                        <input type="text" id="txtLastName" class="form-control" placeholder="Last Name" required="">
+                        <input type="text" id="txtLastName" class="form-control" placeholder="Last Name" required="" maxlength="250">
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="txtUsername" class="form-control" placeholder="Username" required="">
+                    <input type="text" id="txtUsername" class="form-control" placeholder="Username" required="" maxlength="250">
                 </div>
                 <div class="form-group">
                     <input type="email" id="txtEmail" class="form-control" placeholder="Email" required="">
