@@ -20,6 +20,7 @@ namespace WC.Constants
         public const string EXISTED_EMAIL = "This email is already in use. Please user another email.";
         public const string REGISTERED_SUCCESSFULLY = "Your new account has been registered successfully!";
         public const string REGISTER_FAILED = "Failed to register new account. Please try again later.";
+        public const string INVALID_EMAIL = "Invalid email address.";
     }
 
     public enum Gender

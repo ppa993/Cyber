@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using WC.Constants;
 using WC.Data;
@@ -16,6 +17,12 @@ namespace WC.Controllers
             string password, string email, string birthDay, string gender)
         {
             var DOB = DateTime.Parse(birthDay);
+
+            const string emailpattern = @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
+            if (!Regex.IsMatch(email.Trim(), emailpattern))
+            {
+                return Message.INVALID_EMAIL;
+            }
 
             if (db.Memberships.Any(x => x.Username.Equals(username)))
             {

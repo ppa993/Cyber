@@ -5,8 +5,9 @@
 }
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        $("#btnSubmit").click(function() {
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            var isValid = false;
             var txtfirstname = document.getElementById("txtFirstName");
             var txtlastname = document.getElementById("txtLastName");
             var txtusername = document.getElementById("txtUsername");
@@ -20,38 +21,56 @@
             debugger;
             if (txtpassword.value !== txtconfirm.value) {
                 txtconfirm.setCustomValidity("Confirm password must be match.");
-                return false;
+                isValid = false;
             } else {
                 txtconfirm.setCustomValidity("");
+                isValid = true;
             }
-            
-            $.ajax({
-                url: '@Url.Action("Register")',
-            data: {
-                firstName: txtfirstname.value,
-                lastName: txtlastname.value,
-                username: txtusername.value,
-                password: txtpassword.value,
-                email: txtemail.value,
-                birthDay: txtday.value + '/' + txtmonth.value + '/' + txtyear.value,
-                gender: txtgender
-            },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                if (data === "Your new account has been registered successfully!") {
-                    alert("Successfully");
+            if (isValid) {
+                if (txtfirstname.value !== "" && txtlastname.value !== "" && txtusername.value !== "" &&
+                    txtpassword.value !== "" && txtday.value !== null && txtmonth.value != null && txtyear.value !== null) {
+                    isValid = true;
                 } else {
-                    alert("Failed");
+                    isValid = false;
                 }
-            },
-            error: function (reponse) {
-                alert("error : " + reponse);
-                return false;
             }
-        });            
+            if (isValid) {
+                if (validateEmail(txtemail.value)) {
+                    isValid = true;
+                } else {
+                    isValid = false;
+                }
+            }
+            if (isValid) {
+                $.ajax({
+                    url: '@Url.Action("Register")',
+                    data: {
+                        firstName: txtfirstname.value,
+                        lastName: txtlastname.value,
+                        username: txtusername.value,
+                        password: txtpassword.value,
+                        email: txtemail.value,
+                        birthDay: txtday.value + '/' + txtmonth.value + '/' + txtyear.value,
+                        gender: txtgender
+                    },
+                    cache: false,
+                    type: "POST",
+                    success: function (data) {
+                        if (data === "Your new account has been registered successfully!") {
+                            alert("Successfully");
+                        } else {
+                            alert("Failed");
+                        }
+                    },
+                    error: function (reponse) {
+                        alert("error : " + reponse);
+                        return false;
+                    }
+                });
+            }
         });
     });
+
 </script>
 
 <div class="row">
