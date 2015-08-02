@@ -25,19 +25,19 @@ namespace WC.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Cyber_Comment> Cyber_Comment { get; set; }
-        public virtual DbSet<Cyber_Friend> Cyber_Friend { get; set; }
-        public virtual DbSet<Cyber_Like> Cyber_Like { get; set; }
-        public virtual DbSet<Cyber_Membership> Cyber_Membership { get; set; }
-        public virtual DbSet<Cyber_Notification> Cyber_Notification { get; set; }
-        public virtual DbSet<Cyber_Notification_Type> Cyber_Notification_Type { get; set; }
-        public virtual DbSet<Cyber_Post> Cyber_Post { get; set; }
-        public virtual DbSet<Cyber_Post_Type> Cyber_Post_Type { get; set; }
-        public virtual DbSet<Cyber_Profile_Photo> Cyber_Profile_Photo { get; set; }
-        public virtual DbSet<Cyber_Role> Cyber_Role { get; set; }
-        public virtual DbSet<Cyber_Role_Type> Cyber_Role_Type { get; set; }
-        public virtual DbSet<Cyber_User> Cyber_User { get; set; }
-        public virtual DbSet<Cyber_Visible_Type> Cyber_Visible_Type { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Friend> Friends { get; set; }
+        public virtual DbSet<Membership> Memberships { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<Notification_Type> Notification_Type { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<Post_Type> Post_Type { get; set; }
+        public virtual DbSet<Profile_Photo> Profile_Photo { get; set; }
+        public virtual DbSet<Relationship_Type> Relationship_Type { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Role_Type> Role_Type { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Visible_Type> Visible_Type { get; set; }
     }
 }

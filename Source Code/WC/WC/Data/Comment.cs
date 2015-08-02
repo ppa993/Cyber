@@ -12,13 +12,8 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Comment
+    public partial class Comment
     {
-        public Cyber_Comment()
-        {
-            this.Cyber_Like = new HashSet<Cyber_Like>();
-        }
-    
         public string PostID { get; set; }
         public string CommentID { get; set; }
         public string CommentContent { get; set; }
@@ -26,8 +21,8 @@ namespace WC.Data
         public string CommentedBy { get; set; }
         public System.DateTime LastModified { get; set; }
     
-        public virtual Cyber_Post Cyber_Post { get; set; }
-        public virtual Cyber_User Cyber_User { get; set; }
-        public virtual ICollection<Cyber_Like> Cyber_Like { get; set; }
+        public virtual Post Post { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

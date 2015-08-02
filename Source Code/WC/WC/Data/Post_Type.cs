@@ -12,16 +12,16 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Notification_Type
+    public partial class Post_Type
     {
-        public Cyber_Notification_Type()
+        public Post_Type()
         {
-            this.Cyber_Notification = new HashSet<Cyber_Notification>();
+            this.Posts = new HashSet<Post>();
         }
     
-        public int NotificationTypeID { get; set; }
-        public string NotificationTypeName { get; set; }
+        public int PostTypeID { get; set; }
+        public string PostTypeName { get; set; }
     
-        public virtual ICollection<Cyber_Notification> Cyber_Notification { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }

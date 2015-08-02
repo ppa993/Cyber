@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using WC.Constants;
 using WC.Data;
@@ -16,26 +12,28 @@ namespace WC.Controllers
         public CyberEntities db = new CyberEntities();
 
         [HttpPost]
-        public string Register(string username, string pass, string email, string birthDay, string firstName,
-            string lastName)
+        public string Register(string firstName, string lastName,string username, 
+            string password, string email, string birthDay, string gender)
         {
-            var encryptedPass = Helper.GetSHA1HashData(pass);
-            var DOB = DateTime.ParseExact(birthDay, DateTimeFormat.DDMMYYYY, null);
+            var DOB = DateTime.Parse(birthDay);
 
-            var newUser = (from data in db.Cyber_Membership
-                where data.Username == username
-                select data).FirstOrDefault();
-
-            if (newUser != null)
+            if (db.Memberships.Any(x => x.Username.Equals(username)))
             {
                 return Message.EXISTED_USERNAME;
             }
 
+            if (db.Memberships.Any(x => x.Email.Equals(email)))
+            {
+                return Message.EXISTED_EMAIL;
+            }
+
             try
             {
-                var membership = new Cyber_Membership
+                var encryptedPass = Helper.GetSHA1HashData(password);
+
+                var membership = new Membership
                             {
-                                UserID = new Guid().ToString(),
+                                UserID = Guid.NewGuid().ToString().Replace("-",""),
                                 Username = username,
                                 Email = email,
                                 Password = encryptedPass,
@@ -44,18 +42,19 @@ namespace WC.Controllers
                                 LastTimeLogIn = DateTime.Now
                             };
 
-                db.Cyber_Membership.Add(membership);
-                db.SaveChanges();
+                db.Memberships.Add(membership);
 
-                var user = new Cyber_User
+                var user = new User
                 {
                     UserID = membership.UserID,
                     BirthDay = DOB,
                     FirstName = firstName,
-                    LastName = lastName
+                    LastName = lastName,
+                    Gender = gender.Equals("1"),
+                    RelationshipID = (int)Relationship.Single
                 };
 
-                db.Cyber_User.Add(user);
+                db.Users.Add(user);
                 db.SaveChanges();
                 return Message.REGISTERED_SUCCESSFULLY;
             }
@@ -66,6 +65,18 @@ namespace WC.Controllers
             
             return Message.REGISTER_FAILED;
         }
-      
+
+        [HttpPost]
+        public bool IsUsernameExisted(string username)
+        {
+            var result = db.Memberships.Any(x => x.Username == username);
+            return result;
+        }
+        [HttpPost]
+        public bool IsEmailExisted(string email)
+        {
+            var result = db.Memberships.Any(x => x.Email == email);
+            return result;
+        }
 	}
 }

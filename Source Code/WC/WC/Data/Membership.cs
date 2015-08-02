@@ -12,16 +12,16 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Visible_Type
+    public partial class Membership
     {
-        public Cyber_Visible_Type()
-        {
-            this.Cyber_Post = new HashSet<Cyber_Post>();
-        }
+        public string UserID { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public System.DateTime LastTimeLogIn { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public bool Status { get; set; }
     
-        public int VisibleTypeID { get; set; }
-        public string VisibleTypeName { get; set; }
-    
-        public virtual ICollection<Cyber_Post> Cyber_Post { get; set; }
+        public virtual User User { get; set; }
     }
 }

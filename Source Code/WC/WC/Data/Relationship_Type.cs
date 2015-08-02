@@ -12,16 +12,16 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Notification
+    public partial class Relationship_Type
     {
-        public string UserID { get; set; }
-        public string NotificationID { get; set; }
-        public int NotificationTypeID { get; set; }
-        public string NotificationContent { get; set; }
-        public System.DateTime NotificationDate { get; set; }
-        public bool Seen { get; set; }
+        public Relationship_Type()
+        {
+            this.Users = new HashSet<User>();
+        }
     
-        public virtual Cyber_Notification_Type Cyber_Notification_Type { get; set; }
-        public virtual Cyber_User Cyber_User { get; set; }
+        public int RelationshipID { get; set; }
+        public string RelationshipName { get; set; }
+    
+        public virtual ICollection<User> Users { get; set; }
     }
 }

@@ -12,16 +12,14 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Membership
+    public partial class Friend
     {
         public string UserID { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public System.DateTime LastTimeLogIn { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public bool Status { get; set; }
+        public string FriendID { get; set; }
+        public bool FriendStatus { get; set; }
+        public Nullable<System.DateTime> FriendSince { get; set; }
     
-        public virtual Cyber_User Cyber_User { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

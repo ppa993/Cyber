@@ -12,14 +12,15 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Friend
+    public partial class Role
     {
         public string UserID { get; set; }
-        public string FriendID { get; set; }
-        public bool FriendStatus { get; set; }
-        public Nullable<System.DateTime> FriendSince { get; set; }
+        public int RoleTypeID { get; set; }
+        public System.DateTime AssignedDate { get; set; }
+        public string AssignedBy { get; set; }
     
-        public virtual Cyber_User Cyber_User { get; set; }
-        public virtual Cyber_User Cyber_User1 { get; set; }
+        public virtual Role_Type Role_Type { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

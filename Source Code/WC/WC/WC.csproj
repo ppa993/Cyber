@@ -169,6 +169,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Data\Comment.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\Cyber.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -184,46 +187,43 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Cyber.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Data\Cyber_Comment.cs">
+    <Compile Include="Data\Friend.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Cyber_Friend.cs">
+    <Compile Include="Data\Membership.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Cyber_Like.cs">
+    <Compile Include="Data\Notification.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Cyber_Membership.cs">
+    <Compile Include="Data\Notification_Type.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Cyber_Notification.cs">
+    <Compile Include="Data\Post.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Cyber_Notification_Type.cs">
+    <Compile Include="Data\Post_Type.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Cyber_Post.cs">
+    <Compile Include="Data\Profile_Photo.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Cyber_Post_Type.cs">
+    <Compile Include="Data\Relationship_Type.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Cyber_Profile_Photo.cs">
+    <Compile Include="Data\Role.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Cyber_Role.cs">
-      <DependentUpon>Cyber.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\Cyber_Role_Type.cs">
-      <DependentUpon>Cyber.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\Cyber_User.cs">
-      <DependentUpon>Cyber.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\Cyber_Visible_Type.cs">
+    <Compile Include="Data\Role_Type.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\sysdiagram.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\User.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Visible_Type.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
@@ -234,6 +234,7 @@
     <Compile Include="Utils\Helper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Log\logErrors.txt" />
     <Content Include="Content\Fonts\fontawesome-webfont.svg" />
     <Content Include="Content\Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Fonts\Simple-Line-Icons.svg" />
@@ -242,10 +243,13 @@
     <Content Include="Content\Images\avatar3.png" />
     <Content Include="Content\Images\avatar4.png" />
     <Content Include="Content\Images\avatar5.png" />
+    <Content Include="Content\Images\bg-input-focus.png" />
+    <Content Include="Content\Images\bg-input.png" />
     <Content Include="Content\Images\post-image.jpg" />
     <Content Include="Content\Images\profile-cover.png" />
     <Content Include="Content\Images\profile-menu-image.png" />
     <Content Include="Content\Images\profile-picture.png" />
+    <Content Include="Content\Images\sprite.png" />
     <Content Include="Content\Script\bootstrap.min.js" />
     <Content Include="Content\Script\classie.js" />
     <Content Include="Content\Script\curvedLines.js" />
@@ -308,7 +312,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Log\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
@@ -358,6 +361,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\Register.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_SelectDate.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

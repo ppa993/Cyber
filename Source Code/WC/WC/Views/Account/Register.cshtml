@@ -4,27 +4,110 @@
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#btnSubmit").click(function() {
+            var txtfirstname = document.getElementById("txtFirstName");
+            var txtlastname = document.getElementById("txtLastName");
+            var txtusername = document.getElementById("txtUsername");
+            var txtpassword = document.getElementById("txtPassword");
+            var txtemail = document.getElementById("txtEmail");
+            var txtday = document.getElementById("ddlDay");
+            var txtmonth = document.getElementById("ddlMonth");
+            var txtyear = document.getElementById("ddlYear");
+            var txtgender = $('input[name=gender]:checked').val();
+            var txtconfirm = document.getElementById("txtConfirmPassword");
+            debugger;
+            if (txtpassword.value !== txtconfirm.value) {
+                txtconfirm.setCustomValidity("Confirm password must be match.");
+                return false;
+            } else {
+                txtconfirm.setCustomValidity("");
+            }
+            
+            $.ajax({
+                url: '@Url.Action("Register")',
+            data: {
+                firstName: txtfirstname.value,
+                lastName: txtlastname.value,
+                username: txtusername.value,
+                password: txtpassword.value,
+                email: txtemail.value,
+                birthDay: txtday.value + '/' + txtmonth.value + '/' + txtyear.value,
+                gender: txtgender
+            },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                if (data === "Your new account has been registered successfully!") {
+                    alert("Successfully");
+                } else {
+                    alert("Failed");
+                }
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+                return false;
+            }
+        });            
+        });
+    });
+</script>
+
 <div class="row">
-    <div class="col-md-3 center">
+    <div class="col-md-4 center">
         <div class="login-box">
-            <a href="index.html" class="logo-name text-lg text-center">Cyber</a>
-            <p class="text-center m-t-md">Create a Cyber's account</p>
+            <label class="logo-name text-lg">Sign Up for Cyber</label>
+            <p class="m-t-md title">It’s free and always will be.</p>
             <form class="m-t-md" action="#">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Name" required="">
+                <div class="first-name">
+                    <div class="form-group">
+                        <input type="text" id="txtFirstName" class="form-control" placeholder="First Name" required="">
+                    </div>
+                </div>
+                <div class="last-name">
+                    <div class="form-group">
+                        <input type="text" id="txtLastName" class="form-control" placeholder="Last Name" required="">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <input type="email" class="form-control" placeholder="Email" required="">
+                    <input type="text" id="txtUsername" class="form-control" placeholder="Username" required="">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" required="">
+                    <input type="email" id="txtEmail" class="form-control" placeholder="Email" required="">
                 </div>
-                <label>
-                    <div class="checker"><span><input type="checkbox"></span></div> Agree the terms and policy
-                </label>
-                <button type="submit" class="btn btn-success btn-block m-t-xs">Submit</button>
+                <div class="form-group">
+                    <input type="password" id="txtPassword" class="form-control" placeholder="Password" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="txtConfirmPassword" class="form-control" placeholder="Confirm password" required="">
+                </div>
+                <div class="form-group">
+                    <span class="birthday">
+                        Birthday
+                    </span>
+                </div>
+                <div class="form-group">
+                    <span>
+                        @{ Html.RenderPartial("_SelectDate");}
+                    </span>
+                </div>
+                <div class=" form-group">
+                    <span class="gender">
+                        <input type="radio" name="gender" value="0" id="gender_male" checked="" />
+                        <label for="gender_male">Male</label>
+                    </span>
+                    <span class="gender">
+                        <input type="radio" name="gender" value="1" id="gender_female" />
+                        <label for="gender_female">Female</label>
+                    </span>
+                </div>
+                <span>
+                    By clicking Sign Up, you agree to our Terms and that you have read our Data Policy.
+                </span>
+                <button type="submit" id="btnSubmit" class="btn btn-success btn-block m-t-xs">Sign Up</button>
                 <p class="text-center m-t-xs text-sm">Already have an account?</p>
-                <a href="@Url.Action("Login","Home")" class="btn btn-default btn-block m-t-xs">Login</a>
+                <a href="@Url.Action("Login", "Home")" class="btn btn-default btn-block m-t-xs">Login</a>
             </form>
             <p class="text-center m-t-xs text-sm">2015 © Cyber team.</p>
         </div>

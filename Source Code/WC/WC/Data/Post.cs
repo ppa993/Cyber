@@ -12,12 +12,11 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Post
+    public partial class Post
     {
-        public Cyber_Post()
+        public Post()
         {
-            this.Cyber_Comment = new HashSet<Cyber_Comment>();
-            this.Cyber_Like = new HashSet<Cyber_Like>();
+            this.Comments = new HashSet<Comment>();
         }
     
         public string UserID { get; set; }
@@ -28,10 +27,10 @@ namespace WC.Data
         public System.DateTime LastModified { get; set; }
         public int VisibleTypeID { get; set; }
     
-        public virtual ICollection<Cyber_Comment> Cyber_Comment { get; set; }
-        public virtual ICollection<Cyber_Like> Cyber_Like { get; set; }
-        public virtual Cyber_Post_Type Cyber_Post_Type { get; set; }
-        public virtual Cyber_User Cyber_User { get; set; }
-        public virtual Cyber_Visible_Type Cyber_Visible_Type { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual Post_Type Post_Type { get; set; }
+        public virtual User User { get; set; }
+        public virtual Visible_Type Visible_Type { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

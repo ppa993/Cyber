@@ -1,1 +1,27 @@
 /* Write your custom CSS here */
+
+/* Register */
+    .login-box .logo-name {
+        font-size: 32px;
+        color: #141823;
+    }
+    .login-box p.title {
+        font-size: 18px;
+    }
+    .form-group .birthday {
+        color: #141823;
+        font-size: 16px;
+    }
+    .first-name {
+        float: left;
+        width: 50%;
+        padding-right: 2.5%;
+    }
+    .last-name {
+        float: left;
+        width: 50%;
+        padding-left: 2.5%;
+    }
+    .gender label {
+        width: 20%;
+    }

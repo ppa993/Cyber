@@ -12,12 +12,16 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Profile_Photo
+    public partial class Notification_Type
     {
-        public string UserID { get; set; }
-        public string ProfileImageUrl { get; set; }
-        public string CoverImageUrl { get; set; }
+        public Notification_Type()
+        {
+            this.Notifications = new HashSet<Notification>();
+        }
     
-        public virtual Cyber_User Cyber_User { get; set; }
+        public int NotificationTypeID { get; set; }
+        public string NotificationTypeName { get; set; }
+    
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

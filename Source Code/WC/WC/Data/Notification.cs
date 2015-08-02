@@ -12,14 +12,16 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Role
+    public partial class Notification
     {
         public string UserID { get; set; }
-        public int RoleTypeID { get; set; }
-        public System.DateTime AssignedDate { get; set; }
-        public string AssignedBy { get; set; }
+        public string NotificationID { get; set; }
+        public int NotificationTypeID { get; set; }
+        public string NotificationContent { get; set; }
+        public System.DateTime NotificationDate { get; set; }
+        public bool Seen { get; set; }
     
-        public virtual Cyber_Role_Type Cyber_Role_Type { get; set; }
-        public virtual Cyber_User Cyber_User { get; set; }
+        public virtual Notification_Type Notification_Type { get; set; }
+        public virtual User User { get; set; }
     }
 }

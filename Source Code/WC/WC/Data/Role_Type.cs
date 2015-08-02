@@ -12,13 +12,16 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Like
+    public partial class Role_Type
     {
-        public byte[] LikeID { get; set; }
-        public string LikeOf { get; set; }
-        public string UserID { get; set; }
+        public Role_Type()
+        {
+            this.Roles = new HashSet<Role>();
+        }
     
-        public virtual Cyber_Comment Cyber_Comment { get; set; }
-        public virtual Cyber_Post Cyber_Post { get; set; }
+        public int RoleTypeID { get; set; }
+        public string RoleTypeName { get; set; }
+    
+        public virtual ICollection<Role> Roles { get; set; }
     }
 }

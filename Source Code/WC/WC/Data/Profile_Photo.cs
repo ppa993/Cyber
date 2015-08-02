@@ -12,16 +12,12 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Cyber_Role_Type
+    public partial class Profile_Photo
     {
-        public Cyber_Role_Type()
-        {
-            this.Cyber_Role = new HashSet<Cyber_Role>();
-        }
+        public string UserID { get; set; }
+        public string ProfileImageUrl { get; set; }
+        public string CoverImageUrl { get; set; }
     
-        public int RoleTypeID { get; set; }
-        public string RoleTypeName { get; set; }
-    
-        public virtual ICollection<Cyber_Role> Cyber_Role { get; set; }
+        public virtual User User { get; set; }
     }
 }
