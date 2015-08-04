@@ -105,6 +105,7 @@
                     success: function (data) {
                         if (data === "Your new account has been registered successfully!") {
                             alert("Successfully");
+                            return false;
                         } else {
                             if (data === "Your username is already existed. Please select another username.") {
                                 alert("Your username is already existed. Please select another username.");

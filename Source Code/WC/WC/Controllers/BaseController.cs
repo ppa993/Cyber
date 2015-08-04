@@ -74,16 +74,28 @@ namespace WC.Controllers
         }
 
         [HttpPost]
-        public string IsUsernameExisted(string username)
+        public string LogIn(string username, string password)
         {
-            var result = db.Memberships.Any(x => x.Username == username);
-            return result ? "Existed" : "Available";
+            var encryptedPassword = Helper.GetSHA1HashData(password);
+            var user = db.Memberships
+                .FirstOrDefault(x => (x.Username == username || x.Email == username) && x.Password == encryptedPassword);
+
+            if (user != null)
+            {
+                Session[Common.SESSION_USER] = user;
+            }
+            return user != null ? LogInResult.Successfully.ToString() : LogInResult.Failed.ToString();
         }
+
         [HttpPost]
-        public string IsEmailExisted(string email)
+        public void LogOut()
         {
-            var result = db.Memberships.Any(x => x.Email == email);
-            return result ? "Existed" : "Available";
+            Session[Common.SESSION_USER] = null;
+        }
+
+        public bool IsLoggedIn()
+        {
+            return Session[Common.SESSION_USER] != null;
         }
 	}
 }

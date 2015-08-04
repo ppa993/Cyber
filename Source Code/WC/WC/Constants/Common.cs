@@ -7,6 +7,7 @@ namespace WC.Constants
 {
     public class Common
     {
+        public const string SESSION_USER = "User";
     }
 
     public class DateTimeFormat
@@ -31,9 +32,15 @@ namespace WC.Constants
 
     public enum Relationship
     {
-        Single,
+        Single = 1,
         Engaged,
         Married,
         Divorced
+    }
+
+    public enum LogInResult
+    {
+        Failed,
+        Successfully
     }
 }
