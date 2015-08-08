@@ -30,8 +30,9 @@ namespace WC.Data
         public string LastName { get; set; }
         public System.DateTime BirthDay { get; set; }
         public bool Gender { get; set; }
-        public int RelationshipID { get; set; }
+        public int Relationship { get; set; }
         public string About { get; set; }
+        public string Email { get; set; }
         public string Address { get; set; }
         public string Work { get; set; }
         public string ContactNumber { get; set; }
@@ -40,7 +41,6 @@ namespace WC.Data
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Friend Friend { get; set; }
         public virtual ICollection<Friend> Friends { get; set; }
-        public virtual Membership Membership { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual Profile_Photo Profile_Photo { get; set; }

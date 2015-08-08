@@ -27,7 +27,6 @@ namespace WC.Data
     
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Friend> Friends { get; set; }
-        public virtual DbSet<Membership> Memberships { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Notification_Type> Notification_Type { get; set; }
         public virtual DbSet<Post> Posts { get; set; }

@@ -1,79 +1,35 @@
-﻿
+﻿@model WC.Models.LoginViewModel
+
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Sign in";
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#btnLogIn").click(function() {
-            var isValid = false;
-            var txtusername = document.getElementById("txtUsername");
-            var txtpassword = document.getElementById("txtPassword");
-
-            if (txtusername.value === "") {
-                txtusername.setCustomValidity("Username/Email is required");
-                isValid = false;
-            } else {
-                txtusername.setCustomValidity('');
-                isValid = true;
-            }
-            if (isValid) {
-                if (txtpassword.value === "") {
-                    txtpassword.setCustomValidity("Password is required");
-                    isValid = false;
-                } else {
-                    txtpassword.setCustomValidity('');
-                    isValid = true;
-                }
-            }
-            if (isValid) {
-                $.ajax({
-                    url: '@Url.Action("LogIn")',
-                    data: {
-                        username: txtusername.value,
-                        password: txtpassword.value
-                    },
-                    cache: false,
-                    type: "POST",
-                    success: function(data) {
-                        if (data === "Successfully") {
-                            window.location.assign('@Url.Action("Profile", "Home")');
-                    } else {
-                            alert("Invalid username or password.");
-                            return false;
-                    }
-                },
-                error: function (reponse) {
-                    alert("error : " + reponse);
-                    return false;
-                }
-                });
-            }
-            return false;
-        });
-    });
-</script>
 
 <div class="row">
     <div class="col-md-3 center">
         <div class="login-box">
             <span class="logo-name text-lg text-center">Cyber</span>
             <p class="text-center m-t-md">Please login into your account.</p>
-            <form class="m-t-md">
+            @using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "m-t-md", role = "form"}))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
                 <div class="form-group">
-                    <input type="text" id="txtUsername" class="form-control" placeholder="Username or Email" required="">
+                    @Html.TextBoxFor(m => m.UserName, new {@class = "form-control", placeholder = "Username", required = ""})
                 </div>
                 <div class="form-group">
-                    <input type="password" id="txtPassword" class="form-control" placeholder="Password" required="">
+                    @Html.PasswordFor(m => m.Password, new {@class = "form-control", placeholder = "Password", required = ""})
+                </div>
+                <div class="form-group">
+                    @Html.CheckBoxFor(m => m.RememberMe, new { @checked = ""})
+                    @Html.LabelFor(m => m.RememberMe)
                 </div>
                 <button type="submit" id="btnLogIn" class="btn btn-success btn-block">Login</button>
-                <a href="@Url.Action("Forgot","Home")" class="display-block text-center m-t-md text-sm">Forgot Password?</a>
+                <a href="@Url.Action("Forgot", "Account")" class="display-block text-center m-t-md text-sm">Forgot Password?</a>
                 <p class="text-center m-t-xs text-sm">Do not have an account?</p>
-                <a href="@Url.Action("Register","Home")" class="btn btn-default btn-block m-t-md">Create an account</a>
-            </form>
+                <a href="@Url.Action("Register", "Account")" class="btn btn-default btn-block m-t-md">Create an account</a>
+            }
             <p class="text-center m-t-xs text-sm">2015 © Cyber team.</p>
         </div>
     </div>
 </div>
-

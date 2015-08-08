@@ -15,7 +15,7 @@ namespace WC.Data
     public partial class Role
     {
         public string UserID { get; set; }
-        public int RoleTypeID { get; set; }
+        public int RoleType { get; set; }
         public System.DateTime AssignedDate { get; set; }
         public string AssignedBy { get; set; }
     

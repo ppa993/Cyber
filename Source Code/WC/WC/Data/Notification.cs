@@ -16,7 +16,7 @@ namespace WC.Data
     {
         public string UserID { get; set; }
         public string NotificationID { get; set; }
-        public int NotificationTypeID { get; set; }
+        public int NotificationType { get; set; }
         public string NotificationContent { get; set; }
         public System.DateTime NotificationDate { get; set; }
         public bool Seen { get; set; }

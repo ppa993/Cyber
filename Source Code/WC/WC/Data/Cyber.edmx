@@ -11,9 +11,9 @@
           </Key>
           <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="CommentContent" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CommentContent" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CommentedDate" Type="datetime" Nullable="false" />
-          <Property Name="CommentedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CommentedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CommentLike">
@@ -21,36 +21,24 @@
             <PropertyRef Name="CommentID" />
           </Key>
           <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="Friend">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="FriendID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="FriendID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="FriendStatus" Type="bit" Nullable="false" />
           <Property Name="FriendSince" Type="datetime" />
-        </EntityType>
-        <EntityType Name="Membership">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Username" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="LastTimeLogIn" Type="datetime" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
             <PropertyRef Name="NotificationID" />
           </Key>
-          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="NotificationID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="NotificationTypeID" Type="int" Nullable="false" />
+          <Property Name="NotificationType" Type="int" Nullable="false" />
           <Property Name="NotificationContent" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="NotificationDate" Type="datetime" Nullable="false" />
           <Property Name="Seen" Type="bit" Nullable="false" />
@@ -66,13 +54,13 @@
           <Key>
             <PropertyRef Name="PostID" />
           </Key>
-          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="PostTypeID" Type="int" Nullable="false" />
-          <Property Name="PostContent" Type="text" Nullable="false" />
+          <Property Name="PostType" Type="int" Nullable="false" />
+          <Property Name="PostContent" Type="nvarchar(max)" Nullable="false" />
           <Property Name="PostedDate" Type="datetime" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Nullable="false" />
-          <Property Name="VisibleTypeID" Type="int" Nullable="false" />
+          <Property Name="VisibleType" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Post_Type">
           <Key>
@@ -86,13 +74,13 @@
             <PropertyRef Name="PostID" />
           </Key>
           <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="Profile_Photo">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ProfileImageUrl" Type="varchar" MaxLength="255" />
           <Property Name="CoverImageUrl" Type="varchar" MaxLength="255" />
         </EntityType>
@@ -100,17 +88,17 @@
           <Key>
             <PropertyRef Name="RelationshipID" />
           </Key>
-          <Property Name="RelationshipID" Type="int" Nullable="false" />
+          <Property Name="RelationshipID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RelationshipName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="RoleTypeID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleType" Type="int" Nullable="false" />
           <Property Name="AssignedDate" Type="datetime" Nullable="false" />
-          <Property Name="AssignedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AssignedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="Role_Type">
           <Key>
@@ -133,13 +121,14 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="BirthDay" Type="date" Nullable="false" />
           <Property Name="Gender" Type="bit" Nullable="false" />
-          <Property Name="RelationshipID" Type="int" Nullable="false" />
-          <Property Name="About" Type="nvarchar" MaxLength="255" />
+          <Property Name="Relationship" Type="int" Nullable="false" />
+          <Property Name="About" Type="nvarchar(max)" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
           <Property Name="Address" Type="nvarchar" MaxLength="255" />
           <Property Name="Work" Type="nvarchar" MaxLength="255" />
           <Property Name="ContactNumber" Type="varchar" MaxLength="50" />
@@ -224,18 +213,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Membership_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Membership" Type="Self.Membership" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Membership">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Notification_Notification_Type">
           <End Role="Notification_Type" Type="Self.Notification_Type" Multiplicity="1" />
           <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
@@ -244,7 +221,7 @@
               <PropertyRef Name="NotificationTypeID" />
             </Principal>
             <Dependent Role="Notification">
-              <PropertyRef Name="NotificationTypeID" />
+              <PropertyRef Name="NotificationType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -268,7 +245,7 @@
               <PropertyRef Name="PostTypeID" />
             </Principal>
             <Dependent Role="Post">
-              <PropertyRef Name="PostTypeID" />
+              <PropertyRef Name="PostType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -292,7 +269,7 @@
               <PropertyRef Name="VisibleTypeID" />
             </Principal>
             <Dependent Role="Post">
-              <PropertyRef Name="VisibleTypeID" />
+              <PropertyRef Name="VisibleType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -340,7 +317,7 @@
               <PropertyRef Name="RoleTypeID" />
             </Principal>
             <Dependent Role="Role">
-              <PropertyRef Name="RoleTypeID" />
+              <PropertyRef Name="RoleType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -376,7 +353,7 @@
               <PropertyRef Name="RelationshipID" />
             </Principal>
             <Dependent Role="User">
-              <PropertyRef Name="RelationshipID" />
+              <PropertyRef Name="Relationship" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -384,7 +361,6 @@
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CommentLike" EntityType="Self.CommentLike" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Friend" EntityType="Self.Friend" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Membership" EntityType="Self.Membership" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notification_Type" EntityType="Self.Notification_Type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
@@ -420,10 +396,6 @@
           <AssociationSet Name="FK_Friend_User1" Association="Self.FK_Friend_User1">
             <End Role="User" EntitySet="User" />
             <End Role="Friend" EntitySet="Friend" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Membership_User" Association="Self.FK_Membership_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Membership" EntitySet="Membership" />
           </AssociationSet>
           <AssociationSet Name="FK_Notification_Notification_Type" Association="Self.FK_Notification_Notification_Type">
             <End Role="Notification_Type" EntitySet="Notification_Type" />
@@ -481,7 +453,6 @@
         <EntityContainer Name="CyberEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Comments" EntityType="CyberModel.Comment" />
           <EntitySet Name="Friends" EntityType="CyberModel.Friend" />
-          <EntitySet Name="Memberships" EntityType="CyberModel.Membership" />
           <EntitySet Name="Notifications" EntityType="CyberModel.Notification" />
           <EntitySet Name="Notification_Type" EntityType="CyberModel.Notification_Type" />
           <EntitySet Name="Posts" EntityType="CyberModel.Post" />
@@ -508,10 +479,6 @@
           <AssociationSet Name="FK_Friend_User1" Association="CyberModel.FK_Friend_User1">
             <End Role="User" EntitySet="Users" />
             <End Role="Friend" EntitySet="Friends" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Membership_User" Association="CyberModel.FK_Membership_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Membership" EntitySet="Memberships" />
           </AssociationSet>
           <AssociationSet Name="FK_Notification_Notification_Type" Association="CyberModel.FK_Notification_Notification_Type">
             <End Role="Notification_Type" EntitySet="Notification_Type" />
@@ -568,9 +535,9 @@
           </Key>
           <Property Name="PostID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CommentID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CommentContent" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CommentContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CommentedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CommentedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CommentedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Post" Relationship="CyberModel.FK_Comment_Post" FromRole="Comment" ToRole="Post" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Comment_User" FromRole="Comment" ToRole="User" />
@@ -580,33 +547,20 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="FriendID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FriendID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="FriendStatus" Type="Boolean" Nullable="false" />
           <Property Name="FriendSince" Type="DateTime" Precision="3" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Friend_User" FromRole="Friend" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CyberModel.FK_Friend_User1" FromRole="Friend" ToRole="User" />
         </EntityType>
-        <EntityType Name="Membership">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="LastTimeLogIn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Status" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK_Membership_User" FromRole="Membership" ToRole="User" />
-        </EntityType>
         <EntityType Name="Notification">
           <Key>
             <PropertyRef Name="NotificationID" />
           </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="NotificationID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="NotificationTypeID" Type="Int32" Nullable="false" />
+          <Property Name="NotificationType" Type="Int32" Nullable="false" />
           <Property Name="NotificationContent" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="NotificationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Seen" Type="Boolean" Nullable="false" />
@@ -625,13 +579,13 @@
           <Key>
             <PropertyRef Name="PostID" />
           </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="PostID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PostTypeID" Type="Int32" Nullable="false" />
-          <Property Name="PostContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PostType" Type="Int32" Nullable="false" />
+          <Property Name="PostContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="VisibleTypeID" Type="Int32" Nullable="false" />
+          <Property Name="VisibleType" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Comments" Relationship="CyberModel.FK_Comment_Post" FromRole="Post" ToRole="Comment" />
           <NavigationProperty Name="Post_Type" Relationship="CyberModel.FK_Post_Post_Type" FromRole="Post" ToRole="Post_Type" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Post_User" FromRole="Post" ToRole="User" />
@@ -650,7 +604,7 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="ProfileImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="CoverImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Profile_Photo_User" FromRole="Profile_Photo" ToRole="User" />
@@ -659,7 +613,7 @@
           <Key>
             <PropertyRef Name="RelationshipID" />
           </Key>
-          <Property Name="RelationshipID" Type="Int32" Nullable="false" />
+          <Property Name="RelationshipID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RelationshipName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Users" Relationship="CyberModel.FK_User_Relationship_Type" FromRole="Relationship_Type" ToRole="User" />
         </EntityType>
@@ -667,10 +621,10 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RoleTypeID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RoleType" Type="Int32" Nullable="false" />
           <Property Name="AssignedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AssignedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AssignedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Role_Type" Relationship="CyberModel.FK_Role_Role_Type" FromRole="Role" ToRole="Role_Type" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Role_User" FromRole="Role" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CyberModel.FK_Role_User1" FromRole="Role" ToRole="User" />
@@ -697,13 +651,14 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="BirthDay" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Gender" Type="Boolean" Nullable="false" />
-          <Property Name="RelationshipID" Type="Int32" Nullable="false" />
-          <Property Name="About" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Relationship" Type="Int32" Nullable="false" />
+          <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Work" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -711,7 +666,6 @@
           <NavigationProperty Name="Comments" Relationship="CyberModel.FK_Comment_User" FromRole="User" ToRole="Comment" />
           <NavigationProperty Name="Friend" Relationship="CyberModel.FK_Friend_User" FromRole="User" ToRole="Friend" />
           <NavigationProperty Name="Friends" Relationship="CyberModel.FK_Friend_User1" FromRole="User" ToRole="Friend" />
-          <NavigationProperty Name="Membership" Relationship="CyberModel.FK_Membership_User" FromRole="User" ToRole="Membership" />
           <NavigationProperty Name="Notifications" Relationship="CyberModel.FK_Notification_User" FromRole="User" ToRole="Notification" />
           <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_User" FromRole="User" ToRole="Post" />
           <NavigationProperty Name="Profile_Photo" Relationship="CyberModel.FK_Profile_Photo_User" FromRole="User" ToRole="Profile_Photo" />
@@ -777,18 +731,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Membership_User">
-          <End Type="CyberModel.User" Role="User" Multiplicity="1" />
-          <End Type="CyberModel.Membership" Role="Membership" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Membership">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Notification_Notification_Type">
           <End Type="CyberModel.Notification_Type" Role="Notification_Type" Multiplicity="1" />
           <End Type="CyberModel.Notification" Role="Notification" Multiplicity="*" />
@@ -797,7 +739,7 @@
               <PropertyRef Name="NotificationTypeID" />
             </Principal>
             <Dependent Role="Notification">
-              <PropertyRef Name="NotificationTypeID" />
+              <PropertyRef Name="NotificationType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -821,7 +763,7 @@
               <PropertyRef Name="PostTypeID" />
             </Principal>
             <Dependent Role="Post">
-              <PropertyRef Name="PostTypeID" />
+              <PropertyRef Name="PostType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -845,7 +787,7 @@
               <PropertyRef Name="VisibleTypeID" />
             </Principal>
             <Dependent Role="Post">
-              <PropertyRef Name="VisibleTypeID" />
+              <PropertyRef Name="VisibleType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -869,7 +811,7 @@
               <PropertyRef Name="RelationshipID" />
             </Principal>
             <Dependent Role="User">
-              <PropertyRef Name="RelationshipID" />
+              <PropertyRef Name="Relationship" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -881,7 +823,7 @@
               <PropertyRef Name="RoleTypeID" />
             </Principal>
             <Dependent Role="Role">
-              <PropertyRef Name="RoleTypeID" />
+              <PropertyRef Name="RoleType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -945,26 +887,13 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Memberships">
-            <EntityTypeMapping TypeName="CyberModel.Membership">
-              <MappingFragment StoreEntitySet="Membership">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="LastTimeLogIn" ColumnName="LastTimeLogIn" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="CyberModel.Notification">
               <MappingFragment StoreEntitySet="Notification">
                 <ScalarProperty Name="Seen" ColumnName="Seen" />
                 <ScalarProperty Name="NotificationDate" ColumnName="NotificationDate" />
                 <ScalarProperty Name="NotificationContent" ColumnName="NotificationContent" />
-                <ScalarProperty Name="NotificationTypeID" ColumnName="NotificationTypeID" />
+                <ScalarProperty Name="NotificationType" ColumnName="NotificationType" />
                 <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
@@ -981,11 +910,11 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="CyberModel.Post">
               <MappingFragment StoreEntitySet="Post">
-                <ScalarProperty Name="VisibleTypeID" ColumnName="VisibleTypeID" />
+                <ScalarProperty Name="VisibleType" ColumnName="VisibleType" />
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
                 <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
                 <ScalarProperty Name="PostContent" ColumnName="PostContent" />
-                <ScalarProperty Name="PostTypeID" ColumnName="PostTypeID" />
+                <ScalarProperty Name="PostType" ColumnName="PostType" />
                 <ScalarProperty Name="PostID" ColumnName="PostID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
@@ -1021,7 +950,7 @@
               <MappingFragment StoreEntitySet="Role">
                 <ScalarProperty Name="AssignedBy" ColumnName="AssignedBy" />
                 <ScalarProperty Name="AssignedDate" ColumnName="AssignedDate" />
-                <ScalarProperty Name="RoleTypeID" ColumnName="RoleTypeID" />
+                <ScalarProperty Name="RoleType" ColumnName="RoleType" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1052,8 +981,9 @@
                 <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
                 <ScalarProperty Name="Work" ColumnName="Work" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="About" ColumnName="About" />
-                <ScalarProperty Name="RelationshipID" ColumnName="RelationshipID" />
+                <ScalarProperty Name="Relationship" ColumnName="Relationship" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />

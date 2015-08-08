@@ -21,11 +21,11 @@ namespace WC.Data
     
         public string UserID { get; set; }
         public string PostID { get; set; }
-        public int PostTypeID { get; set; }
+        public int PostType { get; set; }
         public string PostContent { get; set; }
         public System.DateTime PostedDate { get; set; }
         public System.DateTime LastModified { get; set; }
-        public int VisibleTypeID { get; set; }
+        public int VisibleType { get; set; }
     
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Post_Type Post_Type { get; set; }

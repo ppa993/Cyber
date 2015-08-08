@@ -3,36 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using WC.Data;
+using WC.Models;
 
 namespace WC.Controllers
 {
-    public class HomeController : BaseController
+    [Authorize]
+    public class HomeController : AccountController
     {
+        public CyberEntities data = new CyberEntities();
         // GET: Home
-        public ActionResult NewsFeed()
+        public ActionResult Newsfeed()
         {
             return View();
         }
 
-        public ActionResult Profile(string id)
+        public ActionResult Profile([Bind(Prefix = "id")] string username)
         {
-            if (string.IsNullOrEmpty(id)) ViewBag.id = id;
-            return View();
+            if (string.IsNullOrEmpty(username)) return RedirectToAction("Newsfeed", "Home");
+
+            var currentUser = UserManager.FindByName(username);
+            var userInfo = data.Users.FirstOrDefault(x => x.UserID == currentUser.Id);
+            var user = new ProfileViewModel();
+
+            if (userInfo != null)
+            {
+                user.About = userInfo.About;
+                user.DisplayName = userInfo.FirstName + " " + userInfo.LastName;
+                user.Address = userInfo.Address;
+                user.Email = userInfo.Email;
+            }
+            return View(user);
         }
 
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        public ActionResult Forgot()
-        {
-            return View();
-        }
     }
 }

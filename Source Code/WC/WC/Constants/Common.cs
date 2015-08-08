@@ -12,7 +12,7 @@ namespace WC.Constants
 
     public class DateTimeFormat
     {
-        public const string DDMMYYYY = "dd/MM/yyyy";
+        public const string DDMMYYYY = "d/M/yyyy";
     }
 
     public class Message
@@ -22,6 +22,7 @@ namespace WC.Constants
         public const string REGISTERED_SUCCESSFULLY = "Your new account has been registered successfully!";
         public const string REGISTER_FAILED = "Failed to register new account. Please try again later.";
         public const string INVALID_EMAIL = "Invalid email address.";
+        public const string INVALID_BIRTHDAY = "Invalid birthday";
     }
 
     public enum Gender

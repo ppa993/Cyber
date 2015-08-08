@@ -16,7 +16,13 @@ namespace WC
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "NewsFeed", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Newsfeed", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                "Profile",                                           // Route name
+                "{controller}/{action}/{username}",                            // URL with parameters
+                new { controller = "Home", action = "Profile", username = UrlParameter.Optional }  // Parameter defaults
             );
         }
     }

@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "CYBER - World Connecting";
+﻿@model WC.Models.ProfileViewModel
+@{
+    ViewBag.Title = Model.DisplayName;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="page-inner" style="min-height:1080px !important">
@@ -29,12 +30,12 @@
     <div id="main-wrapper">
         <div class="row">
             <div class="col-md-3 user-profile">
-                <h3 class="text-center">Amily Lee</h3>
-                <p class="text-center">UI/UX Designer</p>
+                <h3 class="text-center">@Model.DisplayName</h3>
+                @*<p class="text-center">UI/UX Designer</p>*@
                 <hr>
                 <ul class="list-unstyled text-center">
-                    <li><p><i class="fa fa-map-marker m-r-xs"></i>Melbourne, Australia</p></li>
-                    <li><p><i class="fa fa-envelope m-r-xs"></i><a href="#">example@mail.com</a></p></li>
+                    <li><p><i class="fa fa-map-marker m-r-xs"></i>@Model.Address</p></li>
+                    <li><p><i class="fa fa-envelope m-r-xs"></i><a href="mailto:@Model.Email">@Model.Email</a></p></li>
                     <li><p><i class="fa fa-link m-r-xs"></i><a href="#">www.themeforest.net</a></p></li>
                 </ul>
                 <hr>
@@ -189,7 +190,7 @@
                         <div class="panel-title">Some Info</div>
                     </div>
                     <div class="panel-body">
-                        <p>Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
+                        <p>@Model.About</p>
                     </div>
                 </div>
                 <div class="panel panel-white">
