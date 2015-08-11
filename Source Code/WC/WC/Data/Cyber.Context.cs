@@ -26,11 +26,13 @@ namespace WC.Data
         }
     
         public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<CommentLike> CommentLikes { get; set; }
         public virtual DbSet<Friend> Friends { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Notification_Type> Notification_Type { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Post_Type> Post_Type { get; set; }
+        public virtual DbSet<PostLike> PostLikes { get; set; }
         public virtual DbSet<Profile_Photo> Profile_Photo { get; set; }
         public virtual DbSet<Relationship_Type> Relationship_Type { get; set; }
         public virtual DbSet<Role> Roles { get; set; }

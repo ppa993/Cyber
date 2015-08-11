@@ -17,6 +17,7 @@ namespace WC.Data
         public Post()
         {
             this.Comments = new HashSet<Comment>();
+            this.PostLikes = new HashSet<PostLike>();
         }
     
         public string UserID { get; set; }
@@ -31,6 +32,6 @@ namespace WC.Data
         public virtual Post_Type Post_Type { get; set; }
         public virtual User User { get; set; }
         public virtual Visible_Type Visible_Type { get; set; }
-        public virtual User User1 { get; set; }
+        public virtual ICollection<PostLike> PostLikes { get; set; }
     }
 }

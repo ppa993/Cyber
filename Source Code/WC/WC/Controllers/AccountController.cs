@@ -15,7 +15,7 @@ using WC.Models;
 namespace WC.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         public CyberEntities db = new CyberEntities();
 

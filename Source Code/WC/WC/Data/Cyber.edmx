@@ -18,8 +18,9 @@
         </EntityType>
         <EntityType Name="CommentLike">
           <Key>
-            <PropertyRef Name="CommentID" />
+            <PropertyRef Name="CommentLikeID" />
           </Key>
+          <Property Name="CommentLikeID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
@@ -71,8 +72,9 @@
         </EntityType>
         <EntityType Name="PostLike">
           <Key>
-            <PropertyRef Name="PostID" />
+            <PropertyRef Name="PostLikeID" />
           </Key>
+          <Property Name="PostLikeID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
@@ -167,7 +169,7 @@
         </Association>
         <Association Name="FK_CommentLike_Comment">
           <End Role="Comment" Type="Self.Comment" Multiplicity="1" />
-          <End Role="CommentLike" Type="Self.CommentLike" Multiplicity="0..1" />
+          <End Role="CommentLike" Type="Self.CommentLike" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Comment">
               <PropertyRef Name="CommentID" />
@@ -275,7 +277,7 @@
         </Association>
         <Association Name="FK_PostLike_Post">
           <End Role="Post" Type="Self.Post" Multiplicity="1" />
-          <End Role="PostLike" Type="Self.PostLike" Multiplicity="0..1" />
+          <End Role="PostLike" Type="Self.PostLike" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Post">
               <PropertyRef Name="PostID" />
@@ -452,11 +454,13 @@
       <Schema Namespace="CyberModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="CyberEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Comments" EntityType="CyberModel.Comment" />
+          <EntitySet Name="CommentLikes" EntityType="CyberModel.CommentLike" />
           <EntitySet Name="Friends" EntityType="CyberModel.Friend" />
           <EntitySet Name="Notifications" EntityType="CyberModel.Notification" />
           <EntitySet Name="Notification_Type" EntityType="CyberModel.Notification_Type" />
           <EntitySet Name="Posts" EntityType="CyberModel.Post" />
           <EntitySet Name="Post_Type" EntityType="CyberModel.Post_Type" />
+          <EntitySet Name="PostLikes" EntityType="CyberModel.PostLike" />
           <EntitySet Name="Profile_Photo" EntityType="CyberModel.Profile_Photo" />
           <EntitySet Name="Relationship_Type" EntityType="CyberModel.Relationship_Type" />
           <EntitySet Name="Roles" EntityType="CyberModel.Role" />
@@ -471,6 +475,14 @@
           <AssociationSet Name="FK_Comment_User" Association="CyberModel.FK_Comment_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentLike_Comment" Association="CyberModel.FK_CommentLike_Comment">
+            <End Role="Comment" EntitySet="Comments" />
+            <End Role="CommentLike" EntitySet="CommentLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentLike_User" Association="CyberModel.FK_CommentLike_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="CommentLike" EntitySet="CommentLikes" />
           </AssociationSet>
           <AssociationSet Name="FK_Friend_User" Association="CyberModel.FK_Friend_User">
             <End Role="User" EntitySet="Users" />
@@ -500,6 +512,14 @@
             <End Role="Visible_Type" EntitySet="Visible_Type" />
             <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
+          <AssociationSet Name="FK_PostLike_Post" Association="CyberModel.FK_PostLike_Post">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="PostLike" EntitySet="PostLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PostLike_User" Association="CyberModel.FK_PostLike_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PostLike" EntitySet="PostLikes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Profile_Photo_User" Association="CyberModel.FK_Profile_Photo_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Profile_Photo" EntitySet="Profile_Photo" />
@@ -520,14 +540,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Role" EntitySet="Roles" />
           </AssociationSet>
-          <AssociationSet Name="CommentLike" Association="CyberModel.CommentLike">
-            <End Role="Comment" EntitySet="Comments" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="PostLike" Association="CyberModel.PostLike">
-            <End Role="Post" EntitySet="Posts" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Comment">
           <Key>
@@ -541,7 +553,17 @@
           <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Post" Relationship="CyberModel.FK_Comment_Post" FromRole="Comment" ToRole="Post" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Comment_User" FromRole="Comment" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="CyberModel.CommentLike" FromRole="Comment" ToRole="User" />
+          <NavigationProperty Name="CommentLikes" Relationship="CyberModel.FK_CommentLike_Comment" FromRole="Comment" ToRole="CommentLike" />
+        </EntityType>
+        <EntityType Name="CommentLike">
+          <Key>
+            <PropertyRef Name="CommentLikeID" />
+          </Key>
+          <Property Name="CommentLikeID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CommentID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Comment" Relationship="CyberModel.FK_CommentLike_Comment" FromRole="CommentLike" ToRole="Comment" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK_CommentLike_User" FromRole="CommentLike" ToRole="User" />
         </EntityType>
         <EntityType Name="Friend">
           <Key>
@@ -590,7 +612,7 @@
           <NavigationProperty Name="Post_Type" Relationship="CyberModel.FK_Post_Post_Type" FromRole="Post" ToRole="Post_Type" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Post_User" FromRole="Post" ToRole="User" />
           <NavigationProperty Name="Visible_Type" Relationship="CyberModel.FK_Post_Visible_Type" FromRole="Post" ToRole="Visible_Type" />
-          <NavigationProperty Name="User1" Relationship="CyberModel.PostLike" FromRole="Post" ToRole="User" />
+          <NavigationProperty Name="PostLikes" Relationship="CyberModel.FK_PostLike_Post" FromRole="Post" ToRole="PostLike" />
         </EntityType>
         <EntityType Name="Post_Type">
           <Key>
@@ -599,6 +621,16 @@
           <Property Name="PostTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PostTypeName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_Post_Type" FromRole="Post_Type" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="PostLike">
+          <Key>
+            <PropertyRef Name="PostLikeID" />
+          </Key>
+          <Property Name="PostLikeID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PostID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Post" Relationship="CyberModel.FK_PostLike_Post" FromRole="PostLike" ToRole="Post" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK_PostLike_User" FromRole="PostLike" ToRole="User" />
         </EntityType>
         <EntityType Name="Profile_Photo">
           <Key>
@@ -664,16 +696,16 @@
           <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Studied" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Comments" Relationship="CyberModel.FK_Comment_User" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="CommentLikes" Relationship="CyberModel.FK_CommentLike_User" FromRole="User" ToRole="CommentLike" />
           <NavigationProperty Name="Friend" Relationship="CyberModel.FK_Friend_User" FromRole="User" ToRole="Friend" />
           <NavigationProperty Name="Friends" Relationship="CyberModel.FK_Friend_User1" FromRole="User" ToRole="Friend" />
           <NavigationProperty Name="Notifications" Relationship="CyberModel.FK_Notification_User" FromRole="User" ToRole="Notification" />
           <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_User" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="PostLikes" Relationship="CyberModel.FK_PostLike_User" FromRole="User" ToRole="PostLike" />
           <NavigationProperty Name="Profile_Photo" Relationship="CyberModel.FK_Profile_Photo_User" FromRole="User" ToRole="Profile_Photo" />
           <NavigationProperty Name="Relationship_Type" Relationship="CyberModel.FK_User_Relationship_Type" FromRole="User" ToRole="Relationship_Type" />
           <NavigationProperty Name="Role" Relationship="CyberModel.FK_Role_User" FromRole="User" ToRole="Role" />
           <NavigationProperty Name="Roles" Relationship="CyberModel.FK_Role_User1" FromRole="User" ToRole="Role" />
-          <NavigationProperty Name="Comments1" Relationship="CyberModel.CommentLike" FromRole="User" ToRole="Comment" />
-          <NavigationProperty Name="Posts1" Relationship="CyberModel.PostLike" FromRole="User" ToRole="Post" />
         </EntityType>
         <EntityType Name="Visible_Type">
           <Key>
@@ -704,6 +736,30 @@
             </Principal>
             <Dependent Role="Comment">
               <PropertyRef Name="CommentedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentLike_Comment">
+          <End Type="CyberModel.Comment" Role="Comment" Multiplicity="1" />
+          <End Type="CyberModel.CommentLike" Role="CommentLike" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="CommentID" />
+            </Principal>
+            <Dependent Role="CommentLike">
+              <PropertyRef Name="CommentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentLike_User">
+          <End Type="CyberModel.User" Role="User" Multiplicity="1" />
+          <End Type="CyberModel.CommentLike" Role="CommentLike" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="CommentLike">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -791,6 +847,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PostLike_Post">
+          <End Type="CyberModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="CyberModel.PostLike" Role="PostLike" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="PostLike">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PostLike_User">
+          <End Type="CyberModel.User" Role="User" Multiplicity="1" />
+          <End Type="CyberModel.PostLike" Role="PostLike" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PostLike">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Profile_Photo_User">
           <End Type="CyberModel.User" Role="User" Multiplicity="1" />
           <End Type="CyberModel.Profile_Photo" Role="Profile_Photo" Multiplicity="0..1" />
@@ -851,14 +931,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="CommentLike">
-          <End Type="CyberModel.Comment" Role="Comment" Multiplicity="*" />
-          <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
-        </Association>
-        <Association Name="PostLike">
-          <End Type="CyberModel.Post" Role="Post" Multiplicity="*" />
-          <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -874,6 +946,15 @@
                 <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
                 <ScalarProperty Name="CommentID" ColumnName="CommentID" />
                 <ScalarProperty Name="PostID" ColumnName="PostID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommentLikes">
+            <EntityTypeMapping TypeName="CyberModel.CommentLike">
+              <MappingFragment StoreEntitySet="CommentLike">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="CommentLikeID" ColumnName="CommentLikeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -925,6 +1006,15 @@
               <MappingFragment StoreEntitySet="Post_Type">
                 <ScalarProperty Name="PostTypeName" ColumnName="PostTypeName" />
                 <ScalarProperty Name="PostTypeID" ColumnName="PostTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostLikes">
+            <EntityTypeMapping TypeName="CyberModel.PostLike">
+              <MappingFragment StoreEntitySet="PostLike">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="PostLikeID" ColumnName="PostLikeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1000,24 +1090,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="CommentLike" TypeName="CyberModel.CommentLike" StoreEntitySet="CommentLike">
-            <EndProperty Name="User">
-              <ScalarProperty Name="UserID" ColumnName="UserID" />
-            </EndProperty>
-            <EndProperty Name="Comment">
-              <ScalarProperty Name="CommentID" ColumnName="CommentID" />
-            </EndProperty>
-            <Condition ColumnName="UserID" IsNull="false" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="PostLike" TypeName="CyberModel.PostLike" StoreEntitySet="PostLike">
-            <EndProperty Name="User">
-              <ScalarProperty Name="UserID" ColumnName="UserID" />
-            </EndProperty>
-            <EndProperty Name="Post">
-              <ScalarProperty Name="PostID" ColumnName="PostID" />
-            </EndProperty>
-            <Condition ColumnName="UserID" IsNull="false" />
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

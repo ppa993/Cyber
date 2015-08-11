@@ -12,22 +12,13 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Comment
+    public partial class CommentLike
     {
-        public Comment()
-        {
-            this.CommentLikes = new HashSet<CommentLike>();
-        }
-    
-        public string PostID { get; set; }
+        public string CommentLikeID { get; set; }
         public string CommentID { get; set; }
-        public string CommentContent { get; set; }
-        public System.DateTime CommentedDate { get; set; }
-        public string CommentedBy { get; set; }
-        public System.DateTime LastModified { get; set; }
+        public string UserID { get; set; }
     
-        public virtual Post Post { get; set; }
+        public virtual Comment Comment { get; set; }
         public virtual User User { get; set; }
-        public virtual ICollection<CommentLike> CommentLikes { get; set; }
     }
 }

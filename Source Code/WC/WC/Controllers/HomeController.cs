@@ -4,8 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using WC.Constants;
 using WC.Data;
 using WC.Models;
+using WC.Utils;
 
 namespace WC.Controllers
 {
@@ -33,8 +35,64 @@ namespace WC.Controllers
                 user.DisplayName = userInfo.FirstName + " " + userInfo.LastName;
                 user.Address = userInfo.Address;
                 user.Email = userInfo.Email;
+                var friends = userInfo.Friends;
+                user.Friends = friends;
             }
+
+            var listView =
+                db.Posts.Where(x => x.UserID == currentUser.Id).Take(10).OrderByDescending(x => x.PostedDate).ToList();
+
+            ViewBag.Posts = listView;
+
+
             return View(user);
+        }
+
+        [ChildActionOnly]
+        public ActionResult PostList(List<Post> Model)
+        {
+            return PartialView(Model);
+        }
+
+        [HttpPost]
+        public string PostStatus(string content)
+        {
+            Post post;
+            try
+            {
+                post = new Post
+                {
+                    PostID = Guid.NewGuid().ToString().Replace("-", string.Empty),
+                    PostContent = content,
+                    UserID = User.Identity.GetUserId(),
+                    PostType = (int)PostType.Status,
+                    PostedDate = DateTime.Now,
+                    LastModified = DateTime.Now,
+                    VisibleType = (int)VisibleType.Public,
+
+                };
+
+                data.Posts.Add(post);
+                data.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+
+            var listView = new List<Post>();
+            var view = post;
+            view.User = data.Users.First(x => x.UserID == post.UserID);
+            view.PostLikes = data.PostLikes.Where(x => x.PostID == post.PostID).ToList();
+            view.Comments = data.Comments.Where(x => x.PostID == post.PostID).ToList();
+
+            listView.Add(view);
+
+            var str = RenderPartialViewToString("PostList", listView);
+
+            return str;
+
         }
 
     }

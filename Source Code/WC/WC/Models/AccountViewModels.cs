@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WC.Data;
 
 namespace WC.Models
 {
@@ -87,5 +89,6 @@ namespace WC.Models
         public string Address { get; set; }
         public string Email { get; set; }
         public string About { get; set; }
+        public ICollection<Friend> Friends { get; set; } 
     }
 }

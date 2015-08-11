@@ -39,6 +39,25 @@ namespace WC.Constants
         Divorced
     }
 
+    public enum ActionResults
+    {
+        Failed,
+        Succeed
+    }
+
+    public enum PostType
+    {
+        Status = 1,
+        Photo
+    }
+
+    public enum VisibleType
+    {
+        Public = 1,
+        Friend,
+        Private
+    }
+
     public enum LogInResult
     {
         Failed,

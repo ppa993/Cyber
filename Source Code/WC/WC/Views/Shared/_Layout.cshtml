@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
 <html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -269,7 +270,7 @@
                                      </li>
                                      <li class="dropdown">
                                          <a href="http://lambdathemes.in/admin1/index.html#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
-                                             <span class="user-name">David<i class="fa fa-angle-down"></i></span>
+                                             <span class="user-name">@User.Identity.Name<i class="fa fa-angle-down"></i></span>
                                              <img class="img-circle avatar" src="~/Content/Images/avatar1.png" width="40" height="40" alt="">
                                          </a>
                                          <ul class="dropdown-menu dropdown-list" role="menu">

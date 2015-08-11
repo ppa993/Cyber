@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -87,15 +88,35 @@ namespace WC.Controllers
         //    return user != null ? LogInResult.Successfully.ToString() : LogInResult.Failed.ToString();
         //}
 
-        [HttpPost]
-        public void LogOut()
-        {
-            Session[Common.SESSION_USER] = null;
-        }
+        //[HttpPost]
+        //public void LogOut()
+        //{
+        //    Session[Common.SESSION_USER] = null;
+        //}
 
-        public bool IsLoggedIn()
+        //public bool IsLoggedIn()
+        //{
+        //    return Session[Common.SESSION_USER] != null;
+        //}
+
+
+        protected string RenderPartialViewToString(string viewName, object model)
         {
-            return Session[Common.SESSION_USER] != null;
+            if (string.IsNullOrEmpty(viewName))
+                viewName = ControllerContext.RouteData.GetRequiredString("action");
+
+            ViewData.Model = model;
+
+            using (StringWriter sw = new StringWriter())
+            {
+                ViewEngineResult viewResult =
+                ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                ViewContext viewContext = new ViewContext
+                (ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+
+                return sw.GetStringBuilder().ToString();
+            }
         }
 	}
 }
