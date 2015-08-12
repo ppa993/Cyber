@@ -23,7 +23,7 @@ namespace WC.Data
         public string CommentID { get; set; }
         public string CommentContent { get; set; }
         public System.DateTime CommentedDate { get; set; }
-        public string CommentedBy { get; set; }
+        public string UserID { get; set; }
         public System.DateTime LastModified { get; set; }
     
         public virtual Post Post { get; set; }

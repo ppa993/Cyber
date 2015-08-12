@@ -16,7 +16,24 @@
                         <a href="#"><i class="icon-like"></i> Like (@item.PostLikes.Count)</a>
                         <a href="#"><i class="icon-bubble"></i> Comment (@item.Comments.Count)</a>
                     </div>
-                    <textarea class="form-control" placeholder="Write a comment..."></textarea>
+                    <div id="@item.PostID">
+                        @if (item.Comments.Count > 0)
+                        {
+                            var comments = item.Comments.OrderBy(x => x.CommentedDate);
+                            //Html.RenderAction("CommentList", "Home", new { Model = item.Comments as List<WC.Data.Comment> });
+                            foreach (var comment in comments)
+                            {
+                                <div class="timeline-comment">
+                                    <div class="timeline-comment-header">
+                                        <img src="~/Content/Images/avatar2.png" alt="">
+                                        <p>@comment.User.FirstName @comment.User.LastName <small>@comment.CommentedDate</small></p>
+                                    </div>
+                                    <p class="timeline-comment-text">@comment.CommentContent</p>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <textarea class="form-control comment-form" post-id="@item.PostID" placeholder="Write a comment..."></textarea>
                 </div>
             </div>
         </div>

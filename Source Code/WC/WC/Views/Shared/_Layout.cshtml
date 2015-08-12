@@ -298,46 +298,49 @@
                 </div>
             </div>
         </div><!-- Navbar -->
-        <div class="page-sidebar sidebar visible">
-            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">
-                    <div class="sidebar-header">
-                        <div class="sidebar-profile">
-                            <a href="javascript:void(0);" id="profile-menu-link">
-                                <div class="sidebar-profile-image">
-                                    <img src="~/Content/Images/profile-menu-image.png" class="img-circle img-responsive" alt="">
-                                </div>
-                                <div class="sidebar-profile-details">
-                                    <span>David Green<br><small>Art Director</small></span>
-                                </div>
-                            </a>
-                        </div>
+    <div class="page-sidebar sidebar visible">
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+            <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">
+                <div class="sidebar-header">
+                    <div class="sidebar-profile">
+                        <a href="javascript:void(0);" id="profile-menu-link">
+                            <div class="sidebar-profile-image">
+                                <img src="~/Content/Images/profile-menu-image.png" class="img-circle img-responsive" alt="">
+                            </div>
+                            <div class="sidebar-profile-details">
+                                <span>David Green<br><small>Art Director</small></span>
+                            </div>
+                        </a>
                     </div>
-                    <ul class="menu accordion-menu">
-                        <li><a href="@Url.Action("Newsfeed","Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>New Feed</p></a></li>
-                        <li><a href="@Url.Action("Profile","Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
-                        @*<li class="droplink">
+                </div>
+                <ul class="menu accordion-menu">
+                    <li><a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>New Feed</p></a></li>
+                    <li><a href="@Url.Action("Profile", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
+                    @*<li class="droplink">
                                 <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>MessageBox</p></a>
                             </li>*@
-                        <li>
-                            <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Chat</p></a>
-                        </li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-log-in"></span><p>Login</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="http://lambdathemes.in/admin1/login.html">Login Form</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/login-alt.html">Login Alt</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/register.html">Register Form</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/register-alt.html">Register Alt</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/forgot.html">Forgot Password</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/lock-screen.html">Lock Screen</a></li>
-                            </ul>
-                        </li>
+                    <li>
+                        <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Chat</p></a>
+                    </li>
+                    <li class="droplink">
+                        <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-log-in"></span><p>Login</p><span class="arrow"></span></a>
+                        <ul class="sub-menu" style="display: none;">
+                            <li><a href="http://lambdathemes.in/admin1/login.html">Login Form</a></li>
+                            <li><a href="http://lambdathemes.in/admin1/login-alt.html">Login Alt</a></li>
+                            <li><a href="http://lambdathemes.in/admin1/register.html">Register Form</a></li>
+                            <li><a href="http://lambdathemes.in/admin1/register-alt.html">Register Alt</a></li>
+                            <li><a href="http://lambdathemes.in/admin1/forgot.html">Forgot Password</a></li>
+                            <li><a href="http://lambdathemes.in/admin1/lock-screen.html">Lock Screen</a></li>
+                        </ul>
+                    </li>
 
-                    </ul>
-                </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 1080px; background: rgb(204, 204, 204);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
-            </div><!-- Page Sidebar Inner -->
-        </div>
+                </ul>
+            </div>
+            <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 1080px; background: rgb(204, 204, 204);"></div>
+            <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
+        </div><!-- Page Sidebar Inner -->
+    </div>
+        @Scripts.Render("~/bundles/jquery")
         @RenderBody()
     </main><!-- Page Content -->
     <nav class="cd-nav-container" id="cd-nav">
@@ -399,7 +402,6 @@
 <div class="cd-overlay"></div>
 
 <!-- Javascripts --> 
-        @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
 
 

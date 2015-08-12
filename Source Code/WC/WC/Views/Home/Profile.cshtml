@@ -15,11 +15,36 @@
                 if (data === "Failed") {
                     alert("Unable to post your status. Please try again later. Thank you!");
                 } else {
-                    $("#timeline-posts").append(data);
+                    $("#timeline-posts").prepend(data);
                     $("#status-content").val('');
                 }
             });
     }
+</script>
+<script>
+    $(document).ready(function() {
+        $('textarea').css('overflow', 'hidden').autogrow();
+
+        $('.comment-form').keydown(function (e) {
+            if (e.which === 13) {
+                var url = '@Url.Action("PostComment")';
+                var text = $(this).val();
+                var textbox = $(this);
+                var postid = $(this).attr("post-id");
+                if (text === "") return;
+
+                $.post(url, { "postID": postid, "content": text },
+                    function (data) {
+                        if (data === "Failed") {
+                            alert("Unable to post your comment. Please try again later. Thank you!");
+                        } else {
+                            $("#" + postid).append(data);
+                            textbox.val('');
+                        }
+                    });
+            }
+        });
+    });
 </script>
 
 <div class="page-inner" style="min-height:1080px !important">
@@ -78,9 +103,9 @@
                 </div>
                 <div class="profile-timeline">
                     <ul class="list-unstyled" id="timeline-posts">
-                        @if (ViewBag.Posts != null)
+                        @if (Model.Posts.Count > 0)
                         {
-                            Html.RenderAction("PostList", "Home", new { Model = ViewBag.Posts as List<WC.Data.Post> });
+                            Html.RenderAction("PostList", "Home", new { Model = Model.Posts as List<WC.Data.Post> });
                         }
                         @*<li class="timeline-item">
         <div class="panel panel-white">

@@ -11,6 +11,7 @@ namespace WC
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Content/Script/jquery-2.1.4.min.js",
                         "~/Content/Script/jquery-ui.min.js",
+                        "~/Content/Script/jquery.autogrow-textarea.js",
                         "~/Content/Script/pace.min.js",
                         "~/Content/Script/jquery.blockui.js",
                         "~/Content/Script/bootstrap.min.js",

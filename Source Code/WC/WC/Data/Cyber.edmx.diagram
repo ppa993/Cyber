@@ -7,19 +7,19 @@
       <Diagram DiagramId="7cc4dbe49925408d893104b27c051623" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="CyberModel.Comment" Width="1.5" PointX="10.5" PointY="9.75" />
         <EntityTypeShape EntityType="CyberModel.CommentLike" Width="1.5" PointX="12.75" PointY="10.125" />
-        <EntityTypeShape EntityType="CyberModel.Friend" Width="1.5" PointX="5.25" PointY="22.75" />
-        <EntityTypeShape EntityType="CyberModel.Notification" Width="1.5" PointX="5.25" PointY="5.875" />
-        <EntityTypeShape EntityType="CyberModel.Notification_Type" Width="1.5" PointX="3" PointY="5.375" />
-        <EntityTypeShape EntityType="CyberModel.Post" Width="1.5" PointX="8.25" PointY="9.5" />
-        <EntityTypeShape EntityType="CyberModel.Post_Type" Width="1.5" PointX="6" PointY="13.125" />
-        <EntityTypeShape EntityType="CyberModel.PostLike" Width="1.5" PointX="13.5" PointY="7.125" />
-        <EntityTypeShape EntityType="CyberModel.Profile_Photo" Width="1.5" PointX="5.25" PointY="25.625" />
+        <EntityTypeShape EntityType="CyberModel.Friend" Width="1.5" PointX="5.25" PointY="16.125" />
+        <EntityTypeShape EntityType="CyberModel.Notification" Width="1.5" PointX="8.25" PointY="9.875" />
+        <EntityTypeShape EntityType="CyberModel.Notification_Type" Width="1.5" PointX="6" PointY="3.375" />
+        <EntityTypeShape EntityType="CyberModel.Post" Width="1.5" PointX="5.25" PointY="9.5" />
+        <EntityTypeShape EntityType="CyberModel.Post_Type" Width="1.5" PointX="3" PointY="15.125" />
+        <EntityTypeShape EntityType="CyberModel.PostLike" Width="1.5" PointX="7.5" PointY="7.125" />
+        <EntityTypeShape EntityType="CyberModel.Profile_Photo" Width="1.5" PointX="5.25" PointY="22.625" />
         <EntityTypeShape EntityType="CyberModel.Relationship_Type" Width="1.5" PointX="0.75" PointY="10.375" />
-        <EntityTypeShape EntityType="CyberModel.Role" Width="1.5" PointX="5.25" PointY="9.875" />
-        <EntityTypeShape EntityType="CyberModel.Role_Type" Width="1.5" PointX="3" PointY="15.375" />
+        <EntityTypeShape EntityType="CyberModel.Role" Width="1.5" PointX="5.25" PointY="5.875" />
+        <EntityTypeShape EntityType="CyberModel.Role_Type" Width="1.5" PointX="3" PointY="5.375" />
         <EntityTypeShape EntityType="CyberModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="CyberModel.User" Width="1.5" PointX="3" PointY="8.375" />
-        <EntityTypeShape EntityType="CyberModel.Visible_Type" Width="1.5" PointX="6" PointY="15.5" />
+        <EntityTypeShape EntityType="CyberModel.Visible_Type" Width="1.5" PointX="3" PointY="17.5" />
         <AssociationConnector Association="CyberModel.FK_Comment_Post" />
         <AssociationConnector Association="CyberModel.FK_Comment_User" />
         <AssociationConnector Association="CyberModel.FK_CommentLike_Comment" />

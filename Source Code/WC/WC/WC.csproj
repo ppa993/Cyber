@@ -285,6 +285,7 @@
     <Content Include="Content\Script\jquery.flot.tooltip.min.js" />
     <Content Include="Content\Script\jquery.slimscroll.min.js" />
     <Content Include="Content\Script\jquery.uniform.min.js" />
+    <Content Include="Content\Script\jquery.autogrow-textarea.js" />
     <None Include="Content\Script\jquery.validate-vsdoc.js" />
     <Content Include="Content\Script\jquery.validate.js" />
     <Content Include="Content\Script\jquery.validate.min.js" />
@@ -336,6 +337,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\PostList.cshtml" />
+    <Content Include="Views\Home\CommentList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

@@ -13,7 +13,7 @@
           <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CommentContent" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CommentedDate" Type="datetime" Nullable="false" />
-          <Property Name="CommentedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CommentLike">
@@ -163,7 +163,7 @@
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Comment">
-              <PropertyRef Name="CommentedBy" />
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -549,7 +549,7 @@
           <Property Name="CommentID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CommentContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CommentedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CommentedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Post" Relationship="CyberModel.FK_Comment_Post" FromRole="Comment" ToRole="Post" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Comment_User" FromRole="Comment" ToRole="User" />
@@ -735,7 +735,7 @@
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Comment">
-              <PropertyRef Name="CommentedBy" />
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -941,7 +941,7 @@
             <EntityTypeMapping TypeName="CyberModel.Comment">
               <MappingFragment StoreEntitySet="Comment">
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="CommentedBy" ColumnName="CommentedBy" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CommentedDate" ColumnName="CommentedDate" />
                 <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
                 <ScalarProperty Name="CommentID" ColumnName="CommentID" />

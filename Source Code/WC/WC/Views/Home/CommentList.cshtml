@@ -1,0 +1,12 @@
+﻿@model List<WC.Data.Comment>
+
+@foreach (var item in Model)
+{
+    <div class="timeline-comment">
+        <div class="timeline-comment-header">
+            <img src="~/Content/Images/avatar2.png" alt="">
+            <p>@item.User.FirstName @item.User.LastName <small>@item.CommentedDate</small></p>
+        </div>
+        <p class="timeline-comment-text">@item.CommentContent</p>
+    </div>
+}

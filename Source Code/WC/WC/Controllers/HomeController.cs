@@ -27,6 +27,8 @@ namespace WC.Controllers
 
             var currentUser = UserManager.FindByName(username);
             var userInfo = data.Users.FirstOrDefault(x => x.UserID == currentUser.Id);
+            var listView =
+                db.Posts.Where(x => x.UserID == currentUser.Id).Take(10).OrderByDescending(x => x.PostedDate).ToList();
             var user = new ProfileViewModel();
 
             if (userInfo != null)
@@ -37,19 +39,20 @@ namespace WC.Controllers
                 user.Email = userInfo.Email;
                 var friends = userInfo.Friends;
                 user.Friends = friends;
+                user.Posts = listView;
             }
-
-            var listView =
-                db.Posts.Where(x => x.UserID == currentUser.Id).Take(10).OrderByDescending(x => x.PostedDate).ToList();
-
-            ViewBag.Posts = listView;
-
-
+            
             return View(user);
         }
 
         [ChildActionOnly]
         public ActionResult PostList(List<Post> Model)
+        {
+            return PartialView(Model);
+        }
+
+        [ChildActionOnly]
+        public ActionResult CommentList(List<Comment> Model)
         {
             return PartialView(Model);
         }
@@ -95,5 +98,43 @@ namespace WC.Controllers
 
         }
 
+        [HttpPost]
+        public string PostComment(string postID, string content)
+        {
+            Comment comment;
+            try
+            {
+                comment = new Comment
+                {
+                    CommentID = Guid.NewGuid().ToString().Replace("-", string.Empty),
+                    PostID = postID,
+                    CommentContent = content,
+                    UserID = User.Identity.GetUserId(),
+                    CommentedDate = DateTime.Now,
+                    LastModified = DateTime.Now,
+
+                };
+
+                data.Comments.Add(comment);
+                data.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+
+            var listView = new List<Comment>();
+            var view = comment;
+            view.User = data.Users.First(x => x.UserID == comment.UserID);
+            view.CommentLikes = data.CommentLikes.Where(x => x.CommentID == comment.CommentID).ToList();
+
+            listView.Add(view);
+
+            var str = RenderPartialViewToString("CommentList", listView);
+
+            return str;
+
+        }
     }
 }
