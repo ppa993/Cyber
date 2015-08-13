@@ -25,6 +25,16 @@ namespace WC.Constants
         public const string INVALID_BIRTHDAY = "Invalid birthday";
     }
 
+    public class NotificationMessage
+    {
+        public const string NOTIF_POST = "{0} posted on your Timeline.";
+        public const string NOTIF_COMMENT_MY_POST = "{0} commented on your post.";
+        public const string NOTIF_COMMENT_HER_POST = "{0} also commented on her post.";
+        public const string NOTIF_COMMENT_HIS_POST = "{0} also commented on his post.";
+        public const string NOTIF_LIKE_MY_POST = "{0} likes your post.";
+        public const string NOTIF_LIKE_MY_COMMENT = "{0} likes your comment.";
+    }
+
     public enum Gender
     {
         Male,
@@ -56,6 +66,15 @@ namespace WC.Constants
         Public = 1,
         Friend,
         Private
+    }
+
+    public enum NotificationType
+    {
+        Post = 1,
+        CommentMyPost,
+        CommentOthers,
+        LikeMyPost,
+        LikeMyComment
     }
 
     public enum LogInResult

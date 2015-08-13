@@ -21,6 +21,7 @@ namespace WC.Data
             this.Friends = new HashSet<Friend>();
             this.Notifications = new HashSet<Notification>();
             this.Posts = new HashSet<Post>();
+            this.Posts1 = new HashSet<Post>();
             this.PostLikes = new HashSet<PostLike>();
             this.Roles = new HashSet<Role>();
         }
@@ -44,6 +45,7 @@ namespace WC.Data
         public virtual ICollection<Friend> Friends { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Post> Posts1 { get; set; }
         public virtual ICollection<PostLike> PostLikes { get; set; }
         public virtual Profile_Photo Profile_Photo { get; set; }
         public virtual Relationship_Type Relationship_Type { get; set; }

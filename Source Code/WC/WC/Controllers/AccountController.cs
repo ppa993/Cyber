@@ -257,6 +257,11 @@ namespace WC.Controllers
             base.Dispose(disposing);
         }
 
+        public string CurrentUserID
+        {
+            get { return User.Identity.GetUserId(); }
+        }
+
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";

@@ -9,11 +9,11 @@
           <Key>
             <PropertyRef Name="CommentID" />
           </Key>
-          <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="CommentContent" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CommentedDate" Type="datetime" Nullable="false" />
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="LastModified" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CommentLike">
@@ -41,6 +41,7 @@
           <Property Name="NotificationID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="NotificationType" Type="int" Nullable="false" />
           <Property Name="NotificationContent" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NotificationItemID" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="NotificationDate" Type="datetime" Nullable="false" />
           <Property Name="Seen" Type="bit" Nullable="false" />
         </EntityType>
@@ -55,8 +56,9 @@
           <Key>
             <PropertyRef Name="PostID" />
           </Key>
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PostedOn" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="PostType" Type="int" Nullable="false" />
           <Property Name="PostContent" Type="nvarchar(max)" Nullable="false" />
           <Property Name="PostedDate" Type="datetime" Nullable="false" />
@@ -263,6 +265,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Post_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="PostedOn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Post_Visible_Type">
           <End Role="Visible_Type" Type="Self.Visible_Type" Multiplicity="1" />
           <End Role="Post" Type="Self.Post" Multiplicity="*" />
@@ -415,6 +429,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="Post" EntitySet="Post" />
           </AssociationSet>
+          <AssociationSet Name="FK_Post_User1" Association="Self.FK_Post_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
           <AssociationSet Name="FK_Post_Visible_Type" Association="Self.FK_Post_Visible_Type">
             <End Role="Visible_Type" EntitySet="Visible_Type" />
             <End Role="Post" EntitySet="Post" />
@@ -508,6 +526,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
+          <AssociationSet Name="FK_Post_User1" Association="CyberModel.FK_Post_User1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
           <AssociationSet Name="FK_Post_Visible_Type" Association="CyberModel.FK_Post_Visible_Type">
             <End Role="Visible_Type" EntitySet="Visible_Type" />
             <End Role="Post" EntitySet="Posts" />
@@ -545,11 +567,11 @@
           <Key>
             <PropertyRef Name="CommentID" />
           </Key>
-          <Property Name="PostID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CommentID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PostID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CommentContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CommentedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Post" Relationship="CyberModel.FK_Comment_Post" FromRole="Comment" ToRole="Post" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Comment_User" FromRole="Comment" ToRole="User" />
@@ -584,6 +606,7 @@
           <Property Name="NotificationID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="NotificationType" Type="Int32" Nullable="false" />
           <Property Name="NotificationContent" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NotificationItemID" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="NotificationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Seen" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Notification_Type" Relationship="CyberModel.FK_Notification_Notification_Type" FromRole="Notification" ToRole="Notification_Type" />
@@ -601,8 +624,9 @@
           <Key>
             <PropertyRef Name="PostID" />
           </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="PostID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PostedOn" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="PostType" Type="Int32" Nullable="false" />
           <Property Name="PostContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -611,6 +635,7 @@
           <NavigationProperty Name="Comments" Relationship="CyberModel.FK_Comment_Post" FromRole="Post" ToRole="Comment" />
           <NavigationProperty Name="Post_Type" Relationship="CyberModel.FK_Post_Post_Type" FromRole="Post" ToRole="Post_Type" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Post_User" FromRole="Post" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="CyberModel.FK_Post_User1" FromRole="Post" ToRole="User" />
           <NavigationProperty Name="Visible_Type" Relationship="CyberModel.FK_Post_Visible_Type" FromRole="Post" ToRole="Visible_Type" />
           <NavigationProperty Name="PostLikes" Relationship="CyberModel.FK_PostLike_Post" FromRole="Post" ToRole="PostLike" />
         </EntityType>
@@ -701,6 +726,7 @@
           <NavigationProperty Name="Friends" Relationship="CyberModel.FK_Friend_User1" FromRole="User" ToRole="Friend" />
           <NavigationProperty Name="Notifications" Relationship="CyberModel.FK_Notification_User" FromRole="User" ToRole="Notification" />
           <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_User" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="Posts1" Relationship="CyberModel.FK_Post_User1" FromRole="User" ToRole="Post" />
           <NavigationProperty Name="PostLikes" Relationship="CyberModel.FK_PostLike_User" FromRole="User" ToRole="PostLike" />
           <NavigationProperty Name="Profile_Photo" Relationship="CyberModel.FK_Profile_Photo_User" FromRole="User" ToRole="Profile_Photo" />
           <NavigationProperty Name="Relationship_Type" Relationship="CyberModel.FK_User_Relationship_Type" FromRole="User" ToRole="Relationship_Type" />
@@ -835,6 +861,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Post_User1">
+          <End Type="CyberModel.User" Role="User" Multiplicity="1" />
+          <End Type="CyberModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="PostedOn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Post_Visible_Type">
           <End Type="CyberModel.Visible_Type" Role="Visible_Type" Multiplicity="1" />
           <End Type="CyberModel.Post" Role="Post" Multiplicity="*" />
@@ -941,11 +979,11 @@
             <EntityTypeMapping TypeName="CyberModel.Comment">
               <MappingFragment StoreEntitySet="Comment">
                 <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CommentedDate" ColumnName="CommentedDate" />
                 <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
-                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -973,6 +1011,7 @@
               <MappingFragment StoreEntitySet="Notification">
                 <ScalarProperty Name="Seen" ColumnName="Seen" />
                 <ScalarProperty Name="NotificationDate" ColumnName="NotificationDate" />
+                <ScalarProperty Name="NotificationItemID" ColumnName="NotificationItemID" />
                 <ScalarProperty Name="NotificationContent" ColumnName="NotificationContent" />
                 <ScalarProperty Name="NotificationType" ColumnName="NotificationType" />
                 <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
@@ -996,8 +1035,9 @@
                 <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
                 <ScalarProperty Name="PostContent" ColumnName="PostContent" />
                 <ScalarProperty Name="PostType" ColumnName="PostType" />
-                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
