@@ -275,19 +275,11 @@
                                              <li class="drop-all"><a href="http://lambdathemes.in/admin1/index.html#" class="text-center">All Tasks</a></li>
                                          </ul>
                                      </li>
-                                     <li class="dropdown">
-                                         <a href="http://lambdathemes.in/admin1/index.html#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
-                                             <span class="user-name">@displayName<i class="fa fa-angle-down"></i></span>
+                                     <li>
+                                         <a href="@Url.Action("Profile", "Home", new { id = User.Identity.Name})" class="waves-effect waves-button waves-classic">
+                                             <span class="user-name">@displayName</span>
                                              <img class="img-circle avatar" src="~/Content/Images/avatar1.png" width="40" height="40" alt="">
                                          </a>
-                                         <ul class="dropdown-menu dropdown-list" role="menu">
-                                             <li role="presentation"><a href="http://lambdathemes.in/admin1/profile.html"><i class="fa fa-user"></i>Profile</a></li>
-                                             <li role="presentation"><a href="http://lambdathemes.in/admin1/calendar.html"><i class="fa fa-calendar"></i>Calendar</a></li>
-                                             <li role="presentation"><a href="http://lambdathemes.in/admin1/inbox.html"><i class="fa fa-envelope"></i>Inbox<span class="badge badge-success pull-right">4</span></a></li>
-                                             <li role="presentation" class="divider"></li>
-                                             <li role="presentation"><a href="http://lambdathemes.in/admin1/lock-screen.html"><i class="fa fa-lock"></i>Lock screen</a></li>
-                                             <li role="presentation"><a href="http://lambdathemes.in/admin1/login.html"><i class="fa fa-sign-out m-r-xs"></i>Log out</a></li>
-                                         </ul>
                                      </li>
                                      <li>
                                          <a href="javascript:document.getElementById('logoutForm').submit()" class="log-out waves-effect waves-button waves-classic">
