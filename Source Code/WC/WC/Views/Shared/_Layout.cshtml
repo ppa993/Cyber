@@ -1,4 +1,11 @@
 ﻿@using Microsoft.AspNet.Identity
+@using WC.Data
+@{
+    var db = new CyberEntities();
+    var currentUserId = User.Identity.GetUserId();
+    var userInfo = db.Users.First(x => x.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase));
+    var displayName = userInfo.FirstName;
+}
 <!DOCTYPE html>
 <html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
 <head>
@@ -270,7 +277,7 @@
                                      </li>
                                      <li class="dropdown">
                                          <a href="http://lambdathemes.in/admin1/index.html#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
-                                             <span class="user-name">@User.Identity.Name<i class="fa fa-angle-down"></i></span>
+                                             <span class="user-name">@displayName<i class="fa fa-angle-down"></i></span>
                                              <img class="img-circle avatar" src="~/Content/Images/avatar1.png" width="40" height="40" alt="">
                                          </a>
                                          <ul class="dropdown-menu dropdown-list" role="menu">
@@ -308,7 +315,7 @@
                                 <img src="~/Content/Images/profile-menu-image.png" class="img-circle img-responsive" alt="">
                             </div>
                             <div class="sidebar-profile-details">
-                                <span>David Green<br><small>Art Director</small></span>
+                                <span>@displayName<br><small>Art Director</small></span>
                             </div>
                         </a>
                     </div>
@@ -346,58 +353,62 @@
     <nav class="cd-nav-container" id="cd-nav">
         <header>
             <h3>Navigation</h3>
-            <a href="http://lambdathemes.in/admin1/index.html#0" class="cd-close-nav">Close</a>
+            <a href="#" class="cd-close-nav">Close</a>
         </header>
-        <ul class="cd-nav list-unstyled">
-        <li class="cd-selected" data-menu="index">
-            <a href="javsacript:void(0);">
-                <span>
-                        <i class="glyphicon glyphicon-home"></i>
-                    </span>
-                <p>Dashboard</p>
-            </a>
-        </li>
-        <li data-menu="profile">
-            <a href="javsacript:void(0);">
-                <span>
-                        <i class="glyphicon glyphicon-user"></i>
-                    </span>
-                <p>Profile</p>
-            </a>
-        </li>
-        <li data-menu="inbox">
-            <a href="javsacript:void(0);">
-                <span>
-                        <i class="glyphicon glyphicon-envelope"></i>
-                    </span>
-                <p>Mailbox</p>
-            </a>
-        </li>
-        <li data-menu="#">
-            <a href="javsacript:void(0);">
-                <span>
-                        <i class="glyphicon glyphicon-tasks"></i>
-                    </span>
-                <p>Tasks</p>
-            </a>
-        </li>
-        <li data-menu="#">
-            <a href="javsacript:void(0);">
-                <span>
-                        <i class="glyphicon glyphicon-cog"></i>
-                    </span>
-                <p>Settings</p>
-            </a>
-        </li>
-        <li data-menu="calendar">
-            <a href="javsacript:void(0);">
-                <span>
-                        <i class="glyphicon glyphicon-calendar"></i>
-                    </span>
-                <p>Calendar</p>
-            </a>
-        </li>
-    </ul>
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm"}))
+        {
+            @Html.AntiForgeryToken()
+            <ul class="cd-nav list-unstyled">
+                <li class="cd-selected" data-menu="index">
+                    <a href="@Url.Action("Newsfeed","Home")">
+                        <span>
+                                <i class="glyphicon glyphicon-home"></i>
+                            </span>
+                        <p>Home</p>
+                    </a>
+                </li>
+                <li data-menu="profile">
+                    <a href="@Url.Action("Profile", "Home", new { id = User.Identity.Name})">
+                        <span>
+                                <i class="glyphicon glyphicon-user"></i>
+                            </span>
+                        <p>Profile</p>
+                    </a>
+                </li>
+                <li data-menu="inbox">
+                    <a href="javsacript:void(0);">
+                        <span>
+                                <i class="glyphicon glyphicon-envelope"></i>
+                            </span>
+                        <p>Mailbox</p>
+                    </a>
+                </li>
+                <li data-menu="#">
+                    <a href="javsacript:void(0);">
+                        <span>
+                                <i class="glyphicon glyphicon-tasks"></i>
+                            </span>
+                        <p>Tasks</p>
+                    </a>
+                </li>
+                <li data-menu="#">
+                    <a href="javsacript:void(0);">
+                        <span>
+                                <i class="glyphicon glyphicon-cog"></i>
+                            </span>
+                        <p>Settings</p>
+                    </a>
+                </li>
+                <li data-menu="#">
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="log-out">
+                        <span>
+                            <i class="fa fa-sign-out m-r-xs"></i>
+                        </span>
+                        <p>Log Off</p>
+                    </a>
+                </li>
+            </ul>
+        }
 </nav>
 <div class="cd-overlay"></div>
 

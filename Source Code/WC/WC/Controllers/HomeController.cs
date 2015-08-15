@@ -199,6 +199,11 @@ namespace WC.Controllers
 
                     data.PostLikes.Add(like);
                     data.SaveChanges();
+
+                    var likeCount =
+                        db.Posts.First(x => x.PostID.Equals(postID, StringComparison.InvariantCultureIgnoreCase))
+                            .PostLikes.Count.ToString();
+                    return likeCount;
                 }
                 else
                 {
@@ -206,6 +211,10 @@ namespace WC.Controllers
                         data.PostLikes.FirstOrDefault(x => x.PostID == postID && x.UserID == CurrentUserID);
                     data.PostLikes.Remove(unlike);
                     data.SaveChanges();
+                    var likeCount =
+                        db.Posts.First(x => x.PostID.Equals(postID, StringComparison.InvariantCultureIgnoreCase))
+                            .PostLikes.Count.ToString();
+                    return likeCount;
                 }
             }
             catch (Exception exception)
@@ -213,8 +222,6 @@ namespace WC.Controllers
                 Helper.WriteLog(exception);
                 return ActionResults.Failed.ToString();
             }
-
-            return ActionResults.Succeed.ToString();
         } 
         #endregion
 
