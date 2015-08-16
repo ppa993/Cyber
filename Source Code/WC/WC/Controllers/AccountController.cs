@@ -53,7 +53,7 @@ namespace WC.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Newsfeed","Home");
                 }
                 else
                 {
@@ -104,8 +104,8 @@ namespace WC.Controllers
                     db.Users.Add(userInfo);
                     db.SaveChanges();
 
-                    await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Newsfeed", "Home");
+                    //await SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Login", "Home");
                 }
                 else
                 {
