@@ -14,7 +14,6 @@ namespace WC.Controllers
     [Authorize]
     public class HomeController : AccountController
     {
-        public CyberEntities data = new CyberEntities();
         // GET: Home
         public ActionResult Newsfeed()
         {
@@ -26,10 +25,10 @@ namespace WC.Controllers
             if (string.IsNullOrEmpty(username)) return RedirectToAction("Newsfeed", "Home");
 
             var currentUser = UserManager.FindByName(username);
-            var userInfo = data.Users.FirstOrDefault(x => x.UserID == currentUser.Id);
+            var userInfo = db.Users.FirstOrDefault(x => x.UserID == currentUser.Id);
             var requestUserId = CurrentUserID;
             List<Post> listView;
-            if (CurrentUserID == username)
+            if (CurrentUserName == username)
             {
                 listView = db.Posts.Where(x => x.PostedOn == currentUser.Id)
                                     .Take(10)
@@ -97,8 +96,8 @@ namespace WC.Controllers
 
                 };
 
-                data.Posts.Add(post);
-                data.SaveChanges();
+                db.Posts.Add(post);
+                db.SaveChanges();
 
                 //if is not post on his own timeline, then push new notif for user who has been posted on
                 if (postedOn != CurrentUserID)
@@ -114,9 +113,9 @@ namespace WC.Controllers
 
             var listView = new List<Post>();
             var view = post;
-            view.User = data.Users.First(x => x.UserID == post.UserID);
-            view.PostLikes = data.PostLikes.Where(x => x.PostID == post.PostID).ToList();
-            view.Comments = data.Comments.Where(x => x.PostID == post.PostID).ToList();
+            view.User = db.Users.First(x => x.UserID == post.UserID);
+            view.PostLikes = db.PostLikes.Where(x => x.PostID == post.PostID).ToList();
+            view.Comments = db.Comments.Where(x => x.PostID == post.PostID).ToList();
 
             listView.Add(view);
 
@@ -143,8 +142,8 @@ namespace WC.Controllers
 
                 };
 
-                data.Comments.Add(comment);
-                data.SaveChanges();
+                db.Comments.Add(comment);
+                db.SaveChanges();
 
                 //push notif for user whose post got new comment
                 var currentPost = db.Posts.First(x => x.PostID == postID);
@@ -173,8 +172,8 @@ namespace WC.Controllers
 
             var listView = new List<Comment>();
             var view = comment;
-            view.User = data.Users.First(x => x.UserID == comment.UserID);
-            view.CommentLikes = data.CommentLikes.Where(x => x.CommentID == comment.CommentID).ToList();
+            view.User = db.Users.First(x => x.UserID == comment.UserID);
+            view.CommentLikes = db.CommentLikes.Where(x => x.CommentID == comment.CommentID).ToList();
 
             listView.Add(view);
 
@@ -197,9 +196,17 @@ namespace WC.Controllers
                         UserID = CurrentUserID
                     };
 
-                    data.PostLikes.Add(like);
-                    data.SaveChanges();
+                    db.PostLikes.Add(like);
+                    db.SaveChanges();
 
+                    //push notif for post owner if some one like his post, but not when he like it himself
+                    var postOwner = db.Posts.First(x => x.PostID == postID).User.UserID;
+                    if (!postOwner.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        PushNotification(postOwner, postID, (int)NotificationType.LikeMyPost);
+                    }
+
+                    //return total like
                     var likeCount =
                         db.Posts.First(x => x.PostID.Equals(postID, StringComparison.InvariantCultureIgnoreCase))
                             .PostLikes.Count.ToString();
@@ -208,9 +215,9 @@ namespace WC.Controllers
                 else
                 {
                     var unlike =
-                        data.PostLikes.FirstOrDefault(x => x.PostID == postID && x.UserID == CurrentUserID);
-                    data.PostLikes.Remove(unlike);
-                    data.SaveChanges();
+                        db.PostLikes.FirstOrDefault(x => x.PostID == postID && x.UserID == CurrentUserID);
+                    db.PostLikes.Remove(unlike);
+                    db.SaveChanges();
                     var likeCount =
                         db.Posts.First(x => x.PostID.Equals(postID, StringComparison.InvariantCultureIgnoreCase))
                             .PostLikes.Count.ToString();
@@ -226,7 +233,7 @@ namespace WC.Controllers
         #endregion
 
         #region Private Methods
-        private void PushNotification(string userId, string itemId, int notifType)
+        private void PushNotification(string receiver, string itemId, int notifType)
         {
             try
             {
@@ -261,7 +268,7 @@ namespace WC.Controllers
 
                 var notif = new Notification
                 {
-                    UserID = userId,
+                    UserID = receiver,
                     NotificationID = Guid.NewGuid().ToString().Replace("-", string.Empty),
                     NotificationType = notifType,
                     NotificationContent = notifContent,

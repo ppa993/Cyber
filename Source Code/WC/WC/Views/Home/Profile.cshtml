@@ -20,6 +20,21 @@
                 }
             });
     }
+    function pasteIntoInput(el, text) {
+        el.focus();
+        if (typeof el.selectionStart == "number"
+                && typeof el.selectionEnd == "number") {
+            var val = el.value;
+            var selStart = el.selectionStart;
+            el.value = val.slice(0, selStart) + text + val.slice(el.selectionEnd);
+            el.selectionEnd = el.selectionStart = selStart + text.length;
+        } else if (typeof document.selection != "undefined") {
+            var textRange = document.selection.createRange();
+            textRange.text = text;
+            textRange.collapse(false);
+            textRange.select();
+        }
+    }
 </script>
 <script>
     $(document).ready(function() {
@@ -27,26 +42,31 @@
 
         $('.comment-form').keydown(function (e) {
             if (e.which === 13) {
-                var url = '@Url.Action("PostComment")';
-                var text = $(this).val();
-                var textbox = $(this);
-                var postid = $(this).attr("post-id");
-                if (text === "") return;
+                if (e.shiftKey === false) {
+                    var url = '@Url.Action("PostComment")';
+                    var text = $(this).val();
+                    var textbox = $(this);
+                    var postid = $(this).attr("post-id");
+                    if (text === "") return;
 
-                $.post(url, { "postID": postid, "content": text },
-                    function (data) {
-                        if (data === "Failed") {
-                            alert("Unable to post your comment. Please try again later. Thank you!");
-                        } else {
-                            var countItem = document.getElementById("comment-count-" + postid);
-                            var count = parseInt(countItem.textContent) + 1;
-                            countItem.textContent = count;
+                    $.post(url, { "postID": postid, "content": text },
+                        function(data) {
+                            if (data === "Failed") {
+                                alert("Unable to post your comment. Please try again later. Thank you!");
+                            } else {
+                                var countItem = document.getElementById("comment-count-" + postid);
+                                var count = parseInt(countItem.textContent) + 1;
+                                countItem.textContent = count;
 
-                            var commentList = $("#comment-list-" + postid);
-                            commentList.append(data);
-                            textbox.val('');
-                        }
-                    });
+                                var commentList = $("#comment-list-" + postid);
+                                commentList.append(data);
+                                textbox.val('');
+                            }
+                        });
+                } else {
+                    pasteIntoInput(this, "\n");
+                    e.preventDefault();
+                }
             }
         });
 
@@ -59,7 +79,7 @@
             $.post(url, { "postID": postid, "isLike": isLike },
                 function (data) {
                     if (data === "Failed") {
-                        alert("Unable to like at the moment. Please try again later. Thank you!");
+                        alert("Unable to peform your action. This item has been removed.");
                     } else {
                         var countItem = document.getElementById("post-like-count-" + postid);
                         var count = data;

@@ -17,8 +17,6 @@ namespace WC.Controllers
     [Authorize]
     public class AccountController : BaseController
     {
-        public CyberEntities db = new CyberEntities();
-
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
@@ -53,7 +51,8 @@ namespace WC.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
-                    return RedirectToAction("Newsfeed","Home");
+                    return RedirectToLocal(returnUrl);
+                    //return RedirectToAction("Newsfeed","Home");
                 }
                 else
                 {
@@ -105,7 +104,7 @@ namespace WC.Controllers
                     db.SaveChanges();
 
                     //await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Login", "Home");
+                    return RedirectToAction("Login", "Account");
                 }
                 else
                 {
@@ -260,6 +259,11 @@ namespace WC.Controllers
         public string CurrentUserID
         {
             get { return User.Identity.GetUserId(); }
+        }
+
+        public string CurrentUserName
+        {
+            get { return User.Identity.Name; }
         }
 
         #region Helpers

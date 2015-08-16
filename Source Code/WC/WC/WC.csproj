@@ -383,9 +383,6 @@
       <LastGenOutput>Cyber.cs</LastGenOutput>
     </Content>
     <Content Include="Views\Shared\_LayoutAccount.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Home\Forgot.cshtml" />
     <Content Include="Views\Home\Profile.cshtml" />
     <Content Include="Views\Home\NewsFeed.cshtml" />
   </ItemGroup>

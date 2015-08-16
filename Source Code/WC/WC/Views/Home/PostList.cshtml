@@ -16,7 +16,7 @@
                     <small>@item.PostedDate</small>
                 </div>
                 <div class="timeline-item-post">
-                    <p>@item.PostContent</p>
+                    <p style="white-space: pre-line">@item.PostContent</p>
                     <div class="timeline-options">
                         <a class="post-like" post-id="@item.PostID" data-toogle="@alreadyLike">
                             <i class="icon-like"></i> 
@@ -36,7 +36,7 @@
                                         <img src="~/Content/Images/avatar2.png" alt="">
                                         <p>@comment.User.FirstName @comment.User.LastName <small>@comment.CommentedDate</small></p>
                                     </div>
-                                    <p class="timeline-comment-text">@comment.CommentContent</p>
+                                    <p class="timeline-comment-text" style="white-space: pre-line">@comment.CommentContent</p>
                                 </div>
                             }
                         }

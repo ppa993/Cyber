@@ -1,18 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.IO;
 using System.Web.Mvc;
-using WC.Constants;
 using WC.Data;
-using WC.Utils;
 
 namespace WC.Controllers
 {
     public class BaseController : Controller
     {
         public CyberEntities db = new CyberEntities();
-
         //[HttpPost]
         //public string Register(string firstName, string lastName,string username, 
         //    string password, string email, string birthDay, string gender)
@@ -70,7 +64,7 @@ namespace WC.Controllers
         //    {
         //        Helper.WriteLog(exception);
         //    }
-            
+
         //    return Message.REGISTER_FAILED;
         //}
 
@@ -107,16 +101,16 @@ namespace WC.Controllers
 
             ViewData.Model = model;
 
-            using (StringWriter sw = new StringWriter())
+            using (var sw = new StringWriter())
             {
-                ViewEngineResult viewResult =
-                ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
-                ViewContext viewContext = new ViewContext
-                (ControllerContext, viewResult.View, ViewData, TempData, sw);
+                var viewResult =
+                    ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext
+                    (ControllerContext, viewResult.View, ViewData, TempData, sw);
                 viewResult.View.Render(viewContext, sw);
 
                 return sw.GetStringBuilder().ToString();
             }
         }
-	}
+    }
 }
