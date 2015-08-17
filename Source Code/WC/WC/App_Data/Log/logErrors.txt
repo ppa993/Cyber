@@ -101,3 +101,13 @@ The statement has been terminated.
 LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
 
 
+19/8/2015 12:00:19 AM
+Value cannot be null.
+Parameter name: entity - 
+
+
+19/8/2015 12:00:32 AM
+Value cannot be null.
+Parameter name: entity - 
+
+

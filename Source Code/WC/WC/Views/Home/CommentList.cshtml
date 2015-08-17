@@ -1,12 +1,29 @@
-﻿@model List<WC.Data.Comment>
+﻿@using Microsoft.AspNet.Identity
+@model List<WC.Data.Comment>
 
 @foreach (var item in Model)
 {
+    @*<div class="timeline-comment">
+        <div class="timeline-comment-header">
+            <img src="~/Content/Images/avatar2.png" alt="">
+            <p>@item.User.FirstName @item.User.LastName <small>@item.CommentedDate</small>
+            </p>
+        </div>
+        <p class="timeline-comment-text" style="white-space: pre-line">@item.CommentContent</p>
+    </div>*@
+
+    var commentAlreadyLike = item.CommentLikes.Any(x => x.UserID == User.Identity.GetUserId())
+                                                        ? "Unlike"
+                                                        : "Like";
     <div class="timeline-comment">
         <div class="timeline-comment-header">
             <img src="~/Content/Images/avatar2.png" alt="">
-            <p>@item.User.FirstName @item.User.LastName <small>@item.CommentedDate</small></p>
+            <p>
+                <a href="#">@item.User.FirstName @item.User.LastName</a> <span style="white-space: pre-line; font-weight: 400">@item.CommentContent</span>
+            </p>
         </div>
-        <p class="timeline-comment-text" style="white-space: pre-line">@item.CommentContent</p>
+        <a class="comment-like" href="#" comment-id="@item.CommentID" data-toogle="@commentAlreadyLike">
+            <span id="comment-like-status-@item.CommentID">@commentAlreadyLike</span> (<span id="comment-like-count-@item.CommentID">@item.CommentLikes.Count</span>)
+        </a><small>@item.CommentedDate</small>
     </div>
 }
