@@ -1475,6 +1475,9 @@ h3, h4, h5 {
 
 .panel-white {
     background: #fff;
+    border: 1px solid !important;
+    border-radius: 3px;
+    border-color: #e5e6e9 #dfe0e4 #d0d1d5 !important;
 }
 
     .panel-white .panel-heading .panel-control a {
@@ -3459,7 +3462,7 @@ body:not(.small-sidebar) .horizontal-bar .menu.accordion-menu > li > a > .menu-i
 
 .page-inner {
     padding: 0 0 50px;
-    background: #F1F4F9;
+    background: #e9eaed;
     position: relative;
 }
 
@@ -4716,4 +4719,8 @@ body:not(.small-sidebar) .horizontal-bar .menu.accordion-menu > li > a > .menu-i
 
 .show-menu .overlay {
     display: block;
+}
+
+textarea {
+    resize: none;
 }

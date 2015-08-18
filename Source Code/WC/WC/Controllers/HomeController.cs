@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using WC.Constants;
 using WC.Data;
 using WC.Models;
@@ -14,7 +15,7 @@ namespace WC.Controllers
     [Authorize]
     public class HomeController : AccountController
     {
-        // GET: Home
+       // GET: Home
         public ActionResult Newsfeed()
         {
             return View();
@@ -221,6 +222,55 @@ namespace WC.Controllers
                     var likeCount =
                         db.Posts.First(x => x.PostID.Equals(postID, StringComparison.InvariantCultureIgnoreCase))
                             .PostLikes.Count.ToString();
+                    return likeCount;
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+        }
+
+        [HttpPost]
+        public string LikeUnlikeComment(string commentID, bool isLike)
+        {
+            try
+            {
+                if (isLike)
+                {
+                    var like = new CommentLike
+                    {
+                        CommentLikeID = Guid.NewGuid().ToString().Replace("-", string.Empty),
+                        CommentID = commentID,
+                        UserID = CurrentUserID
+                    };
+
+                    db.CommentLikes.Add(like);
+                    db.SaveChanges();
+
+                    //push notif for comment owner if some one like his comment, but not when he like it himself
+                    var commentOwner = db.Comments.First(x => x.CommentID == commentID).User.UserID;
+                    if (!commentOwner.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        PushNotification(commentOwner, commentID, (int)NotificationType.LikeMyComment);
+                    }
+
+                    //return total like
+                    var likeCount =
+                        db.Comments.First(x => x.CommentID.Equals(commentID, StringComparison.InvariantCultureIgnoreCase))
+                            .CommentLikes.Count.ToString();
+                    return likeCount;
+                }
+                else
+                {
+                    var unlike =
+                        db.CommentLikes.FirstOrDefault(x => x.CommentID == commentID && x.UserID == CurrentUserID);
+                    db.CommentLikes.Remove(unlike);
+                    db.SaveChanges();
+                    var likeCount =
+                        db.Comments.First(x => x.CommentID.Equals(commentID, StringComparison.InvariantCultureIgnoreCase))
+                            .CommentLikes.Count.ToString();
                     return likeCount;
                 }
             }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 
 namespace WC.Utils
 {
@@ -12,7 +10,7 @@ namespace WC.Utils
         public static void WriteLog(Exception e)
         {
             var filename = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\" + "Log\\" + "logErrors.txt";
-            var sw = new System.IO.StreamWriter(filename, true);
+            var sw = new StreamWriter(filename, true);
             sw.WriteLine(DateTime.Now);
             sw.WriteLine(e.Message + " - " + e.InnerException);
             sw.WriteLine();
@@ -20,27 +18,25 @@ namespace WC.Utils
             sw.Close();
         }
 
-
         public static string GetSHA1HashData(string data)
         {
             //create new instance of md5
-            SHA1 sha1 = SHA1.Create();
+            var sha1 = SHA1.Create();
 
             //convert the input text to array of bytes
-            byte[] hashData = sha1.ComputeHash(Encoding.Default.GetBytes(data));
+            var hashData = sha1.ComputeHash(Encoding.Default.GetBytes(data));
 
             //create new instance of StringBuilder to save hashed data
-            StringBuilder returnValue = new StringBuilder();
+            var returnValue = new StringBuilder();
 
             //loop for each byte and add it to StringBuilder
-            for (int i = 0; i < hashData.Length; i++)
+            for (var i = 0; i < hashData.Length; i++)
             {
-                returnValue.Append(hashData[i].ToString());
+                returnValue.Append(i.ToString());
             }
 
             // return hexadecimal string
             return returnValue.ToString();
         }
-
     }
 }
