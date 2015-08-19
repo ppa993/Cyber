@@ -237,6 +237,9 @@
     <Compile Include="Data\Role_Type.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\sysdiagram.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\User.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>

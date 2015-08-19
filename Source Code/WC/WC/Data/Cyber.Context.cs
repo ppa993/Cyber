@@ -40,6 +40,7 @@ namespace WC.Data
         public virtual DbSet<Relationship_Type> Relationship_Type { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Role_Type> Role_Type { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Visible_Type> Visible_Type { get; set; }
     }

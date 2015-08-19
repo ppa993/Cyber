@@ -16,7 +16,7 @@ namespace WC.Data
     {
         public string FriendsListId { get; set; }
         public string FriendId { get; set; }
-        public Nullable<int> FriendStatus { get; set; }
+        public bool FriendStatus { get; set; }
         public Nullable<System.DateTime> FriendSince { get; set; }
     
         public virtual FriendList FriendList { get; set; }

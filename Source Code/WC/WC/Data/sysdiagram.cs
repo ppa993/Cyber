@@ -12,18 +12,12 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class FriendList
+    public partial class sysdiagram
     {
-        public FriendList()
-        {
-            this.Friends = new HashSet<Friend>();
-        }
-    
-        public string Id { get; set; }
-        public string UserId { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-    
-        public virtual User User { get; set; }
-        public virtual ICollection<Friend> Friends { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

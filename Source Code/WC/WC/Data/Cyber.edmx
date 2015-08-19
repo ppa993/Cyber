@@ -52,8 +52,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
-          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Friends">
           <Key>
@@ -62,7 +62,7 @@
           </Key>
           <Property Name="FriendsListId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="FriendId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="FriendStatus" Type="int" />
+          <Property Name="FriendStatus" Type="bit" Nullable="false" />
           <Property Name="FriendSince" Type="datetime" />
         </EntityType>
         <EntityType Name="Notification">
@@ -143,6 +143,16 @@
           <Property Name="RoleTypeID" Type="int" Nullable="false" />
           <Property Name="RoleTypeName" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
@@ -216,7 +226,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__FriendLis__UserI__3B75D760">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="FriendList" Type="Self.FriendList" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -471,6 +481,7 @@
           <EntitySet Name="Relationship_Type" EntityType="Self.Relationship_Type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role_Type" EntityType="Self.Role_Type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visible_Type" EntityType="Self.Visible_Type" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__ChatBox__FromUse__300424B4" Association="Self.FK__ChatBox__FromUse__300424B4">
@@ -590,6 +601,7 @@
           <EntitySet Name="Relationship_Type" EntityType="CyberModel.Relationship_Type" />
           <EntitySet Name="Roles" EntityType="CyberModel.Role" />
           <EntitySet Name="Role_Type" EntityType="CyberModel.Role_Type" />
+          <EntitySet Name="sysdiagrams" EntityType="CyberModel.sysdiagram" />
           <EntitySet Name="Users" EntityType="CyberModel.User" />
           <EntitySet Name="Visible_Type" EntityType="CyberModel.Visible_Type" />
           <AssociationSet Name="FK__ChatBox__FromUse__300424B4" Association="CyberModel.FK__ChatBox__FromUse__300424B4">
@@ -746,8 +758,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK__FriendLis__UserI__3B75D760" FromRole="FriendList" ToRole="User" />
           <NavigationProperty Name="Friends" Relationship="CyberModel.FK__Friends__Friends__412EB0B6" FromRole="FriendList" ToRole="Friend" />
         </EntityType>
@@ -758,7 +770,7 @@
           </Key>
           <Property Name="FriendsListId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="FriendId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="FriendStatus" Type="Int32" />
+          <Property Name="FriendStatus" Type="Boolean" Nullable="false" />
           <Property Name="FriendSince" Type="DateTime" Precision="3" />
           <NavigationProperty Name="FriendList" Relationship="CyberModel.FK__Friends__Friends__412EB0B6" FromRole="Friend" ToRole="FriendList" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK__Friends__FriendI__403A8C7D" FromRole="Friend" ToRole="User" />
@@ -858,6 +870,16 @@
           <Property Name="RoleTypeID" Type="Int32" Nullable="false" />
           <Property Name="RoleTypeName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Roles" Relationship="CyberModel.FK_Role_Role_Type" FromRole="Role_Type" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -996,7 +1018,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__FriendLis__UserI__3B75D760">
-          <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="CyberModel.User" Role="User" Multiplicity="1" />
           <End Type="CyberModel.FriendList" Role="FriendList" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -1342,6 +1364,17 @@
               <MappingFragment StoreEntitySet="Role_Type">
                 <ScalarProperty Name="RoleTypeName" ColumnName="RoleTypeName" />
                 <ScalarProperty Name="RoleTypeID" ColumnName="RoleTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CyberModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
