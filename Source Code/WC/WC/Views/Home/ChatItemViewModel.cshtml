@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNet.Identity
+@model List<WC.Hubs.ChatHubModel>
+@{ 
+    var currentUserId = User.Identity.GetUserId();
+}
+@foreach (var p in Model)
+{
+    if (p.UserId == currentUserId)
+    {
+        <div class="chat-item chat-item-right">
+            <div class="chat-message">
+                @p.Message
+            </div>
+        </div>
+    }
+    else
+    { 
+        <div class="chat-item chat-item-left">
+            <div class="chat-image">
+                <img src="~/Content/Images/Avatar/men1.png">
+            </div>
+            <div class="chat-message">
+                @p.Message
+            </div>
+        </div>
+    }
+}
+
+

@@ -21,18 +21,20 @@
 	}
 
 	function initEvents() {
-		openbtn.addEventListener( 'click', toggleMenu );
-		if( closebtn ) {
-			closebtn.addEventListener( 'click', toggleMenu );
-		}
+	    try{
+	        openbtn.addEventListener( 'click', toggleMenu );
+	        if( closebtn ) {
+	            closebtn.addEventListener( 'click', toggleMenu );
+	        }
 
-		// close the menu element if the target it´s not the menu element or one of its descendants..
-		overlay.addEventListener( 'click', function(ev) {
-			var target = ev.target;
-			if( isOpen && target !== openbtn ) {
-				toggleMenu();
-			}
-		} );
+	        // close the menu element if the target it´s not the menu element or one of its descendants..
+	        overlay.addEventListener( 'click', function(ev) {
+	            var target = ev.target;
+	            if( isOpen && target !== openbtn ) {
+	                toggleMenu();
+	            }
+	        } );
+	    }catch(Error){}
 	}
 
 	function toggleMenu() {

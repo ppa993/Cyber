@@ -58,6 +58,8 @@
 
 .cbp-spmenu-vertical a {
 	padding: 18px;
+    display:inline-block;
+    width:100%;
 }
 
 .cbp-spmenu-horizontal {

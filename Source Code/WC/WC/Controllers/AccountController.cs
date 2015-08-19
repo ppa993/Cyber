@@ -109,6 +109,9 @@ namespace WC.Controllers
                         CreatedDate = DateTime.Now
                     };
                     db.FriendLists.Add(friendList);
+
+                    
+
                     db.SaveChanges();
 
                     //await SignInAsync(user, isPersistent: false);

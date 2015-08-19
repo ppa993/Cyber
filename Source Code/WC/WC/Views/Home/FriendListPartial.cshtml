@@ -3,8 +3,8 @@
 @foreach (var p in Model)
 {
     <a href="javascript:void(0);" data-item-id="@p.FriendId" data-item-name="@p.Name" 
-       onclick="OpenSmallChatBox(this);" class="showRight2">
-        <img src="@Url.Content(p.ProfileImgUrl)">
+       onclick="OpenSmallChatBox(this,'@Url.Action("GetHtmlListChatItemOf")');" class="showRight2">
+        <img src="~/Content/Images/Avatar/men1.png">
         <span>
             @p.Name
             <small></small>

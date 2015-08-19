@@ -10,7 +10,7 @@
         userInfo = db.Users.FirstOrDefault(x => x.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase));
         if (userInfo != null)
         {
-            displayName= userInfo.FirstName;
+            displayName = userInfo.FirstName;
         }
     }
 }
@@ -28,12 +28,14 @@
     <meta name="keywords" content="admin,dashboard">
     <meta name="author" content="Steelcoders">
 
-    <!-- Styles --> 
+    <!-- Styles -->
     @Styles.Render("~/Content/Style")
-    @Scripts.Render("~/Content/Theme") 
+    @Scripts.Render("~/Content/Theme")
     @Scripts.Render("~/bundles/jquery")
+    <script src="~/Content/Script/jquery.slimscroll.min.js"></script>
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="/signalr/hubs"></script>
+    <script src="~/Hubs/cyber-chat.js"></script>
 </head>
 <body class="page-header-fixed  pace-done">
     <div class="pace  pace-inactive">
@@ -45,7 +47,7 @@
     <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s1">
         <h3><span class="pull-left">Chat</span><a href="javascript:void(0);" class="pull-right" id="closeRight"><i class="fa fa-times"></i></a></h3>
         <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-            <div class="slimscroll" style="overflow: hidden; width: auto; height: 100%;">
+            <div class="slimscroll" style="overflow: scroll; width: auto; height: 100%;">
                 @if (ViewData["FriendList"] != null)
                 {
                     Html.RenderPartial("FriendListPartial", (ViewData["FriendList"] as List<WC.Models.FriendViewModel>));
@@ -54,53 +56,17 @@
         </div>
     </nav>
     <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
-        <h3><span class="pull-left">Sandra Smith</span> <a href="javascript:void(0);" class="pull-right" id="closeRight2"><i class="fa fa-angle-right"></i></a></h3>
+        <h3><span id="chat-box-name" class="pull-left">Sandra Smith</span> <a href="javascript:void(0);" class="pull-right" id="closeRight2"><i class="fa fa-angle-right"></i></a></h3>
         <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-            <div class="slimscroll chat" style="overflow: hidden; width: auto; height: 100%;">
-                <div class="chat-item chat-item-left">
-                    <div class="chat-image">
-                        <img src="~/Content/Images/avatar2.png" alt="">
-                    </div>
-                    <div class="chat-message">
-                        Hi There!
-                    </div>
-                </div>
-                <div class="chat-item chat-item-right">
-                    <div class="chat-message">
-                        Hi! How are you?
-                    </div>
-                </div>
-                <div class="chat-item chat-item-left">
-                    <div class="chat-image">
-                        <img src="~/Content/Images/avatar2.png" alt="">
-                    </div>
-                    <div class="chat-message">
-                        Fine! do you like my project?
-                    </div>
-                </div>
-                <div class="chat-item chat-item-right">
-                    <div class="chat-message">
-                        Yes, It's clean and creative, good job!
-                    </div>
-                </div>
-                <div class="chat-item chat-item-left">
-                    <div class="chat-image">
-                        <img src="~/Content/Images/avatar2.png" alt="">
-                    </div>
-                    <div class="chat-message">
-                        Thanks, I tried!
-                    </div>
-                </div>
-                <div class="chat-item chat-item-right">
-                    <div class="chat-message">
-                        Good luck with your sales!
-                    </div>
-                </div>
-            </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 629px; background: rgb(204, 204, 204);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
+            <div id="chat-box-content" class="slimscroll chat" style="overflow: scroll; width: auto; height: 100%;">
+
+            </div>
         </div>
+        <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 629px; background: rgb(204, 204, 204);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
+        
         <div class="chat-write">
             <form class="form-horizontal" action="javascript:void(0);">
-                <input type="text" class="form-control" placeholder="Say something">
+                <input type="text" class="form-control" placeholder="Say something" id="chat-box-message" data-item-url="@Url.Action("GetHtmlListChatItemOf")" data-item-fromid="@currentUserId" data-item-toid="">
             </form>
         </div>
     </nav>
@@ -151,193 +117,199 @@
                                 <a href="javascript:void(0);" class="waves-effect waves-button waves-classic toggle-fullscreen"><i class="fa fa-expand"></i></a>
                             </li>
                         </ul>
-                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm"}))
-                             {
-                                 @Html.AntiForgeryToken()
-                                 <ul class="nav navbar-nav navbar-right">
-                                     <li>
-                                         <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
-                                     </li>
-                                     <li class="dropdown">
-                                         <a href="http://lambdathemes.in/admin1/index.html#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-envelope"></i><span class="badge badge-success pull-right">4</span></a>
-                                         <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
-                                             <li>
-                                                 <p class="drop-title">You have 4 new messages !</p></li>
-                                             <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                                                 <li class="dropdown-menu-list slimscroll messages" style="overflow: hidden; width: auto; height: 100%;">
-                                                     <ul class="list-unstyled">
-                                                         <li>
-                                                             <a href="http://lambdathemes.in/admin1/index.html#">
-                                                                 <div class="msg-img">
-                                                                     <div class="online on"></div><img class="img-circle" src="~/Content/Images/avatar2.png" alt="">
-                                                                 </div>
-                                                                 <p class="msg-name">Sandra Smith</p>
-                                                                 <p class="msg-text">Hey ! I'm working on your project</p>
-                                                                 <p class="msg-time">3 minutes ago</p>
-                                                             </a>
-                                                         </li>
-                                                         <li>
-                                                             <a href="http://lambdathemes.in/admin1/index.html#">
-                                                                 <div class="msg-img">
-                                                                     <div class="online off"></div><img class="img-circle" src="~/Content/Images/avatar4.png" alt="">
-                                                                 </div>
-                                                                 <p class="msg-name">Amily Lee</p>
-                                                                 <p class="msg-text">Hi David !</p>
-                                                                 <p class="msg-time">8 minutes ago</p>
-                                                             </a>
-                                                         </li>
-                                                         <li>
-                                                             <a href="http://lambdathemes.in/admin1/index.html#">
-                                                                 <div class="msg-img">
-                                                                     <div class="online off"></div><img class="img-circle" src="~/Content/Images/avatar3.png" alt="">
-                                                                 </div>
-                                                                 <p class="msg-name">Christopher Palmer</p>
-                                                                 <p class="msg-text">See you soon !</p>
-                                                                 <p class="msg-time">56 minutes ago</p>
-                                                             </a>
-                                                         </li>
-                                                         <li>
-                                                             <a href="http://lambdathemes.in/admin1/index.html#">
-                                                                 <div class="msg-img">
-                                                                     <div class="online on"></div><img class="img-circle" src="~/Content/Images/avatar5.png" alt="">
-                                                                 </div>
-                                                                 <p class="msg-name">Nick Doe</p>
-                                                                 <p class="msg-text">Nice to meet you</p>
-                                                                 <p class="msg-time">2 hours ago</p>
-                                                             </a>
-                                                         </li>
-                                                         <li>
-                                                             <a href="http://lambdathemes.in/admin1/index.html#">
-                                                                 <div class="msg-img">
-                                                                     <div class="online on"></div><img class="img-circle" src="~/Content/Images/avatar2.png" alt="">
-                                                                 </div>
-                                                                 <p class="msg-name">Sandra Smith</p>
-                                                                 <p class="msg-text">Hey ! I'm working on your project</p>
-                                                                 <p class="msg-time">5 hours ago</p>
-                                                             </a>
-                                                         </li>
-                                                         <li>
-                                                             <a href="http://lambdathemes.in/admin1/index.html#">
-                                                                 <div class="msg-img">
-                                                                     <div class="online off"></div><img class="img-circle" src="~/Content/Images/avatar4.png" alt="">
-                                                                 </div>
-                                                                 <p class="msg-name">Amily Lee</p>
-                                                                 <p class="msg-text">Hi David !</p>
-                                                                 <p class="msg-time">9 hours ago</p>
-                                                             </a>
-                                                         </li>
-                                                     </ul>
-                                                 </li>
-                                                 <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: block; border-radius: 0px; z-index: 99; right: 0px; background: rgb(204, 204, 204);"></div>
-                                                 <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
-                                             </div>
-                                             <li class="drop-all"><a href="http://lambdathemes.in/admin1/index.html#" class="text-center">All Messages</a></li>
-                                         </ul>
-                                     </li>
-                                     <li class="dropdown">
-                                         <a href="http://lambdathemes.in/admin1/index.html#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-success pull-right">3</span></a>
-                                         <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
-                                             <li>
-                                                 <p class="drop-title">You have 3 pending tasks !</p></li>
-                                             <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                                                 <li class="dropdown-menu-list slimscroll tasks" style="overflow: hidden; width: auto; height: 100%;">
-                                                     <ul class="list-unstyled">
-                                                         <li>
-                                                             <a href="http://lambdathemes.in/admin1/index.html#">
-                                                                 <div class="task-icon badge badge-success"><i class="icon-user"></i>
-                                                                 </div>
-                                                                 <span class="badge badge-roundless badge-default pull-right">1min ago</span>
-                                                                 <p class="task-details">New user registered.</p>
-                                                             </a>
-                                                         </li>
-                                                         <li>
-                                                             <a href="http://lambdathemes.in/admin1/index.html#">
-                                                                 <div class="task-icon badge badge-danger"><i class="icon-energy"></i>
-                                                                 </div>
-                                                                 <span class="badge badge-roundless badge-default pull-right">24min ago</span>
-                                                                 <p class="task-details">Database error.</p>
-                                                             </a>
-                                                         </li>
-                                                         <li>
-                                                             <a href="http://lambdathemes.in/admin1/index.html#">
-                                                                 <div class="task-icon badge badge-info"><i class="icon-heart"></i>
-                                                                 </div>
-                                                                 <span class="badge badge-roundless badge-default pull-right">1h ago</span>
-                                                                 <p class="task-details">Reached 24k likes</p>
-                                                             </a>
-                                                         </li>
-                                                     </ul>
-                                                 </li>
-                                                 <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: block; border-radius: 0px; z-index: 99; right: 0px; background: rgb(204, 204, 204);"></div>
-                                                 <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
-                                             </div>
-                                             <li class="drop-all"><a href="http://lambdathemes.in/admin1/index.html#" class="text-center">All Tasks</a></li>
-                                         </ul>
-                                     </li>
-                                     <li>
-                                         <a href="@Url.Action("Profile", "Home", new { id = User.Identity.Name})" class="waves-effect waves-button waves-classic">
-                                             <span class="user-name">@displayName</span>
-                                             <img class="img-circle avatar" src="~/Content/Images/avatar1.png" width="40" height="40" alt="">
-                                         </a>
-                                     </li>
-                                     <li>
-                                         <a href="javascript:document.getElementById('logoutForm').submit()" class="log-out waves-effect waves-button waves-classic">
-                                             <span><i class="fa fa-sign-out m-r-xs"></i>Log Off</span></a>
-                                     </li>
-                                     <li>
-                                         <a href="javascript:void(0);" class="waves-effect waves-button waves-classic" id="showRight">
-                                             <i class="fa fa-comments"></i>
-                                         </a>
-                                     </li>
-                                 </ul>
-                             }
-                                 <!-- Nav -->
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="http://lambdathemes.in/admin1/index.html#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-envelope"></i><span class="badge badge-success pull-right">4</span></a>
+                                    <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
+                                        <li>
+                                            <p class="drop-title">You have 4 new messages !</p>
+                                        </li>
+                                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                                            <li class="dropdown-menu-list slimscroll messages" style="overflow: hidden; width: auto; height: 100%;">
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <a href="http://lambdathemes.in/admin1/index.html#">
+                                                            <div class="msg-img">
+                                                                <div class="online on"></div><img class="img-circle" src="~/Content/Images/avatar2.png" alt="">
+                                                            </div>
+                                                            <p class="msg-name">Sandra Smith</p>
+                                                            <p class="msg-text">Hey ! I'm working on your project</p>
+                                                            <p class="msg-time">3 minutes ago</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="http://lambdathemes.in/admin1/index.html#">
+                                                            <div class="msg-img">
+                                                                <div class="online off"></div><img class="img-circle" src="~/Content/Images/avatar4.png" alt="">
+                                                            </div>
+                                                            <p class="msg-name">Amily Lee</p>
+                                                            <p class="msg-text">Hi David !</p>
+                                                            <p class="msg-time">8 minutes ago</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="http://lambdathemes.in/admin1/index.html#">
+                                                            <div class="msg-img">
+                                                                <div class="online off"></div><img class="img-circle" src="~/Content/Images/avatar3.png" alt="">
+                                                            </div>
+                                                            <p class="msg-name">Christopher Palmer</p>
+                                                            <p class="msg-text">See you soon !</p>
+                                                            <p class="msg-time">56 minutes ago</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="http://lambdathemes.in/admin1/index.html#">
+                                                            <div class="msg-img">
+                                                                <div class="online on"></div><img class="img-circle" src="~/Content/Images/avatar5.png" alt="">
+                                                            </div>
+                                                            <p class="msg-name">Nick Doe</p>
+                                                            <p class="msg-text">Nice to meet you</p>
+                                                            <p class="msg-time">2 hours ago</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="http://lambdathemes.in/admin1/index.html#">
+                                                            <div class="msg-img">
+                                                                <div class="online on"></div><img class="img-circle" src="~/Content/Images/avatar2.png" alt="">
+                                                            </div>
+                                                            <p class="msg-name">Sandra Smith</p>
+                                                            <p class="msg-text">Hey ! I'm working on your project</p>
+                                                            <p class="msg-time">5 hours ago</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="http://lambdathemes.in/admin1/index.html#">
+                                                            <div class="msg-img">
+                                                                <div class="online off"></div><img class="img-circle" src="~/Content/Images/avatar4.png" alt="">
+                                                            </div>
+                                                            <p class="msg-name">Amily Lee</p>
+                                                            <p class="msg-text">Hi David !</p>
+                                                            <p class="msg-time">9 hours ago</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: block; border-radius: 0px; z-index: 99; right: 0px; background: rgb(204, 204, 204);"></div>
+                                            <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
+                                        </div>
+                                        <li class="drop-all"><a href="http://lambdathemes.in/admin1/index.html#" class="text-center">All Messages</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="http://lambdathemes.in/admin1/index.html#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-success pull-right">3</span></a>
+                                    <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
+                                        <li>
+                                            <p class="drop-title">You have 3 pending tasks !</p>
+                                        </li>
+                                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                                            <li class="dropdown-menu-list slimscroll tasks" style="overflow: hidden; width: auto; height: 100%;">
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <a href="http://lambdathemes.in/admin1/index.html#">
+                                                            <div class="task-icon badge badge-success">
+                                                                <i class="icon-user"></i>
+                                                            </div>
+                                                            <span class="badge badge-roundless badge-default pull-right">1min ago</span>
+                                                            <p class="task-details">New user registered.</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="http://lambdathemes.in/admin1/index.html#">
+                                                            <div class="task-icon badge badge-danger">
+                                                                <i class="icon-energy"></i>
+                                                            </div>
+                                                            <span class="badge badge-roundless badge-default pull-right">24min ago</span>
+                                                            <p class="task-details">Database error.</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="http://lambdathemes.in/admin1/index.html#">
+                                                            <div class="task-icon badge badge-info">
+                                                                <i class="icon-heart"></i>
+                                                            </div>
+                                                            <span class="badge badge-roundless badge-default pull-right">1h ago</span>
+                                                            <p class="task-details">Reached 24k likes</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: block; border-radius: 0px; z-index: 99; right: 0px; background: rgb(204, 204, 204);"></div>
+                                            <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
+                                        </div>
+                                        <li class="drop-all"><a href="http://lambdathemes.in/admin1/index.html#" class="text-center">All Tasks</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Profile", "Home", new { id = User.Identity.Name})" class="waves-effect waves-button waves-classic">
+                                        <span class="user-name">@displayName</span>
+                                        <img class="img-circle avatar" src="~/Content/Images/avatar1.png" width="40" height="40" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:document.getElementById('logoutForm').submit()" class="log-out waves-effect waves-button waves-classic">
+                                        <span><i class="fa fa-sign-out m-r-xs"></i>Log Off</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="waves-effect waves-button waves-classic" id="showRight">
+                                        <i class="fa fa-comments"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                        <!-- Nav -->
                     </div><!-- Top Menu -->
                 </div>
             </div>
         </div><!-- Navbar -->
-    <div class="page-sidebar sidebar visible">
-        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-            <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">
-                <div class="sidebar-header">
-                    <div class="sidebar-profile">
-                        <a href="javascript:void(0);" id="profile-menu-link">
-                            <div class="sidebar-profile-image">
-                                <img src="~/Content/Images/profile-menu-image.png" class="img-circle img-responsive" alt="">
-                            </div>
-                            <div class="sidebar-profile-details">
-                                <span>@displayName<br><small>Art Director</small></span>
-                            </div>
-                        </a>
+        <div class="page-sidebar sidebar visible">
+            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">
+                    <div class="sidebar-header">
+                        <div class="sidebar-profile">
+                            <a href="javascript:void(0);" id="profile-menu-link">
+                                <div class="sidebar-profile-image">
+                                    <img src="~/Content/Images/profile-menu-image.png" class="img-circle img-responsive" alt="">
+                                </div>
+                                <div class="sidebar-profile-details">
+                                    <span>@displayName<br><small>Art Director</small></span>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <ul class="menu accordion-menu">
-                    <li><a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>New Feed</p></a></li>
-                    <li><a href="@Url.Action("Profile", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
-                    @*<li class="droplink">
+                    <ul class="menu accordion-menu">
+                        <li><a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>New Feed</p></a></li>
+                        <li><a href="@Url.Action("Profile", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
+                        @*<li class="droplink">
                                 <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>MessageBox</p></a>
                             </li>*@
-                    <li>
-                        <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Chat</p></a>
-                    </li>
-                    <li class="droplink">
-                        <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-log-in"></span><p>Login</p><span class="arrow"></span></a>
-                        <ul class="sub-menu" style="display: none;">
-                            <li><a href="http://lambdathemes.in/admin1/login.html">Login Form</a></li>
-                            <li><a href="http://lambdathemes.in/admin1/login-alt.html">Login Alt</a></li>
-                            <li><a href="http://lambdathemes.in/admin1/register.html">Register Form</a></li>
-                            <li><a href="http://lambdathemes.in/admin1/register-alt.html">Register Alt</a></li>
-                            <li><a href="http://lambdathemes.in/admin1/forgot.html">Forgot Password</a></li>
-                            <li><a href="http://lambdathemes.in/admin1/lock-screen.html">Lock Screen</a></li>
-                        </ul>
-                    </li>
+                        <li>
+                            <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Chat</p></a>
+                        </li>
+                        <li class="droplink">
+                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-log-in"></span><p>Login</p><span class="arrow"></span></a>
+                            <ul class="sub-menu" style="display: none;">
+                                <li><a href="http://lambdathemes.in/admin1/login.html">Login Form</a></li>
+                                <li><a href="http://lambdathemes.in/admin1/login-alt.html">Login Alt</a></li>
+                                <li><a href="http://lambdathemes.in/admin1/register.html">Register Form</a></li>
+                                <li><a href="http://lambdathemes.in/admin1/register-alt.html">Register Alt</a></li>
+                                <li><a href="http://lambdathemes.in/admin1/forgot.html">Forgot Password</a></li>
+                                <li><a href="http://lambdathemes.in/admin1/lock-screen.html">Lock Screen</a></li>
+                            </ul>
+                        </li>
 
-                </ul>
-            </div>
-            <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 1080px; background: rgb(204, 204, 204);"></div>
-            <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
-        </div><!-- Page Sidebar Inner -->
-    </div>
+                    </ul>
+                </div>
+                <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 1080px; background: rgb(204, 204, 204);"></div>
+                <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
+            </div><!-- Page Sidebar Inner -->
+        </div>
         @RenderBody()
     </main><!-- Page Content -->
     <nav class="cd-nav-container" id="cd-nav">
@@ -345,47 +317,47 @@
             <h3>Navigation</h3>
             <a href="#" class="cd-close-nav">Close</a>
         </header>
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm"}))
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
         {
             @Html.AntiForgeryToken()
             <ul class="cd-nav list-unstyled">
                 <li class="cd-selected" data-menu="index">
                     <a href="@Url.Action("Newsfeed","Home")">
                         <span>
-                                <i class="glyphicon glyphicon-home"></i>
-                            </span>
+                            <i class="glyphicon glyphicon-home"></i>
+                        </span>
                         <p>Home</p>
                     </a>
                 </li>
                 <li data-menu="profile">
                     <a href="@Url.Action("Profile", "Home", new { id = User.Identity.Name})">
                         <span>
-                                <i class="glyphicon glyphicon-user"></i>
-                            </span>
+                            <i class="glyphicon glyphicon-user"></i>
+                        </span>
                         <p>Profile</p>
                     </a>
                 </li>
                 <li data-menu="inbox">
                     <a href="javsacript:void(0);">
                         <span>
-                                <i class="glyphicon glyphicon-envelope"></i>
-                            </span>
+                            <i class="glyphicon glyphicon-envelope"></i>
+                        </span>
                         <p>Mailbox</p>
                     </a>
                 </li>
                 <li data-menu="#">
                     <a href="javsacript:void(0);">
                         <span>
-                                <i class="glyphicon glyphicon-tasks"></i>
-                            </span>
+                            <i class="glyphicon glyphicon-tasks"></i>
+                        </span>
                         <p>Tasks</p>
                     </a>
                 </li>
                 <li data-menu="#">
                     <a href="javsacript:void(0);">
                         <span>
-                                <i class="glyphicon glyphicon-cog"></i>
-                            </span>
+                            <i class="glyphicon glyphicon-cog"></i>
+                        </span>
                         <p>Settings</p>
                     </a>
                 </li>
@@ -399,10 +371,10 @@
                 </li>
             </ul>
         }
-</nav>
-<div class="cd-overlay"></div>
+    </nav>
+    <div class="cd-overlay"></div>
 
-<!-- Javascripts --> 
+    <!-- Javascripts -->
     @RenderSection("scripts", required: false)
 
 
