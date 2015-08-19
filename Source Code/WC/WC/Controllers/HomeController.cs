@@ -18,6 +18,7 @@ namespace WC.Controllers
        // GET: Home
         public ActionResult Newsfeed()
         {
+            ViewData["FriendList"] = GetHtmlListFriendsOf(User.Identity.GetUserId());
             return View();
         }
 
@@ -31,10 +32,10 @@ namespace WC.Controllers
             List<Post> listView;
             if (CurrentUserName == username)
             {
-                listView = db.Posts.Where(x => x.PostedOn == currentUser.Id)
-                                    .Take(10)
-                                    .OrderByDescending(x => x.PostedDate)
-                                    .ToList();
+                //listView = db.Posts.Where(x => x.PostedOn == currentUser.Id)
+                //                    .Take(10)
+                //                    .OrderByDescending(x => x.PostedDate)
+                //                    .ToList();
             }
             else
             {
@@ -89,7 +90,7 @@ namespace WC.Controllers
                     PostID = Guid.NewGuid().ToString().Replace("-", string.Empty),
                     PostContent = content,
                     UserID = CurrentUserID,
-                    PostedOn = postedOn,
+                    //PostedOn = postedOn,
                     PostType = (int)PostType.Status,
                     PostedDate = DateTime.Now,
                     LastModified = DateTime.Now,
@@ -322,7 +323,7 @@ namespace WC.Controllers
                     NotificationID = Guid.NewGuid().ToString().Replace("-", string.Empty),
                     NotificationType = notifType,
                     NotificationContent = notifContent,
-                    NotificationItemID = itemId,
+                    //NotificationItemID = itemId,
                     NotificationDate = DateTime.Now,
                     Seen = false
                 };

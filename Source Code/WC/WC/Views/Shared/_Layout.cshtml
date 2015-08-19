@@ -46,14 +46,10 @@
         <h3><span class="pull-left">Chat</span><a href="javascript:void(0);" class="pull-right" id="closeRight"><i class="fa fa-times"></i></a></h3>
         <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
             <div class="slimscroll" style="overflow: hidden; width: auto; height: 100%;">
-                <a href="javascript:void(0);" onclick="" class="showRight2"><img src="~/Content/Images/avatar2.png" alt=""><span>Sandra smith<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="~/Content/Images/avatar3.png" alt=""><span>Amily Lee<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="~/Content/Images/avatar4.png" alt=""><span>Christopher Palmer<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="~/Content/Images/avatar5.png" alt=""><span>Nick Doe<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="~/Content/Images/avatar2.png" alt=""><span>Sandra smith<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="~/Content/Images/avatar3.png" alt=""><span>Amily Lee<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="~/Content/Images/avatar4.png" alt=""><span>Christopher Palmer<small>Hi! How're you?</small></span></a>
-                <a href="javascript:void(0);" class="showRight2"><img src="~/Content/Images/avatar5.png" alt=""><span>Nick Doe<small>Hi! How're you?</small></span></a>
+                @if (ViewData["FriendList"] != null)
+                {
+                    Html.RenderPartial("FriendListPartial", (ViewData["FriendList"] as List<WC.Models.FriendViewModel>));
+                }
             </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 629px; background: rgb(204, 204, 204);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
         </div>
     </nav>

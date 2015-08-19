@@ -3,6 +3,7 @@ using System.IO;
 using System.Web.Mvc;
 using WC.Data;
 using WC.Models;
+using System.Linq;
 
 namespace WC.Controllers
 {
@@ -17,14 +18,22 @@ namespace WC.Controllers
                         from u in db.Users
                         from pp in db.Profile_Photo
                         where fl.Id == f.FriendsListId
-                        && f.FriendId==u.UserId
-                        && u.UserId==pp.UserId
+                        && f.FriendId==u.UserID
+                        && u.UserID==pp.UserID
                         select new FriendViewModel()
                         {
                             FriendId = f.FriendId,
                             Name = u.FirstName + " " + u.LastName,
                             ProfileImgUrl=pp.ProfileImageUrl
                         };
+            return query.ToList();
+        }
+
+        public string GetHtmlListFriendsOf(string userId)
+        {
+            string html = "";
+            html+= RenderPartialViewToString("FriendListPartial", GetListFriendsOf(userId));
+            return html;
         }
 
         //[HttpPost]

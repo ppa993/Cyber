@@ -362,6 +362,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\PostList.cshtml" />
     <Content Include="Views\Home\CommentList.cshtml" />
+    <Content Include="Views\Home\FriendListPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

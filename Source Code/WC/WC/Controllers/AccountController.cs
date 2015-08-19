@@ -101,6 +101,14 @@ namespace WC.Controllers
                         Relationship = (int)Relationship.Single
                     };
                     db.Users.Add(userInfo);
+
+                    var friendList = new FriendList()
+                    {
+                        Id = user.Id,
+                        UserId = user.Id,
+                        CreatedDate = DateTime.Now
+                    };
+                    db.FriendLists.Add(friendList);
                     db.SaveChanges();
 
                     //await SignInAsync(user, isPersistent: false);
