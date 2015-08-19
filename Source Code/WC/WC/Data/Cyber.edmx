@@ -4,26 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CyberModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Comment">
-          <Key>
-            <PropertyRef Name="CommentID" />
-          </Key>
-          <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="CommentContent" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="CommentedDate" Type="datetime" Nullable="false" />
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CommentLike">
-          <Key>
-            <PropertyRef Name="CommentLikeID" />
-          </Key>
-          <Property Name="CommentLikeID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
+    <Schema Namespace="CyberModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ChatBox">
           <Key>
             <PropertyRef Name="Id" />
@@ -46,6 +27,25 @@
           <Property Name="SendDate" Type="datetime" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="DeletedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CommentContent" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CommentedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CommentLike">
+          <Key>
+            <PropertyRef Name="CommentLikeID" />
+          </Key>
+          <Property Name="CommentLikeID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="FriendList">
           <Key>
@@ -73,6 +73,7 @@
           <Property Name="NotificationID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="NotificationType" Type="int" Nullable="false" />
           <Property Name="NotificationContent" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NotificationItemID" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="NotificationDate" Type="datetime" Nullable="false" />
           <Property Name="Seen" Type="bit" Nullable="false" />
         </EntityType>
@@ -87,8 +88,9 @@
           <Key>
             <PropertyRef Name="PostID" />
           </Key>
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PostedOn" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="PostType" Type="int" Nullable="false" />
           <Property Name="PostContent" Type="nvarchar(max)" Nullable="false" />
           <Property Name="PostedDate" Type="datetime" Nullable="false" />
@@ -141,16 +143,6 @@
           <Property Name="RoleTypeID" Type="int" Nullable="false" />
           <Property Name="RoleTypeName" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
@@ -175,7 +167,7 @@
           <Property Name="VisibleTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="VisibleTypeName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <Association Name="FK__ChatBox__FromUse__239E4DCF">
+        <Association Name="FK__ChatBox__FromUse__300424B4">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="ChatBox" Type="Self.ChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -187,7 +179,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatBox__ToUseId__24927208">
+        <Association Name="FK__ChatBox__ToUseId__30F848ED">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="ChatBox" Type="Self.ChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -199,7 +191,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatReply__ChatB__2F10007B">
+        <Association Name="FK__ChatReply__ChatB__3C69FB99">
           <End Role="ChatBox" Type="Self.ChatBox" Multiplicity="0..1" />
           <End Role="ChatReply" Type="Self.ChatReply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -211,7 +203,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatReply__UserI__300424B4">
+        <Association Name="FK__ChatReply__UserI__3D5E1FD2">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="ChatReply" Type="Self.ChatReply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -223,7 +215,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FriendLis__UserI__2E1BDC42">
+        <Association Name="FK__FriendLis__UserI__3B75D760">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="FriendList" Type="Self.FriendList" Multiplicity="*" />
           <ReferentialConstraint>
@@ -235,7 +227,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__FriendI__49C3F6B7">
+        <Association Name="FK__Friends__FriendI__403A8C7D">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
           <ReferentialConstraint>
@@ -247,7 +239,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__Friends__48CFD27E">
+        <Association Name="FK__Friends__Friends__412EB0B6">
           <End Role="FriendList" Type="Self.FriendList" Multiplicity="1" />
           <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
           <ReferentialConstraint>
@@ -355,6 +347,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Post_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="PostedOn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Post_Visible_Type">
           <End Role="Visible_Type" Type="Self.Visible_Type" Multiplicity="1" />
           <End Role="Post" Type="Self.Post" Multiplicity="*" />
@@ -452,10 +456,10 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="CyberModelStoreContainer">
-          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CommentLike" EntityType="Self.CommentLike" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChatBox" EntityType="Self.ChatBox" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChatReply" EntityType="Self.ChatReply" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommentLike" EntityType="Self.CommentLike" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FriendList" EntityType="Self.FriendList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Friends" EntityType="Self.Friends" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
@@ -467,34 +471,33 @@
           <EntitySet Name="Relationship_Type" EntityType="Self.Relationship_Type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role_Type" EntityType="Self.Role_Type" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visible_Type" EntityType="Self.Visible_Type" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__ChatBox__FromUse__239E4DCF" Association="Self.FK__ChatBox__FromUse__239E4DCF">
+          <AssociationSet Name="FK__ChatBox__FromUse__300424B4" Association="Self.FK__ChatBox__FromUse__300424B4">
             <End Role="User" EntitySet="User" />
             <End Role="ChatBox" EntitySet="ChatBox" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__ToUseId__24927208" Association="Self.FK__ChatBox__ToUseId__24927208">
+          <AssociationSet Name="FK__ChatBox__ToUseId__30F848ED" Association="Self.FK__ChatBox__ToUseId__30F848ED">
             <End Role="User" EntitySet="User" />
             <End Role="ChatBox" EntitySet="ChatBox" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__ChatB__2F10007B" Association="Self.FK__ChatReply__ChatB__2F10007B">
+          <AssociationSet Name="FK__ChatReply__ChatB__3C69FB99" Association="Self.FK__ChatReply__ChatB__3C69FB99">
             <End Role="ChatBox" EntitySet="ChatBox" />
             <End Role="ChatReply" EntitySet="ChatReply" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__UserI__300424B4" Association="Self.FK__ChatReply__UserI__300424B4">
+          <AssociationSet Name="FK__ChatReply__UserI__3D5E1FD2" Association="Self.FK__ChatReply__UserI__3D5E1FD2">
             <End Role="User" EntitySet="User" />
             <End Role="ChatReply" EntitySet="ChatReply" />
           </AssociationSet>
-          <AssociationSet Name="FK__FriendLis__UserI__2E1BDC42" Association="Self.FK__FriendLis__UserI__2E1BDC42">
+          <AssociationSet Name="FK__FriendLis__UserI__3B75D760" Association="Self.FK__FriendLis__UserI__3B75D760">
             <End Role="User" EntitySet="User" />
             <End Role="FriendList" EntitySet="FriendList" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__FriendI__49C3F6B7" Association="Self.FK__Friends__FriendI__49C3F6B7">
+          <AssociationSet Name="FK__Friends__FriendI__403A8C7D" Association="Self.FK__Friends__FriendI__403A8C7D">
             <End Role="User" EntitySet="User" />
             <End Role="Friends" EntitySet="Friends" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__Friends__48CFD27E" Association="Self.FK__Friends__Friends__48CFD27E">
+          <AssociationSet Name="FK__Friends__Friends__412EB0B6" Association="Self.FK__Friends__Friends__412EB0B6">
             <End Role="FriendList" EntitySet="FriendList" />
             <End Role="Friends" EntitySet="Friends" />
           </AssociationSet>
@@ -527,6 +530,10 @@
             <End Role="Post" EntitySet="Post" />
           </AssociationSet>
           <AssociationSet Name="FK_Post_User" Association="Self.FK_Post_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Post_User1" Association="Self.FK_Post_User1">
             <End Role="User" EntitySet="User" />
             <End Role="Post" EntitySet="Post" />
           </AssociationSet>
@@ -568,11 +575,12 @@
     <edmx:ConceptualModels>
       <Schema Namespace="CyberModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="CyberEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Comments" EntityType="CyberModel.Comment" />
-          <EntitySet Name="CommentLikes" EntityType="CyberModel.CommentLike" />
           <EntitySet Name="ChatBoxes" EntityType="CyberModel.ChatBox" />
           <EntitySet Name="ChatReplies" EntityType="CyberModel.ChatReply" />
+          <EntitySet Name="Comments" EntityType="CyberModel.Comment" />
+          <EntitySet Name="CommentLikes" EntityType="CyberModel.CommentLike" />
           <EntitySet Name="FriendLists" EntityType="CyberModel.FriendList" />
+          <EntitySet Name="Friends" EntityType="CyberModel.Friend" />
           <EntitySet Name="Notifications" EntityType="CyberModel.Notification" />
           <EntitySet Name="Notification_Type" EntityType="CyberModel.Notification_Type" />
           <EntitySet Name="Posts" EntityType="CyberModel.Post" />
@@ -582,9 +590,24 @@
           <EntitySet Name="Relationship_Type" EntityType="CyberModel.Relationship_Type" />
           <EntitySet Name="Roles" EntityType="CyberModel.Role" />
           <EntitySet Name="Role_Type" EntityType="CyberModel.Role_Type" />
-          <EntitySet Name="sysdiagrams" EntityType="CyberModel.sysdiagram" />
           <EntitySet Name="Users" EntityType="CyberModel.User" />
           <EntitySet Name="Visible_Type" EntityType="CyberModel.Visible_Type" />
+          <AssociationSet Name="FK__ChatBox__FromUse__300424B4" Association="CyberModel.FK__ChatBox__FromUse__300424B4">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ChatBox" EntitySet="ChatBoxes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChatBox__ToUseId__30F848ED" Association="CyberModel.FK__ChatBox__ToUseId__30F848ED">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ChatBox" EntitySet="ChatBoxes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChatReply__ChatB__3C69FB99" Association="CyberModel.FK__ChatReply__ChatB__3C69FB99">
+            <End Role="ChatBox" EntitySet="ChatBoxes" />
+            <End Role="ChatReply" EntitySet="ChatReplies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChatReply__UserI__3D5E1FD2" Association="CyberModel.FK__ChatReply__UserI__3D5E1FD2">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ChatReply" EntitySet="ChatReplies" />
+          </AssociationSet>
           <AssociationSet Name="FK_Comment_Post" Association="CyberModel.FK_Comment_Post">
             <End Role="Post" EntitySet="Posts" />
             <End Role="Comment" EntitySet="Comments" />
@@ -601,25 +624,17 @@
             <End Role="User" EntitySet="Users" />
             <End Role="CommentLike" EntitySet="CommentLikes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__FromUse__239E4DCF" Association="CyberModel.FK__ChatBox__FromUse__239E4DCF">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ChatBox" EntitySet="ChatBoxes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__ToUseId__24927208" Association="CyberModel.FK__ChatBox__ToUseId__24927208">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ChatBox" EntitySet="ChatBoxes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__ChatB__2F10007B" Association="CyberModel.FK__ChatReply__ChatB__2F10007B">
-            <End Role="ChatBox" EntitySet="ChatBoxes" />
-            <End Role="ChatReply" EntitySet="ChatReplies" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__UserI__300424B4" Association="CyberModel.FK__ChatReply__UserI__300424B4">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ChatReply" EntitySet="ChatReplies" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FriendLis__UserI__2E1BDC42" Association="CyberModel.FK__FriendLis__UserI__2E1BDC42">
+          <AssociationSet Name="FK__FriendLis__UserI__3B75D760" Association="CyberModel.FK__FriendLis__UserI__3B75D760">
             <End Role="User" EntitySet="Users" />
             <End Role="FriendList" EntitySet="FriendLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friends__Friends__412EB0B6" Association="CyberModel.FK__Friends__Friends__412EB0B6">
+            <End Role="FriendList" EntitySet="FriendLists" />
+            <End Role="Friend" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Friends__FriendI__403A8C7D" Association="CyberModel.FK__Friends__FriendI__403A8C7D">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Friend" EntitySet="Friends" />
           </AssociationSet>
           <AssociationSet Name="FK_Notification_Notification_Type" Association="CyberModel.FK_Notification_Notification_Type">
             <End Role="Notification_Type" EntitySet="Notification_Type" />
@@ -634,6 +649,10 @@
             <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
           <AssociationSet Name="FK_Post_User" Association="CyberModel.FK_Post_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Post_User1" Association="CyberModel.FK_Post_User1">
             <End Role="User" EntitySet="Users" />
             <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
@@ -669,25 +688,44 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Role" EntitySet="Roles" />
           </AssociationSet>
-          <EntitySet Name="Friends" EntityType="CyberModel.Friend" />
-          <AssociationSet Name="FK__Friends__Friends__48CFD27E" Association="CyberModel.FK__Friends__Friends__48CFD27E">
-            <End Role="FriendList" EntitySet="FriendLists" />
-            <End Role="Friend" EntitySet="Friends" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Friends__FriendI__49C3F6B7" Association="CyberModel.FK__Friends__FriendI__49C3F6B7">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Friend" EntitySet="Friends" />
-          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ChatBox">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FromUseId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ToUseId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__ChatBox__FromUse__300424B4" FromRole="ChatBox" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="CyberModel.FK__ChatBox__ToUseId__30F848ED" FromRole="ChatBox" ToRole="User" />
+          <NavigationProperty Name="ChatReplies" Relationship="CyberModel.FK__ChatReply__ChatB__3C69FB99" FromRole="ChatBox" ToRole="ChatReply" />
+        </EntityType>
+        <EntityType Name="ChatReply">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ChatBoxId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserIdReply" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SendDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ChatBox" Relationship="CyberModel.FK__ChatReply__ChatB__3C69FB99" FromRole="ChatReply" ToRole="ChatBox" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__ChatReply__UserI__3D5E1FD2" FromRole="ChatReply" ToRole="User" />
+        </EntityType>
         <EntityType Name="Comment">
           <Key>
             <PropertyRef Name="CommentID" />
           </Key>
-          <Property Name="PostID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CommentID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PostID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CommentContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CommentedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Post" Relationship="CyberModel.FK_Comment_Post" FromRole="Comment" ToRole="Post" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Comment_User" FromRole="Comment" ToRole="User" />
@@ -703,34 +741,6 @@
           <NavigationProperty Name="Comment" Relationship="CyberModel.FK_CommentLike_Comment" FromRole="CommentLike" ToRole="Comment" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_CommentLike_User" FromRole="CommentLike" ToRole="User" />
         </EntityType>
-        <EntityType Name="ChatBox">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="FromUseId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ToUseId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="DeletedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__ChatBox__FromUse__239E4DCF" FromRole="ChatBox" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="CyberModel.FK__ChatBox__ToUseId__24927208" FromRole="ChatBox" ToRole="User" />
-          <NavigationProperty Name="ChatReplies" Relationship="CyberModel.FK__ChatReply__ChatB__2F10007B" FromRole="ChatBox" ToRole="ChatReply" />
-        </EntityType>
-        <EntityType Name="ChatReply">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ChatBoxId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserIdReply" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SendDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <Property Name="DeletedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ChatBox" Relationship="CyberModel.FK__ChatReply__ChatB__2F10007B" FromRole="ChatReply" ToRole="ChatBox" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__ChatReply__UserI__300424B4" FromRole="ChatReply" ToRole="User" />
-        </EntityType>
         <EntityType Name="FriendList">
           <Key>
             <PropertyRef Name="Id" />
@@ -738,8 +748,20 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__FriendLis__UserI__2E1BDC42" FromRole="FriendList" ToRole="User" />
-          <NavigationProperty Name="Friends" Relationship="CyberModel.FK__Friends__Friends__48CFD27E" FromRole="FriendList" ToRole="Friend" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__FriendLis__UserI__3B75D760" FromRole="FriendList" ToRole="User" />
+          <NavigationProperty Name="Friends" Relationship="CyberModel.FK__Friends__Friends__412EB0B6" FromRole="FriendList" ToRole="Friend" />
+        </EntityType>
+        <EntityType Name="Friend">
+          <Key>
+            <PropertyRef Name="FriendsListId" />
+            <PropertyRef Name="FriendId" />
+          </Key>
+          <Property Name="FriendsListId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FriendId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FriendStatus" Type="Int32" />
+          <Property Name="FriendSince" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FriendList" Relationship="CyberModel.FK__Friends__Friends__412EB0B6" FromRole="Friend" ToRole="FriendList" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__Friends__FriendI__403A8C7D" FromRole="Friend" ToRole="User" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -749,6 +771,7 @@
           <Property Name="NotificationID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="NotificationType" Type="Int32" Nullable="false" />
           <Property Name="NotificationContent" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NotificationItemID" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="NotificationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Seen" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Notification_Type" Relationship="CyberModel.FK_Notification_Notification_Type" FromRole="Notification" ToRole="Notification_Type" />
@@ -766,8 +789,9 @@
           <Key>
             <PropertyRef Name="PostID" />
           </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="PostID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PostedOn" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="PostType" Type="Int32" Nullable="false" />
           <Property Name="PostContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PostedDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -776,6 +800,7 @@
           <NavigationProperty Name="Comments" Relationship="CyberModel.FK_Comment_Post" FromRole="Post" ToRole="Comment" />
           <NavigationProperty Name="Post_Type" Relationship="CyberModel.FK_Post_Post_Type" FromRole="Post" ToRole="Post_Type" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Post_User" FromRole="Post" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="CyberModel.FK_Post_User1" FromRole="Post" ToRole="User" />
           <NavigationProperty Name="Visible_Type" Relationship="CyberModel.FK_Post_Visible_Type" FromRole="Post" ToRole="Visible_Type" />
           <NavigationProperty Name="PostLikes" Relationship="CyberModel.FK_PostLike_Post" FromRole="Post" ToRole="PostLike" />
         </EntityType>
@@ -834,16 +859,6 @@
           <Property Name="RoleTypeName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Roles" Relationship="CyberModel.FK_Role_Role_Type" FromRole="Role_Type" ToRole="Role" />
         </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
@@ -860,20 +875,21 @@
           <Property Name="Work" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Studied" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ChatBoxes" Relationship="CyberModel.FK__ChatBox__FromUse__300424B4" FromRole="User" ToRole="ChatBox" />
+          <NavigationProperty Name="ChatBoxes1" Relationship="CyberModel.FK__ChatBox__ToUseId__30F848ED" FromRole="User" ToRole="ChatBox" />
+          <NavigationProperty Name="ChatReplies" Relationship="CyberModel.FK__ChatReply__UserI__3D5E1FD2" FromRole="User" ToRole="ChatReply" />
           <NavigationProperty Name="Comments" Relationship="CyberModel.FK_Comment_User" FromRole="User" ToRole="Comment" />
           <NavigationProperty Name="CommentLikes" Relationship="CyberModel.FK_CommentLike_User" FromRole="User" ToRole="CommentLike" />
-          <NavigationProperty Name="ChatBoxes" Relationship="CyberModel.FK__ChatBox__FromUse__239E4DCF" FromRole="User" ToRole="ChatBox" />
-          <NavigationProperty Name="ChatBoxes1" Relationship="CyberModel.FK__ChatBox__ToUseId__24927208" FromRole="User" ToRole="ChatBox" />
-          <NavigationProperty Name="ChatReplies" Relationship="CyberModel.FK__ChatReply__UserI__300424B4" FromRole="User" ToRole="ChatReply" />
-          <NavigationProperty Name="FriendLists" Relationship="CyberModel.FK__FriendLis__UserI__2E1BDC42" FromRole="User" ToRole="FriendList" />
+          <NavigationProperty Name="FriendLists" Relationship="CyberModel.FK__FriendLis__UserI__3B75D760" FromRole="User" ToRole="FriendList" />
+          <NavigationProperty Name="Friends" Relationship="CyberModel.FK__Friends__FriendI__403A8C7D" FromRole="User" ToRole="Friend" />
           <NavigationProperty Name="Notifications" Relationship="CyberModel.FK_Notification_User" FromRole="User" ToRole="Notification" />
           <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_User" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="Posts1" Relationship="CyberModel.FK_Post_User1" FromRole="User" ToRole="Post" />
           <NavigationProperty Name="PostLikes" Relationship="CyberModel.FK_PostLike_User" FromRole="User" ToRole="PostLike" />
           <NavigationProperty Name="Profile_Photo" Relationship="CyberModel.FK_Profile_Photo_User" FromRole="User" ToRole="Profile_Photo" />
           <NavigationProperty Name="Relationship_Type" Relationship="CyberModel.FK_User_Relationship_Type" FromRole="User" ToRole="Relationship_Type" />
           <NavigationProperty Name="Role" Relationship="CyberModel.FK_Role_User" FromRole="User" ToRole="Role" />
           <NavigationProperty Name="Roles" Relationship="CyberModel.FK_Role_User1" FromRole="User" ToRole="Role" />
-          <NavigationProperty Name="Friends" Relationship="CyberModel.FK__Friends__FriendI__49C3F6B7" FromRole="User" ToRole="Friend" />
         </EntityType>
         <EntityType Name="Visible_Type">
           <Key>
@@ -883,6 +899,54 @@
           <Property Name="VisibleTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_Visible_Type" FromRole="Visible_Type" ToRole="Post" />
         </EntityType>
+        <Association Name="FK__ChatBox__FromUse__300424B4">
+          <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ChatBox">
+              <PropertyRef Name="FromUseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ChatBox__ToUseId__30F848ED">
+          <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ChatBox">
+              <PropertyRef Name="ToUseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ChatReply__ChatB__3C69FB99">
+          <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="0..1" />
+          <End Type="CyberModel.ChatReply" Role="ChatReply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChatBox">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ChatReply">
+              <PropertyRef Name="ChatBoxId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ChatReply__UserI__3D5E1FD2">
+          <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="CyberModel.ChatReply" Role="ChatReply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ChatReply">
+              <PropertyRef Name="UserIdReply" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Comment_Post">
           <End Type="CyberModel.Post" Role="Post" Multiplicity="1" />
           <End Type="CyberModel.Comment" Role="Comment" Multiplicity="*" />
@@ -931,55 +995,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatBox__FromUse__239E4DCF">
-          <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="ChatBox">
-              <PropertyRef Name="FromUseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ChatBox__ToUseId__24927208">
-          <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="ChatBox">
-              <PropertyRef Name="ToUseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ChatReply__ChatB__2F10007B">
-          <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="0..1" />
-          <End Type="CyberModel.ChatReply" Role="ChatReply" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ChatBox">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ChatReply">
-              <PropertyRef Name="ChatBoxId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ChatReply__UserI__300424B4">
-          <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="CyberModel.ChatReply" Role="ChatReply" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="ChatReply">
-              <PropertyRef Name="UserIdReply" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FriendLis__UserI__2E1BDC42">
+        <Association Name="FK__FriendLis__UserI__3B75D760">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.FriendList" Role="FriendList" Multiplicity="*" />
           <ReferentialConstraint>
@@ -988,6 +1004,30 @@
             </Principal>
             <Dependent Role="FriendList">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friends__Friends__412EB0B6">
+          <End Type="CyberModel.FriendList" Role="FriendList" Multiplicity="1" />
+          <End Type="CyberModel.Friend" Role="Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FriendList">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="FriendsListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Friends__FriendI__403A8C7D">
+          <End Type="CyberModel.User" Role="User" Multiplicity="1" />
+          <End Type="CyberModel.Friend" Role="Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="FriendId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1036,6 +1076,18 @@
             </Principal>
             <Dependent Role="Post">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Post_User1">
+          <End Type="CyberModel.User" Role="User" Multiplicity="1" />
+          <End Type="CyberModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="PostedOn" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1135,69 +1187,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Friend">
-          <Key>
-            <PropertyRef Name="FriendsListId" />
-            <PropertyRef Name="FriendId" />
-          </Key>
-          <Property Name="FriendsListId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="FriendId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="FriendStatus" Type="Int32" />
-          <Property Name="FriendSince" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="FriendList" Relationship="CyberModel.FK__Friends__Friends__48CFD27E" FromRole="Friend" ToRole="FriendList" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__Friends__FriendI__49C3F6B7" FromRole="Friend" ToRole="User" />
-        </EntityType>
-        <Association Name="FK__Friends__Friends__48CFD27E">
-          <End Type="CyberModel.FriendList" Role="FriendList" Multiplicity="1" />
-          <End Type="CyberModel.Friend" Role="Friend" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FriendList">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Friend">
-              <PropertyRef Name="FriendsListId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Friends__FriendI__49C3F6B7">
-          <End Type="CyberModel.User" Role="User" Multiplicity="1" />
-          <End Type="CyberModel.Friend" Role="Friend" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Friend">
-              <PropertyRef Name="FriendId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CyberModelStoreContainer" CdmEntityContainer="CyberEntities">
-          <EntitySetMapping Name="Comments">
-            <EntityTypeMapping TypeName="CyberModel.Comment">
-              <MappingFragment StoreEntitySet="Comment">
-                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="CommentedDate" ColumnName="CommentedDate" />
-                <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
-                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
-                <ScalarProperty Name="PostID" ColumnName="PostID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CommentLikes">
-            <EntityTypeMapping TypeName="CyberModel.CommentLike">
-              <MappingFragment StoreEntitySet="CommentLike">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
-                <ScalarProperty Name="CommentLikeID" ColumnName="CommentLikeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ChatBoxes">
             <EntityTypeMapping TypeName="CyberModel.ChatBox">
               <MappingFragment StoreEntitySet="ChatBox">
@@ -1223,6 +1218,27 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="CyberModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="CommentedDate" ColumnName="CommentedDate" />
+                <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommentLikes">
+            <EntityTypeMapping TypeName="CyberModel.CommentLike">
+              <MappingFragment StoreEntitySet="CommentLike">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="CommentLikeID" ColumnName="CommentLikeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="FriendLists">
             <EntityTypeMapping TypeName="CyberModel.FriendList">
               <MappingFragment StoreEntitySet="FriendList">
@@ -1232,11 +1248,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Friends">
+            <EntityTypeMapping TypeName="CyberModel.Friend">
+              <MappingFragment StoreEntitySet="Friends">
+                <ScalarProperty Name="FriendSince" ColumnName="FriendSince" />
+                <ScalarProperty Name="FriendStatus" ColumnName="FriendStatus" />
+                <ScalarProperty Name="FriendId" ColumnName="FriendId" />
+                <ScalarProperty Name="FriendsListId" ColumnName="FriendsListId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="CyberModel.Notification">
               <MappingFragment StoreEntitySet="Notification">
                 <ScalarProperty Name="Seen" ColumnName="Seen" />
                 <ScalarProperty Name="NotificationDate" ColumnName="NotificationDate" />
+                <ScalarProperty Name="NotificationItemID" ColumnName="NotificationItemID" />
                 <ScalarProperty Name="NotificationContent" ColumnName="NotificationContent" />
                 <ScalarProperty Name="NotificationType" ColumnName="NotificationType" />
                 <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
@@ -1260,8 +1287,9 @@
                 <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
                 <ScalarProperty Name="PostContent" ColumnName="PostContent" />
                 <ScalarProperty Name="PostType" ColumnName="PostType" />
-                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1317,17 +1345,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="CyberModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="CyberModel.User">
               <MappingFragment StoreEntitySet="User">
@@ -1351,16 +1368,6 @@
               <MappingFragment StoreEntitySet="Visible_Type">
                 <ScalarProperty Name="VisibleTypeName" ColumnName="VisibleTypeName" />
                 <ScalarProperty Name="VisibleTypeID" ColumnName="VisibleTypeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Friends">
-            <EntityTypeMapping TypeName="CyberModel.Friend">
-              <MappingFragment StoreEntitySet="Friends">
-                <ScalarProperty Name="FriendSince" ColumnName="FriendSince" />
-                <ScalarProperty Name="FriendStatus" ColumnName="FriendStatus" />
-                <ScalarProperty Name="FriendId" ColumnName="FriendId" />
-                <ScalarProperty Name="FriendsListId" ColumnName="FriendsListId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

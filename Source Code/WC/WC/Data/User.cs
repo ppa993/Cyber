@@ -16,17 +16,18 @@ namespace WC.Data
     {
         public User()
         {
-            this.Comments = new HashSet<Comment>();
-            this.CommentLikes = new HashSet<CommentLike>();
             this.ChatBoxes = new HashSet<ChatBox>();
             this.ChatBoxes1 = new HashSet<ChatBox>();
             this.ChatReplies = new HashSet<ChatReply>();
+            this.Comments = new HashSet<Comment>();
+            this.CommentLikes = new HashSet<CommentLike>();
             this.FriendLists = new HashSet<FriendList>();
+            this.Friends = new HashSet<Friend>();
             this.Notifications = new HashSet<Notification>();
             this.Posts = new HashSet<Post>();
+            this.Posts1 = new HashSet<Post>();
             this.PostLikes = new HashSet<PostLike>();
             this.Roles = new HashSet<Role>();
-            this.Friends = new HashSet<Friend>();
         }
     
         public string UserID { get; set; }
@@ -42,19 +43,20 @@ namespace WC.Data
         public string ContactNumber { get; set; }
         public string Studied { get; set; }
     
-        public virtual ICollection<Comment> Comments { get; set; }
-        public virtual ICollection<CommentLike> CommentLikes { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes1 { get; set; }
         public virtual ICollection<ChatReply> ChatReplies { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<CommentLike> CommentLikes { get; set; }
         public virtual ICollection<FriendList> FriendLists { get; set; }
+        public virtual ICollection<Friend> Friends { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Post> Posts1 { get; set; }
         public virtual ICollection<PostLike> PostLikes { get; set; }
         public virtual Profile_Photo Profile_Photo { get; set; }
         public virtual Relationship_Type Relationship_Type { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<Role> Roles { get; set; }
-        public virtual ICollection<Friend> Friends { get; set; }
     }
 }

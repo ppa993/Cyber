@@ -25,11 +25,12 @@ namespace WC.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Comment> Comments { get; set; }
-        public virtual DbSet<CommentLike> CommentLikes { get; set; }
         public virtual DbSet<ChatBox> ChatBoxes { get; set; }
         public virtual DbSet<ChatReply> ChatReplies { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<CommentLike> CommentLikes { get; set; }
         public virtual DbSet<FriendList> FriendLists { get; set; }
+        public virtual DbSet<Friend> Friends { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Notification_Type> Notification_Type { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
@@ -39,9 +40,7 @@ namespace WC.Data
         public virtual DbSet<Relationship_Type> Relationship_Type { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Role_Type> Role_Type { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Visible_Type> Visible_Type { get; set; }
-        public virtual DbSet<Friend> Friends { get; set; }
     }
 }
