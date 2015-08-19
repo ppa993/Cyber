@@ -1,12 +1,32 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Web.Mvc;
 using WC.Data;
+using WC.Models;
 
 namespace WC.Controllers
 {
     public class BaseController : Controller
     {
         public CyberEntities db = new CyberEntities();
+
+        public List<FriendViewModel> GetListFriendsOf(string userId)
+        {
+            var query = from fl in db.FriendLists
+                        from f in db.Friends
+                        from u in db.Users
+                        from pp in db.Profile_Photo
+                        where fl.Id == f.FriendsListId
+                        && f.FriendId==u.UserId
+                        && u.UserId==pp.UserId
+                        select new FriendViewModel()
+                        {
+                            FriendId = f.FriendId,
+                            Name = u.FirstName + " " + u.LastName,
+                            ProfileImgUrl=pp.ProfileImageUrl
+                        };
+        }
+
         //[HttpPost]
         //public string Register(string firstName, string lastName,string username, 
         //    string password, string email, string birthDay, string gender)

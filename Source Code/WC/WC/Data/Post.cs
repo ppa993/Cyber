@@ -20,9 +20,8 @@ namespace WC.Data
             this.PostLikes = new HashSet<PostLike>();
         }
     
-        public string PostID { get; set; }
         public string UserID { get; set; }
-        public string PostedOn { get; set; }
+        public string PostID { get; set; }
         public int PostType { get; set; }
         public string PostContent { get; set; }
         public System.DateTime PostedDate { get; set; }
@@ -32,7 +31,6 @@ namespace WC.Data
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Post_Type Post_Type { get; set; }
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
         public virtual Visible_Type Visible_Type { get; set; }
         public virtual ICollection<PostLike> PostLikes { get; set; }
     }

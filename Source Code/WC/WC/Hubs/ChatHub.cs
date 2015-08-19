@@ -1,105 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
+using Microsoft.AspNet.Identity;
 
 namespace WC.Hubs
 {
     [HubName("chatHub")]
-    public class ChatHub : Hub, IChatHub
+    public class ChatHub : Hub
     {
-        public void Send(string boxChatId, string fromUserId, string message)
+        public static List<UserConnection> ListUserConnected = new List<UserConnection>();
+
+        public void Send(string fromUserId, string toUserId, string message)
         {
-            Clients.All.broadcastMessage(boxChatId, fromUserId, message);
+            Clients.All.broadcastMessage(fromUserId, fromUserId, message);
         }
 
-
-        #region Data Members
-
-        static List<UserDetail> ConnectedUsers = new List<UserDetail>();
-        static List<MessageDetail> CurrentMessage = new List<MessageDetail>();
-
-        #endregion
-
-        #region Methods
-
-        public void Connect(string userName)
+        public override Task OnConnected()
         {
-            var id = Context.ConnectionId;
-
-
-            if (ConnectedUsers.Count(x => x.ConnectionId == id) == 0)
+            var connectionId = Context.ConnectionId;
+            var user = ListUserConnected.FirstOrDefault(x => x.ConnectionId == connectionId);
+            if (user == null)
             {
-                ConnectedUsers.Add(new UserDetail { ConnectionId = id, UserName = userName });
-
-                // send to caller
-                Clients.Caller.onConnected(id, userName, ConnectedUsers, CurrentMessage);
-
-                // send to all except caller client
-                Clients.AllExcept(id).onNewUserConnected(id, userName);
-
+                UserConnection u = new UserConnection()
+                {
+                    ConnectionId = connectionId,
+                    UserId = HttpContext.Current.User.Identity.GetUserId()
+                };
+                ListUserConnected.Add(u);
             }
 
+            return base.OnConnected();
         }
 
-        public void SendMessageToAll(string userName, string message)
+        public override Task OnDisconnected(bool stopCalled)
         {
-            // store last 100 messages in cache
-            AddMessageinCache(userName, message);
-
-            // Broad cast message
-            Clients.All.messageReceived(userName, message);
-        }
-
-        public void SendPrivateMessage(string toUserId, string message)
-        {
-
-            string fromUserId = Context.ConnectionId;
-
-            var toUser = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == toUserId);
-            var fromUser = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == fromUserId);
-
-            if (toUser != null && fromUser != null)
+            var connectionId = Context.ConnectionId;
+            var user = ListUserConnected.FirstOrDefault(x => x.ConnectionId == connectionId);
+            if (user != null)
             {
-                // send to 
-                Clients.Client(toUserId).sendPrivateMessage(fromUserId, fromUser.UserName, message);
-
-                // send to caller user
-                Clients.Caller.sendPrivateMessage(toUserId, fromUser.UserName, message);
+                ListUserConnected.Remove(user);
             }
 
+            return base.OnDisconnected(stopCalled);
         }
-
-        public override System.Threading.Tasks.Task OnDisconnected()
-        {
-            var item = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
-            if (item != null)
-            {
-                ConnectedUsers.Remove(item);
-
-                var id = Context.ConnectionId;
-                Clients.All.onUserDisconnected(id, item.UserName);
-
-            }
-
-            return base.OnDisconnected();
-        }
-
-
-        #endregion
-
-        #region private Messages
-
-        private void AddMessageinCache(string userName, string message)
-        {
-            CurrentMessage.Add(new MessageDetail { UserName = userName, Message = message });
-
-            if (CurrentMessage.Count > 100)
-                CurrentMessage.RemoveAt(0);
-        }
-
-        #endregion
     }
 }

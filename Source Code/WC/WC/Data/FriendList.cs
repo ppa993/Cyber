@@ -12,14 +12,18 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Friend
+    public partial class FriendList
     {
-        public string FriendsListId { get; set; }
-        public string FriendId { get; set; }
-        public Nullable<int> FriendStatus { get; set; }
-        public Nullable<System.DateTime> FriendSince { get; set; }
+        public FriendList()
+        {
+            this.Friends = new HashSet<Friend>();
+        }
     
-        public virtual FriendList FriendList { get; set; }
+        public string Id { get; set; }
+        public string UserId { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+    
         public virtual User User { get; set; }
+        public virtual ICollection<Friend> Friends { get; set; }
     }
 }

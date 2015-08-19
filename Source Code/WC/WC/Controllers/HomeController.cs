@@ -38,15 +38,15 @@ namespace WC.Controllers
             }
             else
             {
-                listView = db.Posts.Where(x => x.PostedOn == currentUser.Id)
-                                    .Where(x => x.VisibleType == 1 
-                                        || (x.VisibleType == 2 && db.Friends.Any(y => y.UserID == currentUser.Id 
-                                                                && y.FriendID == requestUserId 
-                                                                && y.FriendStatus))
-                                        || x.UserID == requestUserId)
-                                    .Take(10)
-                                    .OrderByDescending(x => x.PostedDate)
-                                    .ToList();
+                //listView = db.Posts.Where(x => x.PostedOn == currentUser.Id)
+                //                    .Where(x => x.VisibleType == 1 
+                //                        || (x.VisibleType == 2 && db.Friends.Any(y => y.UserID == currentUser.Id 
+                //                                                && y.FriendID == requestUserId 
+                //                                                && y.FriendStatus))
+                //                        || x.UserID == requestUserId)
+                //                    .Take(10)
+                //                    .OrderByDescending(x => x.PostedDate)
+                //                    .ToList();
             }
             var user = new ProfileViewModel();
 
@@ -59,7 +59,7 @@ namespace WC.Controllers
                 user.Email = userInfo.Email;
                 var friends = userInfo.Friends;
                 user.Friends = friends;
-                user.Posts = listView;
+                //user.Posts = listView;
             }
             
             return View(user);

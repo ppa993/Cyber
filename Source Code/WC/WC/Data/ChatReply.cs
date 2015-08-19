@@ -12,14 +12,17 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Friend
+    public partial class ChatReply
     {
-        public string FriendsListId { get; set; }
-        public string FriendId { get; set; }
-        public Nullable<int> FriendStatus { get; set; }
-        public Nullable<System.DateTime> FriendSince { get; set; }
+        public int Id { get; set; }
+        public string ChatBoxId { get; set; }
+        public string UserIdReply { get; set; }
+        public string Content { get; set; }
+        public System.DateTime SendDate { get; set; }
+        public bool Deleted { get; set; }
+        public Nullable<System.DateTime> DeletedDate { get; set; }
     
-        public virtual FriendList FriendList { get; set; }
+        public virtual ChatBox ChatBox { get; set; }
         public virtual User User { get; set; }
     }
 }
