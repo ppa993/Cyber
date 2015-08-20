@@ -66,7 +66,13 @@
     }
     .remove-content {
         top: 10px;
+        -ms-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        -ms-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        box-shadow: 0 6px 12px rgba(0,0,0,.175);
     }
+
     .remove-content:before, .remove-content:after {
         content: none;
     }
@@ -80,14 +86,21 @@
         -webkit-min-width: 100px;
         min-width: 100px;
     }
+    .modal-header {
+        border-radius: 6px 6px 0 0;
+        background-color: #f6f7f8;
+    }
 </style>
 @foreach (var item in Model)
 {
-    var alreadyLike = item.PostLikes.Any(x => x.UserID == User.Identity.GetUserId())
+    var currentUserId = User.Identity.GetUserId();
+    var isOwner = item.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase)
+                  || item.PostedOn.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
+    var alreadyLike = item.PostLikes.Any(x => x.UserID == currentUserId)
         ? "Unlike"
         : "Like";
 
-    <li class="timeline-item">
+    <li id="post-block-@item.PostID" class="timeline-item">
         <div class="panel panel-white">
             <div class="panel-body post-block">
                 <div class="timeline-item-header post-header">
@@ -99,10 +112,13 @@
             <span class="caret"></span>
         </a>
         <ul id="menu3" class="dropdown-menu remove-content pull-left" aria-labelledby="drop-@item.PostID">
-            <li><a href="#" class="edit-post-command" post-id="@item.PostID">Edit Post</a></li>
-            <li><a href="#" class="report-post-command" post-id="@item.PostID">Report...</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#" class="delete-post-command" post-id="@item.PostID">Delete</a></li>
+            @if (isOwner)
+            {
+                <li><a href="#" class="edit-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit Post</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#myModal" class="delete-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a></li>
+                <li role="separator" class="divider"></li>
+            }
+                <li><a href="#" class="report-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-flag"></span>&nbsp;&nbsp;Report...</a></li>
         </ul>
     </div>
     </div>

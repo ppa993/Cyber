@@ -53,6 +53,7 @@ namespace WC.Constants
 
     public enum ActionResults
     {
+        Deleted,
         Failed,
         Succeed
     }

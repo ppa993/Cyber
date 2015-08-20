@@ -128,6 +128,7 @@ namespace WC.Controllers
             return str;
 
         }
+
         [HttpPost]
         public string DeletePost(string postId)
         {
@@ -135,9 +136,32 @@ namespace WC.Controllers
             {
                 var post =
                     db.Posts.FirstOrDefault(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase));
+                if (post != null)
+                {
+                    if (post.UserID == CurrentUserID || post.PostedOn == CurrentUserID)
+                    {
+                        foreach (var comment in post.Comments)
+                        {
+                            db.CommentLikes.RemoveRange(comment.CommentLikes);
+                        }
+                        db.SaveChanges();
 
-                db.Posts.Remove(post);
-                db.SaveChanges();
+                        db.Comments.RemoveRange(post.Comments);
+                        db.PostLikes.RemoveRange(post.PostLikes);
+                        db.SaveChanges();
+
+                        db.Posts.Remove(post);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        return ActionResults.Failed.ToString();
+                    }
+                }
+                else
+                {
+                    return ActionResults.Deleted.ToString();
+                }
 
             }
             catch (Exception exception)
