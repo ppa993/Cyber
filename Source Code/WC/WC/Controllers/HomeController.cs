@@ -232,6 +232,54 @@ namespace WC.Controllers
         }
 
         [HttpPost]
+        public string DeleteComment(string commentId)
+        {
+            try
+            {
+                var comment =
+                    db.Comments.FirstOrDefault(x => x.CommentID.Equals(commentId, StringComparison.InvariantCultureIgnoreCase));
+                if (comment != null)
+                {
+                    var post =
+                        db.Posts.FirstOrDefault(
+                            x => x.PostID.Equals(comment.PostID, StringComparison.InvariantCultureIgnoreCase));
+                    if (post != null)
+                    {
+                        if (comment.UserID == CurrentUserID || post.PostedOn == CurrentUserID)
+                        {
+                            db.CommentLikes.RemoveRange(comment.CommentLikes);
+                            db.SaveChanges();
+
+                            db.Comments.Remove(comment);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            return ActionResults.Failed.ToString();
+                        }
+                    }
+                    else
+                    {
+                        return ActionResults.Deleted.ToString();
+                    }
+                }
+                else
+                {
+                    return ActionResults.Deleted.ToString();
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+
+            return ActionResults.Succeed.ToString();
+
+        }
+
+        [HttpPost]
         public string LikeUnlikePost(string postID, bool isLike)
         {
             try

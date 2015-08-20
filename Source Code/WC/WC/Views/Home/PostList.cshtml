@@ -2,6 +2,7 @@
 @using Microsoft.AspNet.Identity
 @using Microsoft.AspNet.Identity.Owin
 @using WC.Models
+@{ var currentUserId = User.Identity.GetUserId(); }
 @model List<WC.Data.Post>
 
 <style type="text/css">
@@ -76,7 +77,7 @@
     .remove-content:before, .remove-content:after {
         content: none;
     }
-    .dropdown-caret {
+    .post-dropdown-caret {
         top: -25px;
     }
     .dropdown-menu {
@@ -87,15 +88,15 @@
         min-width: 100px;
     }
     .modal-header {
+        -ms-border-radius: 6px 6px 0 0;
         border-radius: 6px 6px 0 0;
         background-color: #f6f7f8;
     }
 </style>
 @foreach (var item in Model)
 {
-    var currentUserId = User.Identity.GetUserId();
-    var isOwner = item.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase)
-                  || item.PostedOn.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
+    var isPoster = item.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
+    var isOwner = item.PostedOn.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
     var alreadyLike = item.PostLikes.Any(x => x.UserID == currentUserId)
         ? "Unlike"
         : "Like";
@@ -107,20 +108,29 @@
                     <img src="@Url.Content(item.User.Profile_Photo.ProfileImageUrl)" alt="">
                     <p>@item.User.FirstName @item.User.LastName</p>
                     <small>@item.PostedDate</small>
-    <div class="dropdown dropdown-caret pull-right">
-        <a id="drop-@item.PostID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-        </a>
-        <ul id="menu3" class="dropdown-menu remove-content pull-left" aria-labelledby="drop-@item.PostID">
-            @if (isOwner)
-            {
-                <li><a href="#" class="edit-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit Post</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#myModal" class="delete-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a></li>
-                <li role="separator" class="divider"></li>
-            }
-                <li><a href="#" class="report-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-flag"></span>&nbsp;&nbsp;Report...</a></li>
-        </ul>
-    </div>
+                    <div class="dropdown post-dropdown-caret pull-right">
+                        <a id="drop-@item.PostID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu remove-content pull-left" aria-labelledby="drop-@item.PostID">
+                            @if (isPoster)
+                            {
+                                <li><a href="#" class="edit-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit Post</a></li>
+                            }
+                            @if (isOwner || isPoster)
+                            {
+                                <li><a href="#" data-toggle="modal" data-target="#post-modal" class="delete-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a></li>
+                            }
+                            @if ((isOwner || isPoster) && !isPoster)
+                            {
+                                <li role="separator" class="divider"></li>
+                            }
+                            @if (!isPoster)
+                            {
+                                <li><a href="#" class="report-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-flag"></span>&nbsp;&nbsp;Report...</a></li>
+                            }
+                        </ul>
+                    </div>
     </div>
     <div class="timeline-item-post">
         <div class="post-content">
@@ -141,15 +151,39 @@
                     //Html.RenderAction("CommentList", "Home", new { Model = item.Comments as List<WC.Data.Comment> });
                     foreach (var comment in comments)
                     {
+                        var isCommenter = comment.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
                         var commentAlreadyLike = comment.CommentLikes.Any(x => x.UserID == User.Identity.GetUserId())
                                             ? "Unlike"
                                             : "Like";
-                        <div class="timeline-comment">
+                        <div id="comment-block-@comment.CommentID" class="timeline-comment">
                             <div class="timeline-comment-header">
                                 <img src="@Url.Content(comment.User.Profile_Photo.ProfileImageUrl)" alt="">
                                 <p>
                                     <a href="#">@comment.User.FirstName @comment.User.LastName</a> <span style="white-space: pre-line; font-weight: 400">@comment.CommentContent</span>
                                 </p>
+                                <div class="dropdown dropdown-caret pull-right">
+                                    <a id="drop-@comment.CommentID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu remove-content pull-left" aria-labelledby="drop-@comment.CommentID">
+                                        @if (isCommenter)
+                                        {
+                                            <li><a href="#" class="edit-comment-command" comment-id="@comment.CommentID"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit Comment</a></li>
+                                        }
+                                        @if (isOwner || isCommenter)
+                                        {
+                                            <li><a href="#" data-toggle="modal" data-target="#comment-modal" class="delete-comment-command" comment-id="@comment.CommentID"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a></li>
+                                        }
+                                        @if ((isOwner || isCommenter) && !isCommenter)
+                                        {
+                                            <li role="separator" class="divider"></li>
+                                        }
+                                        @if (!isCommenter)
+                                        {
+                                            <li><a href="#" class="report-comment-command" comment-id="@comment.CommentID"><span class="glyphicon glyphicon-flag"></span>&nbsp;&nbsp;Report...</a></li>
+                                        }
+                                    </ul>
+                                </div>
                             </div>
                             <a class="comment-like" href="#" comment-id="@comment.CommentID" data-toogle="@commentAlreadyLike">
                                 <span id="comment-like-status-@comment.CommentID">@commentAlreadyLike</span> (<span id="comment-like-count-@comment.CommentID">@comment.CommentLikes.Count</span>)
