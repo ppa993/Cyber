@@ -250,6 +250,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
+    <Compile Include="Hubs\ChatHubModel.cs" />
     <Compile Include="Hubs\UserConnection.cs" />
     <Compile Include="Migrations\201508080348339_InitialCreate.cs" />
     <Compile Include="Migrations\201508080348339_InitialCreate.Designer.cs">
@@ -284,6 +285,16 @@
     <Content Include="Content\Images\avatar5.png" />
     <Content Include="Content\Images\Avatar\female.png" />
     <Content Include="Content\Images\Avatar\male.png" />
+    <Content Include="Content\Images\Avatar\men1.png" />
+    <Content Include="Content\Images\Avatar\men2.png" />
+    <Content Include="Content\Images\Avatar\men3.png" />
+    <Content Include="Content\Images\Avatar\men4.png" />
+    <Content Include="Content\Images\Avatar\men5.png" />
+    <Content Include="Content\Images\Avatar\woman1.png" />
+    <Content Include="Content\Images\Avatar\woman2.png" />
+    <Content Include="Content\Images\Avatar\woman3.png" />
+    <Content Include="Content\Images\Avatar\woman4.png" />
+    <Content Include="Content\Images\Avatar\woman5.png" />
     <Content Include="Content\Images\bg-input-focus.png" />
     <Content Include="Content\Images\bg-input.png" />
     <Content Include="Content\Images\Avatar\men.png" />
@@ -367,6 +378,7 @@
     <Content Include="Views\Home\PostList.cshtml" />
     <Content Include="Views\Home\CommentList.cshtml" />
     <Content Include="Views\Home\FriendListPartial.cshtml" />
+    <Content Include="Views\Home\ChatItemViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

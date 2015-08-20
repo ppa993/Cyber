@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using WC.Data;
 using WC.Models;
 using System.Linq;
+using WC.Hubs;
 
 namespace WC.Controllers
 {
@@ -16,15 +17,15 @@ namespace WC.Controllers
             var query = from fl in db.FriendLists
                         from f in db.Friends
                         from u in db.Users
-                        from pp in db.Profile_Photo
+                            //from pp in db.Profile_Photo
                         where fl.Id == f.FriendsListId
-                        && f.FriendId==u.UserID
-                        && u.UserID==pp.UserID
+                        && f.FriendId == u.UserID
+                        && fl.Id == userId
                         select new FriendViewModel()
                         {
                             FriendId = f.FriendId,
                             Name = u.FirstName + " " + u.LastName,
-                            ProfileImgUrl=pp.ProfileImageUrl
+                            //ProfileImgUrl=pp.ProfileImageUrl
                         };
             return query.ToList();
         }
@@ -32,10 +33,34 @@ namespace WC.Controllers
         public string GetHtmlListFriendsOf(string userId)
         {
             string html = "";
-            html+= RenderPartialViewToString("FriendListPartial", GetListFriendsOf(userId));
+            html += RenderPartialViewToString("FriendListPartial", GetListFriendsOf(userId));
             return html;
         }
 
+        public List<ChatHubModel> GetListChatItemOf(string fromUserId, string toUserId)
+        {
+            var query = from cb in db.ChatBoxes
+                        from cbd in db.ChatReplies
+                        from u in db.Users
+                        where cb.Id == cbd.ChatBoxId
+                        && (cb.FromUseId == fromUserId && cb.ToUseId == toUserId ||
+                            cb.FromUseId == toUserId && cb.ToUseId == fromUserId)
+                        && cbd.UserIdReply == u.UserID
+                        select new ChatHubModel()
+                        {
+                            UserId = cbd.UserIdReply,
+                            Message = cbd.Content,
+                            Name = u.FirstName + " " + u.LastName,
+                        };
+            var data = query.ToList();
+            return data;
+        }
+        public string GetHtmlListChatItemOf(string fromUserId, string toUserId)
+        {
+            string html = "";
+            html += RenderPartialViewToString("ChatItemViewModel", GetListChatItemOf(fromUserId, toUserId));
+            return html;
+        }
         //[HttpPost]
         //public string Register(string firstName, string lastName,string username, 
         //    string password, string email, string birthDay, string gender)
