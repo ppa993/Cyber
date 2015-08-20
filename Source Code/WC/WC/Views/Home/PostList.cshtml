@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNet.Identity
+﻿@using System.Web.UI.WebControls
+@using Microsoft.AspNet.Identity
 @using Microsoft.AspNet.Identity.Owin
 @using WC.Models
 @model List<WC.Data.Post>
@@ -7,12 +8,15 @@
     .post-block {
         padding: 0 !important;
     }
+
         .post-block .post-header {
             padding: 20px !important;
         }
+
         .post-block .post-content {
-            padding: 0 20px !important;    
+            padding: 0 20px !important;
         }
+
         .post-block .post-comment {
             padding: 20px !important;
             background-color: #f6f7f8;
@@ -21,33 +25,60 @@
     .profile-timeline ul li .timeline-item-post {
         padding: 0;
     }
+    .profile-timeline ul li .timeline-item-header {
+        overflow: visible;
+    }
+
     .timeline-comment .timeline-comment-header p {
         padding: 0 5px 5px 0;
         width: 90%;
         text-align: justify;
     }
-     .timeline-comment {
+
+    .timeline-comment {
         border-bottom: none;
     }
+
     .timeline-options {
         border-bottom: none;
         margin-bottom: 0;
     }
+
         .timeline-options a {
             color: #337ab7;
         }
+
     .comment-like {
         padding-left: 40px;
         padding-right: 5px;
     }
+
     a.comment-like {
         text-decoration: none;
     }
+
         a.comment-like:hover {
             color: #22BAA0;
         }
+
     small {
         color: #9197a3;
+    }
+    .remove-content {
+        top: 10px;
+    }
+    .remove-content:before, .remove-content:after {
+        content: none;
+    }
+    .dropdown-caret {
+        top: -25px;
+    }
+    .dropdown-menu {
+        -moz-min-width: 100px;
+        -ms-min-width: 100px;
+        -o-min-width: 100px;
+        -webkit-min-width: 100px;
+        min-width: 100px;
     }
 </style>
 @foreach (var item in Model)
@@ -55,56 +86,67 @@
     var alreadyLike = item.PostLikes.Any(x => x.UserID == User.Identity.GetUserId())
         ? "Unlike"
         : "Like";
-        
+
     <li class="timeline-item">
         <div class="panel panel-white">
             <div class="panel-body post-block">
                 <div class="timeline-item-header post-header">
-                    <img src="~/Content/Images/avatar5.png" alt="">
+                    <img src="@Url.Content(item.User.Profile_Photo.ProfileImageUrl)" alt="">
                     <p>@item.User.FirstName @item.User.LastName</p>
                     <small>@item.PostedDate</small>
-                </div>
-                <div class="timeline-item-post">
-                    <div class="post-content">
-                        <p style="white-space: pre-line">@item.PostContent</p>
-                        <div class="timeline-options">
-                            <a class="post-like" href="#" post-id="@item.PostID" data-toogle="@alreadyLike">
-                                <i class="icon-like"></i>
-                                <span id="post-like-status-@item.PostID">@alreadyLike</span> (<span id="post-like-count-@item.PostID">@item.PostLikes.Count</span>)
-                            </a>
-                            <a href="#" class="comment-text" post-id="@item.PostID"><i class="icon-bubble"></i> Comment (<span id="comment-count-@item.PostID">@item.Comments.Count</span>)</a>
-                        </div>
-                    </div>
-                    <div class="post-comment">
-                        <div id="comment-list-@item.PostID">
-                            @if (item.Comments.Count > 0)
-                            {
-                                var comments = item.Comments.OrderBy(x => x.CommentedDate);
-                                //Html.RenderAction("CommentList", "Home", new { Model = item.Comments as List<WC.Data.Comment> });
-                                foreach (var comment in comments)
-                                {
-                                    var commentAlreadyLike = comment.CommentLikes.Any(x => x.UserID == User.Identity.GetUserId())
-                                                        ? "Unlike"
-                                                        : "Like";
-                                    <div class="timeline-comment">
-                                        <div class="timeline-comment-header">
-                                            <img src="~/Content/Images/avatar2.png" alt="">
-                                            <p>
-                                                <a href="#">@comment.User.FirstName @comment.User.LastName</a> <span style="white-space: pre-line; font-weight: 400">@comment.CommentContent</span>
-                                            </p>
-                                        </div>
-                                        <a class="comment-like" href="#" comment-id="@comment.CommentID" data-toogle="@commentAlreadyLike">
-                                            <span id="comment-like-status-@comment.CommentID">@commentAlreadyLike</span> (<span id="comment-like-count-@comment.CommentID">@comment.CommentLikes.Count</span>)
-                                        </a><small>@comment.CommentedDate</small>
-                                    </div>
-                                }
-                            }
-                        </div>
-                        <textarea class="form-control comment-form" id="comment-area-@item.PostID" post-id="@item.PostID" placeholder="Write a comment..."></textarea>
-                    </div>
-                </div>
+    <div class="dropdown dropdown-caret pull-right">
+        <a id="drop-@item.PostID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+        </a>
+        <ul id="menu3" class="dropdown-menu remove-content pull-left" aria-labelledby="drop-@item.PostID">
+            <li><a href="#" class="edit-post-command" post-id="@item.PostID">Edit Post</a></li>
+            <li><a href="#" class="report-post-command" post-id="@item.PostID">Report...</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#" class="delete-post-command" post-id="@item.PostID">Delete</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="timeline-item-post">
+        <div class="post-content">
+            <p style="white-space: pre-line">@item.PostContent</p>
+            <div class="timeline-options">
+                <a class="post-like" href="#" post-id="@item.PostID" data-toogle="@alreadyLike">
+                    <i class="icon-like"></i>
+                    <span id="post-like-status-@item.PostID">@alreadyLike</span> (<span id="post-like-count-@item.PostID">@item.PostLikes.Count</span>)
+                </a>
+                <a href="#" class="comment-text" post-id="@item.PostID"><i class="icon-bubble"></i> Comment (<span id="comment-count-@item.PostID">@item.Comments.Count</span>)</a>
             </div>
         </div>
+        <div class="post-comment">
+            <div id="comment-list-@item.PostID">
+                @if (item.Comments.Count > 0)
+                {
+                    var comments = item.Comments.OrderBy(x => x.CommentedDate);
+                    //Html.RenderAction("CommentList", "Home", new { Model = item.Comments as List<WC.Data.Comment> });
+                    foreach (var comment in comments)
+                    {
+                        var commentAlreadyLike = comment.CommentLikes.Any(x => x.UserID == User.Identity.GetUserId())
+                                            ? "Unlike"
+                                            : "Like";
+                        <div class="timeline-comment">
+                            <div class="timeline-comment-header">
+                                <img src="@Url.Content(comment.User.Profile_Photo.ProfileImageUrl)" alt="">
+                                <p>
+                                    <a href="#">@comment.User.FirstName @comment.User.LastName</a> <span style="white-space: pre-line; font-weight: 400">@comment.CommentContent</span>
+                                </p>
+                            </div>
+                            <a class="comment-like" href="#" comment-id="@comment.CommentID" data-toogle="@commentAlreadyLike">
+                                <span id="comment-like-status-@comment.CommentID">@commentAlreadyLike</span> (<span id="comment-like-count-@comment.CommentID">@comment.CommentLikes.Count</span>)
+                            </a><small>@comment.CommentedDate</small>
+                        </div>
+                    }
+                }
+            </div>
+            <textarea class="form-control comment-form" id="comment-area-@item.PostID" post-id="@item.PostID" placeholder="Write a comment..."></textarea>
+        </div>
+    </div>
+    </div>
+    </div>
     </li>
 }
 

@@ -8,6 +8,8 @@ namespace WC.Constants
     public class Common
     {
         public const string SESSION_USER = "User";
+        public const string MALE_AVATAR = "~/Content/Images/Avatar/male.png";
+        public const string FEMALE_AVATAR = "~/Content/Images/Avatar/female.png";
     }
 
     public class DateTimeFormat

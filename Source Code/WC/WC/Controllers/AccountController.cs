@@ -101,6 +101,14 @@ namespace WC.Controllers
                         Relationship = (int)Relationship.Single
                     };
                     db.Users.Add(userInfo);
+                    db.SaveChanges();
+
+                    var photo = new Profile_Photo
+                    {
+                        UserID = userInfo.UserID,
+                        ProfileImageUrl = userInfo.Gender ? Common.MALE_AVATAR : Common.FEMALE_AVATAR
+                    };
+                    db.Profile_Photo.Add(photo);
 
                     var friendList = new FriendList()
                     {
@@ -111,8 +119,8 @@ namespace WC.Controllers
                     db.FriendLists.Add(friendList);
                     db.SaveChanges();
 
-                    //await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Login", "Account");
+                    await SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Newsfeed", "Home");
                 }
                 else
                 {

@@ -282,13 +282,17 @@
     <Content Include="Content\Images\avatar3.png" />
     <Content Include="Content\Images\avatar4.png" />
     <Content Include="Content\Images\avatar5.png" />
+    <Content Include="Content\Images\Avatar\female.png" />
+    <Content Include="Content\Images\Avatar\male.png" />
     <Content Include="Content\Images\bg-input-focus.png" />
     <Content Include="Content\Images\bg-input.png" />
+    <Content Include="Content\Images\Avatar\men.png" />
     <Content Include="Content\Images\post-image.jpg" />
     <Content Include="Content\Images\profile-cover.png" />
     <Content Include="Content\Images\profile-menu-image.png" />
     <Content Include="Content\Images\profile-picture.png" />
     <Content Include="Content\Images\sprite.png" />
+    <Content Include="Content\Images\Avatar\women.png" />
     <Content Include="Content\Script\bootstrap.min.js" />
     <Content Include="Content\Script\classie.js" />
     <Content Include="Content\Script\curvedLines.js" />

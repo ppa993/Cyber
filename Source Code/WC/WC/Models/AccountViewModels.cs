@@ -90,6 +90,8 @@ namespace WC.Models
         public string Address { get; set; }
         public string Email { get; set; }
         public string About { get; set; }
+        public string Avatar { get; set; }
+        public string Cover { get; set; }
         public ICollection<Friend> Friends { get; set; }
         public ICollection<Post> Posts { get; set; }
     }

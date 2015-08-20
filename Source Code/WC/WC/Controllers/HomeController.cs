@@ -41,8 +41,9 @@ namespace WC.Controllers
             {
                 listView = db.Posts.Where(x => x.PostedOn == currentUser.Id)
                                     .Where(x => x.VisibleType == (int)VisibleType.Public
-                                        || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.First(y => y.UserId == currentUser.Id).Friends.Any(z => z.FriendId == requestUserId
-                                                                && z.FriendStatus))
+                                        || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.FirstOrDefault(y => y.UserId == currentUser.Id)
+                                                                                                        .Friends.Any(z => z.FriendId == requestUserId
+                                                                                                        && z.FriendStatus))
                                         || x.UserID == requestUserId)
                                     .Take(10)
                                     .OrderByDescending(x => x.PostedDate)
@@ -60,6 +61,8 @@ namespace WC.Controllers
                 var friends = userInfo.Friends;
                 user.Friends = friends;
                 user.Posts = listView;
+                user.Avatar = userInfo.Profile_Photo.ProfileImageUrl;
+                user.Cover = userInfo.Profile_Photo.CoverImageUrl;
             }
             
             return View(user);
@@ -123,6 +126,27 @@ namespace WC.Controllers
             var str = RenderPartialViewToString("PostList", listView);
 
             return str;
+
+        }
+        [HttpPost]
+        public string DeletePost(string postId)
+        {
+            try
+            {
+                var post =
+                    db.Posts.FirstOrDefault(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase));
+
+                db.Posts.Remove(post);
+                db.SaveChanges();
+
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+
+            return ActionResults.Succeed.ToString();
 
         }
 

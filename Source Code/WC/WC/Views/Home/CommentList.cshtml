@@ -17,7 +17,7 @@
                                                         : "Like";
     <div class="timeline-comment">
         <div class="timeline-comment-header">
-            <img src="~/Content/Images/avatar2.png" alt="">
+            <img src="@Url.Content(item.User.Profile_Photo.ProfileImageUrl)" alt="">
             <p>
                 <a href="#">@item.User.FirstName @item.User.LastName</a> <span style="white-space: pre-line; font-weight: 400">@item.CommentContent</span>
             </p>
