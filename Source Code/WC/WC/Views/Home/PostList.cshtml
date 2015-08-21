@@ -92,6 +92,10 @@
         border-radius: 6px 6px 0 0;
         background-color: #f6f7f8;
     }
+    .timeline-comment, .timeline-comment .timeline-comment-header {
+        overflow: visible;
+        min-height: 10px;
+    }
 </style>
 @foreach (var item in Model)
 {
@@ -115,11 +119,11 @@
                         <ul class="dropdown-menu remove-content pull-left" aria-labelledby="drop-@item.PostID">
                             @if (isPoster)
                             {
-                                <li><a href="#" class="edit-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit Post</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#edit-modal" data-type="Post" data-id="@item.PostID" class="edit-command"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit Post</a></li>
                             }
                             @if (isOwner || isPoster)
                             {
-                                <li><a href="#" data-toggle="modal" data-target="#post-modal" class="delete-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#delete-post-modal" class="delete-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a></li>
                             }
                             @if ((isOwner || isPoster) && !isPoster)
                             {
@@ -134,7 +138,9 @@
     </div>
     <div class="timeline-item-post">
         <div class="post-content">
-            <p style="white-space: pre-line">@item.PostContent</p>
+            <div id="post-content-@item.PostID">                
+                <p id="post-edit-@item.PostID" style="white-space: pre-line">@item.PostContent</p>
+            </div>
             <div class="timeline-options">
                 <a class="post-like" href="#" post-id="@item.PostID" data-toogle="@alreadyLike">
                     <i class="icon-like"></i>
@@ -159,7 +165,7 @@
                             <div class="timeline-comment-header">
                                 <img src="@Url.Content(comment.User.Profile_Photo.ProfileImageUrl)" alt="">
                                 <p>
-                                    <a href="#">@comment.User.FirstName @comment.User.LastName</a> <span style="white-space: pre-line; font-weight: 400">@comment.CommentContent</span>
+                                    <a href="#">@comment.User.FirstName @comment.User.LastName</a> <span id="comment-edit-@comment.CommentID" style="white-space: pre-line; font-weight: 400">@comment.CommentContent</span>
                                 </p>
                                 <div class="dropdown dropdown-caret pull-right">
                                     <a id="drop-@comment.CommentID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -168,11 +174,11 @@
                                     <ul class="dropdown-menu remove-content pull-left" aria-labelledby="drop-@comment.CommentID">
                                         @if (isCommenter)
                                         {
-                                            <li><a href="#" class="edit-comment-command" comment-id="@comment.CommentID"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit Comment</a></li>
+                                            <li><a href="#" data-toggle="modal" data-target="#edit-modal" data-type="Comment" class="edit-command" data-id="@comment.CommentID"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit Comment</a></li>
                                         }
                                         @if (isOwner || isCommenter)
                                         {
-                                            <li><a href="#" data-toggle="modal" data-target="#comment-modal" class="delete-comment-command" comment-id="@comment.CommentID"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a></li>
+                                            <li><a href="#" data-toggle="modal" data-target="#delete-comment-modal" class="delete-comment-command" comment-id="@comment.CommentID"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a></li>
                                         }
                                         @if ((isOwner || isCommenter) && !isCommenter)
                                         {
@@ -185,6 +191,7 @@
                                     </ul>
                                 </div>
                             </div>
+                            <div class="clear"></div><br />
                             <a class="comment-like" href="#" comment-id="@comment.CommentID" data-toogle="@commentAlreadyLike">
                                 <span id="comment-like-status-@comment.CommentID">@commentAlreadyLike</span> (<span id="comment-like-count-@comment.CommentID">@comment.CommentLikes.Count</span>)
                             </a><small>@comment.CommentedDate</small>

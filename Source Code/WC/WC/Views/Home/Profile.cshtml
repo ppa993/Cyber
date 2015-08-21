@@ -23,7 +23,7 @@
     function pasteIntoInput(el, text) {
         el.focus();
         if (typeof el.selectionStart == "number"
-                && typeof el.selectionEnd == "number") {
+            && typeof el.selectionEnd == "number") {
             var val = el.value;
             var selStart = el.selectionStart;
             el.value = val.slice(0, selStart) + text + val.slice(el.selectionEnd);
@@ -37,16 +37,16 @@
     }
 </script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('textarea').css('overflow', 'hidden').autogrow();
 
-        $(document).on('click', '.comment-text', function () {
+        $(document).on('click', '.comment-text', function() {
             var postId = $(this).attr("post-id");
             $('#comment-area-' + postId).focus();
             return false;
         });
 
-        $(document).on('keydown', '.comment-form', function (e) {
+        $(document).on('keydown', '.comment-form', function(e) {
             if (e.which === 13) {
                 if (e.shiftKey === false) {
                     var url = '@Url.Action("PostComment")';
@@ -55,8 +55,8 @@
                     var postid = $(this).attr("post-id");
                     if (text === "") return;
 
-                    $.post(url, { "postID": postid, "content": text },
-                        function (data) {
+                    $.post(url, { "postId": postid, "content": text },
+                        function(data) {
                             if (data === "Failed") {
                                 alert("Unable to post your comment. Please try again later. Thank you!");
                             } else {
@@ -76,14 +76,14 @@
             }
         });
 
-        $(document).on('click', '.post-like', function () {
+        $(document).on('click', '.post-like', function() {
             var curElement = $(this);
             var postid = $(this).attr("post-id");
             var isLike = $(this).attr("data-toogle") === "Like";
             var url = '@Url.Action("LikeUnlikePost")';
 
-            $.post(url, { "postID": postid, "isLike": isLike },
-                function (data) {
+            $.post(url, { "postId": postid, "isLike": isLike },
+                function(data) {
                     if (data === "Failed") {
                         alert("Unable to peform your action. This item has been removed.");
                     } else {
@@ -104,7 +104,7 @@
             return false;
         });
 
-        $(document).on('click', '.comment-like', function () {
+        $(document).on('click', '.comment-like', function() {
             var curElement = $(this);
             var commentid = $(this).attr("comment-id");
             var isLike = $(this).attr("data-toogle") === "Like";
@@ -132,17 +132,100 @@
             return false;
         });
 
+        $(document).on('click', '.edit-command', function() {
+            var recipient = $(this).data('id');
+            var actionType = $(this).data('type');
+            $("#button-edit").data('id', recipient);
+            $("#button-edit").data('type', actionType);
+
+            var title = $('#edit-modal-label');
+            title.text('Edit ' + actionType);
+
+            var button = $('#button-edit');
+            button.text('Edit ' + actionType);
+
+            if (actionType === "Post") {
+                var postUrl = '@Url.Action("EditPost")';
+                
+
+                $.post(postUrl, { "postId": recipient },
+                    function(data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this post. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This post has already been deleted.");
+                        } else {
+                            var content = $('#message-text');
+                            content.val(data);
+                            content.css('min-height', '50px').autogrow();
+                        }
+                    });
+            } else {
+                var commentUrl = '@Url.Action("EditComment")';
+
+                $.post(commentUrl, { "commentId": recipient },
+                    function (data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this comment. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This comment has already been deleted.");
+                        } else {
+                            var content = $('#message-text');
+                            content.val(data);
+                            content.css('min-height', '50px').autogrow();
+                        }
+                    });
+            }
+        });
+
+        $("#button-edit").click(function() {
+            var recipient = $(this).data('id');
+            var actionType = $(this).data('type');
+            var content = $('#message-text').val();
+
+            if (actionType === "Post") {
+                var postUrl = '@Url.Action("UpdatePost")';
+
+                $.post(postUrl, { "postId": recipient, "content": content },
+                    function(data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this post. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This post has already been deleted.");
+                        } else {
+                            var editedContent = $('#post-edit-' + recipient);
+                            editedContent.text(content);
+                        }
+                    });
+            } else {
+                var commentUrl = '@Url.Action("UpdateComment")';
+
+                $.post(commentUrl, { "commentId": recipient, "content": content },
+                    function (data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this comment. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This comment has already been deleted.");
+                        } else {
+                            var editedContent = $('#comment-edit-' + recipient);
+                            editedContent.text(content);
+                        }
+                    });
+            }
+            $("#button-edit-close").click();
+        });
+
         $(document).on('click', '.delete-post-command', function() {
             var postid = $(this).attr("post-id");
             $('#button-post-delete').attr('post-id', postid);
         });
 
-        $('#button-post-delete').click(function () {
+        $('#button-post-delete').click(function() {
             var postid = $(this).attr("post-id");
             var url = '@Url.Action("DeletePost")';
 
             $.post(url, { "postId": postid },
-                function (data) {
+                function(data) {
                     if (data === "Failed") {
                         alert("Unable to delete this post. Please try again later.");
                     } else if (data === "Deleted") {
@@ -155,17 +238,17 @@
                 });
         });
 
-        $(document).on('click', '.delete-comment-command', function () {
-            var postid = $(this).attr("comment-id");
-            $('#button-comment-delete').attr('comment-id', postid);
+        $(document).on('click', '.delete-comment-command', function() {
+            var commentid = $(this).attr("comment-id");
+            $('#button-comment-delete').attr('comment-id', commentid);
         });
 
-        $('#button-comment-delete').click(function () {
+        $('#button-comment-delete').click(function() {
             var commentid = $(this).attr("comment-id");
             var url = '@Url.Action("DeleteComment")';
 
             $.post(url, { "commentId": commentid },
-                function (data) {
+                function(data) {
                     if (data === "Failed") {
                         alert("Unable to delete this comment. Please try again later.");
                     } else if (data === "Deleted") {
@@ -173,12 +256,16 @@
                     } else {
                         $('#button-comment-close').click();
                         $('#comment-block-' + commentid).remove();
+                        var countItem = document.getElementById("comment-count-" + data);
+                        var count = parseInt(countItem.textContent) - 1;
+                        countItem.textContent = count;
                     }
                 });
         });
     });
 </script>
-<div class="modal fade" id="post-modal" tabindex="-1" role="dialog" aria-labelledby="myModalPostLabel">
+
+<div class="modal fade" id="delete-post-modal" tabindex="-1" role="dialog" aria-labelledby="myModalPostLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -196,7 +283,7 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="comment-modal" tabindex="-1" role="dialog" aria-labelledby="myModalCommentLabel">
+<div class="modal fade" id="delete-comment-modal" tabindex="-1" role="dialog" aria-labelledby="myModalCommentLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -208,11 +295,33 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" id="button-comment-close" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-facebook" id="button-comment-delete" post-id="">Delete Comment</button>
+                <button type="button" class="btn btn-facebook" id="button-comment-delete" comment-id="">Delete Comment</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="edit-modal-label">Edit</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="button-edit-close" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="button-edit" class="btn btn-facebook" data-type="" data-id="">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="page-inner" style="min-height:1080px !important">
     <div class="profile-cover">
