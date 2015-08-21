@@ -37,15 +37,18 @@
     }
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+        //auto expand textarea base on number of text lines
         $('textarea').css('overflow', 'hidden').autogrow();
 
+        //focus on comment text box when click on Comment text
         $(document).on('click', '.comment-text', function() {
             var postId = $(this).attr("post-id");
             $('#comment-area-' + postId).focus();
             return false;
         });
 
+        //auto submit comment when user press enter, add new line if Shift+Enter
         $(document).on('keydown', '.comment-form', function(e) {
             if (e.which === 13) {
                 if (e.shiftKey === false) {
@@ -75,7 +78,8 @@
                 }
             }
         });
-
+        
+        //like/unlike and update like count
         $(document).on('click', '.post-like', function() {
             var curElement = $(this);
             var postid = $(this).attr("post-id");
@@ -104,6 +108,7 @@
             return false;
         });
 
+        //like/unlike and update like count
         $(document).on('click', '.comment-like', function() {
             var curElement = $(this);
             var commentid = $(this).attr("comment-id");
@@ -132,6 +137,7 @@
             return false;
         });
 
+        //Show edit modal dialog
         $(document).on('click', '.edit-command', function() {
             var recipient = $(this).data('id');
             var actionType = $(this).data('type');
@@ -178,6 +184,7 @@
             }
         });
 
+        //update post/comment
         $("#button-edit").click(function() {
             var recipient = $(this).data('id');
             var actionType = $(this).data('type');
@@ -215,11 +222,13 @@
             $("#button-edit-close").click();
         });
 
+        //call confirm delete post
         $(document).on('click', '.delete-post-command', function() {
             var postid = $(this).attr("post-id");
             $('#button-post-delete').attr('post-id', postid);
         });
 
+        //delete post
         $('#button-post-delete').click(function() {
             var postid = $(this).attr("post-id");
             var url = '@Url.Action("DeletePost")';
@@ -238,11 +247,13 @@
                 });
         });
 
+        //call confirm delete commment dialog
         $(document).on('click', '.delete-comment-command', function() {
             var commentid = $(this).attr("comment-id");
             $('#button-comment-delete').attr('comment-id', commentid);
         });
 
+        //delete comment
         $('#button-comment-delete').click(function() {
             var commentid = $(this).attr("comment-id");
             var url = '@Url.Action("DeleteComment")';
@@ -337,7 +348,7 @@
                     <p>Followers</p>
                 </div>*@
                 <div class=" profile-info-value">
-                    <h3>@Model.Friends.Count</h3>
+                    <h3>@Model.Friends.Friends.Count</h3>
                     <p>Friends</p>
                 </div>
                 <div class=" profile-info-value">
@@ -362,109 +373,31 @@
                 <button class="btn btn-facebook btn-block"><i class="fa fa-plus m-r-xs"></i>Add Friend</button>
             </div>
             <div class="col-md-6 m-t-lg">
-                <div class="panel panel-white">
-                    <div class="panel-body">
-                        <div class="post">
-                            <textarea id="status-content" class="form-control" placeholder="What's in your mind?" rows="4=6"></textarea>
-                            <div class="post-options">
-                                <a href="#"><i class="icon-camera"></i></a>
-                                <a href="#"><i class="icon-camcorder"></i></a>
-                                <a href="#"><i class="icon-music-tone-alt"></i></a>
-                                <a href="#"><i class="icon-link"></i></a>
-                                <a href="#"><i class="icon-microphone"></i></a>
-                                <button class="btn btn-facebook pull-right" onclick="PostStatus();">Post</button>
+                @if (Model.AllowOtherToPost || Model.IsMyTimeline)
+                {
+                    <div class="panel panel-white">
+                        <div class="panel-body">
+                            <div class="post">
+                                <textarea id="status-content" class="form-control" placeholder="What's in your mind?" rows="4=6"></textarea>
+                                <div class="post-options">
+                                    <a href="#"><i class="icon-camera"></i></a>
+                                    <a href="#"><i class="icon-camcorder"></i></a>
+                                    <a href="#"><i class="icon-music-tone-alt"></i></a>
+                                    <a href="#"><i class="icon-link"></i></a>
+                                    <a href="#"><i class="icon-microphone"></i></a>
+                                    <button class="btn btn-facebook pull-right" onclick=" PostStatus(); ">Post</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
                 <div class="profile-timeline">
                     <ul class="list-unstyled" id="timeline-posts">
                         @if (Model.Posts.Count > 0)
                         {
-                            Html.RenderAction("PostList", "Home", new { Model = Model.Posts as List<WC.Data.Post> });
+                            Html.RenderAction("PostList", "Home", new {Model = Model.Posts as List<WC.Data.Post>});
                         }
-                        @*<li class="timeline-item">
-        <div class="panel panel-white">
-            <div class="panel-body">
-                <div class="timeline-item-header">
-                    <img src="~/Content/Images/avatar3.png" alt="">
-                    <p>Christopher palmer <span>Posted a Status</span></p>
-                    <small>5 hours ago</small>
-                </div>
-                <div class="timeline-item-post">
-                    <p>Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p>
-                    <div class="timeline-options">
-                        <a href="#"><i class="icon-like"></i> Like (7)</a>
-                        <a href="#"><i class="icon-bubble"></i> Comment (2)</a>
-                        <a href="#"><i class="icon-share"></i> Share (3)</a>
-                    </div>
-                    <div class="timeline-comment">
-                        <div class="timeline-comment-header">
-                            <img src="~/Content/Images/avatar5.png" alt="">
-                            <p>Nick Doe <small>1 hour ago</small></p>
-                        </div>
-                        <p class="timeline-comment-text">Nullam quis risus eget urna mollis ornare vel eu leo.</p>
-                    </div>
-                    <div class="timeline-comment">
-                        <div class="timeline-comment-header">
-                            <img src="~/Content/Images/avatar2.png" alt="">
-                            <p>Sandra Smith <small>3 hours ago</small></p>
-                        </div>
-                        <p class="timeline-comment-text">Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                    </div>
-                    <textarea class="form-control" placeholder="Replay"></textarea>
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="timeline-item">
-        <div class="panel panel-white">
-            <div class="panel-body">
-                <div class="timeline-item-header">
-                    <img src="~/Content/Images/avatar2.png" alt="">
-                    <p>Sandra Smith <span>Uploaded Photo</span></p>
-                    <small>2 hours ago</small>
-                </div>
-                <div class="timeline-item-post">
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
-                    <img src="~/Content/Images/post-image.jpg" alt="">
-                    <div class="timeline-options">
-                        <a href="#"><i class="icon-like"></i> Like (14)</a>
-                        <a href="#"><i class="icon-bubble"></i> Comment (1)</a>
-                        <a href="#"><i class="icon-share"></i> Share (5)</a>
-                    </div>
-                    <div class="timeline-comment">
-                        <div class="timeline-comment-header">
-                            <img src="~/Content/Images/avatar5.png" alt="">
-                            <p>Nick Doe <small>1 hours ago</small></p>
-                        </div>
-                        <p class="timeline-comment-text">Nullam quis risus eget urna mollis ornare vel eu leo.</p>
-                    </div>
-                    <textarea class="form-control" placeholder="Replay"></textarea>
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="timeline-item">
-        <div class="panel panel-white">
-            <div class="panel-body">
-                <div class="timeline-item-header">
-                    <img src="~/Content/Images/avatar5.png" alt="">
-                    <p>Nick Doe</p>
-                    <small>6 hours ago</small>
-                </div>
-                <div class="timeline-item-post">
-                    <p>Hello, this is my first post!</p>
-                    <div class="timeline-options">
-                        <a href="#"><i class="icon-like"></i> Like (3)</a>
-                        <a href="#"><i class="icon-bubble"></i> Comment (0)</a>
-                    </div>
-                    <textarea class="form-control" placeholder="Write a comment..."></textarea>
-                </div>
-            </div>
-        </div>
-    </li>*@
-                    </ul>
+                        </ul>
                 </div>
             </div>
             <div class="col-md-3 m-t-lg">

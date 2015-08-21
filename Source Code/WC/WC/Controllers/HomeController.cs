@@ -58,11 +58,12 @@ namespace WC.Controllers
                 user.DisplayName = userInfo.FirstName + " " + userInfo.LastName;
                 user.Address = userInfo.Address;
                 user.Email = userInfo.Email;
-                var friends = userInfo.Friends;
-                user.Friends = friends;
+                user.Friends = userInfo.FriendLists.First();
                 user.Posts = listView;
                 user.Avatar = userInfo.Profile_Photo.ProfileImageUrl;
                 user.Cover = userInfo.Profile_Photo.CoverImageUrl;
+                user.AllowOtherToPost = userInfo.MySettings.First().AllowOtherToPost;
+                user.IsMyTimeline = currentUser.Id.Equals(requestUserId, StringComparison.InvariantCultureIgnoreCase);
             }
             
             return View(user);
@@ -87,6 +88,9 @@ namespace WC.Controllers
             Post post;
             try
             {
+                var user =
+                    db.Users.FirstOrDefault(x => x.UserID.Equals(postedOn, StringComparison.InvariantCultureIgnoreCase));
+                var postVisible = user != null ? user.MySettings.First().DefaultPostVisible : (int) VisibleType.Friend;
                 post = new Post
                 {
                     PostID = Guid.NewGuid().ToString().Replace("-", string.Empty),
@@ -96,8 +100,7 @@ namespace WC.Controllers
                     PostType = (int)PostType.Status,
                     PostedDate = DateTime.Now,
                     LastModified = DateTime.Now,
-                    VisibleType = (int)VisibleType.Friend,
-
+                    VisibleType = postVisible
                 };
 
                 db.Posts.Add(post);

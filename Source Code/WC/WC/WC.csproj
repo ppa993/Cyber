@@ -210,6 +210,9 @@
     <Compile Include="Data\FriendList.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\MySetting.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\Notification.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
@@ -235,9 +238,6 @@
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\Role_Type.cs">
-      <DependentUpon>Cyber.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\sysdiagram.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\User.cs">

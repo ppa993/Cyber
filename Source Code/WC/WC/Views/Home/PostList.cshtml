@@ -32,7 +32,6 @@
 
     .timeline-comment .timeline-comment-header p {
         padding: 0 5px 5px 0;
-        width: 90%;
         text-align: justify;
     }
 
@@ -95,6 +94,9 @@
     .timeline-comment, .timeline-comment .timeline-comment-header {
         overflow: visible;
         min-height: 10px;
+    }
+    .clear {
+        clear: both;
     }
 </style>
 @foreach (var item in Model)
@@ -191,7 +193,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="clear"></div><br />
+                            <div class="clear"></div>
                             <a class="comment-like" href="#" comment-id="@comment.CommentID" data-toogle="@commentAlreadyLike">
                                 <span id="comment-like-status-@comment.CommentID">@commentAlreadyLike</span> (<span id="comment-like-count-@comment.CommentID">@comment.CommentLikes.Count</span>)
                             </a><small>@comment.CommentedDate</small>

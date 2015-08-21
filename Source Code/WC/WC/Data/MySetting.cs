@@ -12,12 +12,14 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagram
+    public partial class MySetting
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public string SettingID { get; set; }
+        public string UserID { get; set; }
+        public int DefaultPostVisible { get; set; }
+        public bool AllowOtherToPost { get; set; }
+    
+        public virtual User User { get; set; }
+        public virtual Visible_Type Visible_Type { get; set; }
     }
 }
