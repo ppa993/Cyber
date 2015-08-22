@@ -4,7 +4,7 @@ body, html {
 }
 
 body, p {
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .btn, :active, :focus, :hover {
@@ -895,11 +895,11 @@ h3, h4, h5 {
         background-color: #d7d7d7;
     }
 
-.btn {
+/*.btn {
     font-size: 13px;
     border: 1px solid transparent;
     border-radius: 0;
-}
+}*/
 
 .btn-addon i {
     float: left;
@@ -1092,7 +1092,7 @@ h3, h4, h5 {
     }
 
 .btn-facebook {
-    background: #627AAC;
+    background: #3B5998;
     color: #fff;
 }
 
@@ -1560,7 +1560,7 @@ h3, h4, h5 {
     border: 0;
 }
 
-.modal {
+/*.modal {
     z-index: 9999;
 }
 
@@ -1605,7 +1605,7 @@ h3, h4, h5 {
 
 .modal-backdrop {
     z-index: 999;
-}
+}*/
 
 .pagination > li > a {
     color: #5B5B5B;

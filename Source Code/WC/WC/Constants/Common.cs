@@ -8,11 +8,13 @@ namespace WC.Constants
     public class Common
     {
         public const string SESSION_USER = "User";
+        public const string MALE_AVATAR = "~/Content/Images/Avatar/men.png";
+        public const string FEMALE_AVATAR = "~/Content/Images/Avatar/women.png";
     }
 
     public class DateTimeFormat
     {
-        public const string DDMMYYYY = "d/M/yyyy";
+        public const string DMYYYY = "d/M/yyyy";
     }
 
     public class Message
@@ -51,6 +53,7 @@ namespace WC.Constants
 
     public enum ActionResults
     {
+        Deleted,
         Failed,
         Succeed
     }

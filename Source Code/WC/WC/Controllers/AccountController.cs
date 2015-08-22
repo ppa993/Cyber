@@ -81,7 +81,7 @@ namespace WC.Controllers
         {
             var birthdayString = string.Format("{0}/{1}/{2}", model.Day, model.Month, model.Year);
             DateTime birthday;
-            var parseResult = DateTime.TryParseExact(birthdayString, DateTimeFormat.DDMMYYYY, CultureInfo.InvariantCulture, DateTimeStyles.None,
+            var parseResult = DateTime.TryParseExact(birthdayString, DateTimeFormat.DMYYYY, CultureInfo.InvariantCulture, DateTimeStyles.None,
                 out birthday);
 
             if (parseResult && ModelState.IsValid)
@@ -101,8 +101,16 @@ namespace WC.Controllers
                         Relationship = (int)Relationship.Single
                     };
                     db.Users.Add(userInfo);
+                    db.SaveChanges();
 
-                    var friendList = new FriendList()
+                    var photo = new Profile_Photo
+                    {
+                        UserID = userInfo.UserID,
+                        ProfileImageUrl = userInfo.Gender ? Common.MALE_AVATAR : Common.FEMALE_AVATAR
+                    };
+                    db.Profile_Photo.Add(photo);
+
+                    var friendList = new FriendList
                     {
                         Id = user.Id,
                         UserId = user.Id,
@@ -110,12 +118,18 @@ namespace WC.Controllers
                     };
                     db.FriendLists.Add(friendList);
 
-                    
+                    var mySetting = new MySetting
+                    {
+                        SettingID = Guid.NewGuid().ToString(),
+                        AllowOtherToPost = true,
+                        DefaultPostVisible = (int)VisibleType.Friend
+                    };
+                    db.MySettings.Add(mySetting);
 
                     db.SaveChanges();
 
-                    //await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Login", "Account");
+                    await SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Newsfeed", "Home");
                 }
                 else
                 {

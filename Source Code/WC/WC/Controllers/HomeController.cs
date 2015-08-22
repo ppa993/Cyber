@@ -41,8 +41,9 @@ namespace WC.Controllers
             {
                 listView = db.Posts.Where(x => x.PostedOn == currentUser.Id)
                                     .Where(x => x.VisibleType == (int)VisibleType.Public
-                                        || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.First(y => y.UserId == currentUser.Id).Friends.Any(z => z.FriendId == requestUserId
-                                                                && z.FriendStatus))
+                                        || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.FirstOrDefault(y => y.UserId == currentUser.Id)
+                                                                                                        .Friends.Any(z => z.FriendId == requestUserId
+                                                                                                        && z.FriendStatus))
                                         || x.UserID == requestUserId)
                                     .Take(10)
                                     .OrderByDescending(x => x.PostedDate)
@@ -57,9 +58,12 @@ namespace WC.Controllers
                 user.DisplayName = userInfo.FirstName + " " + userInfo.LastName;
                 user.Address = userInfo.Address;
                 user.Email = userInfo.Email;
-                var friends = userInfo.Friends;
-                user.Friends = friends;
+                user.Friends = userInfo.FriendLists.First();
                 user.Posts = listView;
+                user.Avatar = userInfo.Profile_Photo.ProfileImageUrl;
+                user.Cover = userInfo.Profile_Photo.CoverImageUrl;
+                user.AllowOtherToPost = userInfo.MySettings.First().AllowOtherToPost;
+                user.IsMyTimeline = currentUser.Id.Equals(requestUserId, StringComparison.InvariantCultureIgnoreCase);
             }
             
             return View(user);
@@ -84,17 +88,19 @@ namespace WC.Controllers
             Post post;
             try
             {
+                var user =
+                    db.Users.FirstOrDefault(x => x.UserID.Equals(postedOn, StringComparison.InvariantCultureIgnoreCase));
+                var postVisible = user != null ? user.MySettings.First().DefaultPostVisible : (int) VisibleType.Friend;
                 post = new Post
                 {
                     PostID = Guid.NewGuid().ToString().Replace("-", string.Empty),
-                    PostContent = content,
+                    PostContent = content.Trim(),
                     UserID = CurrentUserID,
                     PostedOn = postedOn,
                     PostType = (int)PostType.Status,
                     PostedDate = DateTime.Now,
                     LastModified = DateTime.Now,
-                    VisibleType = (int)VisibleType.Friend,
-
+                    VisibleType = postVisible
                 };
 
                 db.Posts.Add(post);
@@ -127,7 +133,7 @@ namespace WC.Controllers
         }
 
         [HttpPost]
-        public string PostComment(string postID, string content)
+        public string PostComment(string postId, string content)
         {
             Comment comment;
             try
@@ -135,8 +141,8 @@ namespace WC.Controllers
                 comment = new Comment
                 {
                     CommentID = Guid.NewGuid().ToString().Replace("-", string.Empty),
-                    PostID = postID,
-                    CommentContent = content,
+                    PostID = postId,
+                    CommentContent = content.Trim(),
                     UserID = CurrentUserID,
                     CommentedDate = DateTime.Now,
                     LastModified = DateTime.Now,
@@ -147,7 +153,7 @@ namespace WC.Controllers
                 db.SaveChanges();
 
                 //push notif for user whose post got new comment
-                var currentPost = db.Posts.First(x => x.PostID == postID);
+                var currentPost = db.Posts.First(x => x.PostID == postId);
                 //don't count current commenter himself in for notif
                 var postCommenters = currentPost.Comments.Select(x => x.UserID).Where(x => x != CurrentUserID).ToList();
                 var postOwner = currentPost.User;
@@ -184,7 +190,187 @@ namespace WC.Controllers
         }
 
         [HttpPost]
-        public string LikeUnlikePost(string postID, bool isLike)
+        public string EditPost(string postId)
+        {
+            try
+            {
+                var post = db.Posts.FirstOrDefault(x => x.PostID == postId);
+                return post != null ? post.PostContent : ActionResults.Deleted.ToString();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+        }
+
+        [HttpPost]
+        public string EditComment(string commentId)
+        {
+            try
+            {
+                var comment = db.Comments.FirstOrDefault(x => x.CommentID == commentId);
+                return comment != null ? comment.CommentContent : ActionResults.Deleted.ToString();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+        }
+
+        [HttpPost]
+        public string UpdatePost(string postId, string content)
+        {
+            try
+            {
+                var post = db.Posts.FirstOrDefault(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase));
+                if (post != null)
+                {
+                    post.PostContent = content;
+
+                    db.Posts.Attach(post);
+                    var entry = db.Entry(post);
+                    entry.Property(x => x.PostContent).IsModified = true;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    return ActionResults.Deleted.ToString();
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+            return ActionResults.Succeed.ToString();
+        }
+
+        [HttpPost]
+        public string UpdateComment(string commentId, string content)
+        {
+            try
+            {
+                var comment = db.Comments.FirstOrDefault(x => x.CommentID.Equals(commentId, StringComparison.InvariantCultureIgnoreCase));
+                if (comment != null)
+                {
+                    comment.CommentContent = content;
+
+                    db.Comments.Attach(comment);
+                    var entry = db.Entry(comment);
+                    entry.Property(x => x.CommentContent).IsModified = true;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    return ActionResults.Deleted.ToString();
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+            return ActionResults.Succeed.ToString();
+        }
+
+        [HttpPost]
+        public string DeletePost(string postId)
+        {
+            try
+            {
+                var post =
+                    db.Posts.FirstOrDefault(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase));
+                if (post != null)
+                {
+                    if (post.UserID == CurrentUserID || post.PostedOn == CurrentUserID)
+                    {
+                        foreach (var comment in post.Comments)
+                        {
+                            db.CommentLikes.RemoveRange(comment.CommentLikes);
+                        }
+                        db.SaveChanges();
+
+                        db.Comments.RemoveRange(post.Comments);
+                        db.PostLikes.RemoveRange(post.PostLikes);
+                        db.SaveChanges();
+
+                        db.Posts.Remove(post);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        return ActionResults.Failed.ToString();
+                    }
+                }
+                else
+                {
+                    return ActionResults.Deleted.ToString();
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+
+            return ActionResults.Succeed.ToString();
+
+        }
+
+        [HttpPost]
+        public string DeleteComment(string commentId)
+        {
+            Post post;
+            try
+            {
+                var comment =
+                    db.Comments.FirstOrDefault(x => x.CommentID.Equals(commentId, StringComparison.InvariantCultureIgnoreCase));
+                if (comment != null)
+                {
+                    post =
+                        db.Posts.FirstOrDefault(
+                            x => x.PostID.Equals(comment.PostID, StringComparison.InvariantCultureIgnoreCase));
+                    if (post != null)
+                    {
+                        if (comment.UserID == CurrentUserID || post.PostedOn == CurrentUserID)
+                        {
+                            db.CommentLikes.RemoveRange(comment.CommentLikes);
+                            db.SaveChanges();
+
+                            db.Comments.Remove(comment);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            return ActionResults.Failed.ToString();
+                        }
+                    }
+                    else
+                    {
+                        return ActionResults.Deleted.ToString();
+                    }
+                }
+                else
+                {
+                    return ActionResults.Deleted.ToString();
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+
+            return post.PostID;
+
+        }
+
+        [HttpPost]
+        public string LikeUnlikePost(string postId, bool isLike)
         {
             try
             {
@@ -193,7 +379,7 @@ namespace WC.Controllers
                     var like = new PostLike
                     {
                         PostLikeID = Guid.NewGuid().ToString().Replace("-", string.Empty),
-                        PostID = postID,
+                        PostID = postId,
                         UserID = CurrentUserID
                     };
 
@@ -201,26 +387,26 @@ namespace WC.Controllers
                     db.SaveChanges();
 
                     //push notif for post owner if some one like his post, but not when he like it himself
-                    var postOwner = db.Posts.First(x => x.PostID == postID).User.UserID;
+                    var postOwner = db.Posts.First(x => x.PostID == postId).User.UserID;
                     if (!postOwner.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        PushNotification(postOwner, postID, (int)NotificationType.LikeMyPost);
+                        PushNotification(postOwner, postId, (int)NotificationType.LikeMyPost);
                     }
 
                     //return total like
                     var likeCount =
-                        db.Posts.First(x => x.PostID.Equals(postID, StringComparison.InvariantCultureIgnoreCase))
+                        db.Posts.First(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase))
                             .PostLikes.Count.ToString();
                     return likeCount;
                 }
                 else
                 {
                     var unlike =
-                        db.PostLikes.FirstOrDefault(x => x.PostID == postID && x.UserID == CurrentUserID);
+                        db.PostLikes.FirstOrDefault(x => x.PostID == postId && x.UserID == CurrentUserID);
                     db.PostLikes.Remove(unlike);
                     db.SaveChanges();
                     var likeCount =
-                        db.Posts.First(x => x.PostID.Equals(postID, StringComparison.InvariantCultureIgnoreCase))
+                        db.Posts.First(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase))
                             .PostLikes.Count.ToString();
                     return likeCount;
                 }
@@ -233,7 +419,7 @@ namespace WC.Controllers
         }
 
         [HttpPost]
-        public string LikeUnlikeComment(string commentID, bool isLike)
+        public string LikeUnlikeComment(string commentId, bool isLike)
         {
             try
             {
@@ -242,7 +428,7 @@ namespace WC.Controllers
                     var like = new CommentLike
                     {
                         CommentLikeID = Guid.NewGuid().ToString().Replace("-", string.Empty),
-                        CommentID = commentID,
+                        CommentID = commentId,
                         UserID = CurrentUserID
                     };
 
@@ -250,26 +436,26 @@ namespace WC.Controllers
                     db.SaveChanges();
 
                     //push notif for comment owner if some one like his comment, but not when he like it himself
-                    var commentOwner = db.Comments.First(x => x.CommentID == commentID).User.UserID;
+                    var commentOwner = db.Comments.First(x => x.CommentID == commentId).User.UserID;
                     if (!commentOwner.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        PushNotification(commentOwner, commentID, (int)NotificationType.LikeMyComment);
+                        PushNotification(commentOwner, commentId, (int)NotificationType.LikeMyComment);
                     }
 
                     //return total like
                     var likeCount =
-                        db.Comments.First(x => x.CommentID.Equals(commentID, StringComparison.InvariantCultureIgnoreCase))
+                        db.Comments.First(x => x.CommentID.Equals(commentId, StringComparison.InvariantCultureIgnoreCase))
                             .CommentLikes.Count.ToString();
                     return likeCount;
                 }
                 else
                 {
                     var unlike =
-                        db.CommentLikes.FirstOrDefault(x => x.CommentID == commentID && x.UserID == CurrentUserID);
+                        db.CommentLikes.FirstOrDefault(x => x.CommentID == commentId && x.UserID == CurrentUserID);
                     db.CommentLikes.Remove(unlike);
                     db.SaveChanges();
                     var likeCount =
-                        db.Comments.First(x => x.CommentID.Equals(commentID, StringComparison.InvariantCultureIgnoreCase))
+                        db.Comments.First(x => x.CommentID.Equals(commentId, StringComparison.InvariantCultureIgnoreCase))
                             .CommentLikes.Count.ToString();
                     return likeCount;
                 }

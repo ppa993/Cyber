@@ -16,12 +16,14 @@ namespace WC.Data
     {
         public Visible_Type()
         {
+            this.MySettings = new HashSet<MySetting>();
             this.Posts = new HashSet<Post>();
         }
     
         public int VisibleTypeID { get; set; }
         public string VisibleTypeName { get; set; }
     
+        public virtual ICollection<MySetting> MySettings { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
     }
 }

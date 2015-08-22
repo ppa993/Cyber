@@ -1,27 +1,54 @@
 ﻿@using Microsoft.AspNet.Identity
 @model List<WC.Data.Comment>
+@{
+    var currentUserId = User.Identity.GetUserId();
+    var firstComment = Model.FirstOrDefault();
+    var isOwner = false;
+    if (firstComment != null)
+    {
+
+        isOwner = firstComment.Post.PostedOn.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
+    }
+}
+
 
 @foreach (var item in Model)
 {
-    @*<div class="timeline-comment">
-        <div class="timeline-comment-header">
-            <img src="~/Content/Images/avatar2.png" alt="">
-            <p>@item.User.FirstName @item.User.LastName <small>@item.CommentedDate</small>
-            </p>
-        </div>
-        <p class="timeline-comment-text" style="white-space: pre-line">@item.CommentContent</p>
-    </div>*@
-
+    var isCommenter = item.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
     var commentAlreadyLike = item.CommentLikes.Any(x => x.UserID == User.Identity.GetUserId())
                                                         ? "Unlike"
                                                         : "Like";
-    <div class="timeline-comment">
+    <div id="comment-block-@item.CommentID" class="timeline-comment">
         <div class="timeline-comment-header">
-            <img src="~/Content/Images/avatar2.png" alt="">
+            <img src="@Url.Content(item.User.Profile_Photo.ProfileImageUrl)" alt="">
             <p>
-                <a href="#">@item.User.FirstName @item.User.LastName</a> <span style="white-space: pre-line; font-weight: 400">@item.CommentContent</span>
+                <a href="#">@item.User.FirstName @item.User.LastName</a> <span id="comment-edit-@item.CommentID" style="white-space: pre-line; font-weight: 400">@item.CommentContent</span>
             </p>
+            <div class="dropdown dropdown-caret pull-right">
+                <a id="drop-@item.CommentID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu remove-content pull-left" aria-labelledby="drop-@item.CommentID">
+                    @if (isCommenter)
+                    {
+                        <li><a href="#" data-toggle="modal" data-target="#edit-modal" data-type="Comment" class="edit-command" data-id="@item.CommentID"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit Comment</a></li>
+                    }
+                    @if (isOwner || isCommenter)
+                    {
+                        <li><a href="#" data-toggle="modal" data-target="#delete-comment-modal" class="delete-comment-command" comment-id="@item.CommentID"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a></li>
+                    }
+                    @if ((isOwner || isCommenter) && !isCommenter)
+                    {
+                        <li role="separator" class="divider"></li>
+                    }
+                    @if (!isCommenter)
+                    {
+                        <li><a href="#" class="report-comment-command" comment-id="@item.CommentID"><span class="glyphicon glyphicon-flag"></span>&nbsp;&nbsp;Report...</a></li>
+                    }
+                </ul>
+            </div>
         </div>
+        <div class="clear"></div>
         <a class="comment-like" href="#" comment-id="@item.CommentID" data-toogle="@commentAlreadyLike">
             <span id="comment-like-status-@item.CommentID">@commentAlreadyLike</span> (<span id="comment-like-count-@item.CommentID">@item.CommentLikes.Count</span>)
         </a><small>@item.CommentedDate</small>

@@ -90,7 +90,11 @@ namespace WC.Models
         public string Address { get; set; }
         public string Email { get; set; }
         public string About { get; set; }
-        public ICollection<Friend> Friends { get; set; }
+        public string Avatar { get; set; }
+        public string Cover { get; set; }
+        public bool IsMyTimeline { get; set; }
+        public bool AllowOtherToPost { get; set; }
+        public FriendList Friends { get; set; }
         public ICollection<Post> Posts { get; set; }
     }
 }
