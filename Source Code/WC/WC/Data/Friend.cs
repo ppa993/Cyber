@@ -20,6 +20,8 @@ namespace WC.Data
         public Nullable<System.DateTime> FriendSince { get; set; }
     
         public virtual FriendList FriendList { get; set; }
+        public virtual FriendList FriendList1 { get; set; }
         public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

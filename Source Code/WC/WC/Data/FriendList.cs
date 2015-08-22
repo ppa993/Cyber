@@ -17,6 +17,7 @@ namespace WC.Data
         public FriendList()
         {
             this.Friends = new HashSet<Friend>();
+            this.Friends1 = new HashSet<Friend>();
         }
     
         public string Id { get; set; }
@@ -24,6 +25,8 @@ namespace WC.Data
         public System.DateTime CreatedDate { get; set; }
     
         public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
         public virtual ICollection<Friend> Friends { get; set; }
+        public virtual ICollection<Friend> Friends1 { get; set; }
     }
 }

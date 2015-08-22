@@ -12,28 +12,21 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class ChatBox
+    public partial class Album
     {
-        public ChatBox()
+        public Album()
         {
-            this.ChatReplies = new HashSet<ChatReply>();
-            this.ChatReplies1 = new HashSet<ChatReply>();
-            this.SettingChatBoxes = new HashSet<SettingChatBox>();
+            this.AlbumDetails = new HashSet<AlbumDetail>();
         }
     
-        public string Id { get; set; }
-        public string FromUseId { get; set; }
-        public string ToUseId { get; set; }
+        public string AlbumId { get; set; }
+        public string CreatedUserId { get; set; }
+        public string AlbumName { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public bool Deleted { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
-        public virtual User User2 { get; set; }
-        public virtual User User3 { get; set; }
-        public virtual ICollection<ChatReply> ChatReplies { get; set; }
-        public virtual ICollection<ChatReply> ChatReplies1 { get; set; }
-        public virtual ICollection<SettingChatBox> SettingChatBoxes { get; set; }
+        public virtual ICollection<AlbumDetail> AlbumDetails { get; set; }
     }
 }

@@ -12,19 +12,19 @@ namespace WC.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class ChatReply
+    public partial class SettingChatBox
     {
         public int Id { get; set; }
         public string ChatBoxId { get; set; }
-        public string UserIdReply { get; set; }
-        public string Content { get; set; }
-        public System.DateTime SendDate { get; set; }
-        public bool Deleted { get; set; }
-        public Nullable<System.DateTime> DeletedDate { get; set; }
+        public string User1 { get; set; }
+        public Nullable<int> Language1 { get; set; }
+        public string User2 { get; set; }
+        public Nullable<int> Language2 { get; set; }
     
         public virtual ChatBox ChatBox { get; set; }
-        public virtual ChatBox ChatBox1 { get; set; }
+        public virtual Language Language { get; set; }
+        public virtual Language Language3 { get; set; }
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
+        public virtual User User3 { get; set; }
     }
 }
