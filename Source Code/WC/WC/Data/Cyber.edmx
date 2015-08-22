@@ -168,6 +168,7 @@
           <Property Name="Work" Type="nvarchar" MaxLength="255" />
           <Property Name="ContactNumber" Type="varchar" MaxLength="50" />
           <Property Name="Studied" Type="nvarchar" MaxLength="255" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
         <EntityType Name="Visible_Type">
           <Key>
@@ -937,6 +938,7 @@
           <Property Name="Work" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Studied" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ChatBoxes" Relationship="CyberModel.FK__ChatBox__FromUse__2F10007B" FromRole="User" ToRole="ChatBox" />
           <NavigationProperty Name="ChatBoxes1" Relationship="CyberModel.FK__ChatBox__ToUseId__300424B4" FromRole="User" ToRole="ChatBox" />
           <NavigationProperty Name="ChatReplies" Relationship="CyberModel.FK__ChatReply__UserI__31EC6D26" FromRole="User" ToRole="ChatReply" />
@@ -1446,6 +1448,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="CyberModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Studied" ColumnName="Studied" />
                 <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
                 <ScalarProperty Name="Work" ColumnName="Work" />

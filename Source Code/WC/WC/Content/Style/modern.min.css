@@ -2494,7 +2494,7 @@ tr.group, tr.group:hover {
 .dropdown-menu {
     position: absolute;
     top: 100%;
-    z-index: 1000;
+    z-index: 500;
     display: none;
     float: left;
     list-style: none;

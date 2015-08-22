@@ -3,7 +3,7 @@
 @{
     var db = new CyberEntities();
     var currentUserId = User.Identity.GetUserId();
-    var userInfo = new WC.Data.User();
+    var userInfo = new User();
     var displayName = "";
     if (!String.IsNullOrEmpty(currentUserId))
     {
@@ -29,8 +29,8 @@
     <meta name="author" content="Steelcoders">
 
     <!-- Styles -->
-    @Styles.Render("~/Content/Style")
-    @Scripts.Render("~/Content/Theme")
+    @Styles.Render("~/bundles/Style")
+    @Scripts.Render("~/bundles/Theme")
     @Scripts.Render("~/bundles/jquery")
     <script src="~/Content/Script/jquery.slimscroll.min.js"></script>
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
@@ -72,7 +72,7 @@
     </nav>
     <div class="menu-wrap">
         <nav class="profile-menu">
-            <div class="profile"><img src="~/Content/Images/profile-menu-image.png" width="60" alt="David Green"><span>David Green</span></div>
+            <div class="profile"><img src="@Url.Content(userInfo.Profile_Photo.ProfileImageUrl)" width="60" alt="Profile Image"><span>@userInfo.FirstName @userInfo.LastName</span></div>
             <div class="profile-menu-list">
                 <a href="http://lambdathemes.in/admin1/index.html#"><i class="fa fa-star"></i><span>Favorites</span></a>
                 <a href="http://lambdathemes.in/admin1/index.html#"><i class="fa fa-bell"></i><span>Alerts</span></a>
@@ -111,7 +111,7 @@
                                 <a href="javascript:void(0);" class="waves-effect waves-button waves-classic sidebar-toggle"><i class="fa fa-bars"></i></a>
                             </li>
                             <li>
-                                <a href="http://lambdathemes.in/admin1/index.html#cd-nav" class="waves-effect waves-button waves-classic cd-nav-trigger"><i class="fa fa-diamond"></i></a>
+                                <a href="#cd-nav" class="waves-effect waves-button waves-classic cd-nav-trigger"><i class="fa fa-diamond"></i></a>
                             </li>
                             <li>
                                 <a href="javascript:void(0);" class="waves-effect waves-button waves-classic toggle-fullscreen"><i class="fa fa-expand"></i></a>
@@ -246,9 +246,9 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="@Url.Action("Profile", "Home", new { id = User.Identity.Name})" class="waves-effect waves-button waves-classic">
+                                    <a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button waves-classic">
                                         <span class="user-name">@displayName</span>
-                                        <img class="img-circle avatar" src="~/Content/Images/avatar1.png" width="40" height="40" alt="">
+                                        <img class="img-circle avatar" src="@Url.Content(userInfo.Profile_Photo.ProfileImageUrl)" width="40" height="40" alt="">
                                     </a>
                                 </li>
                                 <li>
@@ -270,22 +270,10 @@
         </div><!-- Navbar -->
         <div class="page-sidebar sidebar visible">
             <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">
-                    <div class="sidebar-header">
-                        <div class="sidebar-profile">
-                            <a href="javascript:void(0);" id="profile-menu-link">
-                                <div class="sidebar-profile-image">
-                                    <img src="~/Content/Images/profile-menu-image.png" class="img-circle img-responsive" alt="">
-                                </div>
-                                <div class="sidebar-profile-details">
-                                    <span>@displayName<br><small>Art Director</small></span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">                    
                     <ul class="menu accordion-menu">
                         <li><a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>New Feed</p></a></li>
-                        <li><a href="@Url.Action("Profile", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
+                        <li><a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
                         @*<li class="droplink">
                                 <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>MessageBox</p></a>
                             </li>*@
@@ -330,7 +318,7 @@
                     </a>
                 </li>
                 <li data-menu="profile">
-                    <a href="@Url.Action("Profile", "Home", new { id = User.Identity.Name})">
+                    <a href="@Url.Action(User.Identity.Name, "Profile")">
                         <span>
                             <i class="glyphicon glyphicon-user"></i>
                         </span>

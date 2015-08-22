@@ -276,6 +276,8 @@
     });
 </script>
 
+<input type="hidden" id="hidden-user-id" value="@Model.Id"/>
+
 <div class="modal fade" id="delete-post-modal" tabindex="-1" role="dialog" aria-labelledby="myModalPostLabel">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -334,10 +336,10 @@
     </div>
 </div>
 
-<div class="page-inner" style="min-height:1080px !important">
+<div class="page-inner" style="min-height: 1080px !important">
     <div class="profile-cover">
         <div class="row">
-            <div class="col-md-3 profile-image">
+            <div class="col-md-4 profile-image">
                 <div class="profile-image-container">
                     <img src="@Url.Content(Model.Avatar)" alt="">
                 </div>
@@ -360,47 +362,23 @@
     </div>
     <div id="main-wrapper">
         <div class="row">
-            <div class="col-md-3 user-profile">
+            <div class="col-md-4 user-profile">
                 <h3 class="text-center">@Model.DisplayName</h3>
                 @*<p class="text-center">UI/UX Designer</p>*@
                 <hr>
                 <ul class="list-unstyled text-center">
-                    <li><p><i class="fa fa-map-marker m-r-xs"></i>@Model.Address</p></li>
-                    <li><p><i class="fa fa-envelope m-r-xs"></i><a href="mailto:@Model.Email">@Model.Email</a></p></li>
-                    <li><p><i class="fa fa-link m-r-xs"></i><a href="#">www.themeforest.net</a></p></li>
+                    <li>
+                        <p><i class="fa fa-map-marker m-r-xs"></i>@Model.Address</p></li>
+                    <li>
+                        <p><i class="fa fa-envelope m-r-xs"></i><a href="mailto:@Model.Email">@Model.Email</a>
+                    </p></li>
+                    <li>
+                        <p><i class="fa fa-link m-r-xs"></i><a href="#">www.themeforest.net</a>
+                        </p></li>
                 </ul>
                 <hr>
                 <button class="btn btn-facebook btn-block"><i class="fa fa-plus m-r-xs"></i>Add Friend</button>
-            </div>
-            <div class="col-md-6 m-t-lg">
-                @if (Model.AllowOtherToPost || Model.IsMyTimeline)
-                {
-                    <div class="panel panel-white">
-                        <div class="panel-body">
-                            <div class="post">
-                                <textarea id="status-content" class="form-control" placeholder="What's in your mind?" rows="4=6"></textarea>
-                                <div class="post-options">
-                                    <a href="#"><i class="icon-camera"></i></a>
-                                    <a href="#"><i class="icon-camcorder"></i></a>
-                                    <a href="#"><i class="icon-music-tone-alt"></i></a>
-                                    <a href="#"><i class="icon-link"></i></a>
-                                    <a href="#"><i class="icon-microphone"></i></a>
-                                    <button class="btn btn-facebook pull-right" onclick=" PostStatus(); ">Post</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-                <div class="profile-timeline">
-                    <ul class="list-unstyled" id="timeline-posts">
-                        @if (Model.Posts.Count > 0)
-                        {
-                            Html.RenderAction("PostList", "Home", new {Model = Model.Posts as List<WC.Data.Post>});
-                        }
-                        </ul>
-                </div>
-            </div>
-            <div class="col-md-3 m-t-lg">
+                <hr/>
                 <div class="panel panel-white">
                     <div class="panel-heading">
                         <div class="panel-title">Friends</div>
@@ -473,6 +451,69 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-8 m-t-lg">
+                @if (Model.AllowOtherToPost || Model.IsMyTimeline)
+                {
+                    <div class="panel panel-white">
+                        <div class="panel-body">
+                            <div class="post">
+                                <textarea id="status-content" class="form-control" placeholder="What's in your mind?" rows="4=6"></textarea>
+                                <div class="post-options">
+                                    <a href="#"><i class="icon-camera"></i></a>
+                                    <a href="#"><i class="icon-camcorder"></i></a>
+                                    <a href="#"><i class="icon-music-tone-alt"></i></a>
+                                    <a href="#"><i class="icon-link"></i></a>
+                                    <a href="#"><i class="icon-microphone"></i></a>
+                                    <button class="btn btn-facebook pull-right" onclick=" PostStatus(); ">Post</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="profile-timeline">
+                    <ul class="list-unstyled" id="timeline-posts">
+                        @if (Model.Posts.Count > 0)
+                        {
+                            Html.RenderAction("PostList", "Home", new {Model = Model.Posts as List<WC.Data.Post>});
+                        }
+                    </ul>
+                </div>
+                <div id="loading" class="text-center" style="font-size: 35px; display: none">
+                    <i class="fa fa-circle-o-notch fa-spin"></i>
+                </div>
+                <div id="no-more-post" class="panel panel-white" role="alert" style="display: none">
+                    <div class="panel-body text-center">
+                        <strong>No more post!</strong>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+            var NoMoreData = false;
+            var inProgress = false;
+
+            $(window).scroll(function () {
+                if ($(window).scrollTop() === $(document).height() -
+                $(window).height() && !NoMoreData && !inProgress) {
+
+                    inProgress = true;
+                    $("#loading").show();
+                    var currentUser = $("#hidden-user-id").val();
+                    var postCount = document.querySelectorAll('[id^=post-block]').length;
+
+                    $.post("@Url.Action("LoadMorePost","Home")", { "userId": currentUser, "loadedPostCount": postCount },
+                            function (data) {
+                                NoMoreData = data.NoMore;
+                                $("#timeline-posts").append(data.Posts);
+                                $("#loading").hide();
+                                inProgress = false;
+                            });
+                }
+                if (NoMoreData) {
+                    $("#no-more-post").show();
+                }
+            });
+</script>

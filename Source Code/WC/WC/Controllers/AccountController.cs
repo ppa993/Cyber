@@ -96,6 +96,7 @@ namespace WC.Controllers
                         Email = model.Email,
                         FirstName = model.Firstname,
                         LastName = model.Lastname,
+                        UserName = model.UserName,
                         BirthDay = birthday,
                         Gender = model.Gender,
                         Relationship = (int)Relationship.Single
@@ -121,6 +122,7 @@ namespace WC.Controllers
                     var mySetting = new MySetting
                     {
                         SettingID = Guid.NewGuid().ToString(),
+                        UserID = user.Id,
                         AllowOtherToPost = true,
                         DefaultPostVisible = (int)VisibleType.Friend
                     };

@@ -85,4 +85,9 @@ namespace WC.Constants
         Failed,
         Successfully
     }
+
+    public class DefautValue
+    {
+        public static int PostLoad = 10;
+    }
 }

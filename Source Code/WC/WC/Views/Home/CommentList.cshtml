@@ -22,7 +22,7 @@
         <div class="timeline-comment-header">
             <img src="@Url.Content(item.User.Profile_Photo.ProfileImageUrl)" alt="">
             <p>
-                <a href="#">@item.User.FirstName @item.User.LastName</a> <span id="comment-edit-@item.CommentID" style="white-space: pre-line; font-weight: 400">@item.CommentContent</span>
+                <a href="@Url.Action(item.User.UserName, "Profile")">@item.User.FirstName @item.User.LastName</a> <span id="comment-edit-@item.CommentID" style="white-space: pre-line; font-weight: 400">@item.CommentContent</span>
             </p>
             <div class="dropdown dropdown-caret pull-right">
                 <a id="drop-@item.CommentID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

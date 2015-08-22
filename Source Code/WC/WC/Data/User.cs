@@ -43,6 +43,7 @@ namespace WC.Data
         public string Work { get; set; }
         public string ContactNumber { get; set; }
         public string Studied { get; set; }
+        public string UserName { get; set; }
     
         public virtual ICollection<ChatBox> ChatBoxes { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes1 { get; set; }

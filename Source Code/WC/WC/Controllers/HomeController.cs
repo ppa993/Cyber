@@ -22,48 +22,32 @@ namespace WC.Controllers
             return View();
         }
 
-        public ActionResult Profile([Bind(Prefix = "id")] string username)
+        public ActionResult Profile(string username)
         {
             if (string.IsNullOrEmpty(username)) return RedirectToAction("Newsfeed", "Home");
 
-            var currentUser = UserManager.FindByName(username);
-            var userInfo = db.Users.FirstOrDefault(x => x.UserID == currentUser.Id);
-            var requestUserId = CurrentUserID;
-            List<Post> listView;
-            if (CurrentUserName == username)
-            {
-                listView = db.Posts.Where(x => x.PostedOn == currentUser.Id)
-                                    .Take(10)
-                                    .OrderByDescending(x => x.PostedDate)
-                                    .ToList();
-            }
-            else
-            {
-                listView = db.Posts.Where(x => x.PostedOn == currentUser.Id)
-                                    .Where(x => x.VisibleType == (int)VisibleType.Public
-                                        || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.FirstOrDefault(y => y.UserId == currentUser.Id)
-                                                                                                        .Friends.Any(z => z.FriendId == requestUserId
-                                                                                                        && z.FriendStatus))
-                                        || x.UserID == requestUserId)
-                                    .Take(10)
-                                    .OrderByDescending(x => x.PostedDate)
-                                    .ToList();
-            }
+            //fromUser: whose profile is being load
+            //toUser: who request to view fromUser's profile
+            var fromUser = UserManager.FindByName(username);
+            var fromUserInfo = db.Users.FirstOrDefault(x => x.UserID == fromUser.Id);
+            var toUser = CurrentUserID;
+
+            var postList = GetPosts(fromUser, toUser).Take(10).ToList();
             var user = new ProfileViewModel();
 
-            if (userInfo != null)
+            if (fromUserInfo != null)
             {
-                user.Id = userInfo.UserID;
-                user.About = userInfo.About;
-                user.DisplayName = userInfo.FirstName + " " + userInfo.LastName;
-                user.Address = userInfo.Address;
-                user.Email = userInfo.Email;
-                user.Friends = userInfo.FriendLists.First();
-                user.Posts = listView;
-                user.Avatar = userInfo.Profile_Photo.ProfileImageUrl;
-                user.Cover = userInfo.Profile_Photo.CoverImageUrl;
-                user.AllowOtherToPost = userInfo.MySettings.First().AllowOtherToPost;
-                user.IsMyTimeline = currentUser.Id.Equals(requestUserId, StringComparison.InvariantCultureIgnoreCase);
+                user.Id = fromUserInfo.UserID;
+                user.About = fromUserInfo.About;
+                user.DisplayName = fromUserInfo.FirstName + " " + fromUserInfo.LastName;
+                user.Address = fromUserInfo.Address;
+                user.Email = fromUserInfo.Email;
+                user.Friends = fromUserInfo.FriendLists.First();
+                user.Posts = postList;
+                user.Avatar = fromUserInfo.Profile_Photo.ProfileImageUrl;
+                user.Cover = fromUserInfo.Profile_Photo.CoverImageUrl;
+                user.AllowOtherToPost = fromUserInfo.MySettings.First().AllowOtherToPost;
+                user.IsMyTimeline = fromUser.Id.Equals(toUser, StringComparison.InvariantCultureIgnoreCase);
             }
             
             return View(user);
@@ -81,7 +65,7 @@ namespace WC.Controllers
             return PartialView(Model);
         }
 
-        #region Web Post Methods
+        #region Post Methods
         [HttpPost]
         public string PostStatus(string postedOn, string content)
         {
@@ -465,7 +449,33 @@ namespace WC.Controllers
                 Helper.WriteLog(exception);
                 return ActionResults.Failed.ToString();
             }
-        } 
+        }
+        
+        [HttpPost]
+        public ActionResult LoadMorePost(string userId, int loadedPostCount)
+        {
+            var morePost = new MorePostViewModel();
+            var fromUser = UserManager.FindById(userId);
+            var toUser = CurrentUserID;
+
+            var posts = GetPosts(fromUser, toUser);
+            var notLoadedCount = posts.Count - loadedPostCount;
+
+            if (notLoadedCount <= DefautValue.PostLoad)
+            {
+                posts = posts.Skip(loadedPostCount).Take(notLoadedCount).ToList();
+                morePost.NoMore = true;
+            }
+            else
+            {
+                posts = posts.Skip(loadedPostCount).Take(DefautValue.PostLoad).ToList();
+                morePost.NoMore = false;
+            }
+
+            morePost.Posts = RenderPartialViewToString("PostList", posts);
+
+            return Json(morePost);
+        }
         #endregion
 
         #region Private Methods
@@ -521,7 +531,43 @@ namespace WC.Controllers
             {
                 Helper.WriteLog(exception);
             }
-        } 
+        }
+
+        /// <summary>
+        /// Get 10 posts from fromUser if toUser have permission
+        /// </summary>
+        /// <param name="fromUser">whose profile is being view</param>
+        /// <param name="toUser">who request to view this profile</param>
+        /// <returns></returns>
+        private List<Post> GetPosts(ApplicationUser fromUser, string toUser)
+        {
+            var listView = new List<Post>();
+            try
+            {
+                if (CurrentUserName == fromUser.UserName)
+                {
+                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                                        .OrderByDescending(x => x.PostedDate)
+                                        .ToList();
+                }
+                else
+                {
+                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                                        .Where(x => x.VisibleType == (int)VisibleType.Public
+                                            || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.FirstOrDefault(y => y.UserId == fromUser.Id)
+                                                                                                            .Friends.Any(z => z.FriendId == toUser
+                                                                                                            && z.FriendStatus))
+                                            || x.UserID == toUser)
+                                        .OrderByDescending(x => x.PostedDate)
+                                        .ToList();
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return listView;
+        }
         #endregion
     }
 }

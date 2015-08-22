@@ -32,8 +32,8 @@ namespace WC
                         "~/Content/Script/jquery.flot.tooltip.min.js",
                         "~/Content/Script/curvedLines.js",
                         "~/Content/Script/MetroJs.min.js",
-                        "~/Content/Script/modern.min.js",
-                        "~/Content/Script/dashboard.js"));
+                        "~/Content/Script/modern.min.js"));
+                        //"~/Content/Script/dashboard.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Content/Script/jquery.validate*"));
@@ -43,11 +43,11 @@ namespace WC
             //bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
             //            "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/Content/Theme").Include(
+            bundles.Add(new ScriptBundle("~/bundles/Theme").Include(
                       "~/Content/Script/modernizr.js",
                       "~/Content/Script/snap.svg-min.js"));
 
-            bundles.Add(new StyleBundle("~/Content/Style").Include(
+            bundles.Add(new StyleBundle("~/bundles/Style").Include(
                       "~/Content/Style/pace-theme-flash.css",
                       "~/Content/Style/uniform.default.min.css",
                       "~/Content/Style/bootstrap.min.css",

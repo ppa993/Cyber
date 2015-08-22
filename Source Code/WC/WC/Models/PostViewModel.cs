@@ -11,4 +11,10 @@ namespace WC.Models
         public Post Post { get; set; }
 
     }
+
+    public class MorePostViewModel
+    {
+        public bool NoMore { get; set; }
+        public string Posts { get; set; }
+    }
 }
