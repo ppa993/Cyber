@@ -18,6 +18,12 @@ namespace WC
                 "Profile/{username}",                            // URL with parameters
                 new { controller = "Home", action = "Profile", username = UrlParameter.Optional }  // Parameter defaults
             );
+
+            routes.MapRoute(
+                "ViewPost",                                           // Route name
+                "Post/{postid}",                            // URL with parameters
+                new { controller = "Post", action = "ViewPost", postid = UrlParameter.Optional }  // Parameter defaults
+            );
              
             routes.MapRoute(
                 name: "Default",

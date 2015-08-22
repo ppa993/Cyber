@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web.Mvc;
 using WC.Data;
@@ -63,7 +64,7 @@ namespace WC.Controllers
             return html;
         }
 
-        protected string RenderPartialViewToString(string viewName, object model)
+        public string RenderPartialViewToString(string viewName, object model)
         {
             if (string.IsNullOrEmpty(viewName))
                 viewName = ControllerContext.RouteData.GetRequiredString("action");
@@ -80,6 +81,14 @@ namespace WC.Controllers
 
                 return sw.GetStringBuilder().ToString();
             }
+        }
+
+        public static string TruncateAtWord(string input, int length)
+        {
+            if (input == null || input.Length < length)
+                return input;
+            var iNextSpace = input.LastIndexOf(" ", length, StringComparison.InvariantCultureIgnoreCase);
+            return string.Format("{0}...", input.Substring(0, (iNextSpace > 0) ? iNextSpace : length).Trim());
         }
     }
 }

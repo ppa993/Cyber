@@ -178,6 +178,12 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostController.cs" />
+    <Compile Include="Data\Album.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\AlbumDetail.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\ChatBox.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
@@ -211,6 +217,9 @@
     <Compile Include="Data\FriendList.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\Language.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\MySetting.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
@@ -239,6 +248,9 @@
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\Role_Type.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\SettingChatBox.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\User.cs">
@@ -376,13 +388,12 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\PostList.cshtml" />
-    <Content Include="Views\Home\CommentList.cshtml" />
     <Content Include="Views\Home\FriendListPartial.cshtml" />
     <Content Include="Views\Home\ChatItemViewModel.cshtml" />
     <Content Include="Views\Post\PostList.cshtml" />
     <Content Include="Views\Post\CommentList.cshtml" />
     <None Include="Properties\PublishProfiles\Cyber.pubxml" />
+    <Content Include="Views\Post\ViewPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

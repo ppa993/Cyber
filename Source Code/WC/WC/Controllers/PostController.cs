@@ -14,6 +14,25 @@ namespace WC.Controllers
     [Authorize]
     public class PostController : AccountController
     {
+        public ActionResult ViewPost(string postid)
+        {
+            var post = new PostViewModel();
+            try
+            {
+                post.Post =
+                    db.Posts.FirstOrDefault(x => x.PostID.Equals(postid, StringComparison.InvariantCultureIgnoreCase));
+
+                if (post.Post != null)
+                {
+                    post.PostTitle = TruncateAtWord(post.Post.PostContent, 50);
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return View(post);
+        }
         [ChildActionOnly]
         public ActionResult PostList(List<Post> Model)
         {
@@ -528,6 +547,11 @@ namespace WC.Controllers
                 Helper.WriteLog(exception);
             }
             return listView;
+        }
+
+        private bool CheckPostViewPermission(Post post)
+        {
+            return false;
         }
         #endregion
 	}
