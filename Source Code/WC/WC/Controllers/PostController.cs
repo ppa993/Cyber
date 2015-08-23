@@ -346,8 +346,15 @@ namespace WC.Controllers
         {
             try
             {
+                var post = db.Posts.First(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase));
+                if (post == null) return ActionResults.Deleted.ToString();
                 if (isLike)
                 {
+                    if (db.PostLikes.Any(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase)
+                                              && x.UserID == CurrentUserID))
+                    {
+                        return ActionResults.AlreadyDone.ToString();
+                    }
                     var like = new PostLike
                     {
                         PostLikeID = Guid.NewGuid().ToString().Replace("-", string.Empty),
@@ -395,8 +402,17 @@ namespace WC.Controllers
         {
             try
             {
+                var comment =
+                    db.Comments.First(x => x.CommentID.Equals(commentId, StringComparison.InvariantCultureIgnoreCase));
+                if (comment == null)
+                    return ActionResults.Deleted.ToString();
                 if (isLike)
                 {
+                    if (db.CommentLikes.Any(x => x.CommentID.Equals(commentId, StringComparison.InvariantCultureIgnoreCase)
+                                              && x.UserID == CurrentUserID))
+                    {
+                        return ActionResults.AlreadyDone.ToString();
+                    }
                     var like = new CommentLike
                     {
                         CommentLikeID = Guid.NewGuid().ToString().Replace("-", string.Empty),

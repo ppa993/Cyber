@@ -56,7 +56,8 @@ namespace WC.Constants
     {
         Deleted,
         Failed,
-        Succeed
+        Succeed,
+        AlreadyDone
     }
 
     public enum PostType

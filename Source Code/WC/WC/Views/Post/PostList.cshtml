@@ -63,8 +63,13 @@
         });
 
         //like/unlike and update like count
-        $(document).on('click', '.post-like', function() {
+        $(document).on('click', '.post-like', function () {
+            var inprocess = $(this).attr("data-inprocess");
+            if (inprocess === "1") {
+                return false;
+            }
             var curElement = $(this);
+            $(this).attr("data-inprocess", "1");
             var postid = $(this).attr("post-id");
             var isLike = $(this).attr("data-toogle") === "Like";
             var url = '@Url.Action("LikeUnlikePost", "Post")';
@@ -72,8 +77,10 @@
             $.post(url, { "postId": postid, "isLike": isLike },
                 function(data) {
                     if (data === "Failed") {
-                        alert("Unable to peform your action. This item has been removed.");
-                    } else {
+                        alert("Unable to peform your action. Please try again later.");
+                    } else if (data === "Deleted") {
+                        alert("This item has been deleted.");
+                    } else if (data !== "AlreadyDone") {
                         var countItem = document.getElementById("post-like-count-" + postid);
                         var count = data;
 
@@ -87,13 +94,19 @@
                         var likeStatus = document.getElementById("post-like-status-" + postid);
                         likeStatus.innerHTML = curElement.attr("data-toogle");
                     }
+                    curElement.attr("data-inprocess", "0");
                 });
             return false;
         });
 
         //like/unlike and update like count
         $(document).on('click', '.comment-like', function() {
+            var inprocess = $(this).attr("data-inprocess");
+            if (inprocess === "1") {
+                return false;
+            }
             var curElement = $(this);
+            $(this).attr("data-inprocess", "1");
             var commentid = $(this).attr("comment-id");
             var isLike = $(this).attr("data-toogle") === "Like";
             var url = '@Url.Action("LikeUnlikeComment", "Post")';
@@ -101,8 +114,10 @@
             $.post(url, { "commentId": commentid, "isLike": isLike },
                 function(data) {
                     if (data === "Failed") {
-                        alert("Unable to peform your action. This item has been removed.");
-                    } else {
+                        alert("Unable to peform your action. Please try again later.");
+                    } else if (data === "Deleted") {
+                        alert("This item has been deleted.");
+                    } else if (data !== "AlreadyDone") {
                         var countItem = document.getElementById("comment-like-count-" + commentid);
                         var count = data;
 
@@ -116,6 +131,7 @@
                         var likeStatus = document.getElementById("comment-like-status-" + commentid);
                         likeStatus.innerHTML = curElement.attr("data-toogle");
                     }
+                    curElement.attr("data-inprocess", "0");
                 });
             return false;
         });
@@ -383,7 +399,7 @@
                             <p id="post-edit-@item.PostID" style="white-space: pre-line">@item.PostContent</p>
                         </div>
                         <div class="timeline-options">
-                            <a class="post-like" href="#" post-id="@item.PostID" data-toogle="@alreadyLike">
+                            <a class="post-like" href="#" post-id="@item.PostID" data-toogle="@alreadyLike" data-inprocess="0">
                                 <i class="icon-like"></i>
                                 <span id="post-like-status-@item.PostID">@alreadyLike</span> (<span id="post-like-count-@item.PostID">@item.PostLikes.Count</span>)
                             </a>
@@ -433,7 +449,7 @@
                                             </div>
                                         </div>
                                         <div class="clear"></div>
-                                        <a class="comment-like" href="#" comment-id="@comment.CommentID" data-toogle="@commentAlreadyLike">
+                                        <a class="comment-like" href="#" comment-id="@comment.CommentID" data-toogle="@commentAlreadyLike" data-inprocess="0">
                                             <span id="comment-like-status-@comment.CommentID">@commentAlreadyLike</span> (<span id="comment-like-count-@comment.CommentID">@comment.CommentLikes.Count</span>)
                                         </a><small>@comment.CommentedDate</small>
                                     </div>
