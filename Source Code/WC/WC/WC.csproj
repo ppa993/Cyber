@@ -356,6 +356,7 @@
     <Content Include="Content\Style\custom.css" />
     <Content Include="Content\Style\font-awesome.css" />
     <Content Include="Content\Style\green.css" />
+    <Content Include="Content\Style\loading.css" />
     <Content Include="Content\Style\menu_cornerbox.css" />
     <Content Include="Content\Style\MetroJs.min.css" />
     <Content Include="Content\Style\modern.min.css" />

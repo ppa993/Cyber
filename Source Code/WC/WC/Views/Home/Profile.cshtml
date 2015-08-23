@@ -24,6 +24,7 @@
             });
     }
 </script>
+<link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
 
 <input type="hidden" id="hidden-user-id" value="@Model.Id"/>
 
@@ -180,8 +181,10 @@
                         }
                     </ul>
                 </div>
-                <div id="loading" class="text-center" style="font-size: 35px; display: none">
-                    <i class="fa fa-circle-o-notch fa-spin"></i>
+                <div id="circularG" class="cssload-loader">
+                    <div class="cssload-inner cssload-one"></div>
+                    <div class="cssload-inner cssload-two"></div>
+                    <div class="cssload-inner cssload-three"></div>
                 </div>
                 <div id="no-more-post" class="panel panel-white" role="alert" style="display: none">
                     <div class="panel-body text-center">
@@ -202,17 +205,21 @@
             $(window).height() && !NoMoreData && !inProgress) {
 
             inProgress = true;
-            $("#loading").show();
-            var currentUser = $("#hidden-user-id").val();
-            var postCount = document.querySelectorAll('[id^=post-block]').length;
+            $("#circularG").show();
+            var delay = 500; //1 seconds
 
-            $.post("@Url.Action("LoadMorePost","Post")", { "userId": currentUser, "loadedPostCount": postCount },
-                function (data) {
-                    NoMoreData = data.NoMore;
-                    $("#timeline-posts").append(data.Posts);
-                    $("#loading").hide();
-                    inProgress = false;
-                });
+            setTimeout(function () {
+                var currentUser = $("#hidden-user-id").val();
+                var postCount = document.querySelectorAll('[id^=post-block]').length;
+
+                $.post("@Url.Action("LoadMorePost","Post")", { "userId": currentUser, "loadedPostCount": postCount },
+                    function (data) {
+                        NoMoreData = data.NoMore;
+                        $("#timeline-posts").append(data.Posts);
+                        $("#circularG").hide();
+                        inProgress = false;
+                    });
+            }, delay);
         }
         if (NoMoreData) {
             $("#no-more-post").show();
