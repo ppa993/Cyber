@@ -1,4 +1,5 @@
 ﻿@using WC.Data
+@using WC.Models
 @model WC.Models.ProfileViewModel
 @{
     ViewBag.Title = Model.DisplayName;
@@ -12,7 +13,7 @@
         var text = $("#status-content").val();
         if (text === "") return;
 
-        $.post(url, { "postedOn": '@Model.Id',  "content": text },
+        $.post(url, { "postedOn": '@Model.Id', "content": text },
             function (data) {
                 if (data === "Failed") {
                     alert("Unable to post your status. Please try again later. Thank you!");
@@ -23,8 +24,49 @@
             });
     }
 </script>
+<script type="text/javascript">
+    function FriendControl(type) {
+        var url = '@Url.Action("FriendControl")';
+        var targetId = '@Model.Id'; 
+        $.post(url, { targetUserId: targetId, type: type }, function (result) {
+            if (result == 'remove') {
+                showConfirmMsg('Are you sure ?','@Url.Action("UndoFriend")','@Model.Id')
+            }
+            if (result == 'add') {
+                showMsg('Sent a request to ' + '@Model.DisplayName');
+            }
+            if (result == 'accept') {
+                showMsg('Now, you and ' + '@Model.DisplayName' +' has been friend');
+            }
+        });
+    }
+</script>
+<style>
+    .btn-available {
+        background: #00cf1b;
+    }
 
-<input type="hidden" id="hidden-user-id" value="@Model.Id"/>
+        .btn-available:hover {
+            background: #009b14;
+        }
+
+    .btn-wait-accept {
+        background: #ff6a00;
+    }
+
+        .btn-wait-accept:hover {
+            background: #c85300;
+        }
+
+    .btn-added {
+        background: #0094ff;
+    }
+
+        .btn-added:hover {
+            background: #0272c3;
+        }
+</style>
+<input type="hidden" id="hidden-user-id" value="@Model.Id" />
 
 <div class="page-inner" style="min-height: 1080px !important">
     <div class="profile-cover">
@@ -36,9 +78,9 @@
             </div>
             <div class="col-md-12 profile-info">
                 @*<div class=" profile-info-value">
-                    <h3>1020</h3>
-                    <p>Followers</p>
-                </div>*@
+                        <h3>1020</h3>
+                        <p>Followers</p>
+                    </div>*@
                 <div class=" profile-info-value">
                     <h3>@Model.Friends.Friends.Count</h3>
                     <p>Friends</p>
@@ -58,17 +100,51 @@
                 <hr>
                 <ul class="list-unstyled text-center">
                     <li>
-                        <p><i class="fa fa-map-marker m-r-xs"></i>@Model.Address</p></li>
+                        <p><i class="fa fa-map-marker m-r-xs"></i>@Model.Address</p>
+                    </li>
                     <li>
-                        <p><i class="fa fa-envelope m-r-xs"></i><a href="mailto:@Model.Email">@Model.Email</a>
-                    </p></li>
+                        <p>
+                            <i class="fa fa-envelope m-r-xs"></i><a href="mailto:@Model.Email">@Model.Email</a>
+                        </p>
+                    </li>
                     <li>
-                        <p><i class="fa fa-link m-r-xs"></i><a href="#">www.themeforest.net</a>
-                        </p></li>
+                        <p>
+                            <i class="fa fa-link m-r-xs"></i><a href="#">www.themeforest.net</a>
+                        </p>
+                    </li>
                 </ul>
                 <hr>
-                <button class="btn btn-facebook btn-block"><i class="fa fa-plus m-r-xs"></i>Add Friend</button>
-                <hr/>
+                @if (ViewData["FlagShowButton"] == null)
+                {
+                    if (ViewData["InfoButtonFriend"] != null)
+                    { 
+                        if ((ViewData["InfoButtonFriend"] as AddFriendViewModel).Type == ButtonFriendType.NonRelationship)
+                        {
+                            <button class="btn btn-block btn-available" onclick="FriendControl(0);">
+                                <i class="fa fa-plus m-r-xs"></i>Add Friend
+                            </button>
+                        }
+                        if ((ViewData["InfoButtonFriend"] as AddFriendViewModel).Type == ButtonFriendType.HasRelationship)
+                        {
+                            <button class="btn btn-block btn-added" onclick="FriendControl(1);">
+                                <i class="fa fa-check m-r-xs"></i>Friend, click to undo
+                            </button>
+                        }
+                        if ((ViewData["InfoButtonFriend"] as AddFriendViewModel).Type == ButtonFriendType.WaitForAcceptting)
+                        {
+                            <button class="btn btn-block btn-available" onclick="FriendControl(2);">
+                                <i class="fa fa-plus m-r-xs"></i>Accept request
+                            </button>
+                        }
+                        if ((ViewData["InfoButtonFriend"] as AddFriendViewModel).Type == ButtonFriendType.WaitForTargetAccepting)
+                        {
+                            <button class="btn btn-block btn-wait-accept" onclick="FriendControl(3)">
+                                <i class="fa fa-circle-o-notch m-r-xs"></i>Waitting for accept, click to undo
+                            </button>
+                        }
+                    }
+                }
+                <hr />
                 <div class="panel panel-white">
                     <div class="panel-heading">
                         <div class="panel-title">Friends</div>
@@ -160,12 +236,12 @@
                             </div>
                         </div>
                     </div>
-                }
+                                        }
                 <div class="profile-timeline">
                     <ul class="list-unstyled" id="timeline-posts">
                         @if (Model.Posts.Count > 0)
                         {
-                            Html.RenderAction("PostList", "Post", new {Model = Model.Posts as List<Post>});
+                            Html.RenderAction("PostList", "Post", new { Model = Model.Posts as List<Post> });
                         }
                     </ul>
                 </div>

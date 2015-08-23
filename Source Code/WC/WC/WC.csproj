@@ -279,6 +279,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AddFriendViewModel.cs" />
     <Compile Include="Models\FriendViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\PostViewModel.cs" />
