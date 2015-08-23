@@ -1,6 +1,26 @@
-﻿@model WC.Models.PostViewModel
+﻿@using Message = WC.Constants.Message
+@model List<WC.Data.Post>
 
 @{
-    ViewBag.Title = @Model.PostTitle;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<div class="page-inner" style="min-height: 1080px !important">
+    <div id="main-wrapper">
+        <div class="row">
+            @if (Model.Count > 0)
+            {
+                <div class="col-md-2"></div>
+                <div class="col-md-7 m-t-lg">
+                    <div class="profile-timeline">
+                        <ul class="list-unstyled" id="timeline-posts">
+                            @{
+                                Html.RenderAction("PostList", "Post", new { Model });
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

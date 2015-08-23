@@ -69,3 +69,8 @@
 		});
 	};
 })(jQuery);
+
+$(document).ready(function() {
+    //auto expand textarea base on number of text lines
+    $('textarea').css('overflow', 'hidden').autogrow();
+});

@@ -10,18 +10,18 @@
         padding: 0 !important;
     }
 
-        .post-block .post-header {
-            padding: 20px !important;
-        }
+    .post-block .post-header {
+        padding: 20px !important;
+    }
 
-        .post-block .post-content {
-            padding: 0 20px !important;
-        }
+    .post-block .post-content {
+        padding: 0 20px !important;
+    }
 
-        .post-block .post-comment {
-            padding: 20px !important;
-            background-color: #f6f7f8;
-        }
+    .post-block .post-comment {
+        padding: 20px !important;
+        background-color: #f6f7f8;
+    }
 
     .profile-timeline ul li .timeline-item-post {
         padding: 0;
@@ -30,6 +30,9 @@
     .profile-timeline ul li .timeline-item-header {
         overflow: visible;
     }
+        .profile-timeline ul li .timeline-item-header small a {
+            color: #8E8E8E;
+        }
 
     .timeline-comment .timeline-comment-header p {
         padding: 0 5px 5px 0;
@@ -45,9 +48,9 @@
         margin-bottom: 0;
     }
 
-        .timeline-options a {
-            color: #337ab7;
-        }
+    .timeline-options a {
+        color: #337ab7;
+    }
 
     .comment-like {
         padding-left: 40px;
@@ -58,9 +61,9 @@
         text-decoration: none;
     }
 
-        a.comment-like:hover {
-            color: #22BAA0;
-        }
+    a.comment-like:hover {
+        color: #22BAA0;
+    }
 
     small {
         color: #9197a3;
@@ -70,14 +73,14 @@
         top: 10px;
         -ms-border-radius: 4px;
         border-radius: 4px;
-        -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
-        -ms-box-shadow: 0 6px 12px rgba(0,0,0,.175);
-        box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        -ms-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     }
 
-        .remove-content:before, .remove-content:after {
-            content: none;
-        }
+    .remove-content:before, .remove-content:after {
+        content: none;
+    }
 
     .post-dropdown-caret {
         top: -25px;
@@ -105,11 +108,324 @@
     .clear {
         clear: both;
     }
-    .no-decoration, .no-decoration:hover{
+    .no-decoration, .no-decoration:hover {
         text-decoration: none;
         cursor: default;
     }
 </style>
+
+<script>
+    function pasteIntoInput(el, text) {
+        el.focus();
+        if (typeof el.selectionStart == "number"
+            && typeof el.selectionEnd == "number") {
+            var val = el.value;
+            var selStart = el.selectionStart;
+            el.value = val.slice(0, selStart) + text + val.slice(el.selectionEnd);
+            el.selectionEnd = el.selectionStart = selStart + text.length;
+        } else if (typeof document.selection != "undefined") {
+            var textRange = document.selection.createRange();
+            textRange.text = text;
+            textRange.collapse(false);
+            textRange.select();
+        }
+    }
+
+    $(document).ready(function() {
+
+        //focus on comment text box when click on Comment text
+        $(document).on('click', '.comment-text', function() {
+            var postId = $(this).attr("post-id");
+            $('#comment-area-' + postId).focus();
+            return false;
+        });
+
+        //auto submit comment when user press enter, add new line if Shift+Enter
+        $(document).on('keydown', '.comment-form', function(e) {
+            if (e.which === 13) {
+                if (e.shiftKey === false) {
+                    var url = '@Url.Action("PostComment", "Post")';
+                    var text = $(this).val();
+                    var textbox = $(this);
+                    var postid = $(this).attr("post-id");
+                    if (text === "") return;
+
+                    $.post(url, { "postId": postid, "content": text },
+                        function(data) {
+                            if (data === "Failed") {
+                                alert("Unable to post your comment. Please try again later. Thank you!");
+                            } else {
+                                var countItem = document.getElementById("comment-count-" + postid);
+                                var count = parseInt(countItem.textContent) + 1;
+                                countItem.textContent = count;
+
+                                var commentList = $("#comment-list-" + postid);
+                                commentList.append(data);
+                                textbox.val('');
+                            }
+                        });
+                } else {
+                    pasteIntoInput(this, "\n");
+                    e.preventDefault();
+                }
+            }
+        });
+
+        //like/unlike and update like count
+        $(document).on('click', '.post-like', function() {
+            var curElement = $(this);
+            var postid = $(this).attr("post-id");
+            var isLike = $(this).attr("data-toogle") === "Like";
+            var url = '@Url.Action("LikeUnlikePost", "Post")';
+
+            $.post(url, { "postId": postid, "isLike": isLike },
+                function(data) {
+                    if (data === "Failed") {
+                        alert("Unable to peform your action. This item has been removed.");
+                    } else {
+                        var countItem = document.getElementById("post-like-count-" + postid);
+                        var count = data;
+
+                        if (isLike) {
+                            curElement.attr("data-toogle", "Unlike");
+                        } else {
+                            curElement.attr("data-toogle", "Like");
+                        }
+                        countItem.textContent = count;
+
+                        var likeStatus = document.getElementById("post-like-status-" + postid);
+                        likeStatus.innerHTML = curElement.attr("data-toogle");
+                    }
+                });
+            return false;
+        });
+
+        //like/unlike and update like count
+        $(document).on('click', '.comment-like', function() {
+            var curElement = $(this);
+            var commentid = $(this).attr("comment-id");
+            var isLike = $(this).attr("data-toogle") === "Like";
+            var url = '@Url.Action("LikeUnlikeComment", "Post")';
+
+            $.post(url, { "commentId": commentid, "isLike": isLike },
+                function(data) {
+                    if (data === "Failed") {
+                        alert("Unable to peform your action. This item has been removed.");
+                    } else {
+                        var countItem = document.getElementById("comment-like-count-" + commentid);
+                        var count = data;
+
+                        if (isLike) {
+                            curElement.attr("data-toogle", "Unlike");
+                        } else {
+                            curElement.attr("data-toogle", "Like");
+                        }
+                        countItem.textContent = count;
+
+                        var likeStatus = document.getElementById("comment-like-status-" + commentid);
+                        likeStatus.innerHTML = curElement.attr("data-toogle");
+                    }
+                });
+            return false;
+        });
+
+        //Show edit modal dialog
+        $(document).on('click', '.edit-command', function() {
+            var recipient = $(this).data('id');
+            var actionType = $(this).data('type');
+            $("#button-edit").data('id', recipient);
+            $("#button-edit").data('type', actionType);
+
+            var title = $('#edit-modal-label');
+            title.text('Edit ' + actionType);
+
+            var button = $('#button-edit');
+            button.text('Edit ' + actionType);
+
+            if (actionType === "Post") {
+                var postUrl = '@Url.Action("EditPost", "Post")';
+
+
+                $.post(postUrl, { "postId": recipient },
+                    function(data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this post. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This post has already been deleted.");
+                        } else {
+                            var content = $('#message-text');
+                            content.val(data);
+                            content.css('min-height', '50px').autogrow();
+                        }
+                    });
+            } else {
+                var commentUrl = '@Url.Action("EditComment", "Post")';
+
+                $.post(commentUrl, { "commentId": recipient },
+                    function(data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this comment. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This comment has already been deleted.");
+                        } else {
+                            var content = $('#message-text');
+                            content.val(data);
+                            content.css('min-height', '50px').autogrow();
+                        }
+                    });
+            }
+        });
+
+        //update post/comment
+        $("#button-edit").click(function() {
+            var recipient = $(this).data('id');
+            var actionType = $(this).data('type');
+            var content = $('#message-text').val();
+
+            if (actionType === "Post") {
+                var postUrl = '@Url.Action("UpdatePost", "Post")';
+
+                $.post(postUrl, { "postId": recipient, "content": content },
+                    function(data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this post. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This post has already been deleted.");
+                        } else {
+                            var editedContent = $('#post-edit-' + recipient);
+                            editedContent.text(content);
+                        }
+                    });
+            } else {
+                var commentUrl = '@Url.Action("UpdateComment", "Post")';
+
+                $.post(commentUrl, { "commentId": recipient, "content": content },
+                    function(data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this comment. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This comment has already been deleted.");
+                        } else {
+                            var editedContent = $('#comment-edit-' + recipient);
+                            editedContent.text(content);
+                        }
+                    });
+            }
+            $("#button-edit-close").click();
+        });
+
+        //call confirm delete post
+        $(document).on('click', '.delete-post-command', function() {
+            var postid = $(this).attr("post-id");
+            $('#button-post-delete').attr('post-id', postid);
+        });
+
+        //delete post
+        $('#button-post-delete').click(function() {
+            var postid = $(this).attr("post-id");
+            var url = '@Url.Action("DeletePost", "Post")';
+
+            $.post(url, { "postId": postid },
+                function(data) {
+                    if (data === "Failed") {
+                        alert("Unable to delete this post. Please try again later.");
+                    } else if (data === "Deleted") {
+                        alert("This post has already been deleted.");
+                    } else {
+                        $('#button-post-close').click();
+                        var element = document.getElementById('post-block-' + postid);
+                        element.parentNode.removeChild(element);
+                    }
+                });
+        });
+
+        //call confirm delete commment dialog
+        $(document).on('click', '.delete-comment-command', function() {
+            var commentid = $(this).attr("comment-id");
+            $('#button-comment-delete').attr('comment-id', commentid);
+        });
+
+        //delete comment
+        $('#button-comment-delete').click(function() {
+            var commentid = $(this).attr("comment-id");
+            var url = '@Url.Action("DeleteComment", "Post")';
+
+            $.post(url, { "commentId": commentid },
+                function(data) {
+                    if (data === "Failed") {
+                        alert("Unable to delete this comment. Please try again later.");
+                    } else if (data === "Deleted") {
+                        alert("This comment has already been deleted.");
+                    } else {
+                        $('#button-comment-close').click();
+                        $('#comment-block-' + commentid).remove();
+                        var countItem = document.getElementById("comment-count-" + data);
+                        var count = parseInt(countItem.textContent) - 1;
+                        countItem.textContent = count;
+                    }
+                });
+        });
+    });
+               </script>
+
+<div class="modal fade" id="delete-post-modal" tabindex="-1" role="dialog" aria-labelledby="myModalPostLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalPostLabel">Delete Post</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="button-post-close" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-facebook" id="button-post-delete" post-id="">Delete Post</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="delete-comment-modal" tabindex="-1" role="dialog" aria-labelledby="myModalCommentLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalCommentLabel">Delete Comment</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="button-comment-close" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-facebook" id="button-comment-delete" comment-id="">Delete Comment</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="edit-modal-label">Edit</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="button-edit-close" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="button-edit" class="btn btn-facebook" data-type="" data-id="">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @foreach (var item in Model)
 {
     var isPoster = item.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
@@ -131,7 +447,7 @@
                             <a href="@Url.Action(item.User1.UserName, "Profile")">@item.User1.FirstName @item.User1.LastName</a>
                         }
                     </p>
-                    <small>@item.PostedDate</small>
+                    <small><a href="@Url.Action(item.PostID, "Posts")">@item.PostedDate</a></small>
                     <div class="dropdown post-dropdown-caret pull-right">
                         <a id="drop-@item.PostID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>

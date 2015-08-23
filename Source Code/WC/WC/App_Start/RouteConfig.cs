@@ -21,7 +21,7 @@ namespace WC
 
             routes.MapRoute(
                 "ViewPost",                                           // Route name
-                "Post/{postid}",                            // URL with parameters
+                "Posts/{postid}",                            // URL with parameters
                 new { controller = "Post", action = "ViewPost", postid = UrlParameter.Optional }  // Parameter defaults
             );
              

@@ -25,6 +25,7 @@ namespace WC.Constants
         public const string REGISTER_FAILED = "Failed to register new account. Please try again later.";
         public const string INVALID_EMAIL = "Invalid email address.";
         public const string INVALID_BIRTHDAY = "Invalid birthday";
+        public const string PAGE_NOT_FOUND = "Page not found";
     }
 
     public class NotificationMessage

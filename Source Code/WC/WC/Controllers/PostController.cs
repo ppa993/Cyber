@@ -16,22 +16,27 @@ namespace WC.Controllers
     {
         public ActionResult ViewPost(string postid)
         {
-            var post = new PostViewModel();
+            var posts = new List<Post>();
             try
             {
-                post.Post =
+                var post =
                     db.Posts.FirstOrDefault(x => x.PostID.Equals(postid, StringComparison.InvariantCultureIgnoreCase));
 
-                if (post.Post != null)
+                if (post != null && IsAuthorizeToViewPost(post))
                 {
-                    post.PostTitle = TruncateAtWord(post.Post.PostContent, 50);
+                    posts.Add(post);
+                    ViewBag.Title = TruncateAtWord(post.PostContent, 50);
+                }
+                else
+                {
+                    ViewBag.Title = Message.PAGE_NOT_FOUND;
                 }
             }
             catch (Exception exception)
             {
                 Helper.WriteLog(exception);
             }
-            return View(post);
+            return View(posts);
         }
         [ChildActionOnly]
         public ActionResult PostList(List<Post> Model)
@@ -534,7 +539,7 @@ namespace WC.Controllers
                 {
                     listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
                                         .Where(x => x.VisibleType == (int)VisibleType.Public
-                                            || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.FirstOrDefault(y => y.UserId == fromUser.Id)
+                                            || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.First(y => y.UserId == fromUser.Id)
                                                                                                             .Friends.Any(z => z.FriendId == toUser
                                                                                                             && z.FriendStatus))
                                             || x.UserID == toUser)
@@ -549,8 +554,29 @@ namespace WC.Controllers
             return listView;
         }
 
-        private bool CheckPostViewPermission(Post post)
+        private bool IsAuthorizeToViewPost(Post post)
         {
+            switch (post.VisibleType)
+            {
+                case (int)VisibleType.Public:
+                    return true;
+
+                case (int)VisibleType.Friend:
+                    if (post.User.FriendLists.First().Friends.Any(x => x.FriendId == CurrentUserID && x.FriendStatus)
+                        || post.User1.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return true;
+                    }
+                    break;
+
+                case (int)VisibleType.Private:
+                    if (post.User1.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
+                        || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return true;
+                    }
+                    break;
+            }
             return false;
         }
         #endregion

@@ -16,7 +16,8 @@ namespace WC.Data
     {
         public string SettingID { get; set; }
         public string UserID { get; set; }
-        public int DefaultPostVisible { get; set; }
+        public int DefaultMyPostVisibility { get; set; }
+        public int DefaultOtherPostVisibility { get; set; }
         public bool AllowOtherToPost { get; set; }
     
         public virtual User User { get; set; }

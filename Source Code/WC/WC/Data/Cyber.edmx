@@ -101,7 +101,8 @@
           </Key>
           <Property Name="SettingID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="DefaultPostVisible" Type="int" Nullable="false" />
+          <Property Name="DefaultMyPostVisibility" Type="int" Nullable="false" />
+          <Property Name="DefaultOtherPostVisibility" Type="int" Nullable="false" />
           <Property Name="AllowOtherToPost" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Notification">
@@ -550,7 +551,7 @@
               <PropertyRef Name="VisibleTypeID" />
             </Principal>
             <Dependent Role="MySetting">
-              <PropertyRef Name="DefaultPostVisible" />
+              <PropertyRef Name="DefaultMyPostVisibility" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1216,7 +1217,8 @@
           </Key>
           <Property Name="SettingID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DefaultPostVisible" Type="Int32" Nullable="false" />
+          <Property Name="DefaultMyPostVisibility" Type="Int32" Nullable="false" />
+          <Property Name="DefaultOtherPostVisibility" Type="Int32" Nullable="false" />
           <Property Name="AllowOtherToPost" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_MySetting_User" FromRole="MySetting" ToRole="User" />
           <NavigationProperty Name="Visible_Type" Relationship="CyberModel.FK_MySetting_Visible_Type" FromRole="MySetting" ToRole="Visible_Type" />
@@ -1693,7 +1695,7 @@
               <PropertyRef Name="VisibleTypeID" />
             </Principal>
             <Dependent Role="MySetting">
-              <PropertyRef Name="DefaultPostVisible" />
+              <PropertyRef Name="DefaultMyPostVisibility" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1985,7 +1987,8 @@
             <EntityTypeMapping TypeName="CyberModel.MySetting">
               <MappingFragment StoreEntitySet="MySetting">
                 <ScalarProperty Name="AllowOtherToPost" ColumnName="AllowOtherToPost" />
-                <ScalarProperty Name="DefaultPostVisible" ColumnName="DefaultPostVisible" />
+                <ScalarProperty Name="DefaultOtherPostVisibility" ColumnName="DefaultOtherPostVisibility" />
+                <ScalarProperty Name="DefaultMyPostVisibility" ColumnName="DefaultMyPostVisibility" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="SettingID" ColumnName="SettingID" />
               </MappingFragment>
