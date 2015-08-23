@@ -394,6 +394,7 @@
     <Content Include="Views\Post\CommentList.cshtml" />
     <None Include="Properties\PublishProfiles\Cyber.pubxml" />
     <Content Include="Views\Post\ViewPost.cshtml" />
+    <Content Include="Views\Shared\_SelectVisibility.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

@@ -1,7 +1,9 @@
-﻿@model WC.Models.ProfileViewModel
+﻿@using WC.Data
+@model WC.Models.ProfileViewModel
 @{
     ViewBag.Title = Model.DisplayName;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var db = new CyberEntities();
 }
 
 <script type="text/javascript">
@@ -139,7 +141,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 m-t-lg">
+            <div class="col-md-7 m-t-lg">
                 @if (Model.AllowOtherToPost || Model.IsMyTimeline)
                 {
                     <div class="panel panel-white">
@@ -152,6 +154,7 @@
                                     <a href="#"><i class="icon-music-tone-alt"></i></a>
                                     <a href="#"><i class="icon-link"></i></a>
                                     <a href="#"><i class="icon-microphone"></i></a>
+                                    @{ Html.RenderPartial("_SelectVisibility"); }
                                     <button class="btn btn-facebook pull-right" onclick=" PostStatus(); ">Post</button>
                                 </div>
                             </div>
@@ -162,7 +165,7 @@
                     <ul class="list-unstyled" id="timeline-posts">
                         @if (Model.Posts.Count > 0)
                         {
-                            Html.RenderAction("PostList", "Post", new {Model = Model.Posts as List<WC.Data.Post>});
+                            Html.RenderAction("PostList", "Post", new {Model = Model.Posts as List<Post>});
                         }
                     </ul>
                 </div>

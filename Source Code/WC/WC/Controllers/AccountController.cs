@@ -124,7 +124,8 @@ namespace WC.Controllers
                         SettingID = Guid.NewGuid().ToString(),
                         UserID = user.Id,
                         AllowOtherToPost = true,
-                        DefaultPostVisible = (int)VisibleType.Friend
+                        DefaultMyPostVisibility = (int)VisibleType.Friend,
+                        DefaultOtherPostVisibility = (int)VisibleType.Friend
                     };
                     db.MySettings.Add(mySetting);
 

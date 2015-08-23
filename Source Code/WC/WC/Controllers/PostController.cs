@@ -59,7 +59,10 @@ namespace WC.Controllers
             {
                 var user =
                     db.Users.FirstOrDefault(x => x.UserID.Equals(postedOn, StringComparison.InvariantCultureIgnoreCase));
-                var postVisible = user != null ? user.MySettings.First().DefaultPostVisible : (int)VisibleType.Friend;
+                if (user == null)
+                    return ActionResults.Failed.ToString();
+
+                var postVisible = CurrentUserID == postedOn ? user.MySettings.First().DefaultMyPostVisibility : user.MySettings.First().DefaultOtherPostVisibility;
                 post = new Post
                 {
                     PostID = Guid.NewGuid().ToString().Replace("-", string.Empty),
@@ -538,11 +541,7 @@ namespace WC.Controllers
                 else
                 {
                     listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                                        .Where(x => x.VisibleType == (int)VisibleType.Public
-                                            || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.First(y => y.UserId == fromUser.Id)
-                                                                                                            .Friends.Any(z => z.FriendId == toUser
-                                                                                                            && z.FriendStatus))
-                                            || x.UserID == toUser)
+                                        .Where(x => IsAuthorizeToViewPost(x))
                                         .OrderByDescending(x => x.PostedDate)
                                         .ToList();
                 }
@@ -562,15 +561,16 @@ namespace WC.Controllers
                     return true;
 
                 case (int)VisibleType.Friend:
-                    if (post.User.FriendLists.First().Friends.Any(x => x.FriendId == CurrentUserID && x.FriendStatus)
-                        || post.User1.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
+                    if (post.User1.FriendLists.First().Friends.Any(x => x.FriendId == CurrentUserID && x.FriendStatus)
+                        || post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
+                        || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return true;
                     }
                     break;
 
                 case (int)VisibleType.Private:
-                    if (post.User1.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
+                    if (post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
                         || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
                     {
                         return true;

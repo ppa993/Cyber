@@ -70,7 +70,6 @@
     }
 
     .remove-content {
-        top: 10px;
         -ms-border-radius: 4px;
         border-radius: 4px;
         -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
@@ -239,8 +238,6 @@
             var title = $('#edit-modal-label');
             title.text('Edit ' + actionType);
 
-            var button = $('#button-edit');
-            button.text('Edit ' + actionType);
 
             if (actionType === "Post") {
                 var postUrl = '@Url.Action("EditPost", "Post")';
@@ -420,7 +417,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="button-edit-close" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="button-edit" class="btn btn-facebook" data-type="" data-id="">Edit</button>
+                <button type="button" id="button-edit" class="btn btn-facebook" data-type="" data-id="">Save changes</button>
             </div>
         </div>
     </div>
