@@ -10,9 +10,10 @@
     function PostStatus() {
         var url = '@Url.Action("PostStatus", "Post")';
         var text = $("#status-content").val();
+        var visibility = $("#current-visible-type").data("visible-type");
         if (text === "") return;
 
-        $.post(url, { "postedOn": '@Model.Id',  "content": text },
+        $.post(url, { "postedOn": '@Model.Id', "visibility": visibility, "content": text },
             function (data) {
                 if (data === "Failed") {
                     alert("Unable to post your status. Please try again later. Thank you!");
@@ -22,6 +23,10 @@
                 }
             });
     }
+
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 </script>
 
 <input type="hidden" id="hidden-user-id" value="@Model.Id"/>
@@ -154,8 +159,18 @@
                                     <a href="#"><i class="icon-music-tone-alt"></i></a>
                                     <a href="#"><i class="icon-link"></i></a>
                                     <a href="#"><i class="icon-microphone"></i></a>
-                                    @{ Html.RenderPartial("_SelectVisibility"); }
                                     <button class="btn btn-facebook pull-right" onclick=" PostStatus(); ">Post</button>
+                                    @if (Model.IsMyTimeline)
+                                    {
+                                        Html.RenderPartial("_SelectVisibility", Model.Setting);
+                                    }
+                                    else
+                                    {
+                                        var gender = Model.Gender ? "his" : "her";
+                                        <button id="current-visible-type" type="button" data-visible-type="@Model.Setting.DefaultOtherPostVisibility" class="btn btn-default pull-right space" data-toggle="tooltip" title="@Model.DisplayName controls who can see posts on @gender timeline">
+                                            <span class="fa fa-cog"></span> Custom
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         </div>

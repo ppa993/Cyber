@@ -22,5 +22,6 @@ namespace WC.Data
     
         public virtual User User { get; set; }
         public virtual Visible_Type Visible_Type { get; set; }
+        public virtual Visible_Type Visible_Type1 { get; set; }
     }
 }

@@ -52,7 +52,7 @@ namespace WC.Controllers
 
         #region Post Methods
         [HttpPost]
-        public string PostStatus(string postedOn, string content)
+        public string PostStatus(string postedOn, int visibility, string content)
         {
             Post post;
             try
@@ -62,7 +62,7 @@ namespace WC.Controllers
                 if (user == null)
                     return ActionResults.Failed.ToString();
 
-                var postVisible = CurrentUserID == postedOn ? user.MySettings.First().DefaultMyPostVisibility : user.MySettings.First().DefaultOtherPostVisibility;
+                var postVisible = CurrentUserID == postedOn ? visibility : user.MySettings.First().DefaultOtherPostVisibility;
                 post = new Post
                 {
                     PostID = Guid.NewGuid().ToString().Replace("-", string.Empty),
@@ -463,6 +463,28 @@ namespace WC.Controllers
             morePost.Posts = RenderPartialViewToString("PostList", posts);
 
             return Json(morePost);
+        }
+
+        [HttpPost]
+        public string ChangeMyDefaultPostVisibility(int visibility)
+        {
+            try
+            {
+                var setting = db.MySettings.FirstOrDefault(x => x.UserID == CurrentUserID);
+                if (setting == null) return ActionResults.Deleted.ToString();
+
+                setting.DefaultMyPostVisibility = visibility;
+
+                var entry = db.Entry(setting);
+                entry.Property(x => x.DefaultMyPostVisibility).IsModified = true;
+                db.SaveChanges();
+                return ActionResults.Succeed.ToString();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return ActionResults.Failed.ToString();
         }
         #endregion
 

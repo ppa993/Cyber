@@ -5,114 +5,6 @@
 @{ var currentUserId = User.Identity.GetUserId(); }
 @model List<WC.Data.Post>
 
-<style type="text/css">
-    .post-block {
-        padding: 0 !important;
-    }
-
-    .post-block .post-header {
-        padding: 20px !important;
-    }
-
-    .post-block .post-content {
-        padding: 0 20px !important;
-    }
-
-    .post-block .post-comment {
-        padding: 20px !important;
-        background-color: #f6f7f8;
-    }
-
-    .profile-timeline ul li .timeline-item-post {
-        padding: 0;
-    }
-
-    .profile-timeline ul li .timeline-item-header {
-        overflow: visible;
-    }
-        .profile-timeline ul li .timeline-item-header small a {
-            color: #8E8E8E;
-        }
-
-    .timeline-comment .timeline-comment-header p {
-        padding: 0 5px 5px 0;
-        text-align: justify;
-    }
-
-    .timeline-comment {
-        border-bottom: none;
-    }
-
-    .timeline-options {
-        border-bottom: none;
-        margin-bottom: 0;
-    }
-
-    .timeline-options a {
-        color: #337ab7;
-    }
-
-    .comment-like {
-        padding-left: 40px;
-        padding-right: 5px;
-    }
-
-    a.comment-like {
-        text-decoration: none;
-    }
-
-    a.comment-like:hover {
-        color: #22BAA0;
-    }
-
-    small {
-        color: #9197a3;
-    }
-
-    .remove-content {
-        -ms-border-radius: 4px;
-        border-radius: 4px;
-        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-        -ms-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-    }
-
-    .remove-content:before, .remove-content:after {
-        content: none;
-    }
-
-    .post-dropdown-caret {
-        top: -25px;
-    }
-
-    .dropdown-menu {
-        -moz-min-width: 100px;
-        -ms-min-width: 100px;
-        -o-min-width: 100px;
-        -webkit-min-width: 100px;
-        min-width: 100px;
-    }
-
-    .modal-header {
-        -ms-border-radius: 6px 6px 0 0;
-        border-radius: 6px 6px 0 0;
-        background-color: #f6f7f8;
-    }
-
-    .timeline-comment, .timeline-comment .timeline-comment-header {
-        overflow: visible;
-        min-height: 10px;
-    }
-
-    .clear {
-        clear: both;
-    }
-    .no-decoration, .no-decoration:hover {
-        text-decoration: none;
-        cursor: default;
-    }
-</style>
-
 <script>
     function pasteIntoInput(el, text) {
         el.focus();
@@ -444,7 +336,23 @@
                             <a href="@Url.Action(item.User1.UserName, "Profile")">@item.User1.FirstName @item.User1.LastName</a>
                         }
                     </p>
-                    <small><a href="@Url.Action(item.PostID, "Posts")">@item.PostedDate</a></small>
+                    @{
+                        string with;
+                        switch (item.VisibleType)
+                        {
+                            case 1:
+                                with = "Everyone on Cyber";
+                                break;
+                            case 2:
+                                with = item.User1.FirstName + "'s friends";
+                                break;
+                            default:
+                                with = "Only me";
+                                break;
+                        }
+                    }
+                    <small><a href="@Url.Action(item.PostID, "Posts")">@item.PostedDate</a></small> 
+                    <span class="fa fa-@item.VisibleType share-with" data-toggle="tooltip" title="Shared with: @with"></span>
                     <div class="dropdown post-dropdown-caret pull-right">
                         <a id="drop-@item.PostID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>

@@ -125,3 +125,7 @@ Parameter name: view -
 The method 'First' can only be used as a final query operation. Consider using the method 'FirstOrDefault' in this instance instead. - 
 
 
+23/8/2015 8:23:32 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+

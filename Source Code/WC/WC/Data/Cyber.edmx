@@ -555,6 +555,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MySetting_Visible_Type1">
+          <End Role="Visible_Type" Type="Self.Visible_Type" Multiplicity="1" />
+          <End Role="MySetting" Type="Self.MySetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Visible_Type">
+              <PropertyRef Name="VisibleTypeID" />
+            </Principal>
+            <Dependent Role="MySetting">
+              <PropertyRef Name="DefaultOtherPostVisibility" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Notification_Notification_Type">
           <End Role="Notification_Type" Type="Self.Notification_Type" Multiplicity="1" />
           <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
@@ -846,6 +858,10 @@
             <End Role="Visible_Type" EntitySet="Visible_Type" />
             <End Role="MySetting" EntitySet="MySetting" />
           </AssociationSet>
+          <AssociationSet Name="FK_MySetting_Visible_Type1" Association="Self.FK_MySetting_Visible_Type1">
+            <End Role="Visible_Type" EntitySet="Visible_Type" />
+            <End Role="MySetting" EntitySet="MySetting" />
+          </AssociationSet>
           <AssociationSet Name="FK_Notification_Notification_Type" Association="Self.FK_Notification_Notification_Type">
             <End Role="Notification_Type" EntitySet="Notification_Type" />
             <End Role="Notification" EntitySet="Notification" />
@@ -917,7 +933,6 @@
           <EntitySet Name="Notifications" EntityType="CyberModel.Notification" />
           <EntitySet Name="Notification_Type" EntityType="CyberModel.Notification_Type" />
           <EntitySet Name="Posts" EntityType="CyberModel.Post" />
-          <EntitySet Name="Post_Type" EntityType="CyberModel.Post_Type" />
           <EntitySet Name="PostLikes" EntityType="CyberModel.PostLike" />
           <EntitySet Name="Profile_Photo" EntityType="CyberModel.Profile_Photo" />
           <EntitySet Name="Relationship_Type" EntityType="CyberModel.Relationship_Type" />
@@ -1038,10 +1053,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
-          <AssociationSet Name="FK_Post_Post_Type" Association="CyberModel.FK_Post_Post_Type">
-            <End Role="Post_Type" EntitySet="Post_Type" />
-            <End Role="Post" EntitySet="Posts" />
-          </AssociationSet>
           <AssociationSet Name="FK_Post_User" Association="CyberModel.FK_Post_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Post" EntitySet="Posts" />
@@ -1089,6 +1100,15 @@
           <AssociationSet Name="FK__SettingCh__User2__5165187F" Association="CyberModel.FK__SettingCh__User2__5165187F">
             <End Role="User" EntitySet="Users" />
             <End Role="SettingChatBox" EntitySet="SettingChatBoxes" />
+          </AssociationSet>
+          <EntitySet Name="Post_Type" EntityType="CyberModel.Post_Type" />
+          <AssociationSet Name="FK_MySetting_Visible_Type1" Association="CyberModel.FK_MySetting_Visible_Type1">
+            <End Role="Visible_Type" EntitySet="Visible_Type" />
+            <End Role="MySetting" EntitySet="MySettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Post_Post_Type" Association="CyberModel.FK_Post_Post_Type">
+            <End Role="Post_Type" EntitySet="Post_Type" />
+            <End Role="Post" EntitySet="Posts" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Album">
@@ -1222,6 +1242,7 @@
           <Property Name="AllowOtherToPost" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_MySetting_User" FromRole="MySetting" ToRole="User" />
           <NavigationProperty Name="Visible_Type" Relationship="CyberModel.FK_MySetting_Visible_Type" FromRole="MySetting" ToRole="Visible_Type" />
+          <NavigationProperty Name="Visible_Type1" Relationship="CyberModel.FK_MySetting_Visible_Type1" FromRole="MySetting" ToRole="Visible_Type" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -1258,19 +1279,11 @@
           <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="VisibleType" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Comments" Relationship="CyberModel.FK_Comment_Post" FromRole="Post" ToRole="Comment" />
-          <NavigationProperty Name="Post_Type" Relationship="CyberModel.FK_Post_Post_Type" FromRole="Post" ToRole="Post_Type" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_Post_User" FromRole="Post" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="CyberModel.FK_Post_User1" FromRole="Post" ToRole="User" />
           <NavigationProperty Name="Visible_Type" Relationship="CyberModel.FK_Post_Visible_Type" FromRole="Post" ToRole="Visible_Type" />
           <NavigationProperty Name="PostLikes" Relationship="CyberModel.FK_PostLike_Post" FromRole="Post" ToRole="PostLike" />
-        </EntityType>
-        <EntityType Name="Post_Type">
-          <Key>
-            <PropertyRef Name="PostTypeID" />
-          </Key>
-          <Property Name="PostTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PostTypeName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_Post_Type" FromRole="Post_Type" ToRole="Post" />
+          <NavigationProperty Name="Post_Type" Relationship="CyberModel.FK_Post_Post_Type" FromRole="Post" ToRole="Post_Type" />
         </EntityType>
         <EntityType Name="PostLike">
           <Key>
@@ -1386,6 +1399,7 @@
           <Property Name="VisibleTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MySettings" Relationship="CyberModel.FK_MySetting_Visible_Type" FromRole="Visible_Type" ToRole="MySetting" />
           <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_Visible_Type" FromRole="Visible_Type" ToRole="Post" />
+          <NavigationProperty Name="MySettings1" Relationship="CyberModel.FK_MySetting_Visible_Type1" FromRole="Visible_Type" ToRole="MySetting" />
         </EntityType>
         <Association Name="FK__Album__CreatedUs__3F466844">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
@@ -1723,18 +1737,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Post_Post_Type">
-          <End Type="CyberModel.Post_Type" Role="Post_Type" Multiplicity="1" />
-          <End Type="CyberModel.Post" Role="Post" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Post_Type">
-              <PropertyRef Name="PostTypeID" />
-            </Principal>
-            <Dependent Role="Post">
-              <PropertyRef Name="PostType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Post_User">
           <End Type="CyberModel.User" Role="User" Multiplicity="1" />
           <End Type="CyberModel.Post" Role="Post" Multiplicity="*" />
@@ -1876,6 +1878,38 @@
             </Principal>
             <Dependent Role="SettingChatBox">
               <PropertyRef Name="User2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Post_Type">
+          <Key>
+            <PropertyRef Name="PostTypeID" />
+          </Key>
+          <Property Name="PostTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PostTypeName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_Post_Type" FromRole="Post_Type" ToRole="Post" />
+        </EntityType>
+        <Association Name="FK_MySetting_Visible_Type1">
+          <End Type="CyberModel.Visible_Type" Role="Visible_Type" Multiplicity="1" />
+          <End Type="CyberModel.MySetting" Role="MySetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Visible_Type">
+              <PropertyRef Name="VisibleTypeID" />
+            </Principal>
+            <Dependent Role="MySetting">
+              <PropertyRef Name="DefaultOtherPostVisibility" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Post_Post_Type">
+          <End Type="CyberModel.Post_Type" Role="Post_Type" Multiplicity="1" />
+          <End Type="CyberModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post_Type">
+              <PropertyRef Name="PostTypeID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="PostType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2029,14 +2063,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Post_Type">
-            <EntityTypeMapping TypeName="CyberModel.Post_Type">
-              <MappingFragment StoreEntitySet="Post_Type">
-                <ScalarProperty Name="PostTypeName" ColumnName="PostTypeName" />
-                <ScalarProperty Name="PostTypeID" ColumnName="PostTypeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PostLikes">
             <EntityTypeMapping TypeName="CyberModel.PostLike">
               <MappingFragment StoreEntitySet="PostLike">
@@ -2117,6 +2143,14 @@
               <MappingFragment StoreEntitySet="Visible_Type">
                 <ScalarProperty Name="VisibleTypeName" ColumnName="VisibleTypeName" />
                 <ScalarProperty Name="VisibleTypeID" ColumnName="VisibleTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Post_Type">
+            <EntityTypeMapping TypeName="CyberModel.Post_Type">
+              <MappingFragment StoreEntitySet="Post_Type">
+                <ScalarProperty Name="PostTypeName" ColumnName="PostTypeName" />
+                <ScalarProperty Name="PostTypeID" ColumnName="PostTypeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

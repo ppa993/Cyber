@@ -18,6 +18,7 @@ namespace WC.Data
         {
             this.MySettings = new HashSet<MySetting>();
             this.Posts = new HashSet<Post>();
+            this.MySettings1 = new HashSet<MySetting>();
         }
     
         public int VisibleTypeID { get; set; }
@@ -25,5 +26,6 @@ namespace WC.Data
     
         public virtual ICollection<MySetting> MySettings { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<MySetting> MySettings1 { get; set; }
     }
 }
