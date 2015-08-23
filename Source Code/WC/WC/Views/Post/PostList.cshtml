@@ -352,7 +352,7 @@
                         }
                     }
                     <small><a href="@Url.Action(item.PostID, "Posts")">@item.PostedDate</a></small> 
-                    <span class="fa fa-@item.VisibleType share-with" data-toggle="tooltip" title="Shared with: @with"></span>
+                    <span class="fa fa-@item.VisibleType share-with" data-toggle="tooltip" data-placement="right" title="Shared with: @with"></span>
                     <div class="dropdown post-dropdown-caret pull-right">
                         <a id="drop-@item.PostID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>
