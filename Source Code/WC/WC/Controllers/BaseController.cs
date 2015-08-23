@@ -53,6 +53,7 @@ namespace WC.Controllers
                             UserId = cbd.UserIdReply,
                             Message = cbd.Content,
                             Name = u.FirstName + " " + u.LastName,
+                            ProfileImgUrl = u.Profile_Photo.ProfileImageUrl
                         };
             var data = query.ToList();
             return data;

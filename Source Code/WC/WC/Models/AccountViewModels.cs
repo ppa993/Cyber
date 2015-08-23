@@ -99,4 +99,12 @@ namespace WC.Models
         public MySetting Setting { get; set; }
         public ICollection<Post> Posts { get; set; }
     }
+
+    public class NewsfeedViewModel
+    {
+        public string Id { get; set; }
+        public MySetting Setting { get; set; }
+        public ICollection<Post> Posts { get; set; }
+
+    }
 }

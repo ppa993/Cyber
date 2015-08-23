@@ -181,7 +181,7 @@
                         }
                     </ul>
                 </div>
-                <div id="circularG" class="cssload-loader">
+                <div id="circularG" class="cssload-loader" style="display: none">
                     <div class="cssload-inner cssload-one"></div>
                     <div class="cssload-inner cssload-two"></div>
                     <div class="cssload-inner cssload-three"></div>
@@ -206,7 +206,7 @@
 
             inProgress = true;
             $("#circularG").show();
-            var delay = 500; //1 seconds
+            var delay = 500; //half seconds
 
             setTimeout(function () {
                 var currentUser = $("#hidden-user-id").val();

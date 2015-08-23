@@ -18,8 +18,19 @@ namespace WC.Controllers
        // GET: Home
         public ActionResult Newsfeed()
         {
-            ViewData["FriendList"] = GetHtmlListFriendsOf(User.Identity.GetUserId());
-            return View();
+            //ViewData["FriendList"] = GetHtmlListFriendsOf(User.Identity.GetUserId());
+
+            var currentUser = UserManager.FindById(CurrentUserID);
+            var setting = db.MySettings.First(x => x.UserID == currentUser.Id);
+            var posts = GetPosts(currentUser, currentUser.Id);
+
+            var view = new NewsfeedViewModel
+            {
+                Id = CurrentUserID,
+                Setting = setting,
+                Posts = posts
+            };
+            return View(view);
         }
 
         public ActionResult Profile(string username)

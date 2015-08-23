@@ -1,8 +1,103 @@
-﻿
+﻿@using WC.Data
+@model WC.Models.NewsfeedViewModel
 @{
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var db = new CyberEntities();
 }
 
-<div class="page-inner" style="min-height:1080px !important">
+<script type="text/javascript">
+    function PostStatus() {
+        var url = '@Url.Action("PostStatus", "Post")';
+        var text = $("#status-content").val();
+        var visibility = $("#current-visible-type").data("visible-type");
+        if (text === "") return;
+
+        $.post(url, { "postedOn": '@Model.Id', "visibility": visibility, "content": text },
+            function (data) {
+                if (data === "Failed") {
+                    alert("Unable to post your status. Please try again later. Thank you!");
+                } else {
+                    $("#timeline-posts").prepend(data);
+                    $("#status-content").val('');
+                }
+            });
+    }
+</script>
+<link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
+
+<input type="hidden" id="hidden-user-id" value="@Model.Id" />
+
+<div class="page-inner" style="min-height: 1080px !important">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-7 m-t-lg">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="post">
+                            <textarea id="status-content" class="form-control" placeholder="What's in your mind?" rows="4=6"></textarea>
+                            <div class="post-options">
+                                <a href="#"><i class="icon-camera"></i></a>
+                                <a href="#"><i class="icon-camcorder"></i></a>
+                                <a href="#"><i class="icon-music-tone-alt"></i></a>
+                                <a href="#"><i class="icon-link"></i></a>
+                                <a href="#"><i class="icon-microphone"></i></a>
+                                <button class="btn btn-facebook pull-right" onclick=" PostStatus(); ">Post</button>
+                                @{ Html.RenderPartial("_SelectVisibility", Model.Setting); }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-timeline">
+                    <ul class="list-unstyled" id="timeline-posts">
+                        @if (Model.Posts.Count > 0)
+                        {
+                            Html.RenderAction("PostList", "Post", new { Model = Model.Posts as List<Post> });
+                        }
+                    </ul>
+                </div>
+                <div id="circularG" class="cssload-loader" style="display: none">
+                    <div class="cssload-inner cssload-one"></div>
+                    <div class="cssload-inner cssload-two"></div>
+                    <div class="cssload-inner cssload-three"></div>
+                </div>
+                <div id="no-more-post" class="panel panel-white" role="alert" style="display: none">
+                    <div class="panel-body text-center">
+                        <strong>No more post!</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script type="text/javascript">
+    var NoMoreData = false;
+    var inProgress = false;
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() === $(document).height() -
+            $(window).height() && !NoMoreData && !inProgress) {
+
+            inProgress = true;
+            $("#circularG").show();
+            var delay = 500; //half seconds
+
+            setTimeout(function () {
+                var currentUser = $("#hidden-user-id").val();
+                var postCount = document.querySelectorAll('[id^=post-block]').length;
+
+                $.post("@Url.Action("LoadMorePost","Post")", { "userId": currentUser, "loadedPostCount": postCount },
+                    function (data) {
+                        NoMoreData = data.NoMore;
+                        $("#timeline-posts").append(data.Posts);
+                        $("#circularG").hide();
+                        inProgress = false;
+                    });
+            }, delay);
+        }
+        if (NoMoreData) {
+            $("#no-more-post").show();
+        }
+    });
+</script>

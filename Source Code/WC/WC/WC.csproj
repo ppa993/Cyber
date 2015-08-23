@@ -331,6 +331,7 @@
     <Content Include="Content\Script\jquery.flot.symbol.min.js" />
     <Content Include="Content\Script\jquery.flot.time.min.js" />
     <Content Include="Content\Script\jquery.flot.tooltip.min.js" />
+    <Content Include="Content\Script\jquery.nicescroll.min.js" />
     <Content Include="Content\Script\jquery.signalR-2.0.0.min.js" />
     <Content Include="Content\Script\jquery.slimscroll.min.js" />
     <Content Include="Content\Script\jquery.uniform.min.js" />
@@ -430,7 +431,7 @@
     </Content>
     <Content Include="Views\Shared\_LayoutAccount.cshtml" />
     <Content Include="Views\Home\Profile.cshtml" />
-    <Content Include="Views\Home\NewsFeed.cshtml" />
+    <Content Include="Views\Home\Newsfeed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

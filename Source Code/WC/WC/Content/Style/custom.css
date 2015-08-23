@@ -171,3 +171,6 @@
     -webkit-min-width: 75px;
     min-width: 75px;
 }
+.close-chat {
+    width: inherit !important;
+}

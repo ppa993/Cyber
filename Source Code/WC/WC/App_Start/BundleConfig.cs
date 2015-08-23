@@ -15,7 +15,7 @@ namespace WC
                         "~/Content/Script/pace.min.js",
                         "~/Content/Script/jquery.blockui.js",
                         "~/Content/Script/bootstrap.min.js",
-                        "~/Content/Script/jquery.slimscroll.min.js",
+                        //"~/Content/Script/jquery.slimscroll.min.js",
                         "~/Content/Script/switchery.min.js",
                         "~/Content/Script/jquery.uniform.min.js",
                         "~/Content/Script/classie.js",
