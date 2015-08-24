@@ -358,6 +358,7 @@
     <Content Include="Content\Style\custom.css" />
     <Content Include="Content\Style\font-awesome.css" />
     <Content Include="Content\Style\green.css" />
+    <Content Include="Content\Style\loading.css" />
     <Content Include="Content\Style\menu_cornerbox.css" />
     <Content Include="Content\Style\MetroJs.min.css" />
     <Content Include="Content\Style\modern.min.css" />
@@ -390,13 +391,13 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\FriendListPartial.cshtml" />
-    <Content Include="Views\Home\ChatItemViewModel.cshtml" />
     <Content Include="Views\Post\PostList.cshtml" />
     <Content Include="Views\Post\CommentList.cshtml" />
     <None Include="Properties\PublishProfiles\Cyber.pubxml" />
     <Content Include="Views\Post\ViewPost.cshtml" />
     <Content Include="Views\Shared\_SelectVisibility.cshtml" />
+    <Content Include="Views\Shared\FriendListPartial.cshtml" />
+    <Content Include="Views\Shared\ChatItemViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
