@@ -16,12 +16,24 @@
             var list = userInfo.FriendLists.First().Friends.Where(x => x.FriendStatus);
             friendList = list.Select(item => new FriendViewModel
             {
-                FriendId = item.FriendId, 
-                Name = item.User.FirstName + " " + item.User.LastName, 
+                FriendId = item.FriendId,
+                Name = item.User.FirstName + " " + item.User.LastName,
                 ProfileImgUrl = item.User.Profile_Photo.ProfileImageUrl
             }).ToList();
         }
     }
+    var notify = (from n in db.Notifications
+                                        .Where(x => x.UserID == currentUserId)
+                                        .OrderBy(x => x.Seen)
+                                        .OrderByDescending(x => x.NotificationDate)
+                                        .Take(5).ToList()
+                select new NotificationViewModel()
+                {
+                    PostId = n.NotificationID,
+                    Message = n.NotificationContent,
+                    Type = n.NotificationType,
+                    Time = WC.Utils.Helper.PostTime(n.NotificationDate)
+                }).ToList();
 }
 <!DOCTYPE html>
 <html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
@@ -96,7 +108,7 @@
 </nav>
 <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
     <h3><span id="chat-box-name" class="pull-left">Sandra Smith</span> <a href="javascript:void(0);" class="pull-right close-chat" id="closeRight2"><i class="fa fa-angle-right"></i></a>
-    </h3>
+</h3>
     <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
         <div id="chat-box-content" class="slimscroll chat" style="overflow: scroll; width: auto; height: 100%;">
 
@@ -242,49 +254,64 @@
                                 <li class="drop-all"><a href="http://lambdathemes.in/admin1/index.html#" class="text-center">All Messages</a></li>
                             </ul>
                         </li>
-                        <li class="dropdown">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-success pull-right">3</span></a>
-                            <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
-                                <li>
-                                    <p class="drop-title">You have 3 pending tasks !</p>
-                                </li>
-                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                                    <li class="dropdown-menu-list slimscroll tasks" style="overflow: hidden; width: auto; height: 100%;">
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <a href="http://lambdathemes.in/admin1/index.html#">
-                                                    <div class="task-icon badge badge-success">
-                                                        <i class="icon-user"></i>
-                                                    </div>
-                                                    <span class="badge badge-roundless badge-default pull-right">1min ago</span>
-                                                    <p class="task-details">New user registered.</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="http://lambdathemes.in/admin1/index.html#">
-                                                    <div class="task-icon badge badge-danger">
-                                                        <i class="icon-energy"></i>
-                                                    </div>
-                                                    <span class="badge badge-roundless badge-default pull-right">24min ago</span>
-                                                    <p class="task-details">Database error.</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="http://lambdathemes.in/admin1/index.html#">
-                                                    <div class="task-icon badge badge-info">
-                                                        <i class="icon-heart"></i>
-                                                    </div>
-                                                    <span class="badge badge-roundless badge-default pull-right">1h ago</span>
-                                                    <p class="task-details">Reached 24k likes</p>
-                                                </a>
-                                            </li>
-                                        </ul>
+                        <li id="notify-box" class="dropdown">  
+                            @if (notify.Count != 0)
+                            {
+                                <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-success pull-right">@Model.Count</span></a>
+                                <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
+                                    <li>
+                                        <p class="drop-title">You have @notify.Count pending tasks !</p>
                                     </li>
-                                    <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: block; border-radius: 0px; z-index: 99; right: 0px; background: rgb(204, 204, 204);"></div>
-                                    <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
-                                </div>
-                                <li class="drop-all"><a href="http://lambdathemes.in/admin1/index.html#" class="text-center">All Tasks</a></li>
-                            </ul>
+                                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                                        <li class="dropdown-menu-list slimscroll tasks" style="overflow: hidden; width: auto; height: 100%;">
+                                            <ul class="list-unstyled">
+                                                @foreach (var p in notify)
+                                                {
+                                                    var url = Url.Action("ViewPost", "Post", new { postid = p.PostId });
+
+                                                    //like my post or like my comment
+                                                    if (p.Type == 4 || p.Type == 5)
+                                                    {
+                                                        <li>
+                                                            <a href="@url">
+                                                                <div class="task-icon badge badge-info">
+                                                                    <i class="icon-heart"></i>
+                                                                </div>
+                                                                <span class="badge badge-roundless badge-default pull-right">@p.Time</span>
+                                                                <p class="task-details">@p.Message</p>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    else if (p.Type == 2)
+                                                    {
+                                                        <li>
+                                                            <a href="@url">
+                                                                <div class="task-icon badge badge-success">
+                                                                    <i class="icon-user"></i>
+                                                                </div>
+                                                                <span class="badge badge-roundless badge-default pull-right">@p.Time</span>
+                                                                <p class="task-details">@p.Message</p>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </li>
+                                        <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: block; border-radius: 0px; z-index: 99; right: 0px; background: rgb(204, 204, 204);"></div>
+                                        <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
+                                    </div>
+                                    <li class="drop-all"><a href="#" class="text-center">All Tasks</a></li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i></a>
+                                <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
+                                    <li>
+                                        <p class="drop-title">You have not any notification !</p>
+                                    </li>
+                                </ul>
+                            }
                         </li>
                         <li>
                             <a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button waves-classic">

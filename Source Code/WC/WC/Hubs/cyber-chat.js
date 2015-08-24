@@ -1,4 +1,5 @@
-﻿function OpenSmallChatBox(e, url) {
+﻿
+function OpenSmallChatBox(e, url) {
     var id = e.getAttribute("data-item-id");
     var name = e.getAttribute("data-item-name");
 
@@ -26,7 +27,9 @@ $(function () {
     chat.client.broadcastMessage = function (fromUserId, toUserId, message) { 
         ClientMethods(fromUserId, toUserId);
     };
-
+    chat.client.recieveNotify = function (receiver, html) {
+        AddNotify(receiver, html);
+    }
     $.connection.hub.start().done(function () {
         $("#chat-box-message").keypress(function (event) {
             var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -41,6 +44,14 @@ $(function () {
         });
     })
 });
+
+function AddNotify( receiver, html) {
+    var curId = $("#chat-box-message").attr("data-item-fromid");
+    if (curId==receiver) {
+        $("#notify-box").html('');
+        $("#notify-box").append(html);
+    }
+}
 
 function ClientMethods(fromId, toId) {
     var id = $("#chat-box-message").attr("data-item-fromid");

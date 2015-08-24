@@ -8,10 +8,12 @@ using WC.Constants;
 using WC.Data;
 using WC.Models;
 using WC.Utils;
+using Microsoft.AspNet.SignalR;
+using WC.Hubs;
 
 namespace WC.Controllers
 {
-    [Authorize]
+    [System.Web.Mvc.Authorize]
     public class PostController : AccountController
     {
         public ActionResult ViewPost(string postid)
@@ -26,6 +28,14 @@ namespace WC.Controllers
                 {
                     posts.Add(post);
                     ViewBag.Title = TruncateAtWord(post.PostContent, 50);
+
+                    //update seen notify
+                    var notify = db.Notifications.FirstOrDefault(x => x.UserID == User.Identity.GetUserId() && x.NotificationItemID == postid && !x.Seen);
+                    if (notify != null)
+                    {
+                        notify.Seen = true;
+                        db.SaveChanges();
+                    }
                 }
                 else
                 {
@@ -552,6 +562,22 @@ namespace WC.Controllers
                 db.Notifications.Add(notif);
                 db.SaveChanges();
 
+                //create sub hub context
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                var data = (from n in db.Notifications
+                                            .Where(x => x.UserID == receiver)
+                                            .OrderBy(x=>x.Seen)
+                                            .OrderByDescending(x =>x.NotificationDate)
+                                            .Take(5).ToList()
+                                 select new NotificationViewModel()
+                                 {
+                                     PostId = n.NotificationID,
+                                     Message = n.NotificationContent,
+                                     Type = n.NotificationType,
+                                     Time = Helper.PostTime(n.NotificationDate)
+                                 }).ToList();
+                var html = RenderPartialViewToString("NotificationPartial", data);
+                hubContext.Clients.All.recieveNotify(receiver, html);
             }
             catch (Exception exception)
             {
