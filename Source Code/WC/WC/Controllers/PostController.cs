@@ -52,7 +52,7 @@ namespace WC.Controllers
 
         #region Post Methods
         [HttpPost]
-        public string PostStatus(string postedOn, string content)
+        public string PostStatus(string postedOn, int visibility, string content)
         {
             Post post;
             try
@@ -62,7 +62,7 @@ namespace WC.Controllers
                 if (user == null)
                     return ActionResults.Failed.ToString();
 
-                var postVisible = CurrentUserID == postedOn ? user.MySettings.First().DefaultMyPostVisibility : user.MySettings.First().DefaultOtherPostVisibility;
+                var postVisible = CurrentUserID == postedOn ? visibility : user.MySettings.First().DefaultOtherPostVisibility;
                 post = new Post
                 {
                     PostID = Guid.NewGuid().ToString().Replace("-", string.Empty),
@@ -346,8 +346,15 @@ namespace WC.Controllers
         {
             try
             {
+                var post = db.Posts.First(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase));
+                if (post == null) return ActionResults.Deleted.ToString();
                 if (isLike)
                 {
+                    if (db.PostLikes.Any(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase)
+                                              && x.UserID == CurrentUserID))
+                    {
+                        return ActionResults.AlreadyDone.ToString();
+                    }
                     var like = new PostLike
                     {
                         PostLikeID = Guid.NewGuid().ToString().Replace("-", string.Empty),
@@ -395,8 +402,17 @@ namespace WC.Controllers
         {
             try
             {
+                var comment =
+                    db.Comments.First(x => x.CommentID.Equals(commentId, StringComparison.InvariantCultureIgnoreCase));
+                if (comment == null)
+                    return ActionResults.Deleted.ToString();
                 if (isLike)
                 {
+                    if (db.CommentLikes.Any(x => x.CommentID.Equals(commentId, StringComparison.InvariantCultureIgnoreCase)
+                                              && x.UserID == CurrentUserID))
+                    {
+                        return ActionResults.AlreadyDone.ToString();
+                    }
                     var like = new CommentLike
                     {
                         CommentLikeID = Guid.NewGuid().ToString().Replace("-", string.Empty),
@@ -463,6 +479,28 @@ namespace WC.Controllers
             morePost.Posts = RenderPartialViewToString("PostList", posts);
 
             return Json(morePost);
+        }
+
+        [HttpPost]
+        public string ChangeMyDefaultPostVisibility(int visibility)
+        {
+            try
+            {
+                var setting = db.MySettings.FirstOrDefault(x => x.UserID == CurrentUserID);
+                if (setting == null) return ActionResults.Deleted.ToString();
+
+                setting.DefaultMyPostVisibility = visibility;
+
+                var entry = db.Entry(setting);
+                entry.Property(x => x.DefaultMyPostVisibility).IsModified = true;
+                db.SaveChanges();
+                return ActionResults.Succeed.ToString();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return ActionResults.Failed.ToString();
         }
         #endregion
 

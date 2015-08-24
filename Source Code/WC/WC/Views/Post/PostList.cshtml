@@ -5,113 +5,6 @@
 @{ var currentUserId = User.Identity.GetUserId(); }
 @model List<WC.Data.Post>
 
-<style type="text/css">
-    .post-block {
-        padding: 0 !important;
-    }
-
-    .post-block .post-header {
-        padding: 20px !important;
-    }
-
-    .post-block .post-content {
-        padding: 0 20px !important;
-    }
-
-    .post-block .post-comment {
-        padding: 20px !important;
-        background-color: #f6f7f8;
-    }
-
-    .profile-timeline ul li .timeline-item-post {
-        padding: 0;
-    }
-
-    .profile-timeline ul li .timeline-item-header {
-        overflow: visible;
-    }
-        .profile-timeline ul li .timeline-item-header small a {
-            color: #8E8E8E;
-        }
-
-    .timeline-comment .timeline-comment-header p {
-        padding: 0 5px 5px 0;
-        text-align: justify;
-    }
-
-    .timeline-comment {
-        border-bottom: none;
-    }
-
-    .timeline-options {
-        border-bottom: none;
-        margin-bottom: 0;
-    }
-
-    .timeline-options a {
-        color: #337ab7;
-    }
-
-    .comment-like {
-        padding-left: 40px;
-        padding-right: 5px;
-    }
-
-    a.comment-like {
-        text-decoration: none;
-    }
-
-    a.comment-like:hover {
-        color: #22BAA0;
-    }
-
-    small {
-        color: #9197a3;
-    }
-
-    .remove-content {
-        -ms-border-radius: 4px;
-        border-radius: 4px;
-        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-        -ms-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-    }
-
-    .remove-content:before, .remove-content:after {
-        content: none;
-    }
-
-    .post-dropdown-caret {
-        top: -25px;
-    }
-
-    .dropdown-menu {
-        -moz-min-width: 100px;
-        -ms-min-width: 100px;
-        -o-min-width: 100px;
-        -webkit-min-width: 100px;
-        min-width: 100px;
-    }
-
-    .modal-header {
-        -ms-border-radius: 6px 6px 0 0;
-        border-radius: 6px 6px 0 0;
-        background-color: #f6f7f8;
-    }
-
-    .timeline-comment, .timeline-comment .timeline-comment-header {
-        overflow: visible;
-        min-height: 10px;
-    }
-
-    .clear {
-        clear: both;
-    }
-    .no-decoration, .no-decoration:hover {
-        text-decoration: none;
-        cursor: default;
-    }
-</style>
 
 <script>
     function pasteIntoInput(el, text) {
@@ -171,8 +64,13 @@
         });
 
         //like/unlike and update like count
-        $(document).on('click', '.post-like', function() {
+        $(document).on('click', '.post-like', function () {
+            var inprocess = $(this).attr("data-inprocess");
+            if (inprocess === "1") {
+                return false;
+            }
             var curElement = $(this);
+            $(this).attr("data-inprocess", "1");
             var postid = $(this).attr("post-id");
             var isLike = $(this).attr("data-toogle") === "Like";
             var url = '@Url.Action("LikeUnlikePost", "Post")';
@@ -180,8 +78,10 @@
             $.post(url, { "postId": postid, "isLike": isLike },
                 function(data) {
                     if (data === "Failed") {
-                        alert("Unable to peform your action. This item has been removed.");
-                    } else {
+                        alert("Unable to peform your action. Please try again later.");
+                    } else if (data === "Deleted") {
+                        alert("This item has been deleted.");
+                    } else if (data !== "AlreadyDone") {
                         var countItem = document.getElementById("post-like-count-" + postid);
                         var count = data;
 
@@ -195,13 +95,19 @@
                         var likeStatus = document.getElementById("post-like-status-" + postid);
                         likeStatus.innerHTML = curElement.attr("data-toogle");
                     }
+                    curElement.attr("data-inprocess", "0");
                 });
             return false;
         });
 
         //like/unlike and update like count
-        $(document).on('click', '.comment-like', function() {
+        $(document).on('click', '.comment-like', function () {
+            var inprocess = $(this).attr("data-inprocess");
+            if (inprocess === "1") {
+                return false;
+            }
             var curElement = $(this);
+            $(this).attr("data-inprocess", "1");
             var commentid = $(this).attr("comment-id");
             var isLike = $(this).attr("data-toogle") === "Like";
             var url = '@Url.Action("LikeUnlikeComment", "Post")';
@@ -209,8 +115,10 @@
             $.post(url, { "commentId": commentid, "isLike": isLike },
                 function(data) {
                     if (data === "Failed") {
-                        alert("Unable to peform your action. This item has been removed.");
-                    } else {
+                        alert("Unable to peform your action. Please try again later.");
+                    } else if (data === "Deleted") {
+                        alert("This item has been deleted.");
+                    } else if (data !== "AlreadyDone") {
                         var countItem = document.getElementById("comment-like-count-" + commentid);
                         var count = data;
 
@@ -224,6 +132,7 @@
                         var likeStatus = document.getElementById("comment-like-status-" + commentid);
                         likeStatus.innerHTML = curElement.attr("data-toogle");
                     }
+                    curElement.attr("data-inprocess", "0");
                 });
             return false;
         });
@@ -443,8 +352,24 @@
                             <a class="no-decoration">&nbsp;<i class="fa fa-arrow-right"></i>&nbsp;</a>
                             <a href="@Url.Action(item.User1.UserName, "Profile")">@item.User1.FirstName @item.User1.LastName</a>
                         }
-                    </p>
+                    </p> 
+                    @{
+                        string with;
+                        switch (item.VisibleType)
+                        {
+                            case 1:
+                                with = "Everyone on Cyber";
+                                break;
+                            case 2:
+                                with = item.User1.FirstName + "'s friends";
+                                break;
+                            default:
+                                with = "Only me";
+                                break;
+                        }
+                    }
                     <small><a href="@Url.Action(item.PostID, "Posts")">@item.PostedDate</a></small>
+                    <span class="fa fa-@item.VisibleType share-with" data-toggle="tooltip" data-placement="right" title="Shared with: @with"></span>
                     <div class="dropdown post-dropdown-caret pull-right">
                         <a id="drop-@item.PostID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>
@@ -475,7 +400,7 @@
                             <p id="post-edit-@item.PostID" style="white-space: pre-line">@item.PostContent</p>
                         </div>
                         <div class="timeline-options">
-                            <a class="post-like" href="#" post-id="@item.PostID" data-toogle="@alreadyLike">
+                            <a class="post-like" href="#" post-id="@item.PostID" data-toogle="@alreadyLike" data-inprocess="0">
                                 <i class="icon-like"></i>
                                 <span id="post-like-status-@item.PostID">@alreadyLike</span> (<span id="post-like-count-@item.PostID">@item.PostLikes.Count</span>)
                             </a>
@@ -525,7 +450,7 @@
                                             </div>
                                         </div>
                                         <div class="clear"></div>
-                                        <a class="comment-like" href="#" comment-id="@comment.CommentID" data-toogle="@commentAlreadyLike">
+                                        <a class="comment-like" href="#" comment-id="@comment.CommentID" data-toogle="@commentAlreadyLike" data-inprocess="0">
                                             <span id="comment-like-status-@comment.CommentID">@commentAlreadyLike</span> (<span id="comment-like-count-@comment.CommentID">@comment.CommentLikes.Count</span>)
                                         </a><small>@comment.CommentedDate</small>
                                     </div>

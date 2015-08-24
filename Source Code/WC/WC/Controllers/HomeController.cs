@@ -53,12 +53,14 @@ namespace WC.Controllers
                 user.DisplayName = fromUserInfo.FirstName + " " + fromUserInfo.LastName;
                 user.Address = fromUserInfo.Address;
                 user.Email = fromUserInfo.Email;
+                user.Gender = fromUserInfo.Gender;
                 user.Friends = fromUserInfo.FriendLists.First();
                 user.Posts = postList;
                 user.Avatar = fromUserInfo.Profile_Photo.ProfileImageUrl;
                 user.Cover = fromUserInfo.Profile_Photo.CoverImageUrl;
                 user.AllowOtherToPost = fromUserInfo.MySettings.First().AllowOtherToPost;
                 user.IsMyTimeline = fromUser.Id.Equals(toUser, StringComparison.InvariantCultureIgnoreCase);
+                user.Setting = fromUserInfo.MySettings.First();
             }
 
             //Get info to show buttons request friend

@@ -219,7 +219,7 @@
           <Property Name="VisibleTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="VisibleTypeName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Album__CreatedUs__3F466844">
+        <Association Name="FK__Album__CreatedUs__3D5E1FD2">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Album" Type="Self.Album" Multiplicity="*" />
           <ReferentialConstraint>
@@ -231,7 +231,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AlbumDeta__Album__5BE2A6F2">
+        <Association Name="FK__AlbumDeta__Album__59FA5E80">
           <End Role="Album" Type="Self.Album" Multiplicity="0..1" />
           <End Role="AlbumDetail" Type="Self.AlbumDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -243,7 +243,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AlbumDeta__Poste__5CD6CB2B">
+        <Association Name="FK__AlbumDeta__Poste__5AEE82B9">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="AlbumDetail" Type="Self.AlbumDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -255,7 +255,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatBox__FromUse__3B75D760">
+        <Association Name="FK__ChatBox__FromUse__398D8EEE">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="ChatBox" Type="Self.ChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -267,7 +267,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatBox__FromUse__3C69FB99">
+        <Association Name="FK__ChatBox__FromUse__3A81B327">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="ChatBox" Type="Self.ChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -279,7 +279,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatBox__ToUseId__3D5E1FD2">
+        <Association Name="FK__ChatBox__ToUseId__3B75D760">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="ChatBox" Type="Self.ChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -291,7 +291,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatBox__ToUseId__3E52440B">
+        <Association Name="FK__ChatBox__ToUseId__3C69FB99">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="ChatBox" Type="Self.ChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -303,7 +303,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatReply__ChatB__5629CD9C">
+        <Association Name="FK__ChatReply__ChatB__5441852A">
           <End Role="ChatBox" Type="Self.ChatBox" Multiplicity="0..1" />
           <End Role="ChatReply" Type="Self.ChatReply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -315,7 +315,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatReply__ChatB__571DF1D5">
+        <Association Name="FK__ChatReply__ChatB__5535A963">
           <End Role="ChatBox" Type="Self.ChatBox" Multiplicity="0..1" />
           <End Role="ChatReply" Type="Self.ChatReply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -327,7 +327,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatReply__UserI__5812160E">
+        <Association Name="FK__ChatReply__UserI__5629CD9C">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="ChatReply" Type="Self.ChatReply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -339,7 +339,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatReply__UserI__59063A47">
+        <Association Name="FK__ChatReply__UserI__571DF1D5">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="ChatReply" Type="Self.ChatReply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -351,7 +351,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FriendLis__UserI__440B1D61">
+        <Association Name="FK__FriendLis__UserI__4222D4EF">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="FriendList" Type="Self.FriendList" Multiplicity="*" />
           <ReferentialConstraint>
@@ -363,7 +363,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FriendLis__UserI__44FF419A">
+        <Association Name="FK__FriendLis__UserI__4316F928">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="FriendList" Type="Self.FriendList" Multiplicity="*" />
           <ReferentialConstraint>
@@ -375,7 +375,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__FriendI__52593CB8">
+        <Association Name="FK__Friends__FriendI__5070F446">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
           <ReferentialConstraint>
@@ -387,7 +387,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__FriendI__534D60F1">
+        <Association Name="FK__Friends__FriendI__5165187F">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
           <ReferentialConstraint>
@@ -399,7 +399,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__Friends__5441852A">
+        <Association Name="FK__Friends__Friends__52593CB8">
           <End Role="FriendList" Type="Self.FriendList" Multiplicity="1" />
           <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
           <ReferentialConstraint>
@@ -411,7 +411,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__Friends__5535A963">
+        <Association Name="FK__Friends__Friends__534D60F1">
           <End Role="FriendList" Type="Self.FriendList" Multiplicity="1" />
           <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
           <ReferentialConstraint>
@@ -423,7 +423,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SettingCh__ChatB__4D94879B">
+        <Association Name="FK__SettingCh__ChatB__4BAC3F29">
           <End Role="ChatBox" Type="Self.ChatBox" Multiplicity="0..1" />
           <End Role="SettingChatBox" Type="Self.SettingChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -435,7 +435,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SettingCh__Langu__4E88ABD4">
+        <Association Name="FK__SettingCh__Langu__4CA06362">
           <End Role="Language" Type="Self.Language" Multiplicity="0..1" />
           <End Role="SettingChatBox" Type="Self.SettingChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -447,7 +447,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SettingCh__Langu__4F7CD00D">
+        <Association Name="FK__SettingCh__Langu__4D94879B">
           <End Role="Language" Type="Self.Language" Multiplicity="0..1" />
           <End Role="SettingChatBox" Type="Self.SettingChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -459,7 +459,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SettingCh__User1__5070F446">
+        <Association Name="FK__SettingCh__User1__4E88ABD4">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="SettingChatBox" Type="Self.SettingChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -471,7 +471,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SettingCh__User2__5165187F">
+        <Association Name="FK__SettingCh__User2__4F7CD00D">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="SettingChatBox" Type="Self.SettingChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -734,91 +734,91 @@
           <EntitySet Name="SettingChatBox" EntityType="Self.SettingChatBox" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visible_Type" EntityType="Self.Visible_Type" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Album__CreatedUs__3F466844" Association="Self.FK__Album__CreatedUs__3F466844">
+          <AssociationSet Name="FK__Album__CreatedUs__3D5E1FD2" Association="Self.FK__Album__CreatedUs__3D5E1FD2">
             <End Role="User" EntitySet="User" />
             <End Role="Album" EntitySet="Album" />
           </AssociationSet>
-          <AssociationSet Name="FK__AlbumDeta__Album__5BE2A6F2" Association="Self.FK__AlbumDeta__Album__5BE2A6F2">
+          <AssociationSet Name="FK__AlbumDeta__Album__59FA5E80" Association="Self.FK__AlbumDeta__Album__59FA5E80">
             <End Role="Album" EntitySet="Album" />
             <End Role="AlbumDetail" EntitySet="AlbumDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK__AlbumDeta__Poste__5CD6CB2B" Association="Self.FK__AlbumDeta__Poste__5CD6CB2B">
+          <AssociationSet Name="FK__AlbumDeta__Poste__5AEE82B9" Association="Self.FK__AlbumDeta__Poste__5AEE82B9">
             <End Role="User" EntitySet="User" />
             <End Role="AlbumDetail" EntitySet="AlbumDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__FromUse__3B75D760" Association="Self.FK__ChatBox__FromUse__3B75D760">
+          <AssociationSet Name="FK__ChatBox__FromUse__398D8EEE" Association="Self.FK__ChatBox__FromUse__398D8EEE">
             <End Role="User" EntitySet="User" />
             <End Role="ChatBox" EntitySet="ChatBox" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__FromUse__3C69FB99" Association="Self.FK__ChatBox__FromUse__3C69FB99">
+          <AssociationSet Name="FK__ChatBox__FromUse__3A81B327" Association="Self.FK__ChatBox__FromUse__3A81B327">
             <End Role="User" EntitySet="User" />
             <End Role="ChatBox" EntitySet="ChatBox" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__ToUseId__3D5E1FD2" Association="Self.FK__ChatBox__ToUseId__3D5E1FD2">
+          <AssociationSet Name="FK__ChatBox__ToUseId__3B75D760" Association="Self.FK__ChatBox__ToUseId__3B75D760">
             <End Role="User" EntitySet="User" />
             <End Role="ChatBox" EntitySet="ChatBox" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__ToUseId__3E52440B" Association="Self.FK__ChatBox__ToUseId__3E52440B">
+          <AssociationSet Name="FK__ChatBox__ToUseId__3C69FB99" Association="Self.FK__ChatBox__ToUseId__3C69FB99">
             <End Role="User" EntitySet="User" />
             <End Role="ChatBox" EntitySet="ChatBox" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__ChatB__5629CD9C" Association="Self.FK__ChatReply__ChatB__5629CD9C">
-            <End Role="ChatBox" EntitySet="ChatBox" />
-            <End Role="ChatReply" EntitySet="ChatReply" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__ChatB__571DF1D5" Association="Self.FK__ChatReply__ChatB__571DF1D5">
+          <AssociationSet Name="FK__ChatReply__ChatB__5441852A" Association="Self.FK__ChatReply__ChatB__5441852A">
             <End Role="ChatBox" EntitySet="ChatBox" />
             <End Role="ChatReply" EntitySet="ChatReply" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__UserI__5812160E" Association="Self.FK__ChatReply__UserI__5812160E">
+          <AssociationSet Name="FK__ChatReply__ChatB__5535A963" Association="Self.FK__ChatReply__ChatB__5535A963">
+            <End Role="ChatBox" EntitySet="ChatBox" />
+            <End Role="ChatReply" EntitySet="ChatReply" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ChatReply__UserI__5629CD9C" Association="Self.FK__ChatReply__UserI__5629CD9C">
             <End Role="User" EntitySet="User" />
             <End Role="ChatReply" EntitySet="ChatReply" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__UserI__59063A47" Association="Self.FK__ChatReply__UserI__59063A47">
+          <AssociationSet Name="FK__ChatReply__UserI__571DF1D5" Association="Self.FK__ChatReply__UserI__571DF1D5">
             <End Role="User" EntitySet="User" />
             <End Role="ChatReply" EntitySet="ChatReply" />
           </AssociationSet>
-          <AssociationSet Name="FK__FriendLis__UserI__440B1D61" Association="Self.FK__FriendLis__UserI__440B1D61">
+          <AssociationSet Name="FK__FriendLis__UserI__4222D4EF" Association="Self.FK__FriendLis__UserI__4222D4EF">
             <End Role="User" EntitySet="User" />
             <End Role="FriendList" EntitySet="FriendList" />
           </AssociationSet>
-          <AssociationSet Name="FK__FriendLis__UserI__44FF419A" Association="Self.FK__FriendLis__UserI__44FF419A">
+          <AssociationSet Name="FK__FriendLis__UserI__4316F928" Association="Self.FK__FriendLis__UserI__4316F928">
             <End Role="User" EntitySet="User" />
             <End Role="FriendList" EntitySet="FriendList" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__FriendI__52593CB8" Association="Self.FK__Friends__FriendI__52593CB8">
+          <AssociationSet Name="FK__Friends__FriendI__5070F446" Association="Self.FK__Friends__FriendI__5070F446">
             <End Role="User" EntitySet="User" />
             <End Role="Friends" EntitySet="Friends" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__FriendI__534D60F1" Association="Self.FK__Friends__FriendI__534D60F1">
+          <AssociationSet Name="FK__Friends__FriendI__5165187F" Association="Self.FK__Friends__FriendI__5165187F">
             <End Role="User" EntitySet="User" />
             <End Role="Friends" EntitySet="Friends" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__Friends__5441852A" Association="Self.FK__Friends__Friends__5441852A">
+          <AssociationSet Name="FK__Friends__Friends__52593CB8" Association="Self.FK__Friends__Friends__52593CB8">
             <End Role="FriendList" EntitySet="FriendList" />
             <End Role="Friends" EntitySet="Friends" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__Friends__5535A963" Association="Self.FK__Friends__Friends__5535A963">
+          <AssociationSet Name="FK__Friends__Friends__534D60F1" Association="Self.FK__Friends__Friends__534D60F1">
             <End Role="FriendList" EntitySet="FriendList" />
             <End Role="Friends" EntitySet="Friends" />
           </AssociationSet>
-          <AssociationSet Name="FK__SettingCh__ChatB__4D94879B" Association="Self.FK__SettingCh__ChatB__4D94879B">
+          <AssociationSet Name="FK__SettingCh__ChatB__4BAC3F29" Association="Self.FK__SettingCh__ChatB__4BAC3F29">
             <End Role="ChatBox" EntitySet="ChatBox" />
             <End Role="SettingChatBox" EntitySet="SettingChatBox" />
           </AssociationSet>
-          <AssociationSet Name="FK__SettingCh__Langu__4E88ABD4" Association="Self.FK__SettingCh__Langu__4E88ABD4">
+          <AssociationSet Name="FK__SettingCh__Langu__4CA06362" Association="Self.FK__SettingCh__Langu__4CA06362">
             <End Role="Language" EntitySet="Language" />
             <End Role="SettingChatBox" EntitySet="SettingChatBox" />
           </AssociationSet>
-          <AssociationSet Name="FK__SettingCh__Langu__4F7CD00D" Association="Self.FK__SettingCh__Langu__4F7CD00D">
+          <AssociationSet Name="FK__SettingCh__Langu__4D94879B" Association="Self.FK__SettingCh__Langu__4D94879B">
             <End Role="Language" EntitySet="Language" />
             <End Role="SettingChatBox" EntitySet="SettingChatBox" />
           </AssociationSet>
-          <AssociationSet Name="FK__SettingCh__User1__5070F446" Association="Self.FK__SettingCh__User1__5070F446">
+          <AssociationSet Name="FK__SettingCh__User1__4E88ABD4" Association="Self.FK__SettingCh__User1__4E88ABD4">
             <End Role="User" EntitySet="User" />
             <End Role="SettingChatBox" EntitySet="SettingChatBox" />
           </AssociationSet>
-          <AssociationSet Name="FK__SettingCh__User2__5165187F" Association="Self.FK__SettingCh__User2__5165187F">
+          <AssociationSet Name="FK__SettingCh__User2__4F7CD00D" Association="Self.FK__SettingCh__User2__4F7CD00D">
             <End Role="User" EntitySet="User" />
             <End Role="SettingChatBox" EntitySet="SettingChatBox" />
           </AssociationSet>
@@ -926,51 +926,51 @@
           <EntitySet Name="SettingChatBoxes" EntityType="CyberModel.SettingChatBox" />
           <EntitySet Name="Users" EntityType="CyberModel.User" />
           <EntitySet Name="Visible_Type" EntityType="CyberModel.Visible_Type" />
-          <AssociationSet Name="FK__Album__CreatedUs__3F466844" Association="CyberModel.FK__Album__CreatedUs__3F466844">
+          <AssociationSet Name="FK__Album__CreatedUs__3D5E1FD2" Association="CyberModel.FK__Album__CreatedUs__3D5E1FD2">
             <End Role="User" EntitySet="Users" />
             <End Role="Album" EntitySet="Albums" />
           </AssociationSet>
-          <AssociationSet Name="FK__AlbumDeta__Album__5BE2A6F2" Association="CyberModel.FK__AlbumDeta__Album__5BE2A6F2">
+          <AssociationSet Name="FK__AlbumDeta__Album__59FA5E80" Association="CyberModel.FK__AlbumDeta__Album__59FA5E80">
             <End Role="Album" EntitySet="Albums" />
             <End Role="AlbumDetail" EntitySet="AlbumDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__AlbumDeta__Poste__5CD6CB2B" Association="CyberModel.FK__AlbumDeta__Poste__5CD6CB2B">
+          <AssociationSet Name="FK__AlbumDeta__Poste__5AEE82B9" Association="CyberModel.FK__AlbumDeta__Poste__5AEE82B9">
             <End Role="User" EntitySet="Users" />
             <End Role="AlbumDetail" EntitySet="AlbumDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__FromUse__3B75D760" Association="CyberModel.FK__ChatBox__FromUse__3B75D760">
+          <AssociationSet Name="FK__ChatBox__FromUse__398D8EEE" Association="CyberModel.FK__ChatBox__FromUse__398D8EEE">
             <End Role="User" EntitySet="Users" />
             <End Role="ChatBox" EntitySet="ChatBoxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__FromUse__3C69FB99" Association="CyberModel.FK__ChatBox__FromUse__3C69FB99">
+          <AssociationSet Name="FK__ChatBox__FromUse__3A81B327" Association="CyberModel.FK__ChatBox__FromUse__3A81B327">
             <End Role="User" EntitySet="Users" />
             <End Role="ChatBox" EntitySet="ChatBoxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__ToUseId__3D5E1FD2" Association="CyberModel.FK__ChatBox__ToUseId__3D5E1FD2">
+          <AssociationSet Name="FK__ChatBox__ToUseId__3B75D760" Association="CyberModel.FK__ChatBox__ToUseId__3B75D760">
             <End Role="User" EntitySet="Users" />
             <End Role="ChatBox" EntitySet="ChatBoxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatBox__ToUseId__3E52440B" Association="CyberModel.FK__ChatBox__ToUseId__3E52440B">
+          <AssociationSet Name="FK__ChatBox__ToUseId__3C69FB99" Association="CyberModel.FK__ChatBox__ToUseId__3C69FB99">
             <End Role="User" EntitySet="Users" />
             <End Role="ChatBox" EntitySet="ChatBoxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__ChatB__5629CD9C" Association="CyberModel.FK__ChatReply__ChatB__5629CD9C">
+          <AssociationSet Name="FK__ChatReply__ChatB__5441852A" Association="CyberModel.FK__ChatReply__ChatB__5441852A">
             <End Role="ChatBox" EntitySet="ChatBoxes" />
             <End Role="ChatReply" EntitySet="ChatReplies" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__ChatB__571DF1D5" Association="CyberModel.FK__ChatReply__ChatB__571DF1D5">
+          <AssociationSet Name="FK__ChatReply__ChatB__5535A963" Association="CyberModel.FK__ChatReply__ChatB__5535A963">
             <End Role="ChatBox" EntitySet="ChatBoxes" />
             <End Role="ChatReply" EntitySet="ChatReplies" />
           </AssociationSet>
-          <AssociationSet Name="FK__SettingCh__ChatB__4D94879B" Association="CyberModel.FK__SettingCh__ChatB__4D94879B">
+          <AssociationSet Name="FK__SettingCh__ChatB__4BAC3F29" Association="CyberModel.FK__SettingCh__ChatB__4BAC3F29">
             <End Role="ChatBox" EntitySet="ChatBoxes" />
             <End Role="SettingChatBox" EntitySet="SettingChatBoxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__UserI__5812160E" Association="CyberModel.FK__ChatReply__UserI__5812160E">
+          <AssociationSet Name="FK__ChatReply__UserI__5629CD9C" Association="CyberModel.FK__ChatReply__UserI__5629CD9C">
             <End Role="User" EntitySet="Users" />
             <End Role="ChatReply" EntitySet="ChatReplies" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChatReply__UserI__59063A47" Association="CyberModel.FK__ChatReply__UserI__59063A47">
+          <AssociationSet Name="FK__ChatReply__UserI__571DF1D5" Association="CyberModel.FK__ChatReply__UserI__571DF1D5">
             <End Role="User" EntitySet="Users" />
             <End Role="ChatReply" EntitySet="ChatReplies" />
           </AssociationSet>
@@ -990,35 +990,35 @@
             <End Role="User" EntitySet="Users" />
             <End Role="CommentLike" EntitySet="CommentLikes" />
           </AssociationSet>
-          <AssociationSet Name="FK__FriendLis__UserI__440B1D61" Association="CyberModel.FK__FriendLis__UserI__440B1D61">
+          <AssociationSet Name="FK__FriendLis__UserI__4222D4EF" Association="CyberModel.FK__FriendLis__UserI__4222D4EF">
             <End Role="User" EntitySet="Users" />
             <End Role="FriendList" EntitySet="FriendLists" />
           </AssociationSet>
-          <AssociationSet Name="FK__FriendLis__UserI__44FF419A" Association="CyberModel.FK__FriendLis__UserI__44FF419A">
+          <AssociationSet Name="FK__FriendLis__UserI__4316F928" Association="CyberModel.FK__FriendLis__UserI__4316F928">
             <End Role="User" EntitySet="Users" />
             <End Role="FriendList" EntitySet="FriendLists" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__Friends__5441852A" Association="CyberModel.FK__Friends__Friends__5441852A">
+          <AssociationSet Name="FK__Friends__Friends__52593CB8" Association="CyberModel.FK__Friends__Friends__52593CB8">
             <End Role="FriendList" EntitySet="FriendLists" />
             <End Role="Friend" EntitySet="Friends" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__Friends__5535A963" Association="CyberModel.FK__Friends__Friends__5535A963">
+          <AssociationSet Name="FK__Friends__Friends__534D60F1" Association="CyberModel.FK__Friends__Friends__534D60F1">
             <End Role="FriendList" EntitySet="FriendLists" />
             <End Role="Friend" EntitySet="Friends" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__FriendI__52593CB8" Association="CyberModel.FK__Friends__FriendI__52593CB8">
+          <AssociationSet Name="FK__Friends__FriendI__5070F446" Association="CyberModel.FK__Friends__FriendI__5070F446">
             <End Role="User" EntitySet="Users" />
             <End Role="Friend" EntitySet="Friends" />
           </AssociationSet>
-          <AssociationSet Name="FK__Friends__FriendI__534D60F1" Association="CyberModel.FK__Friends__FriendI__534D60F1">
+          <AssociationSet Name="FK__Friends__FriendI__5165187F" Association="CyberModel.FK__Friends__FriendI__5165187F">
             <End Role="User" EntitySet="Users" />
             <End Role="Friend" EntitySet="Friends" />
           </AssociationSet>
-          <AssociationSet Name="FK__SettingCh__Langu__4E88ABD4" Association="CyberModel.FK__SettingCh__Langu__4E88ABD4">
+          <AssociationSet Name="FK__SettingCh__Langu__4CA06362" Association="CyberModel.FK__SettingCh__Langu__4CA06362">
             <End Role="Language" EntitySet="Languages" />
             <End Role="SettingChatBox" EntitySet="SettingChatBoxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__SettingCh__Langu__4F7CD00D" Association="CyberModel.FK__SettingCh__Langu__4F7CD00D">
+          <AssociationSet Name="FK__SettingCh__Langu__4D94879B" Association="CyberModel.FK__SettingCh__Langu__4D94879B">
             <End Role="Language" EntitySet="Languages" />
             <End Role="SettingChatBox" EntitySet="SettingChatBoxes" />
           </AssociationSet>
@@ -1082,11 +1082,11 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Role" EntitySet="Roles" />
           </AssociationSet>
-          <AssociationSet Name="FK__SettingCh__User1__5070F446" Association="CyberModel.FK__SettingCh__User1__5070F446">
+          <AssociationSet Name="FK__SettingCh__User1__4E88ABD4" Association="CyberModel.FK__SettingCh__User1__4E88ABD4">
             <End Role="User" EntitySet="Users" />
             <End Role="SettingChatBox" EntitySet="SettingChatBoxes" />
           </AssociationSet>
-          <AssociationSet Name="FK__SettingCh__User2__5165187F" Association="CyberModel.FK__SettingCh__User2__5165187F">
+          <AssociationSet Name="FK__SettingCh__User2__4F7CD00D" Association="CyberModel.FK__SettingCh__User2__4F7CD00D">
             <End Role="User" EntitySet="Users" />
             <End Role="SettingChatBox" EntitySet="SettingChatBoxes" />
           </AssociationSet>
@@ -1101,8 +1101,8 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__Album__CreatedUs__3F466844" FromRole="Album" ToRole="User" />
-          <NavigationProperty Name="AlbumDetails" Relationship="CyberModel.FK__AlbumDeta__Album__5BE2A6F2" FromRole="Album" ToRole="AlbumDetail" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__Album__CreatedUs__3D5E1FD2" FromRole="Album" ToRole="User" />
+          <NavigationProperty Name="AlbumDetails" Relationship="CyberModel.FK__AlbumDeta__Album__59FA5E80" FromRole="Album" ToRole="AlbumDetail" />
         </EntityType>
         <EntityType Name="AlbumDetail">
           <Key>
@@ -1115,8 +1115,8 @@
           <Property Name="Url" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Album" Relationship="CyberModel.FK__AlbumDeta__Album__5BE2A6F2" FromRole="AlbumDetail" ToRole="Album" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__AlbumDeta__Poste__5CD6CB2B" FromRole="AlbumDetail" ToRole="User" />
+          <NavigationProperty Name="Album" Relationship="CyberModel.FK__AlbumDeta__Album__59FA5E80" FromRole="AlbumDetail" ToRole="Album" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__AlbumDeta__Poste__5AEE82B9" FromRole="AlbumDetail" ToRole="User" />
         </EntityType>
         <EntityType Name="ChatBox">
           <Key>
@@ -1128,13 +1128,13 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__ChatBox__FromUse__3B75D760" FromRole="ChatBox" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="CyberModel.FK__ChatBox__FromUse__3C69FB99" FromRole="ChatBox" ToRole="User" />
-          <NavigationProperty Name="User2" Relationship="CyberModel.FK__ChatBox__ToUseId__3D5E1FD2" FromRole="ChatBox" ToRole="User" />
-          <NavigationProperty Name="User3" Relationship="CyberModel.FK__ChatBox__ToUseId__3E52440B" FromRole="ChatBox" ToRole="User" />
-          <NavigationProperty Name="ChatReplies" Relationship="CyberModel.FK__ChatReply__ChatB__5629CD9C" FromRole="ChatBox" ToRole="ChatReply" />
-          <NavigationProperty Name="ChatReplies1" Relationship="CyberModel.FK__ChatReply__ChatB__571DF1D5" FromRole="ChatBox" ToRole="ChatReply" />
-          <NavigationProperty Name="SettingChatBoxes" Relationship="CyberModel.FK__SettingCh__ChatB__4D94879B" FromRole="ChatBox" ToRole="SettingChatBox" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__ChatBox__FromUse__398D8EEE" FromRole="ChatBox" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="CyberModel.FK__ChatBox__FromUse__3A81B327" FromRole="ChatBox" ToRole="User" />
+          <NavigationProperty Name="User2" Relationship="CyberModel.FK__ChatBox__ToUseId__3B75D760" FromRole="ChatBox" ToRole="User" />
+          <NavigationProperty Name="User3" Relationship="CyberModel.FK__ChatBox__ToUseId__3C69FB99" FromRole="ChatBox" ToRole="User" />
+          <NavigationProperty Name="ChatReplies" Relationship="CyberModel.FK__ChatReply__ChatB__5441852A" FromRole="ChatBox" ToRole="ChatReply" />
+          <NavigationProperty Name="ChatReplies1" Relationship="CyberModel.FK__ChatReply__ChatB__5535A963" FromRole="ChatBox" ToRole="ChatReply" />
+          <NavigationProperty Name="SettingChatBoxes" Relationship="CyberModel.FK__SettingCh__ChatB__4BAC3F29" FromRole="ChatBox" ToRole="SettingChatBox" />
         </EntityType>
         <EntityType Name="ChatReply">
           <Key>
@@ -1147,10 +1147,10 @@
           <Property Name="SendDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="DeletedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ChatBox" Relationship="CyberModel.FK__ChatReply__ChatB__5629CD9C" FromRole="ChatReply" ToRole="ChatBox" />
-          <NavigationProperty Name="ChatBox1" Relationship="CyberModel.FK__ChatReply__ChatB__571DF1D5" FromRole="ChatReply" ToRole="ChatBox" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__ChatReply__UserI__5812160E" FromRole="ChatReply" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="CyberModel.FK__ChatReply__UserI__59063A47" FromRole="ChatReply" ToRole="User" />
+          <NavigationProperty Name="ChatBox" Relationship="CyberModel.FK__ChatReply__ChatB__5441852A" FromRole="ChatReply" ToRole="ChatBox" />
+          <NavigationProperty Name="ChatBox1" Relationship="CyberModel.FK__ChatReply__ChatB__5535A963" FromRole="ChatReply" ToRole="ChatBox" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__ChatReply__UserI__5629CD9C" FromRole="ChatReply" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="CyberModel.FK__ChatReply__UserI__571DF1D5" FromRole="ChatReply" ToRole="User" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -1183,10 +1183,10 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__FriendLis__UserI__440B1D61" FromRole="FriendList" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="CyberModel.FK__FriendLis__UserI__44FF419A" FromRole="FriendList" ToRole="User" />
-          <NavigationProperty Name="Friends" Relationship="CyberModel.FK__Friends__Friends__5441852A" FromRole="FriendList" ToRole="Friend" />
-          <NavigationProperty Name="Friends1" Relationship="CyberModel.FK__Friends__Friends__5535A963" FromRole="FriendList" ToRole="Friend" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__FriendLis__UserI__4222D4EF" FromRole="FriendList" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="CyberModel.FK__FriendLis__UserI__4316F928" FromRole="FriendList" ToRole="User" />
+          <NavigationProperty Name="Friends" Relationship="CyberModel.FK__Friends__Friends__52593CB8" FromRole="FriendList" ToRole="Friend" />
+          <NavigationProperty Name="Friends1" Relationship="CyberModel.FK__Friends__Friends__534D60F1" FromRole="FriendList" ToRole="Friend" />
         </EntityType>
         <EntityType Name="Friend">
           <Key>
@@ -1197,10 +1197,10 @@
           <Property Name="FriendId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="FriendStatus" Type="Boolean" Nullable="false" />
           <Property Name="FriendSince" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="FriendList" Relationship="CyberModel.FK__Friends__Friends__5441852A" FromRole="Friend" ToRole="FriendList" />
-          <NavigationProperty Name="FriendList1" Relationship="CyberModel.FK__Friends__Friends__5535A963" FromRole="Friend" ToRole="FriendList" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__Friends__FriendI__52593CB8" FromRole="Friend" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="CyberModel.FK__Friends__FriendI__534D60F1" FromRole="Friend" ToRole="User" />
+          <NavigationProperty Name="FriendList" Relationship="CyberModel.FK__Friends__Friends__52593CB8" FromRole="Friend" ToRole="FriendList" />
+          <NavigationProperty Name="FriendList1" Relationship="CyberModel.FK__Friends__Friends__534D60F1" FromRole="Friend" ToRole="FriendList" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__Friends__FriendI__5070F446" FromRole="Friend" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="CyberModel.FK__Friends__FriendI__5165187F" FromRole="Friend" ToRole="User" />
         </EntityType>
         <EntityType Name="Language">
           <Key>
@@ -1208,8 +1208,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="SettingChatBoxes" Relationship="CyberModel.FK__SettingCh__Langu__4E88ABD4" FromRole="Language" ToRole="SettingChatBox" />
-          <NavigationProperty Name="SettingChatBoxes1" Relationship="CyberModel.FK__SettingCh__Langu__4F7CD00D" FromRole="Language" ToRole="SettingChatBox" />
+          <NavigationProperty Name="SettingChatBoxes" Relationship="CyberModel.FK__SettingCh__Langu__4CA06362" FromRole="Language" ToRole="SettingChatBox" />
+          <NavigationProperty Name="SettingChatBoxes1" Relationship="CyberModel.FK__SettingCh__Langu__4D94879B" FromRole="Language" ToRole="SettingChatBox" />
         </EntityType>
         <EntityType Name="MySetting">
           <Key>
@@ -1329,11 +1329,11 @@
           <Property Name="Language1" Type="Int32" />
           <Property Name="User2" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Language2" Type="Int32" />
-          <NavigationProperty Name="ChatBox" Relationship="CyberModel.FK__SettingCh__ChatB__4D94879B" FromRole="SettingChatBox" ToRole="ChatBox" />
-          <NavigationProperty Name="Language" Relationship="CyberModel.FK__SettingCh__Langu__4E88ABD4" FromRole="SettingChatBox" ToRole="Language" />
-          <NavigationProperty Name="Language3" Relationship="CyberModel.FK__SettingCh__Langu__4F7CD00D" FromRole="SettingChatBox" ToRole="Language" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK__SettingCh__User1__5070F446" FromRole="SettingChatBox" ToRole="User" />
-          <NavigationProperty Name="User3" Relationship="CyberModel.FK__SettingCh__User2__5165187F" FromRole="SettingChatBox" ToRole="User" />
+          <NavigationProperty Name="ChatBox" Relationship="CyberModel.FK__SettingCh__ChatB__4BAC3F29" FromRole="SettingChatBox" ToRole="ChatBox" />
+          <NavigationProperty Name="Language" Relationship="CyberModel.FK__SettingCh__Langu__4CA06362" FromRole="SettingChatBox" ToRole="Language" />
+          <NavigationProperty Name="Language3" Relationship="CyberModel.FK__SettingCh__Langu__4D94879B" FromRole="SettingChatBox" ToRole="Language" />
+          <NavigationProperty Name="User" Relationship="CyberModel.FK__SettingCh__User1__4E88ABD4" FromRole="SettingChatBox" ToRole="User" />
+          <NavigationProperty Name="User3" Relationship="CyberModel.FK__SettingCh__User2__4F7CD00D" FromRole="SettingChatBox" ToRole="User" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1352,20 +1352,20 @@
           <Property Name="Work" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Studied" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Albums" Relationship="CyberModel.FK__Album__CreatedUs__3F466844" FromRole="User" ToRole="Album" />
-          <NavigationProperty Name="AlbumDetails" Relationship="CyberModel.FK__AlbumDeta__Poste__5CD6CB2B" FromRole="User" ToRole="AlbumDetail" />
-          <NavigationProperty Name="ChatBoxes" Relationship="CyberModel.FK__ChatBox__FromUse__3B75D760" FromRole="User" ToRole="ChatBox" />
-          <NavigationProperty Name="ChatBoxes1" Relationship="CyberModel.FK__ChatBox__FromUse__3C69FB99" FromRole="User" ToRole="ChatBox" />
-          <NavigationProperty Name="ChatBoxes2" Relationship="CyberModel.FK__ChatBox__ToUseId__3D5E1FD2" FromRole="User" ToRole="ChatBox" />
-          <NavigationProperty Name="ChatBoxes3" Relationship="CyberModel.FK__ChatBox__ToUseId__3E52440B" FromRole="User" ToRole="ChatBox" />
-          <NavigationProperty Name="ChatReplies" Relationship="CyberModel.FK__ChatReply__UserI__5812160E" FromRole="User" ToRole="ChatReply" />
-          <NavigationProperty Name="ChatReplies1" Relationship="CyberModel.FK__ChatReply__UserI__59063A47" FromRole="User" ToRole="ChatReply" />
+          <NavigationProperty Name="Albums" Relationship="CyberModel.FK__Album__CreatedUs__3D5E1FD2" FromRole="User" ToRole="Album" />
+          <NavigationProperty Name="AlbumDetails" Relationship="CyberModel.FK__AlbumDeta__Poste__5AEE82B9" FromRole="User" ToRole="AlbumDetail" />
+          <NavigationProperty Name="ChatBoxes" Relationship="CyberModel.FK__ChatBox__FromUse__398D8EEE" FromRole="User" ToRole="ChatBox" />
+          <NavigationProperty Name="ChatBoxes1" Relationship="CyberModel.FK__ChatBox__FromUse__3A81B327" FromRole="User" ToRole="ChatBox" />
+          <NavigationProperty Name="ChatBoxes2" Relationship="CyberModel.FK__ChatBox__ToUseId__3B75D760" FromRole="User" ToRole="ChatBox" />
+          <NavigationProperty Name="ChatBoxes3" Relationship="CyberModel.FK__ChatBox__ToUseId__3C69FB99" FromRole="User" ToRole="ChatBox" />
+          <NavigationProperty Name="ChatReplies" Relationship="CyberModel.FK__ChatReply__UserI__5629CD9C" FromRole="User" ToRole="ChatReply" />
+          <NavigationProperty Name="ChatReplies1" Relationship="CyberModel.FK__ChatReply__UserI__571DF1D5" FromRole="User" ToRole="ChatReply" />
           <NavigationProperty Name="Comments" Relationship="CyberModel.FK_Comment_User" FromRole="User" ToRole="Comment" />
           <NavigationProperty Name="CommentLikes" Relationship="CyberModel.FK_CommentLike_User" FromRole="User" ToRole="CommentLike" />
-          <NavigationProperty Name="FriendLists" Relationship="CyberModel.FK__FriendLis__UserI__440B1D61" FromRole="User" ToRole="FriendList" />
-          <NavigationProperty Name="FriendLists1" Relationship="CyberModel.FK__FriendLis__UserI__44FF419A" FromRole="User" ToRole="FriendList" />
-          <NavigationProperty Name="Friends" Relationship="CyberModel.FK__Friends__FriendI__52593CB8" FromRole="User" ToRole="Friend" />
-          <NavigationProperty Name="Friends1" Relationship="CyberModel.FK__Friends__FriendI__534D60F1" FromRole="User" ToRole="Friend" />
+          <NavigationProperty Name="FriendLists" Relationship="CyberModel.FK__FriendLis__UserI__4222D4EF" FromRole="User" ToRole="FriendList" />
+          <NavigationProperty Name="FriendLists1" Relationship="CyberModel.FK__FriendLis__UserI__4316F928" FromRole="User" ToRole="FriendList" />
+          <NavigationProperty Name="Friends" Relationship="CyberModel.FK__Friends__FriendI__5070F446" FromRole="User" ToRole="Friend" />
+          <NavigationProperty Name="Friends1" Relationship="CyberModel.FK__Friends__FriendI__5165187F" FromRole="User" ToRole="Friend" />
           <NavigationProperty Name="MySettings" Relationship="CyberModel.FK_MySetting_User" FromRole="User" ToRole="MySetting" />
           <NavigationProperty Name="Notifications" Relationship="CyberModel.FK_Notification_User" FromRole="User" ToRole="Notification" />
           <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_User" FromRole="User" ToRole="Post" />
@@ -1375,8 +1375,8 @@
           <NavigationProperty Name="Relationship_Type" Relationship="CyberModel.FK_User_Relationship_Type" FromRole="User" ToRole="Relationship_Type" />
           <NavigationProperty Name="Role" Relationship="CyberModel.FK_Role_User" FromRole="User" ToRole="Role" />
           <NavigationProperty Name="Roles" Relationship="CyberModel.FK_Role_User1" FromRole="User" ToRole="Role" />
-          <NavigationProperty Name="SettingChatBoxes" Relationship="CyberModel.FK__SettingCh__User1__5070F446" FromRole="User" ToRole="SettingChatBox" />
-          <NavigationProperty Name="SettingChatBoxes1" Relationship="CyberModel.FK__SettingCh__User2__5165187F" FromRole="User" ToRole="SettingChatBox" />
+          <NavigationProperty Name="SettingChatBoxes" Relationship="CyberModel.FK__SettingCh__User1__4E88ABD4" FromRole="User" ToRole="SettingChatBox" />
+          <NavigationProperty Name="SettingChatBoxes1" Relationship="CyberModel.FK__SettingCh__User2__4F7CD00D" FromRole="User" ToRole="SettingChatBox" />
         </EntityType>
         <EntityType Name="Visible_Type">
           <Key>
@@ -1387,7 +1387,7 @@
           <NavigationProperty Name="MySettings" Relationship="CyberModel.FK_MySetting_Visible_Type" FromRole="Visible_Type" ToRole="MySetting" />
           <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_Visible_Type" FromRole="Visible_Type" ToRole="Post" />
         </EntityType>
-        <Association Name="FK__Album__CreatedUs__3F466844">
+        <Association Name="FK__Album__CreatedUs__3D5E1FD2">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.Album" Role="Album" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1399,7 +1399,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AlbumDeta__Album__5BE2A6F2">
+        <Association Name="FK__AlbumDeta__Album__59FA5E80">
           <End Type="CyberModel.Album" Role="Album" Multiplicity="0..1" />
           <End Type="CyberModel.AlbumDetail" Role="AlbumDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1411,7 +1411,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AlbumDeta__Poste__5CD6CB2B">
+        <Association Name="FK__AlbumDeta__Poste__5AEE82B9">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.AlbumDetail" Role="AlbumDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1423,7 +1423,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatBox__FromUse__3B75D760">
+        <Association Name="FK__ChatBox__FromUse__398D8EEE">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1435,7 +1435,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatBox__FromUse__3C69FB99">
+        <Association Name="FK__ChatBox__FromUse__3A81B327">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1447,7 +1447,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatBox__ToUseId__3D5E1FD2">
+        <Association Name="FK__ChatBox__ToUseId__3B75D760">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1459,7 +1459,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatBox__ToUseId__3E52440B">
+        <Association Name="FK__ChatBox__ToUseId__3C69FB99">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1471,7 +1471,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatReply__ChatB__5629CD9C">
+        <Association Name="FK__ChatReply__ChatB__5441852A">
           <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="0..1" />
           <End Type="CyberModel.ChatReply" Role="ChatReply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1483,7 +1483,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatReply__ChatB__571DF1D5">
+        <Association Name="FK__ChatReply__ChatB__5535A963">
           <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="0..1" />
           <End Type="CyberModel.ChatReply" Role="ChatReply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1495,7 +1495,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SettingCh__ChatB__4D94879B">
+        <Association Name="FK__SettingCh__ChatB__4BAC3F29">
           <End Type="CyberModel.ChatBox" Role="ChatBox" Multiplicity="0..1" />
           <End Type="CyberModel.SettingChatBox" Role="SettingChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1507,7 +1507,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatReply__UserI__5812160E">
+        <Association Name="FK__ChatReply__UserI__5629CD9C">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.ChatReply" Role="ChatReply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1519,7 +1519,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChatReply__UserI__59063A47">
+        <Association Name="FK__ChatReply__UserI__571DF1D5">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.ChatReply" Role="ChatReply" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1579,7 +1579,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FriendLis__UserI__440B1D61">
+        <Association Name="FK__FriendLis__UserI__4222D4EF">
           <End Type="CyberModel.User" Role="User" Multiplicity="1" />
           <End Type="CyberModel.FriendList" Role="FriendList" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1591,7 +1591,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FriendLis__UserI__44FF419A">
+        <Association Name="FK__FriendLis__UserI__4316F928">
           <End Type="CyberModel.User" Role="User" Multiplicity="1" />
           <End Type="CyberModel.FriendList" Role="FriendList" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1603,7 +1603,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__Friends__5441852A">
+        <Association Name="FK__Friends__Friends__52593CB8">
           <End Type="CyberModel.FriendList" Role="FriendList" Multiplicity="1" />
           <End Type="CyberModel.Friend" Role="Friend" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1615,7 +1615,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__Friends__5535A963">
+        <Association Name="FK__Friends__Friends__534D60F1">
           <End Type="CyberModel.FriendList" Role="FriendList" Multiplicity="1" />
           <End Type="CyberModel.Friend" Role="Friend" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1627,7 +1627,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__FriendI__52593CB8">
+        <Association Name="FK__Friends__FriendI__5070F446">
           <End Type="CyberModel.User" Role="User" Multiplicity="1" />
           <End Type="CyberModel.Friend" Role="Friend" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1639,7 +1639,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Friends__FriendI__534D60F1">
+        <Association Name="FK__Friends__FriendI__5165187F">
           <End Type="CyberModel.User" Role="User" Multiplicity="1" />
           <End Type="CyberModel.Friend" Role="Friend" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1651,7 +1651,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SettingCh__Langu__4E88ABD4">
+        <Association Name="FK__SettingCh__Langu__4CA06362">
           <End Type="CyberModel.Language" Role="Language" Multiplicity="0..1" />
           <End Type="CyberModel.SettingChatBox" Role="SettingChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1663,7 +1663,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SettingCh__Langu__4F7CD00D">
+        <Association Name="FK__SettingCh__Langu__4D94879B">
           <End Type="CyberModel.Language" Role="Language" Multiplicity="0..1" />
           <End Type="CyberModel.SettingChatBox" Role="SettingChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1855,7 +1855,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SettingCh__User1__5070F446">
+        <Association Name="FK__SettingCh__User1__4E88ABD4">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.SettingChatBox" Role="SettingChatBox" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1867,7 +1867,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SettingCh__User2__5165187F">
+        <Association Name="FK__SettingCh__User2__4F7CD00D">
           <End Type="CyberModel.User" Role="User" Multiplicity="0..1" />
           <End Type="CyberModel.SettingChatBox" Role="SettingChatBox" Multiplicity="*" />
           <ReferentialConstraint>

@@ -1,48 +1,40 @@
 ﻿@using WC.Data
+﻿@model MySetting
 @{
     var db = new CyberEntities();
 }
-<style type="text/css">
-    .post-options {
-        overflow: visible;
-    }
-</style>
-@*<div class="dropdown post-dropdown-caret pull-right">
-    <a id="drop-@item.PostID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-        <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu remove-content pull-left" aria-labelledby="drop-@item.PostID">
-        @if (isPoster)
-        {
-            <li><a href="#" data-toggle="modal" data-target="#edit-modal" data-type="Post" data-id="@item.PostID" class="edit-command"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit Post</a></li>
-        }
-        @if (isOwner || isPoster)
-        {
-            <li><a href="#" data-toggle="modal" data-target="#delete-post-modal" class="delete-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Delete</a></li>
-        }
-        @if ((isOwner || isPoster) && !isPoster)
-        {
-            <li role="separator" class="divider"></li>
-        }
-        @if (!isPoster)
-        {
-            <li><a href="#" class="report-post-command" post-id="@item.PostID"><span class="glyphicon glyphicon-flag"></span>&nbsp;&nbsp;Report...</a></li>
-        }
-    </ul>
-</div>*@
-<div class="btn-group pull-right">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Action <span class="caret"></span>
+<script type="text/javascript">
+    $(document).on('click', '.visible-type', function () {
+        var current = $("#current-visible-type");
+        var changedType = $(this).data("visible-type");
+        var changedName = $(this).data("visible-name");
+
+        var newContent = "<span class = 'fa fa-" + changedType + "'></span> " + changedName + " <span class='caret'></span>";
+
+        current.attr("data-visible-type", changedType);
+        current.html(newContent);
+
+        var url = '@Url.Action("ChangeMyDefaultPostVisibility", "Post")';
+
+        $.post(url, { "visibility": changedType },
+            function (data) {
+                if (data === "Failed") {
+                    alert("Unable to peform your action. Please try again later.");
+                } else if (data === "Delete") {
+                    alert("Please log in first");
+                }
+            });
+    });
+</script>
+
+<div class="dropdown pull-right space">
+    <button type="button" id="current-visible-type" data-visible-type="@Model.DefaultMyPostVisibility" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="fa fa-@Model.DefaultMyPostVisibility"></span> @Model.Visible_Type.VisibleTypeName <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu remove-content pull-left">
+    <ul class="dropdown-menu dropdown-visibility remove-content pull-left">
         @foreach (var type in db.Visible_Type)
         {
-            <li><a href="#" class="visible-type" data-visible-type="@type.VisibleTypeID">@type.VisibleTypeName</a></li>
+            <li><a class="visible-type" data-visible-type="@type.VisibleTypeID" data-visible-name="@type.VisibleTypeName"><span class="fa fa-@type.VisibleTypeID"></span> @type.VisibleTypeName</a></li>
         }
-        @*<li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>*@
     </ul>
 </div>
