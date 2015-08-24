@@ -387,3 +387,11 @@ LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC
 LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
 
 
+24/8/2015 9:05:04 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+24/8/2015 9:05:12 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
