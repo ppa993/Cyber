@@ -512,6 +512,28 @@ namespace WC.Controllers
             }
             return ActionResults.Failed.ToString();
         }
+
+        [HttpPost]
+        public string ChangePostVisibleType(string postId, int visibility)
+        {
+            try
+            {
+                var setting = db.MySettings.FirstOrDefault(x => x.UserID == CurrentUserID);
+                if (setting == null) return ActionResults.Deleted.ToString();
+
+                setting.DefaultMyPostVisibility = visibility;
+
+                var entry = db.Entry(setting);
+                entry.Property(x => x.DefaultMyPostVisibility).IsModified = true;
+                db.SaveChanges();
+                return ActionResults.Succeed.ToString();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return ActionResults.Failed.ToString();
+        }
         #endregion
 
         #region Private Methods

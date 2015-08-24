@@ -14,7 +14,7 @@
         if (text === "") return;
 
         $.post(url, { "postedOn": '@Model.Id', "visibility": visibility, "content": text },
-            function (data) {
+            function(data) {
                 if (data === "Failed") {
                     alert("Unable to post your status. Please try again later. Thank you!");
                 } else {
@@ -23,6 +23,273 @@
                 }
             });
     }
+</script>
+<script>
+    function pasteIntoInput(el, text) {
+        el.focus();
+        if (typeof el.selectionStart == "number"
+            && typeof el.selectionEnd == "number") {
+            var val = el.value;
+            var selStart = el.selectionStart;
+            el.value = val.slice(0, selStart) + text + val.slice(el.selectionEnd);
+            el.selectionEnd = el.selectionStart = selStart + text.length;
+        } else if (typeof document.selection != "undefined") {
+            var textRange = document.selection.createRange();
+            textRange.text = text;
+            textRange.collapse(false);
+            textRange.select();
+        }
+    }
+
+    $(document).ready(function() {
+
+        //focus on comment text box when click on Comment text
+        $(document).on('click', '.comment-text', function() {
+            var postId = $(this).attr("post-id");
+            $('#comment-area-' + postId).focus();
+            return false;
+        });
+
+        //auto submit comment when user press enter, add new line if Shift+Enter
+        $(document).on('keydown', '.comment-form', function(e) {
+            if (e.which === 13) {
+                if (e.shiftKey === false) {
+                    var url = '@Url.Action("PostComment", "Post")';
+                    var text = $(this).val();
+                    var textbox = $(this);
+                    var postid = $(this).attr("post-id");
+                    if (text === "") return;
+
+                    $.post(url, { "postId": postid, "content": text },
+                        function(data) {
+                            if (data === "Failed") {
+                                alert("Unable to post your comment. Please try again later. Thank you!");
+                            } else {
+                                var countItem = document.getElementById("comment-count-" + postid);
+                                var count = parseInt(countItem.textContent) + 1;
+                                countItem.textContent = count;
+
+                                var commentList = $("#comment-list-" + postid);
+                                commentList.append(data);
+                                textbox.val('');
+                            }
+                        });
+                } else {
+                    pasteIntoInput(this, "\n");
+                    e.preventDefault();
+                }
+            }
+        });
+
+        //like/unlike and update like count
+        $(document).on('click', '.post-like', function () {
+            var inprocess = $(this).attr("data-inprocess");
+            if (inprocess === "1") {
+                return false;
+            }
+            var curElement = $(this);
+            $(this).attr("data-inprocess", "1");
+            var postid = $(this).attr("post-id");
+            var isLike = $(this).attr("data-toogle") === "Like";
+            var url = '@Url.Action("LikeUnlikePost", "Post")';
+
+            $.post(url, { "postId": postid, "isLike": isLike },
+                function(data) {
+                    if (data === "Failed") {
+                        alert("Unable to peform your action. Please try again later.");
+                    } else if (data === "Deleted") {
+                        alert("This item has been deleted.");
+                    } else if (data !== "AlreadyDone") {
+                        var countItem = document.getElementById("post-like-count-" + postid);
+                        var count = data;
+
+                        if (isLike) {
+                            curElement.attr("data-toogle", "Unlike");
+                        } else {
+                            curElement.attr("data-toogle", "Like");
+                        }
+                        countItem.textContent = count;
+
+                        var likeStatus = document.getElementById("post-like-status-" + postid);
+                        likeStatus.innerHTML = curElement.attr("data-toogle");
+                    }
+                    curElement.attr("data-inprocess", "0");
+                });
+            return false;
+        });
+
+        //like/unlike and update like count
+        $(document).on('click', '.comment-like', function () {
+            var inprocess = $(this).attr("data-inprocess");
+            if (inprocess === "1") {
+                return false;
+            }
+            var curElement = $(this);
+            $(this).attr("data-inprocess", "1");
+            var commentid = $(this).attr("comment-id");
+            var isLike = $(this).attr("data-toogle") === "Like";
+            var url = '@Url.Action("LikeUnlikeComment", "Post")';
+
+            $.post(url, { "commentId": commentid, "isLike": isLike },
+                function(data) {
+                    if (data === "Failed") {
+                        alert("Unable to peform your action. Please try again later.");
+                    } else if (data === "Deleted") {
+                        alert("This item has been deleted.");
+                    } else if (data !== "AlreadyDone") {
+                        var countItem = document.getElementById("comment-like-count-" + commentid);
+                        var count = data;
+
+                        if (isLike) {
+                            curElement.attr("data-toogle", "Unlike");
+                        } else {
+                            curElement.attr("data-toogle", "Like");
+                        }
+                        countItem.textContent = count;
+
+                        var likeStatus = document.getElementById("comment-like-status-" + commentid);
+                        likeStatus.innerHTML = curElement.attr("data-toogle");
+                    }
+                    curElement.attr("data-inprocess", "0");
+                });
+            return false;
+        });
+
+        //Show edit modal dialog
+        $(document).on('click', '.edit-command', function() {
+            var recipient = $(this).data('id');
+            var actionType = $(this).data('type');
+            $("#button-edit").data('id', recipient);
+            $("#button-edit").data('type', actionType);
+
+            var title = $('#edit-modal-label');
+            title.text('Edit ' + actionType);
+
+
+            if (actionType === "Post") {
+                var postUrl = '@Url.Action("EditPost", "Post")';
+
+
+                $.post(postUrl, { "postId": recipient },
+                    function(data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this post. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This post has already been deleted.");
+                        } else {
+                            var content = $('#message-text');
+                            content.val(data);
+                            content.css('min-height', '50px').autogrow();
+                        }
+                    });
+            } else {
+                var commentUrl = '@Url.Action("EditComment", "Post")';
+
+                $.post(commentUrl, { "commentId": recipient },
+                    function(data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this comment. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This comment has already been deleted.");
+                        } else {
+                            var content = $('#message-text');
+                            content.val(data);
+                            content.css('min-height', '50px').autogrow();
+                        }
+                    });
+            }
+        });
+
+        //update post/comment
+        $("#button-edit").click(function() {
+            var recipient = $(this).data('id');
+            var actionType = $(this).data('type');
+            var content = $('#message-text').val();
+
+            if (actionType === "Post") {
+                var postUrl = '@Url.Action("UpdatePost", "Post")';
+
+                $.post(postUrl, { "postId": recipient, "content": content },
+                    function(data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this post. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This post has already been deleted.");
+                        } else {
+                            var editedContent = $('#post-edit-' + recipient);
+                            editedContent.text(content);
+                        }
+                    });
+            } else {
+                var commentUrl = '@Url.Action("UpdateComment", "Post")';
+
+                $.post(commentUrl, { "commentId": recipient, "content": content },
+                    function(data) {
+                        if (data === "Failed") {
+                            alert("Unable to edit this comment. Please try again later.");
+                        } else if (data === "Deleted") {
+                            alert("This comment has already been deleted.");
+                        } else {
+                            var editedContent = $('#comment-edit-' + recipient);
+                            editedContent.text(content);
+                        }
+                    });
+            }
+            $("#button-edit-close").click();
+        });
+
+        //call confirm delete post
+        $(document).on('click', '.delete-post-command', function() {
+            var postid = $(this).attr("post-id");
+            $('#button-post-delete').attr('post-id', postid);
+        });
+
+        //delete post
+        $('#button-post-delete').click(function() {
+            var postid = $(this).attr("post-id");
+            var url = '@Url.Action("DeletePost", "Post")';
+
+            $.post(url, { "postId": postid },
+                function(data) {
+                    if (data === "Failed") {
+                        alert("Unable to delete this post. Please try again later.");
+                    } else if (data === "Deleted") {
+                        alert("This post has already been deleted.");
+                    } else {
+                        $('#button-post-close').click();
+                        var element = document.getElementById('post-block-' + postid);
+                        element.parentNode.removeChild(element);
+                    }
+                });
+        });
+
+        //call confirm delete commment dialog
+        $(document).on('click', '.delete-comment-command', function() {
+            var commentid = $(this).attr("comment-id");
+            $('#button-comment-delete').attr('comment-id', commentid);
+        });
+
+        //delete comment
+        $('#button-comment-delete').click(function() {
+            var commentid = $(this).attr("comment-id");
+            var url = '@Url.Action("DeleteComment", "Post")';
+
+            $.post(url, { "commentId": commentid },
+                function(data) {
+                    if (data === "Failed") {
+                        alert("Unable to delete this comment. Please try again later.");
+                    } else if (data === "Deleted") {
+                        alert("This comment has already been deleted.");
+                    } else {
+                        $('#button-comment-close').click();
+                        $('#comment-block-' + commentid).remove();
+                        var countItem = document.getElementById("comment-count-" + data);
+                        var count = parseInt(countItem.textContent) - 1;
+                        countItem.textContent = count;
+                    }
+                });
+        });
+    });
 </script>
 <link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
 
