@@ -45,6 +45,32 @@
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="/signalr/hubs"></script>
     <script src="~/Hubs/cyber-chat.js"></script>
+    <script type="text/javascript">
+        function showMsg(content) {
+            $('#contentModal').append(content);
+            $('#msgModal').modal('toggle'); 
+        }
+
+        function closeMsg() {
+            location.reload();
+        }
+
+        function showConfirmMsg(content, url, userid) {
+            $('#contentConfirmModal').append(content);
+            $('#btnConfirmYes').attr("data-item-url", url);
+            $('#btnConfirmYes').attr("data-item-id", userid);
+            $('#msgConfirmModal').modal('toggle');
+        }
+
+        function closeConfirmMsg(e) {
+            var targetId = e.getAttribute("data-item-id");
+            var url = e.getAttribute("data-item-url");
+
+            $.post(url, { targetUserId: targetId }, function () {
+                location.reload();
+            });
+        }
+    </script>
 </head>
 <body class="page-header-fixed  pace-done">
 <div class="pace  pace-inactive">
@@ -376,6 +402,47 @@
     }
 </nav>
 <div class="cd-overlay"></div>
+
+    <!-- Modal -->
+    <div id="msgModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="new function () { location.reload(); }">&times;</button>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                <div class="modal-body" id="contentModal"> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closeMsg()">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="msgConfirmModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                <div class="modal-body" id="contentConfirmModal">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="btnConfirmYes" data-item-url="" data-item-id="" data-dismiss="modal" onclick="closeConfirmMsg(this)">Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 <!-- Javascripts -->
 @RenderSection("scripts", required: false)

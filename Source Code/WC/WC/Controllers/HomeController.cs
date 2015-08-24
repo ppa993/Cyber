@@ -15,7 +15,7 @@ namespace WC.Controllers
     [Authorize]
     public class HomeController : AccountController
     {
-       // GET: Home
+        // GET: Home
         public ActionResult Newsfeed()
         {
             //ViewData["FriendList"] = GetHtmlListFriendsOf(User.Identity.GetUserId());
@@ -53,16 +53,55 @@ namespace WC.Controllers
                 user.DisplayName = fromUserInfo.FirstName + " " + fromUserInfo.LastName;
                 user.Address = fromUserInfo.Address;
                 user.Email = fromUserInfo.Email;
-                user.Gender = fromUserInfo.Gender;
                 user.Friends = fromUserInfo.FriendLists.First();
                 user.Posts = postList;
                 user.Avatar = fromUserInfo.Profile_Photo.ProfileImageUrl;
                 user.Cover = fromUserInfo.Profile_Photo.CoverImageUrl;
                 user.AllowOtherToPost = fromUserInfo.MySettings.First().AllowOtherToPost;
                 user.IsMyTimeline = fromUser.Id.Equals(toUser, StringComparison.InvariantCultureIgnoreCase);
-                user.Setting = fromUserInfo.MySettings.First();
             }
-            
+
+            //Get info to show buttons request friend
+            var targetUser = db.Users.FirstOrDefault(x => x.UserName == username);
+            var currUserId = User.Identity.GetUserId();
+
+            //don't show button add friend if it has the same user id
+            if (targetUser.UserID == currUserId)
+            {
+                ViewData["FlagShowButton"] = "1";
+            }
+            else
+            {
+                if (targetUser != null)
+                {
+                    var targetFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == targetUser.UserID && x.FriendId == currUserId);
+                    var currFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == currUserId && x.FriendId == targetUser.UserID);
+                    AddFriendViewModel f = new AddFriendViewModel()
+                    {
+                        CurrentUserId = currUserId,
+                        TargetUserId = targetUser.UserID
+                    };
+                    if (currFriend == null && targetFriend == null)
+                        f.Type = ButtonFriendType.NonRelationship;
+
+                    if (currFriend != null && targetFriend == null)
+                        f.Type = ButtonFriendType.WaitForTargetAccepting;
+
+                    if (currFriend == null && targetFriend != null)
+                        f.Type = ButtonFriendType.WaitForAcceptting;
+
+                    if (currFriend != null && targetFriend != null)
+                        f.Type = ButtonFriendType.HasRelationship;
+                    ViewData["FlagShowButton"] = null;
+                    ViewData["InfoButtonFriend"] = f;
+                }
+                else
+                {
+                    ViewData["InfoButtonFriend"] = null;
+                }
+            }
+
+
             return View(user);
         }
 
@@ -101,6 +140,76 @@ namespace WC.Controllers
                 Helper.WriteLog(exception);
             }
             return listView;
+        }
+
+        public void UndoFriend(string targetUserId)
+        {
+            var curId = User.Identity.GetUserId();
+            var curFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == curId && x.FriendId == targetUserId);
+            if (curFriend != null)
+            {
+                db.Friends.Remove(curFriend);
+            }
+
+            var targetFriend= db.Friends.FirstOrDefault(x => x.FriendsListId == targetUserId && x.FriendId == curId);
+            if (targetFriend != null)
+            {
+                db.Friends.Remove(targetFriend);
+            }
+            db.SaveChanges();
+        }
+
+        public string FriendControl(string targetUserId, int type)
+        {
+            string result = "";
+            var curId = User.Identity.GetUserId();
+            var checkFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == curId && x.FriendId == targetUserId);
+            Friend f = new Friend()
+            {
+                FriendsListId = curId,
+                FriendId = targetUserId,
+                FriendStatus = false
+            };
+            switch ((ButtonFriendType)type)
+            {
+                case ButtonFriendType.NonRelationship:
+                    try {
+                        if (checkFriend == null)
+                        {
+                            db.Friends.Add(f);
+                            db.SaveChanges();
+                        }
+                    }
+                    catch { }
+                    result = "add";
+                    break;
+                case ButtonFriendType.WaitForAcceptting:
+                    try {
+                        var dateSince = DateTime.Now;
+                        var targetFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == targetUserId && x.FriendId == curId);
+                        if (targetUserId != null)
+                        {
+                            targetFriend.FriendStatus = true;
+                            targetFriend.FriendSince = dateSince;
+                        }
+                        if (checkFriend == null)
+                        {
+                            f.FriendStatus = true;
+                            f.FriendSince = dateSince;
+                            db.Friends.Add(f);
+                        }
+                        db.SaveChanges();
+                    }
+                    catch { }
+                    result = "accept";
+                    break;
+
+                case ButtonFriendType.HasRelationship:
+                case ButtonFriendType.WaitForTargetAccepting:
+                    result = "remove";
+                    break;
+            }
+            return result;
         }
     }
 }

@@ -30,10 +30,10 @@ namespace WC.Data
         public int VisibleType { get; set; }
     
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual Post_Type Post_Type { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         public virtual Visible_Type Visible_Type { get; set; }
         public virtual ICollection<PostLike> PostLikes { get; set; }
-        public virtual Post_Type Post_Type { get; set; }
     }
 }
