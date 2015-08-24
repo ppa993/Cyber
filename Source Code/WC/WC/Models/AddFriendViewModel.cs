@@ -9,14 +9,14 @@ namespace WC.Models
     {
         public string CurrentUserId { set; get; }
         public string TargetUserId { set; get; }
-        public ButtonFriendType Type { set; get; }
+        public FriendType Type { set; get; }
     }
 
-    public enum ButtonFriendType
+    public enum FriendType
     {
-        NonRelationship,
-        HasRelationship,
-        WaitForAcceptting,
-        WaitForTargetAccepting
+        NoneFriend,
+        MyPendingFriend,
+        HisPendingFriend,
+        Friend
     }
 }

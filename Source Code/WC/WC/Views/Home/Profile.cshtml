@@ -30,14 +30,14 @@
         var url = '@Url.Action("FriendControl")';
         var targetId = '@Model.Id'; 
         $.post(url, { targetUserId: targetId, type: type }, function (result) {
-            if (result == 'remove') {
-                showConfirmMsg('Are you sure ?','@Url.Action("UndoFriend")','@Model.Id')
+            if (result === 'Remove') {
+                showConfirmMsg('Are you sure ?', '@Url.Action("UnFriend")', '@Model.Id');
             }
-            if (result == 'add') {
-                showMsg('Sent a request to ' + '@Model.DisplayName');
+            if (result === 'Pending') {
+                showMsg('Your friend request has been sent to ' + '@Model.DisplayName');
             }
-            if (result == 'accept') {
-                showMsg('Now, you and ' + '@Model.DisplayName' +' has been friend');
+            if (result === 'Friend') {
+                showMsg('You and ' + '@Model.DisplayName' +' are now friend');
             }
         });
     }
@@ -115,34 +115,31 @@
                     </li>
                 </ul>
                 <hr>
-                @if (ViewData["FlagShowButton"] == null)
+                @if (!Model.IsMyTimeline && ViewData["FriendStatus"] != null)
                 {
-                    if (ViewData["InfoButtonFriend"] != null)
-                    { 
-                        if ((ViewData["InfoButtonFriend"] as AddFriendViewModel).Type == ButtonFriendType.NonRelationship)
-                        {
-                            <button class="btn btn-block btn-available" onclick="FriendControl(0);">
-                                <i class="fa fa-plus m-r-xs"></i>Add Friend
-                            </button>
-                        }
-                        if ((ViewData["InfoButtonFriend"] as AddFriendViewModel).Type == ButtonFriendType.HasRelationship)
-                        {
-                            <button class="btn btn-block btn-added" onclick="FriendControl(1);">
-                                <i class="fa fa-check m-r-xs"></i>Friend, click to undo
-                            </button>
-                        }
-                        if ((ViewData["InfoButtonFriend"] as AddFriendViewModel).Type == ButtonFriendType.WaitForAcceptting)
-                        {
-                            <button class="btn btn-block btn-available" onclick="FriendControl(2);">
-                                <i class="fa fa-plus m-r-xs"></i>Accept request
-                            </button>
-                        }
-                        if ((ViewData["InfoButtonFriend"] as AddFriendViewModel).Type == ButtonFriendType.WaitForTargetAccepting)
-                        {
-                            <button class="btn btn-block btn-wait-accept" onclick="FriendControl(3)">
-                                <i class="fa fa-circle-o-notch m-r-xs"></i>Waitting for accept, click to undo
-                            </button>
-                        }
+                    if (((AddFriendViewModel)ViewData["FriendStatus"]).Type == FriendType.NoneFriend)
+                    {
+                        <button class="btn btn-block btn-available" onclick="FriendControl(0);">
+                            <i class="fa fa-plus m-r-xs"></i>Add Friend
+                        </button>
+                    }
+                    if (((AddFriendViewModel)ViewData["FriendStatus"]).Type == FriendType.MyPendingFriend)
+                    {
+                        <button class="btn btn-block btn-added" onclick="FriendControl(1);">
+                            <i class="fa fa-check m-r-xs"></i>Pending
+                        </button>
+                    }
+                    if (((AddFriendViewModel)ViewData["FriendStatus"]).Type == FriendType.HisPendingFriend)
+                    {
+                        <button class="btn btn-block btn-available" onclick="FriendControl(2);">
+                            <i class="fa fa-plus m-r-xs"></i>Accept
+                        </button>
+                    }
+                    if (((AddFriendViewModel)ViewData["FriendStatus"]).Type == FriendType.Friend)
+                    {
+                        <button class="btn btn-block btn-wait-accept" onclick="FriendControl(3)">
+                            <i class="fa fa-circle-o-notch m-r-xs"></i>Friend
+                        </button>
                     }
                 }
                 <hr />

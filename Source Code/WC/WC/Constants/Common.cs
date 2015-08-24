@@ -15,6 +15,8 @@ namespace WC.Constants
     public class DateTimeFormat
     {
         public const string DMYYYY = "d/M/yyyy";
+        public const string DDMMYYYY_HHMM = "dd/MM/yyyy HH:mm";
+        public const string HHMM = "HH:mm";
     }
 
     public class Message

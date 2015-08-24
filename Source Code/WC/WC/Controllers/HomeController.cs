@@ -61,48 +61,51 @@ namespace WC.Controllers
                 user.AllowOtherToPost = fromUserInfo.MySettings.First().AllowOtherToPost;
                 user.IsMyTimeline = fromUser.Id.Equals(toUser, StringComparison.InvariantCultureIgnoreCase);
                 user.Setting = fromUserInfo.MySettings.First();
-            }
 
-            //Get info to show buttons request friend
-            var targetUser = db.Users.FirstOrDefault(x => x.UserName == username);
-            var currUserId = User.Identity.GetUserId();
-
-            //don't show button add friend if it has the same user id
-            if (targetUser.UserID == currUserId)
-            {
-                ViewData["FlagShowButton"] = "1";
-            }
-            else
-            {
-                if (targetUser != null)
+                //if this is not my timeline then check for my friend status with this person
+                if (!user.IsMyTimeline)
                 {
-                    var targetFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == targetUser.UserID && x.FriendId == currUserId);
-                    var currFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == currUserId && x.FriendId == targetUser.UserID);
-                    AddFriendViewModel f = new AddFriendViewModel()
+                    var fview = new AddFriendViewModel()
                     {
-                        CurrentUserId = currUserId,
-                        TargetUserId = targetUser.UserID
+                        CurrentUserId = toUser,
+                        TargetUserId = fromUserInfo.UserID
                     };
-                    if (currFriend == null && targetFriend == null)
-                        f.Type = ButtonFriendType.NonRelationship;
 
-                    if (currFriend != null && targetFriend == null)
-                        f.Type = ButtonFriendType.WaitForTargetAccepting;
+                    var myFriend =
+                        db.Friends.FirstOrDefault(x => x.FriendsListId == toUser && x.FriendId == fromUserInfo.UserID);
+                    var hisFriend =
+                        db.Friends.FirstOrDefault(x => x.FriendsListId == fromUserInfo.UserID && x.FriendId == toUser);
 
-                    if (currFriend == null && targetFriend != null)
-                        f.Type = ButtonFriendType.WaitForAcceptting;
-
-                    if (currFriend != null && targetFriend != null)
-                        f.Type = ButtonFriendType.HasRelationship;
-                    ViewData["FlagShowButton"] = null;
-                    ViewData["InfoButtonFriend"] = f;
+                    if (myFriend == null)
+                    {
+                        //if both of us dont have any relationship, return non friend
+                        if (hisFriend == null)
+                        {
+                            fview.Type = FriendType.NoneFriend;
+                        }
+                        // if he got relation ship with me, but i have not accept > he's pending
+                        else if (!hisFriend.FriendStatus)
+                        {
+                            fview.Type = FriendType.HisPendingFriend;
+                        }
+                    }
+                    else
+                    {
+                        //if i got relationship, it's should be friend or my request is pending
+                        fview.Type = myFriend.FriendStatus ? FriendType.Friend : FriendType.MyPendingFriend;
+                    }
+                    ViewData["FriendStatus"] = fview;
                 }
                 else
                 {
-                    ViewData["InfoButtonFriend"] = null;
+                    ViewData["FriendStatus"] = null;
                 }
             }
-
+            // if we've gone this far, this username is not exist. return home
+            else
+            {
+                return RedirectToAction("Newsfeed", "Home");
+            }
 
             return View(user);
         }
@@ -144,7 +147,7 @@ namespace WC.Controllers
             return listView;
         }
 
-        public void UndoFriend(string targetUserId)
+        public void UnFriend(string targetUserId)
         {
             var curId = User.Identity.GetUserId();
             var curFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == curId && x.FriendId == targetUserId);
@@ -164,51 +167,76 @@ namespace WC.Controllers
         public string FriendControl(string targetUserId, int type)
         {
             string result = "";
+            var since = DateTime.Now;
             var curId = User.Identity.GetUserId();
-            var checkFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == curId && x.FriendId == targetUserId);
-            Friend f = new Friend()
+            var myFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == curId && x.FriendId == targetUserId);
+            var hisFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == targetUserId && x.FriendId == curId);
+
+            var f = new Friend()
             {
                 FriendsListId = curId,
                 FriendId = targetUserId,
                 FriendStatus = false
             };
-            switch ((ButtonFriendType)type)
+            switch ((FriendType)type)
             {
-                case ButtonFriendType.NonRelationship:
-                    try {
-                        if (checkFriend == null)
+                case FriendType.NoneFriend:
+                    try
+                    {
+                        if (myFriend == null)
                         {
-                            db.Friends.Add(f);
-                            db.SaveChanges();
+                            if (hisFriend == null)
+                            {
+                                db.Friends.Add(f);
+                                db.SaveChanges();
+                                result = "Pending";
+                            }
+                        }
+                        else
+                        {
+                            result = ActionResults.Failed.ToString();
                         }
                     }
-                    catch { }
-                    result = "add";
+                    catch (Exception exception)
+                    {
+                        Helper.WriteLog(exception);
+                    }
                     break;
-                case ButtonFriendType.WaitForAcceptting:
+                case FriendType.HisPendingFriend:
                     try {
-                        var dateSince = DateTime.Now;
-                        var targetFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == targetUserId && x.FriendId == curId);
-                        if (targetUserId != null)
+                        if (hisFriend != null)
                         {
-                            targetFriend.FriendStatus = true;
-                            targetFriend.FriendSince = dateSince;
+                            if (myFriend == null)
+                            {
+                                hisFriend.FriendStatus = true;
+                                hisFriend.FriendSince = since;
+                                f.FriendStatus = true;
+                                f.FriendSince = since;
+                                db.Friends.Add(f);
+                                db.SaveChanges();
+                                result = "Friend";
+                            }
                         }
-                        if (checkFriend == null)
+                        else
                         {
-                            f.FriendStatus = true;
-                            f.FriendSince = dateSince;
-                            db.Friends.Add(f);
+                            result = ActionResults.Failed.ToString();
                         }
-                        db.SaveChanges();
                     }
-                    catch { }
-                    result = "accept";
+                    catch (Exception exception)
+                    {
+                        Helper.WriteLog(exception);
+                    }
                     break;
 
-                case ButtonFriendType.HasRelationship:
-                case ButtonFriendType.WaitForTargetAccepting:
-                    result = "remove";
+                case FriendType.MyPendingFriend:
+                case FriendType.Friend:
+                    try {
+                        result = myFriend != null ? "Remove" : ActionResults.Failed.ToString();
+                    }
+                    catch (Exception exception)
+                    {
+                        Helper.WriteLog(exception);
+                    }
                     break;
             }
             return result;
