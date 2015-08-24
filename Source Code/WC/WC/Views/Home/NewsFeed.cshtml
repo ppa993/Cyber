@@ -93,11 +93,11 @@
                         $("#timeline-posts").append(data.Posts);
                         $("#circularG").hide();
                         inProgress = false;
+                        if (NoMoreData) {
+                            $("#no-more-post").show();
+                        }
                     });
             }, delay);
-        }
-        if (NoMoreData) {
-            $("#no-more-post").show();
         }
     });
 </script>

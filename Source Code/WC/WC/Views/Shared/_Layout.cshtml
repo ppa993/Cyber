@@ -453,7 +453,9 @@
 </html>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
+        $('body').tooltip({
+            selector: '[data-toggle="tooltip"]'
+        });
         $("html").niceScroll({ styler: "fb", cursorcolor: "#22baa0", cursorwidth: '6', cursorborderradius: '10px', background: '#F7F7F7', cursorborder: '', zindex: '600' });
         $(".slimscroll").niceScroll({ styler: "fb", cursorcolor: "#22baa0", cursorwidth: '3', cursorborderradius: '10px', background: '#F7F7F7', cursorborder: '', zindex: '600' });
         $("#chat-box-content").niceScroll({ styler: "fb", cursorcolor: "#22baa0", cursorwidth: '3', cursorborderradius: '10px', background: '#F7F7F7', cursorborder: '', zindex: '600' });
