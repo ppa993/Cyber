@@ -117,29 +117,28 @@
                 <hr>
                 @if (!Model.IsMyTimeline && ViewData["FriendStatus"] != null)
                 {
-                    if (((AddFriendViewModel)ViewData["FriendStatus"]).Type == FriendType.NoneFriend)
+                    switch (((AddFriendViewModel)ViewData["FriendStatus"]).Type)
                     {
-                        <button class="btn btn-block btn-available" onclick="FriendControl(0);">
-                            <i class="fa fa-plus m-r-xs"></i>Add Friend
-                        </button>
-                    }
-                    if (((AddFriendViewModel)ViewData["FriendStatus"]).Type == FriendType.MyPendingFriend)
-                    {
-                        <button class="btn btn-block btn-added" onclick="FriendControl(1);">
-                            <i class="fa fa-check m-r-xs"></i>Pending
-                        </button>
-                    }
-                    if (((AddFriendViewModel)ViewData["FriendStatus"]).Type == FriendType.HisPendingFriend)
-                    {
-                        <button class="btn btn-block btn-available" onclick="FriendControl(2);">
-                            <i class="fa fa-plus m-r-xs"></i>Accept
-                        </button>
-                    }
-                    if (((AddFriendViewModel)ViewData["FriendStatus"]).Type == FriendType.Friend)
-                    {
-                        <button class="btn btn-block btn-wait-accept" onclick="FriendControl(3)">
-                            <i class="fa fa-circle-o-notch m-r-xs"></i>Friend
-                        </button>
+                        case FriendType.NoneFriend:
+                            <button class="btn btn-block btn-available" onclick="FriendControl(0);">
+                                <i class="fa fa-plus m-r-xs"></i>Add Friend
+                            </button>
+                            break;
+                        case FriendType.MyPendingFriend:
+                            <button class="btn btn-block btn-available" onclick="FriendControl(1);">
+                                <i class="fa fa-plus m-r-xs"></i>Pending
+                            </button>
+                            break;
+                        case FriendType.HisPendingFriend:
+                            <button class="btn btn-block btn-available" onclick="FriendControl(2);">
+                                <i class="fa fa-plus m-r-xs"></i>Accept
+                            </button>
+                            break;
+                        case FriendType.Friend:
+                            <button class="btn btn-block btn-available" onclick="FriendControl(3);">
+                                <i class="fa fa-plus m-r-xs"></i>Friend
+                            </button>
+                            break;
                     }
                 }
                 <hr />
