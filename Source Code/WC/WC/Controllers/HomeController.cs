@@ -183,14 +183,11 @@ namespace WC.Controllers
                 case FriendType.NoneFriend:
                     try
                     {
-                        if (myFriend == null)
+                        if (myFriend == null && hisFriend == null)
                         {
-                            if (hisFriend == null)
-                            {
-                                db.Friends.Add(f);
-                                db.SaveChanges();
-                                result = "Pending";
-                            }
+                            db.Friends.Add(f);
+                            db.SaveChanges();
+                            result = "Pending";
                         }
                         else
                         {
@@ -203,19 +200,17 @@ namespace WC.Controllers
                     }
                     break;
                 case FriendType.HisPendingFriend:
-                    try {
-                        if (hisFriend != null)
+                    try 
+                    {
+                        if (hisFriend != null && myFriend == null)
                         {
-                            if (myFriend == null)
-                            {
-                                hisFriend.FriendStatus = true;
-                                hisFriend.FriendSince = since;
-                                f.FriendStatus = true;
-                                f.FriendSince = since;
-                                db.Friends.Add(f);
-                                db.SaveChanges();
-                                result = "Friend";
-                            }
+                            hisFriend.FriendStatus = true;
+                            hisFriend.FriendSince = since;
+                            f.FriendStatus = true;
+                            f.FriendSince = since;
+                            db.Friends.Add(f);
+                            db.SaveChanges();
+                            result = "Friend";
                         }
                         else
                         {
@@ -230,7 +225,8 @@ namespace WC.Controllers
 
                 case FriendType.MyPendingFriend:
                 case FriendType.Friend:
-                    try {
+                    try 
+                    {
                         result = myFriend != null ? "Remove" : ActionResults.Failed.ToString();
                     }
                     catch (Exception exception)

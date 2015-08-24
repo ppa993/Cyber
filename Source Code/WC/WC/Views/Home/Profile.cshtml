@@ -33,11 +33,13 @@
             if (result === 'Remove') {
                 showConfirmMsg('Are you sure ?', '@Url.Action("UnFriend")', '@Model.Id');
             }
-            if (result === 'Pending') {
+            else if (result === 'Pending') {
                 showMsg('Your friend request has been sent to ' + '@Model.DisplayName');
             }
-            if (result === 'Friend') {
-                showMsg('You and ' + '@Model.DisplayName' +' are now friend');
+            else if (result === 'Friend') {
+                showMsg('You and ' + '@Model.DisplayName' + ' are now friend');
+            } else {
+                showMsg('Unable to excute your action. Please try again.');
             }
         });
     }
