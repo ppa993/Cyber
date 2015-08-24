@@ -9,10 +9,12 @@ using WC.Constants;
 using WC.Data;
 using WC.Models;
 using WC.Utils;
+using Microsoft.AspNet.SignalR;
+using WC.Hubs;
 
 namespace WC.Controllers
 {
-    [Authorize]
+    [System.Web.Mvc.Authorize]
     public class HomeController : AccountController
     {
         // GET: Home
@@ -30,6 +32,7 @@ namespace WC.Controllers
                 Setting = setting,
                 Posts = posts
             };
+             
             return View(view);
         }
 
@@ -187,7 +190,7 @@ namespace WC.Controllers
                         {
                             if (hisFriend == null)
                             {
-                                db.Friends.Add(f);
+                                db.Friends.Add(f); 
                                 db.SaveChanges();
                                 result = "Pending";
                             }

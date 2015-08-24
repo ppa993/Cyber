@@ -84,6 +84,7 @@ namespace WC.Controllers
             }
         }
 
+
         public static string TruncateAtWord(string input, int length)
         {
             if (input == null || input.Length < length)

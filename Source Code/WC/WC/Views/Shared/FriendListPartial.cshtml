@@ -2,12 +2,12 @@
 
 @foreach (var p in Model)
 {
-    <a href="javascript:void(0);" data-item-id="@p.FriendId" data-item-name="@p.Name" 
+    <a href="javascript:void(0);" data-item-id="@p.FriendId" data-item-name="@p.Name"
        onclick="OpenSmallChatBox(this,'@Url.Action("GetHtmlListChatItemOf", "Home")');" class="showRight2">
         <img src="@Url.Content(p.ProfileImgUrl)">
         <span>
-            @p.Name
+            @p.Name 
             <small></small>
         </span>
-    </a>  
+    </a>
 }

@@ -7,8 +7,7 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.AspNet.Identity;
 using WC.Data;
-using System.Threading;
-
+using System.Threading; 
 namespace WC.Hubs
 {
     public class ChatHub : Hub
@@ -56,9 +55,9 @@ namespace WC.Hubs
             }
             db.ChatReplies.Add(cbd);
             db.SaveChanges();
-            
+
             Clients.All.broadcastMessage(fromUserId, toUserId, message);
-        }
+        } 
 
         public override Task OnConnected()
         {
@@ -93,5 +92,7 @@ namespace WC.Hubs
 
             return base.OnDisconnected(stopCalled);
         }
+
+
     }
 }

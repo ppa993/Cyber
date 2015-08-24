@@ -1,0 +1,58 @@
+﻿@model List<WC.Models.NotificationViewModel>
+@if (Model.Count != 0)
+{
+    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-success pull-right">@Model.Count</span></a>
+    <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
+        <li>
+            <p class="drop-title">You have @Model.Count pending tasks !</p>
+        </li>
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+            <li class="dropdown-menu-list slimscroll tasks" style="overflow: hidden; width: auto; height: 100%;">
+                <ul class="list-unstyled">
+                    @foreach (var p in Model)
+                    {
+                        var url = Url.Action("ViewPost", "Post", new { postid = p.PostId });
+                        
+                        //like my post or like my comment
+                        if (p.Type == 4 || p.Type == 5)
+                        {
+                                <li>
+                                    <a href="@url">
+                                        <div class="task-icon badge badge-info">
+                                            <i class="icon-heart"></i>
+                                        </div>
+                                        <span class="badge badge-roundless badge-default pull-right">@p.Time</span>
+                                        <p class="task-details">@p.Message</p>
+                                    </a>
+                                </li>
+                            }
+                            else if (p.Type == 2)
+                            {
+                                <li>
+                                    <a href="@url">
+                                        <div class="task-icon badge badge-success">
+                                            <i class="icon-user"></i>
+                                        </div>
+                                        <span class="badge badge-roundless badge-default pull-right">@p.Time</span>
+                                        <p class="task-details">@p.Message</p>
+                                    </a>
+                                </li>
+                            }
+                        }
+                </ul>
+            </li>
+            <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: block; border-radius: 0px; z-index: 99; right: 0px; background: rgb(204, 204, 204);"></div>
+            <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
+        </div>
+        <li class="drop-all"><a href="#" class="text-center">All Tasks</a></li>
+    </ul>
+}
+else
+{
+    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i></a>
+    <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
+        <li>
+            <p class="drop-title">You have not any notification !</p>
+        </li>
+    </ul>
+}
