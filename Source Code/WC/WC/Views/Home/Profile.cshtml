@@ -11,10 +11,9 @@
     function PostStatus() {
         var url = '@Url.Action("PostStatus", "Post")';
         var text = $("#status-content").val();
-        var visibility = $("#current-visible-type").data("visible-type");
         if (text === "") return;
 
-        $.post(url, { "postedOn": '@Model.Id', "visibility": visibility, "content": text },
+        $.post(url, { "postedOn": '@Model.Id', "content": text },
             function(data) {
                 if (data === "Failed") {
                     alert("Unable to post your status. Please try again later. Thank you!");
@@ -24,6 +23,30 @@
                 }
             });
     }
+</script>
+
+<script type="text/javascript">
+    $(document).on('click', '.post-visible-type', function () {
+        var postId = $(this).data("id");
+        var current = $("#post-visible-type-"+ postId);
+        var changedType = $(this).data("visible-type");
+
+        var newContent = "<span class = 'fa fa-" + changedType + "'></span> <span class='caret'></span>";
+
+        current.attr("data-visible-type", changedType);
+        current.html(newContent);
+
+        var url = '@Url.Action("ChangePostVisibleType", "Post")';
+
+        $.post(url, { "postId": postId, "visibility": changedType },
+            function (data) {
+                if (data === "Failed") {
+                    alert("Unable to peform your action. Please try again later.");
+                } else if (data === "Delete") {
+                    alert("Post deleted.");
+                }
+            });
+    });
 </script>
 <script>
     function pasteIntoInput(el, text) {

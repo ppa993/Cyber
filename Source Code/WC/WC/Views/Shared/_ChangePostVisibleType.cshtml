@@ -3,39 +3,15 @@
 @{
     var db = new CyberEntities();
 }
-<script type="text/javascript">
-    $(document).on('click', '.post-visible-type', function () {
-        var current = $("#post-visible-type");
-        var changedType = $(this).data("visible-type");
-        var changedName = $(this).data("visible-name");
 
-        var newContent = "<span class = 'fa fa-" + changedType + "'></span> " + changedName + " <span class='caret'></span>";
-
-        current.attr("data-visible-type", changedType);
-        current.html(newContent);
-
-        var url = '@Url.Action("ChangePostVisibleType", "Post")';
-        var postId = '@Model.PostID';
-
-        $.post(url, { "postId": postId, "visibility": changedType },
-            function (data) {
-                if (data === "Failed") {
-                    alert("Unable to peform your action. Please try again later.");
-                } else if (data === "Delete") {
-                    alert("Post deleted.");
-                }
-            });
-    });
-</script>
-
-<div class="dropdown share-with">
+<div class="dropdown pull-left share-with">
     <span id="post-visible-type-@Model.PostID" data-visible-type="@Model.VisibleType" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="fa fa-@Model.VisibleType"></span> <span class="caret"></span>
     </span>
     <ul class="dropdown-menu dropdown-visibility remove-content pull-left">
         @foreach (var type in db.Visible_Type)
         {
-            <li><a class="post-visible-type" data-visible-type="@type.VisibleTypeID" data-visible-name="@type.VisibleTypeName"><span class="fa fa-@type.VisibleTypeID"></span> @type.VisibleTypeName</a></li>
+            <li><a class="post-visible-type" data-visible-type="@type.VisibleTypeID" data-id="@Model.PostID"><span class="fa fa-@type.VisibleTypeID"></span> @type.VisibleTypeName</a></li>
         }
     </ul>
 </div>
