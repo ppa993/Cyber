@@ -11,7 +11,7 @@ namespace WC.Utils
         {
             var filename = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\" + "Log\\" + "logErrors.txt";
             var sw = new StreamWriter(filename, true);
-            sw.WriteLine(DateTime.Now);
+            sw.WriteLine(DateTime.UtcNow);
             sw.WriteLine(e.Message + " - " + e.InnerException);
             sw.WriteLine();
             sw.WriteLine();
@@ -36,11 +36,11 @@ namespace WC.Utils
             }
             if (delta < 1 * MINUTE)
             {
-                return ts.Seconds == 1 ? "one second ago" : ts.Seconds + " seconds ago";
+                return ts.Seconds == 1 ? "Just now" : ts.Seconds + " seconds ago";
             }
             if (delta < 2 * MINUTE)
             {
-                return "a minute ago";
+                return "one minute ago";
             }
             if (delta < 45 * MINUTE)
             {
@@ -48,7 +48,7 @@ namespace WC.Utils
             }
             if (delta < 90 * MINUTE)
             {
-                return "an hour ago";
+                return "one hour ago";
             }
             if (delta < 24 * HOUR)
             {

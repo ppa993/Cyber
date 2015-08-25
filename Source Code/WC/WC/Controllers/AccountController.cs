@@ -115,7 +115,7 @@ namespace WC.Controllers
                     {
                         Id = user.Id,
                         UserId = user.Id,
-                        CreatedDate = DateTime.Now
+                        CreatedDate = DateTime.UtcNow
                     };
                     db.FriendLists.Add(friendList);
 

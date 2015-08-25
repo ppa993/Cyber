@@ -167,7 +167,7 @@ namespace WC.Controllers
         public string FriendControl(string targetUserId, int type)
         {
             string result = "";
-            var since = DateTime.Now;
+            var since = DateTime.UtcNow;
             var curId = User.Identity.GetUserId();
             var myFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == curId && x.FriendId == targetUserId);
             var hisFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == targetUserId && x.FriendId == curId);

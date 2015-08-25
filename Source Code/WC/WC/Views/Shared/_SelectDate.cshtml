@@ -25,7 +25,7 @@
 
     var yearSource = new Dictionary<int, string>();
 
-    for (var i = DateTime.Now.Year; i >= DateTime.Now.Year - 100; i--)
+    for (var i = DateTime.UtcNow.Year; i >= DateTime.UtcNow.Year - 100; i--)
     {
         yearSource.Add(i, i.ToString());
     }

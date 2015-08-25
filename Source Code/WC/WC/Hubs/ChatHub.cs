@@ -20,11 +20,11 @@ namespace WC.Hubs
             var box1 = db.ChatBoxes.FirstOrDefault(x => x.FromUseId == fromUserId && x.ToUseId == toUserId);
             var box2 = db.ChatBoxes.FirstOrDefault(x => x.FromUseId == toUserId && x.ToUseId == fromUserId);
 
-            string id = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            string id = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
             ChatReply cbd = new ChatReply()
             {
                 ChatBoxId = id,
-                SendDate = DateTime.Now,
+                SendDate = DateTime.UtcNow,
                 Content = message,
                 Deleted = false,
                 UserIdReply = fromUserId
@@ -37,7 +37,7 @@ namespace WC.Hubs
                     Id = id,
                     FromUseId = fromUserId,
                     ToUseId = toUserId,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.UtcNow,
                     Deleted = false,
 
                 };

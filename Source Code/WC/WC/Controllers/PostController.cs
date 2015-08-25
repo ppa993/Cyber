@@ -81,8 +81,8 @@ namespace WC.Controllers
                     UserID = CurrentUserID,
                     PostedOn = postedOn,
                     PostType = (int)PostType.Status,
-                    PostedDate = DateTime.Now,
-                    LastModified = DateTime.Now,
+                    PostedDate = DateTime.UtcNow,
+                    LastModified = DateTime.UtcNow,
                     VisibleType = postVisible
                 };
 
@@ -127,8 +127,8 @@ namespace WC.Controllers
                     PostID = postId,
                     CommentContent = content.Trim(),
                     UserID = CurrentUserID,
-                    CommentedDate = DateTime.Now,
-                    LastModified = DateTime.Now,
+                    CommentedDate = DateTime.UtcNow,
+                    LastModified = DateTime.UtcNow,
 
                 };
 
@@ -600,7 +600,7 @@ namespace WC.Controllers
                     NotificationType = notifType,
                     NotificationContent = notifContent,
                     NotificationItemID = itemId,
-                    NotificationDate = DateTime.Now,
+                    NotificationDate = DateTime.UtcNow,
                     Seen = false
                 };
 
