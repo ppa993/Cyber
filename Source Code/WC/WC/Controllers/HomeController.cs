@@ -36,7 +36,7 @@ namespace WC.Controllers
         public ActionResult Profile(string username)
         {
             if (string.IsNullOrEmpty(username)) return RedirectToAction("Newsfeed", "Home");
-
+            ViewBag.CurId = User.Identity.GetUserId();
             //fromUser: whose profile is being load
             //toUser: who request to view fromUser's profile
             var fromUser = UserManager.FindByName(username);
@@ -51,12 +51,16 @@ namespace WC.Controllers
 
                 user.Id = fromUserInfo.UserID;
                 user.About = fromUserInfo.About;
+                user.LastName = fromUserInfo.LastName;
+                user.FirstName = fromUserInfo.FirstName;
                 user.DisplayName = fromUserInfo.FirstName + " " + fromUserInfo.LastName;
                 user.Address = fromUserInfo.Address;
                 user.Email = fromUserInfo.Email;
                 user.Gender = fromUserInfo.Gender;
                 user.FriendCount = fromUserInfo.Friends.Count(x => x.FriendStatus);
                 user.Posts = postList;
+                user.Work = fromUserInfo.Work;
+                user.ContactNumber = fromUserInfo.ContactNumber;
                 user.Avatar = fromUserInfo.Profile_Photo.ProfileImageUrl;
                 user.Cover = fromUserInfo.Profile_Photo.CoverImageUrl;
                 user.AllowOtherToPost = fromUserInfo.MySettings.First().AllowOtherToPost;
@@ -337,6 +341,26 @@ namespace WC.Controllers
                     break;
             }
             return result;
+        }
+
+        [HttpPost]
+        public ActionResult UpdateInfo(FormCollection fc)
+        {
+            var lName = fc["lname"];
+            var fName = fc["fname"];
+            var work = fc["work"];
+            var number = fc["number"];
+            var about = fc["aboutme"];
+            var id = fc["iduser"];
+            var u = db.Users.FirstOrDefault(x => x.UserID == id);
+            u.LastName = lName;
+            u.FirstName = fName;
+            u.Work = work;
+            u.ContactNumber = number;
+            u.About = about;
+            db.SaveChanges();
+
+            return RedirectToAction("Profile", new { username = u.UserName });
         }
     }
 }

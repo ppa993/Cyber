@@ -5,7 +5,7 @@
     ViewBag.Title = Model.DisplayName;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <script type="text/javascript">
     function PostStatus() {
         var url = '@Url.Action("PostStatus", "Post")';
@@ -13,7 +13,7 @@
         if (text === "") return;
 
         $.post(url, { "postedOn": '@Model.Id', "content": text },
-            function(data) {
+            function (data) {
                 if (data === "Failed") {
                     alert("Unable to post your status. Please try again later. Thank you!");
                 } else {
@@ -27,7 +27,7 @@
 <script type="text/javascript">
     $(document).on('click', '.post-visible-type', function () {
         var postId = $(this).data("id");
-        var current = $("#post-visible-type-"+ postId);
+        var current = $("#post-visible-type-" + postId);
         var changedType = $(this).data("visible-type");
 
         var newContent = "<span class = 'fa fa-" + changedType + "'></span> <span class='caret'></span>";
@@ -64,17 +64,17 @@
         }
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         //focus on comment text box when click on Comment text
-        $(document).on('click', '.comment-text', function() {
+        $(document).on('click', '.comment-text', function () {
             var postId = $(this).attr("post-id");
             $('#comment-area-' + postId).focus();
             return false;
         });
 
         //auto submit comment when user press enter, add new line if Shift+Enter
-        $(document).on('keydown', '.comment-form', function(e) {
+        $(document).on('keydown', '.comment-form', function (e) {
             if (e.which === 13) {
                 if (e.shiftKey === false) {
                     var url = '@Url.Action("PostComment", "Post")';
@@ -84,7 +84,7 @@
                     if (text === "") return;
 
                     $.post(url, { "postId": postid, "content": text },
-                        function(data) {
+                        function (data) {
                             if (data === "Failed") {
                                 alert("Unable to post your comment. Please try again later. Thank you!");
                             } else {
@@ -118,7 +118,7 @@
             var url = '@Url.Action("LikeUnlikePost", "Post")';
 
             $.post(url, { "postId": postid, "isLike": isLike },
-                function(data) {
+                function (data) {
                     if (data === "Failed") {
                         alert("Unable to peform your action. Please try again later.");
                     } else if (data === "Deleted") {
@@ -155,7 +155,7 @@
             var url = '@Url.Action("LikeUnlikeComment", "Post")';
 
             $.post(url, { "commentId": commentid, "isLike": isLike },
-                function(data) {
+                function (data) {
                     if (data === "Failed") {
                         alert("Unable to peform your action. Please try again later.");
                     } else if (data === "Deleted") {
@@ -180,7 +180,7 @@
         });
 
         //Show edit modal dialog
-        $(document).on('click', '.edit-command', function() {
+        $(document).on('click', '.edit-command', function () {
             var recipient = $(this).data('id');
             var actionType = $(this).data('type');
             $("#button-edit").data('id', recipient);
@@ -195,7 +195,7 @@
 
 
                 $.post(postUrl, { "postId": recipient },
-                    function(data) {
+                    function (data) {
                         if (data === "Failed") {
                             alert("Unable to edit this post. Please try again later.");
                         } else if (data === "Deleted") {
@@ -210,7 +210,7 @@
                 var commentUrl = '@Url.Action("EditComment", "Post")';
 
                 $.post(commentUrl, { "commentId": recipient },
-                    function(data) {
+                    function (data) {
                         if (data === "Failed") {
                             alert("Unable to edit this comment. Please try again later.");
                         } else if (data === "Deleted") {
@@ -225,7 +225,7 @@
         });
 
         //update post/comment
-        $("#button-edit").click(function() {
+        $("#button-edit").click(function () {
             var recipient = $(this).data('id');
             var actionType = $(this).data('type');
             var content = $('#message-text').val();
@@ -234,7 +234,7 @@
                 var postUrl = '@Url.Action("UpdatePost", "Post")';
 
                 $.post(postUrl, { "postId": recipient, "content": content },
-                    function(data) {
+                    function (data) {
                         if (data === "Failed") {
                             alert("Unable to edit this post. Please try again later.");
                         } else if (data === "Deleted") {
@@ -248,7 +248,7 @@
                 var commentUrl = '@Url.Action("UpdateComment", "Post")';
 
                 $.post(commentUrl, { "commentId": recipient, "content": content },
-                    function(data) {
+                    function (data) {
                         if (data === "Failed") {
                             alert("Unable to edit this comment. Please try again later.");
                         } else if (data === "Deleted") {
@@ -263,18 +263,18 @@
         });
 
         //call confirm delete post
-        $(document).on('click', '.delete-post-command', function() {
+        $(document).on('click', '.delete-post-command', function () {
             var postid = $(this).attr("post-id");
             $('#button-post-delete').attr('post-id', postid);
         });
 
         //delete post
-        $('#button-post-delete').click(function() {
+        $('#button-post-delete').click(function () {
             var postid = $(this).attr("post-id");
             var url = '@Url.Action("DeletePost", "Post")';
 
             $.post(url, { "postId": postid },
-                function(data) {
+                function (data) {
                     if (data === "Failed") {
                         alert("Unable to delete this post. Please try again later.");
                     } else if (data === "Deleted") {
@@ -288,18 +288,18 @@
         });
 
         //call confirm delete commment dialog
-        $(document).on('click', '.delete-comment-command', function() {
+        $(document).on('click', '.delete-comment-command', function () {
             var commentid = $(this).attr("comment-id");
             $('#button-comment-delete').attr('comment-id', commentid);
         });
 
         //delete comment
-        $('#button-comment-delete').click(function() {
+        $('#button-comment-delete').click(function () {
             var commentid = $(this).attr("comment-id");
             var url = '@Url.Action("DeleteComment", "Post")';
 
             $.post(url, { "commentId": commentid },
-                function(data) {
+                function (data) {
                     if (data === "Failed") {
                         alert("Unable to delete this comment. Please try again later.");
                     } else if (data === "Deleted") {
@@ -318,7 +318,7 @@
 <script type="text/javascript">
     function FriendControl(type) {
         var url = '@Url.Action("FriendControl")';
-        var targetId = '@Model.Id'; 
+        var targetId = '@Model.Id';
         $.post(url, { targetUserId: targetId, type: type }, function (result) {
             if (result === 'Remove') {
                 showConfirmMsg('Are you sure ?', '@Url.Action("UnFriend")', '@Model.Id');
@@ -333,6 +333,26 @@
             }
         });
     }
+
+    function saveUpdateInfo(e) {
+        var url = $("#btnUpdateProfileModal").attr("data-item-url");
+    }
+
+    $(function () {
+        //$(document).on('mouseenter', '.divbutton', function () {
+        //    $(this).find(":button").show();
+        //}).on('mouseleave', '.divbutton', function () {
+        //    $(this).find(":button").hide();
+        //});
+
+        $("#imgprofile").mouseenter(function () {
+            $("#btchangeavatar").show();
+        });
+
+        $("#imgprofile").mouseleave(function () {
+            $("#btchangeavatar").hide();
+        });
+    });
 </script>
 <style>
     .btn-available {
@@ -358,6 +378,7 @@
         .btn-added:hover {
             background: #0272c3;
         }
+
 </style>
 <input type="hidden" id="hidden-user-id" value="@Model.Id" />
 <link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
@@ -365,15 +386,17 @@
     <div class="profile-cover">
         <div class="row">
             <div class="col-md-4 profile-image">
-                <div class="profile-image-container">
-                    <img src="@Url.Content(Model.Avatar)" alt="">
+                <div id="imgprofile" class="profile-image-container" style="position:relative">
+                    <img src="@Url.Content(Model.Avatar)" alt="" />
+                    <a href="javascript:void(0);" class="btn" id="btchangeavatar" onclick="return alert('In processing...');"
+                       style="position:absolute; bottom:-30px; left:125px; display:none"><i>Change Avatar</i></a>
                 </div>
             </div>
             <div class="col-md-12 profile-info">
                 @*<div class=" profile-info-value">
-                    <h3>1020</h3>
-                    <p>Followers</p>
-                </div>*@
+                        <h3>1020</h3>
+                        <p>Followers</p>
+                    </div>*@
             </div>
         </div>
     </div>
@@ -381,23 +404,48 @@
         <div class="row">
             <div class="col-md-4 user-profile">
                 <h3 class="text-center">@Model.DisplayName</h3>
-                @*<p class="text-center">UI/UX Designer</p>*@
                 <hr>
-                <ul class="list-unstyled text-center">
-                    <li>
-                        <p><i class="fa fa-map-marker m-r-xs"></i>@Model.Address</p>
-                    </li>
-                    <li>
-                        <p>
-                            <i class="fa fa-envelope m-r-xs"></i><a href="mailto:@Model.Email">@Model.Email</a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <i class="fa fa-link m-r-xs"></i><a href="#">www.themeforest.net</a>
-                        </p>
-                    </li>
-                </ul>
+                <script type="text/javascript">
+                    $(function () {
+                        var li = '<li><p><i class="#ICON m-r-xs"></i>#STRING</p></li>';
+                        if ('@Model.Address' != '') {
+                            var address = li.replace('#ICON', 'icon-map');
+                            address = address.replace('#STRING', '@Model.Address');
+                            $("#box-profile").append(address);
+                        }
+
+                        if ('@Model.Email' != '') {
+                            var email = li.replace('#ICON', 'icon-envelope-letter');
+                            email = email.replace('#STRING', '@Model.Email');
+                            $("#box-profile").append(email);
+                        }
+
+                        if ('@Model.Work' != '') {
+                            var work = li.replace('#ICON', 'icon-briefcase');
+                            work = work.replace('#STRING', '@Model.Work');
+                            $("#box-profile").append(work);
+                        }
+
+                        if ('@Model.ContactNumber' != '') {
+                            var number = li.replace('#ICON', 'icon-call-in');
+                            number = number.replace('#STRING', '@Model.ContactNumber');
+                            $("#box-profile").append(number);
+                        }
+
+                        if ('@ViewBag.CurId' == '@Model.Id' && '@ViewBag.CurId' != '') {
+                            var html = '<li><button onclick="ShowEditProfile()" class="btn btn-facebook"><i class="icon-refresh"></i> Update Profile</button></li>';
+                            $("#box-profile").append(html);
+                        }
+
+
+                    });
+
+                    function ShowEditProfile() {
+                        $('#updateProfileModal').modal('toggle');
+                    }
+
+                </script>
+                <ul id="box-profile" class="list-unstyled text-center"></ul>
                 <hr>
                 @if (!Model.IsMyTimeline && ViewData["FriendStatus"] != null)
                 {
@@ -436,7 +484,8 @@
                             {
                                 <div class="team-member">
                                     <a href="@Url.Action(friend.User.UserName, "Profile")">
-                                        <img src="@Url.Content(friend.User.Profile_Photo.ProfileImageUrl)" alt="@friend.User.FirstName @friend.User.LastName" data-toggle="tooltip" title="@friend.User.FirstName @friend.User.LastName">
+                                        <img src="@Url.Content(friend.User.Profile_Photo.ProfileImageUrl)" alt="@friend.User.FirstName @friend.User.LastName" data-toggle="tooltip" title="@friend.User.FirstName @friend.User.LastName" />
+
                                     </a>
                                 </div>
                             }
@@ -504,6 +553,71 @@
         </div>
     </div>
 </div>
+<script>
+    //\\\\\\\ JS  retrun message SucccessPost or FailPost
+    function SuccessMessage() {
+        alert("Succcess Post");
+    }
+    function FailMessage() {
+        alert("Fail Post");
+    }
+</script>
+<!-- Modal -->
+<div id="updateProfileModal" class="modal fade" role="dialog">
+    @using (Html.BeginForm("UpdateInfo", "Home", FormMethod.Post))
+    {
+        <input type="text" name="iduser" value="@Model.Id" hidden="hidden" />
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Your Info</h4>
+                </div>
+                <div class="modal-body" id="contentConfirmModal">
+                    <div class="first-name" style="float: none;width:98%">
+                        <div class="form-group">
+                            <input name="fname" type="text" value="@Model.FirstName" placeholder="First Name" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="first-name" style="float: none; width:98%">
+                        <div class="form-group">
+                            <input name="lname" type="text" value="@Model.LastName" placeholder="Last Name" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="first-name" style="float: none;width:98%">
+                        <div class="form-group">
+                            <input name="address" type="text" value="@Model.Address" placeholder="Address" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="first-name" style="float: none;width:98%">
+                        <div class="form-group">
+                            <input name="work" type="text" value="@Model.Work" placeholder="Your Work" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="first-name" style="float: none;width:98%">
+                        <div class="form-group">
+                            <input name="number" onkeypress='validate(event)' value="@Model.ContactNumber" type="text" placeholder="Your Number" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="first-name" style="float: none;width:98%;">
+                        <div><span>Something about you:</span></div>
+                        <div class="form-group">
+                            <input type="text" multiple="multiple" name="aboutme" value="@Model.About" style="max-height:100px;" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-green" value="Save" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
 
 <script type="text/javascript">
     var NoMoreData = false;
@@ -534,4 +648,15 @@
             }, delay);
         }
     });
+
+    function validate(evt) {
+        var theEvent = evt || window.event;
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
 </script>

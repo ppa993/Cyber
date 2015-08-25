@@ -357,6 +357,7 @@
     <Content Include="Content\Style\bootstrap.min.css" />
     <Content Include="Content\Style\component.css" />
     <Content Include="Content\Style\custom.css" />
+    <Content Include="Content\Style\datepicker.css" />
     <Content Include="Content\Style\font-awesome.css" />
     <Content Include="Content\Style\green.css" />
     <Content Include="Content\Style\loading.css" />
@@ -380,8 +381,11 @@
     <Content Include="Content\Fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\Fonts\FontAwesome.otf" />
     <Content Include="Hubs\cyber-chat.js" />
+    <Content Include="Content\Script\bootstrap-datepicker.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

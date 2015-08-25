@@ -87,12 +87,16 @@ namespace WC.Models
     {
         public string Id { get; set; }
         public string DisplayName { get; set; }
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
         public bool Gender { get; set; }
         public string About { get; set; }
         public string Avatar { get; set; }
         public string Cover { get; set; }
+        public string Work { get; set; }
+        public string ContactNumber { get; set; }
         public bool IsMyTimeline { get; set; }
         public bool AllowOtherToPost { get; set; }
         public int FriendCount { get; set; }
