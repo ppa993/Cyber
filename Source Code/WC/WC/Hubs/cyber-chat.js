@@ -40,6 +40,9 @@ $(function () {
             zindex: '600'
         });
     };
+    chat.client.updateRequest = function(receiver, html) {
+        ProcessFriendRequest(receiver, html);
+    };
     $.connection.hub.start().done(function () {
         $("#chat-box-message").keypress(function (event) {
             var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -60,6 +63,14 @@ function AddNotify( receiver, html) {
     if (curId==receiver) {
         $("#notify-box").html('');
         $("#notify-box").append(html);
+    }
+}
+
+function ProcessFriendRequest(receiver, html) {
+    var curId = $("#chat-box-message").attr("data-item-fromid");
+    if (curId == receiver) {
+        $("#friend-request").html('');
+        $("#friend-request").append(html);
     }
 }
 

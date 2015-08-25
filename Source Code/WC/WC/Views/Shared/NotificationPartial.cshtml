@@ -1,43 +1,56 @@
 ﻿@using WC.Constants
 @using WC.Utils
 @model List<WC.Data.Notification>
-@if (Model.Count != 0)
+@if (Model.Any())
 {
     <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-success pull-right">@Model.Count</span></a>
-    <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
+    <ul class="dropdown-menu title-caret dropdown-notif box-shadow" role="menu">
         <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
             <li class="dropdown-menu-list slimscroll tasks" style="overflow: hidden; width: auto; height: 100%;">
                 <ul class="list-unstyled">
                     @foreach (var p in Model)
                     {
-                        var url = Url.Action(p.NotificationItemID, "Posts");
+                        var postUrl = Url.Action(p.NotificationItemID, "Posts");
+                        var userUrl = Url.Action(p.NotificationItemID, "Profile");
 
-                        switch ((NotificationType) p.NotificationType)
+                        switch ((NotificationType)p.NotificationType)
                         {
                             case NotificationType.Post:
                             case NotificationType.CommentMyPost:
                             case NotificationType.CommentOthers:
                                 <li>
-                                    <a data-href="@url" data-id="@p.NotificationID" class="notification-item">
+                                    <a data-href="@postUrl" data-id="@p.NotificationID" class="notification-item">
                                         <div class="task-icon badge badge-success">
                                             <i class="icon-bubble"></i>
                                         </div>
-                                        <span class="badge badge-roundless badge-default pull-right">@Helper.PostTime(@p.NotificationDate)</span>
                                         <p class="task-details">@p.NotificationContent</p>
+                                        <span class="badge badge-roundless badge-default">@Helper.PostTime(@p.NotificationDate)</span>
                                     </a>
                                 </li>
                                 break;
                             case NotificationType.LikeMyPost:
                             case NotificationType.LikeMyComment:
-                                <li>
-                                    <a data-href="@url" data-id="@p.NotificationID" class="notification-item">
-                                        <div class="task-icon badge badge-danger">
-                                            <i class="icon-like"></i>
-                                        </div>
-                                        <span class="badge badge-roundless badge-default pull-right">@Helper.PostTime(@p.NotificationDate)</span>
-                                        <p class="task-details">@p.NotificationContent</p>
-                                    </a>
-                                </li>
+                            <li>
+                                <a data-href="@postUrl" data-id="@p.NotificationID" class="notification-item">
+                                    <div class="task-icon badge badge-danger">
+                                        <i class="icon-like"></i>
+                                    </div>
+                                    <span class="badge badge-roundless badge-default pull-right">@Helper.PostTime(@p.NotificationDate)</span>
+                                    <p class="task-details">@p.NotificationContent</p>
+                                </a>
+                            </li>
+                                break;
+                            case NotificationType.AcceptFriendRequest:
+                            case NotificationType.CancelFriendRequest:
+                            <li>
+                                <a data-href="@userUrl" data-id="@p.NotificationID" class="notification-item">
+                                    <div class="task-icon badge badge-danger">
+                                        <i class="icon-users"></i>
+                                    </div>
+                                    <span class="badge badge-roundless badge-default pull-right">@Helper.PostTime(@p.NotificationDate)</span>
+                                    <p class="task-details">@p.NotificationContent</p>
+                                </a>
+                            </li>
                                 break;
                         }
                     }
@@ -49,9 +62,9 @@
 else
 {
     <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i></a>
-    <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
+    <ul class="dropdown-menu title-caret dropdown-notif-none box-shadow" role="menu">
         <li>
-            <p class="drop-title">You don't have any notification !</p>
+            <p class="drop-title">You don't have any notifications !</p>
         </li>
     </ul>
 }

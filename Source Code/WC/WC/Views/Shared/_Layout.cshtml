@@ -7,6 +7,7 @@
     var userInfo = new User();
     var displayName = "";
     var friendList = new List<FriendViewModel>();
+    var friendRequest = new List<FriendViewModel>();
     if (!String.IsNullOrEmpty(currentUserId))
     {
         userInfo = db.Users.FirstOrDefault(x => x.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase));
@@ -19,6 +20,13 @@
                 FriendId = item.FriendId,
                 Name = item.User.FirstName + " " + item.User.LastName,
                 ProfileImgUrl = item.User.Profile_Photo.ProfileImageUrl
+            }).ToList();
+            friendRequest = db.Friends.Where(x => x.FriendId == currentUserId && !x.FriendStatus).Select(item => new FriendViewModel
+            {
+                FriendId = item.FriendsListId,
+                Name = item.FriendList.User.FirstName + " " + item.FriendList.User.LastName,
+                ProfileImgUrl = item.FriendList.User.Profile_Photo.ProfileImageUrl,
+                UserName = item.FriendList.User.UserName
             }).ToList();
         }
     }
@@ -49,7 +57,7 @@
     <script type="text/javascript">
         function showMsg(content) {
             $('#contentModal').append(content);
-            $('#msgModal').modal('toggle'); 
+            $('#msgModal').modal('toggle');
         }
 
         function closeMsg() {
@@ -67,17 +75,33 @@
             var targetId = e.getAttribute("data-item-id");
             var url = e.getAttribute("data-item-url");
 
-            $.post(url, { targetUserId: targetId }, function () {
+            $.post(url, { targetUserId: targetId }, function() {
                 location.reload();
             });
         }
+    </script>
+    <script type="text/javascript">
+    $(document).on('click', '.process-friend-request', function () {
+        var friendid = $(this).data("id");
+        var isaccept = $(this).data("accept");
+
+        var url = '@Url.Action("ProcessFriendRequest", "Home")';
+
+        $.post(url, { "friendId": friendid, "isAccept": isaccept },
+            function (data) {
+                if (data === "Failed") {
+                    location.reload();
+                }
+            });
+        return false;
+    });
     </script>
     <script type="text/javascript">
         $(document).on('click', '.notification-item', function () {
             var notifId = $(this).data("id");
             var linkUrl = $(this).data("href");
 
-            var url = '@Url.Action("SeenNotification", "Post")';
+            var url = '@Url.Action("SeenNotification", "Home")';
 
             $.post(url, { "notificationId": notifId },
                 function (data) {
@@ -183,82 +207,10 @@
                         <li>
                             <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
                         </li>
-                        <li class="dropdown">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-envelope"></i><span class="badge badge-success pull-right">4</span></a>
-                            <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
-                                <li>
-                                    <p class="drop-title">You have 4 new messages !</p>
-                                </li>
-                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                                    <li class="dropdown-menu-list slimscroll messages" style="overflow: hidden; width: auto; height: 100%;">
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <a href="http://lambdathemes.in/admin1/index.html#">
-                                                    <div class="msg-img">
-                                                        <div class="online on"></div><img class="img-circle" src="~/Content/Images/avatar2.png" alt="">
-                                                    </div>
-                                                    <p class="msg-name">Sandra Smith</p>
-                                                    <p class="msg-text">Hey ! I'm working on your project</p>
-                                                    <p class="msg-time">3 minutes ago</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="http://lambdathemes.in/admin1/index.html#">
-                                                    <div class="msg-img">
-                                                        <div class="online off"></div><img class="img-circle" src="~/Content/Images/avatar4.png" alt="">
-                                                    </div>
-                                                    <p class="msg-name">Amily Lee</p>
-                                                    <p class="msg-text">Hi David !</p>
-                                                    <p class="msg-time">8 minutes ago</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="http://lambdathemes.in/admin1/index.html#">
-                                                    <div class="msg-img">
-                                                        <div class="online off"></div><img class="img-circle" src="~/Content/Images/avatar3.png" alt="">
-                                                    </div>
-                                                    <p class="msg-name">Christopher Palmer</p>
-                                                    <p class="msg-text">See you soon !</p>
-                                                    <p class="msg-time">56 minutes ago</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="http://lambdathemes.in/admin1/index.html#">
-                                                    <div class="msg-img">
-                                                        <div class="online on"></div><img class="img-circle" src="~/Content/Images/avatar5.png" alt="">
-                                                    </div>
-                                                    <p class="msg-name">Nick Doe</p>
-                                                    <p class="msg-text">Nice to meet you</p>
-                                                    <p class="msg-time">2 hours ago</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="http://lambdathemes.in/admin1/index.html#">
-                                                    <div class="msg-img">
-                                                        <div class="online on"></div><img class="img-circle" src="~/Content/Images/avatar2.png" alt="">
-                                                    </div>
-                                                    <p class="msg-name">Sandra Smith</p>
-                                                    <p class="msg-text">Hey ! I'm working on your project</p>
-                                                    <p class="msg-time">5 hours ago</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="http://lambdathemes.in/admin1/index.html#">
-                                                    <div class="msg-img">
-                                                        <div class="online off"></div><img class="img-circle" src="~/Content/Images/avatar4.png" alt="">
-                                                    </div>
-                                                    <p class="msg-name">Amily Lee</p>
-                                                    <p class="msg-text">Hi David !</p>
-                                                    <p class="msg-time">9 hours ago</p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: block; border-radius: 0px; z-index: 99; right: 0px; background: rgb(204, 204, 204);"></div>
-                                    <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
-                                </div>
-                                <li class="drop-all"><a href="http://lambdathemes.in/admin1/index.html#" class="text-center">All Messages</a></li>
-                            </ul>
+                        <li id="friend-request" class="dropdown">
+                            @{
+                                Html.RenderPartial("FriendRequest", friendRequest);
+                            }
                         </li>
                         <li id="notify-box" class="dropdown">  
                             @{

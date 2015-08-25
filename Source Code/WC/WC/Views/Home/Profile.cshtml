@@ -436,7 +436,7 @@
                             {
                                 <div class="team-member">
                                     <a href="@Url.Action(friend.User.UserName, "Profile")">
-                                        <img src="@Url.Content(friend.User.Profile_Photo.ProfileImageUrl)" alt="@friend.User.FirstName" title="@friend.User.FirstName">
+                                        <img src="@Url.Content(friend.User.Profile_Photo.ProfileImageUrl)" alt="@friend.User.FirstName @friend.User.LastName" data-toggle="tooltip" title="@friend.User.FirstName @friend.User.LastName">
                                     </a>
                                 </div>
                             }

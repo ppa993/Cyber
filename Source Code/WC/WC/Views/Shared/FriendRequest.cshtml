@@ -1,0 +1,44 @@
+﻿@using WC.Models
+@model List<FriendViewModel>
+
+    @if (Model.Any())
+    {
+        <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-users"></i><span class="badge badge-success pull-right">@Model.Count</span></a>
+        <ul class="dropdown-menu title-caret dropdown-request box-shadow" role="menu">
+            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                <li class="dropdown-menu-list slimscroll messages" style="overflow: hidden; width: auto; height: 100%;">
+                    <ul class="list-unstyled">
+                        @foreach (var friend in Model)
+                        {
+                            <li>
+                                <div class="friend-request">
+
+                                    <div class="msg-img">
+                                        <img class="img-circle" src="@Url.Content(friend.ProfileImgUrl)" alt="@friend.Name" title="@friend.Name">
+
+                                    </div>
+                                    <p class="msg-name">
+                                        <a href="@Url.Action(friend.UserName, "Profile")">@friend.Name</a>
+                                    </p>
+                                    <div class="pull-right margin-top">
+                                        <span class="btn btn-facebook process-friend-request" data-id="@friend.FriendId" data-accept="1">Accept</span>
+                                        <span class="btn btn-default process-friend-request" data-id="@friend.FriendId" data-accept="0">Cancel</span>
+                                    </div>
+                                    <div class="replace"></div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            </div>
+        </ul>
+    }
+    else
+    {
+        <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-users"></i></a>
+        <ul class="dropdown-menu title-caret dropdown-request-none box-shadow" role="menu">
+            <li>
+                <p class="drop-title">You don't have any friend requests !</p>
+            </li>
+        </ul>
+    }

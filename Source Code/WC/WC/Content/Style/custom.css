@@ -178,3 +178,54 @@
 .notification-item {
     cursor: pointer;
 }
+
+/* Friend request and notification dropdown */
+    .friend-request {
+        font-size: 13px;
+        text-decoration: none;
+        display: block;
+        padding: 8px 10px 8px 15px;
+        position: relative;
+    }
+    .friend-request .msg-img, .friend-request .msg-name {
+        float: left;
+        position: relative;
+    }
+    .friend-request .msg-img img {
+        width: 40px;
+        height: 40px;
+    }
+    .friend-request a {
+        color: #337ab7 !important;
+        font-weight: bold;
+    }
+    .friend-request a:hover {
+        color: #22BAA0 !important;
+        background: transparent !important;
+    }
+    .dropdown-request {
+        width: 380px;
+    }
+    .dropdown-request-none {
+        width: 260px;
+    }
+    .dropdown-notif {
+        width: 350px;
+    }
+    .dropdown-notif-none {
+        width: 240px;
+    }
+    .replace {
+        height: 40px;
+    }
+    .margin-top {
+        margin-top: 3px;
+    }
+    .messages ul li:hover {
+        background: #f7f7f7;
+    }
+    .box-shadow {
+        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        -ms-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    }
