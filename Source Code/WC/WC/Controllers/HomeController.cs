@@ -48,19 +48,29 @@ namespace WC.Controllers
 
             if (fromUserInfo != null)
             {
+
                 user.Id = fromUserInfo.UserID;
                 user.About = fromUserInfo.About;
                 user.DisplayName = fromUserInfo.FirstName + " " + fromUserInfo.LastName;
                 user.Address = fromUserInfo.Address;
                 user.Email = fromUserInfo.Email;
                 user.Gender = fromUserInfo.Gender;
-                user.Friends = fromUserInfo.FriendLists.First();
+                user.FriendCount = fromUserInfo.Friends.Count(x => x.FriendStatus);
                 user.Posts = postList;
                 user.Avatar = fromUserInfo.Profile_Photo.ProfileImageUrl;
                 user.Cover = fromUserInfo.Profile_Photo.CoverImageUrl;
                 user.AllowOtherToPost = fromUserInfo.MySettings.First().AllowOtherToPost;
                 user.IsMyTimeline = fromUser.Id.Equals(toUser, StringComparison.InvariantCultureIgnoreCase);
                 user.Setting = fromUserInfo.MySettings.First();
+
+                var randomFriends = fromUserInfo.FriendLists.First().Friends.Where(x => x.FriendStatus)
+                    .OrderBy(x => Guid.NewGuid())
+                    .Take(12).ToList();
+
+                user.Friends =
+                    user.FriendCount <= 12
+                        ? fromUserInfo.FriendLists.First().Friends.Where(x => x.FriendStatus).ToList()
+                        : randomFriends;
 
                 //if this is not my timeline then check for my friend status with this person
                 if (!user.IsMyTimeline)

@@ -2,6 +2,7 @@
 @using Microsoft.AspNet.Identity
 @using Microsoft.AspNet.Identity.Owin
 @using WC.Models
+@using WC.Utils
 @{ var currentUserId = User.Identity.GetUserId(); }
 @model List<WC.Data.Post>
 
@@ -101,12 +102,12 @@
                         }
                     }
                     <small class="pull-left">
-                        <a href="@Url.Action(item.PostID, "Posts")">@item.PostedDate</a>
+                        <a href="@Url.Action(item.PostID, "Posts")">@Helper.PostTime(item.PostedDate)</a>
                     </small>
                     
-                    @if (item.PostedOn != currentUserId || item.UserID != currentUserId)
+                    @if (item.PostedOn != currentUserId)
                     {
-                        <span class="fa fa-@item.VisibleType share-with" data-toggle="tooltip" data-placement="right" title="Shared with: @with"></span>
+                        <span class="fa fa-@item.VisibleType share-with pull-left" data-toggle="tooltip" data-placement="right" title="Shared with: @with"></span>
                     }
                     else
                     {
@@ -194,7 +195,7 @@
                                         <div class="clear"></div>
                                         <a class="comment-like" href="#" comment-id="@comment.CommentID" data-toogle="@commentAlreadyLike" data-inprocess="0">
                                             <span id="comment-like-status-@comment.CommentID">@commentAlreadyLike</span> (<span id="comment-like-count-@comment.CommentID">@comment.CommentLikes.Count</span>)
-                                        </a><small>@comment.CommentedDate</small>
+                                        </a><small>@Helper.PostTime(comment.CommentedDate)</small>
                                     </div>
                                 }
                             }

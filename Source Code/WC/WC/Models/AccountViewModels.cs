@@ -95,8 +95,9 @@ namespace WC.Models
         public string Cover { get; set; }
         public bool IsMyTimeline { get; set; }
         public bool AllowOtherToPost { get; set; }
-        public FriendList Friends { get; set; }
+        public int FriendCount { get; set; }
         public MySetting Setting { get; set; }
+        public ICollection<Friend> Friends { get; set; }
         public ICollection<Post> Posts { get; set; }
     }
 

@@ -815,3 +815,47 @@ LINQ to Entities does not recognize the method 'System.String GetUserId(System.S
 LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
 
 
+25/08/2015 06:22:23
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 06:23:09
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 06:23:12
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 06:23:15
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 06:23:25
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 06:23:29
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 06:23:31
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 06:24:05
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 06:33:01
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 07:17:16
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 07:19:14
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
