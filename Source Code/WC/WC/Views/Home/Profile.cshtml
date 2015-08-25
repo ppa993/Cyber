@@ -95,9 +95,10 @@
 
                                 var commentList = $("#comment-list-" + postid);
                                 commentList.append(data);
-                                textbox.val('');
                             }
                         });
+
+                    textbox.val('');
                 } else {
                     pasteIntoInput(this, "\n");
                     e.preventDefault();

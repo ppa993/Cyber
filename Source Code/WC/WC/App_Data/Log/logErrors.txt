@@ -783,3 +783,35 @@ Store update, insert, or delete statement affected an unexpected number of rows 
    at System.Data.Entity.Internal.InternalContext.SaveChanges()
 
 
+25/08/2015 10:30:41
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 10:46:54
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 10:47:11
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 10:49:05
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 11:24:21
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 11:24:52
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 11:24:55
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+25/08/2015 11:26:00
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+

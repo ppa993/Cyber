@@ -27,9 +27,19 @@ $(function () {
     chat.client.broadcastMessage = function (fromUserId, toUserId, message) { 
         ClientMethods(fromUserId, toUserId);
     };
-    chat.client.recieveNotify = function (receiver, html) {
+    chat.client.recieveNotify = function(receiver, html) {
         AddNotify(receiver, html);
-    }
+        //update notif scroll 
+        $(".slimscroll").niceScroll({
+            styler: "fb",
+            cursorcolor: "#22baa0",
+            cursorwidth: '3',
+            cursorborderradius: '10px',
+            background: '#F7F7F7',
+            cursorborder: '',
+            zindex: '600'
+        });
+    };
     $.connection.hub.start().done(function () {
         $("#chat-box-message").keypress(function (event) {
             var keycode = (event.keyCode ? event.keyCode : event.which);

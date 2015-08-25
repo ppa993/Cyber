@@ -138,18 +138,18 @@ namespace WC.Controllers
                 //push notif for user whose post got new comment
                 var currentPost = db.Posts.First(x => x.PostID == postId);
                 //don't count current commenter himself in for notif
-                var postCommenters = currentPost.Comments.Select(x => x.UserID).Where(x => x != CurrentUserID).ToList();
+                var postCommenters = currentPost.Comments.Select(x => x.UserID).Where(x => x != CurrentUserID).Distinct().ToList();
                 var postOwner = currentPost.User;
                 //if not post owner, give owner a notif
                 if (CurrentUserID != postOwner.UserID)
                 {
-                    PushNotification(postOwner.UserID, comment.CommentID, (int)NotificationType.CommentMyPost);
+                    PushNotification(postOwner.UserID, postId, (int)NotificationType.CommentMyPost);
                 }
                 else //if post owner is commenting, give notif for those who commented on his post
                 {
                     foreach (var commenter in postCommenters)
                     {
-                        PushNotification(commenter, comment.CommentID, (int)NotificationType.CommentOthers);
+                        PushNotification(commenter, postId, (int)NotificationType.CommentOthers);
                     }
                 }
 
@@ -438,7 +438,7 @@ namespace WC.Controllers
                     var commentOwner = db.Comments.First(x => x.CommentID == commentId).User.UserID;
                     if (!commentOwner.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        PushNotification(commentOwner, commentId, (int)NotificationType.LikeMyComment);
+                        PushNotification(commentOwner, comment.PostID, (int)NotificationType.LikeMyComment);
                     }
 
                     //return total like
@@ -535,6 +535,28 @@ namespace WC.Controllers
             }
             return ActionResults.Failed.ToString();
         }
+
+        [HttpPost]
+        public string SeenNotification(string notificationId)
+        {
+            try
+            {
+                var notif = db.Notifications.FirstOrDefault(x => x.NotificationID == notificationId);
+                if (notif == null || notif.UserID != CurrentUserID) return ActionResults.Deleted.ToString();
+
+                notif.Seen = true;
+
+                var entry = db.Entry(notif);
+                entry.Property(x => x.Seen).IsModified = true;
+                db.SaveChanges();
+                return ActionResults.Succeed.ToString();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return ActionResults.Failed.ToString();
+        }
         #endregion
 
         #region Private Methods
@@ -587,18 +609,10 @@ namespace WC.Controllers
 
                 //create sub hub context
                 var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-                var data = (from n in db.Notifications
-                                            .Where(x => x.UserID == receiver)
-                                            .OrderBy(x=>x.Seen)
-                                            .OrderByDescending(x =>x.NotificationDate)
-                                            .Take(5).ToList()
-                                 select new NotificationViewModel()
-                                 {
-                                     PostId = n.NotificationID,
-                                     Message = n.NotificationContent,
-                                     Type = n.NotificationType,
-                                     Time = Helper.PostTime(n.NotificationDate)
-                                 }).ToList();
+                var data =
+                    db.Notifications.Where(x => x.UserID == receiver && !x.Seen)
+                        .OrderByDescending(y => y.NotificationDate)
+                        .ToList();
                 var html = RenderPartialViewToString("NotificationPartial", data);
                 hubContext.Clients.All.recieveNotify(receiver, html);
             }

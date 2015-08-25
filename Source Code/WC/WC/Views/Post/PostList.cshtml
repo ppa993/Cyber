@@ -104,7 +104,7 @@
                         <a href="@Url.Action(item.PostID, "Posts")">@item.PostedDate</a>
                     </small>
                     
-                    @if (item.UserID != User.Identity.GetUserId())
+                    @if (item.PostedOn != currentUserId || item.UserID != currentUserId)
                     {
                         <span class="fa fa-@item.VisibleType share-with" data-toggle="tooltip" data-placement="right" title="Shared with: @with"></span>
                     }

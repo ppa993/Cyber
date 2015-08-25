@@ -174,3 +174,7 @@
 .close-chat {
     width: inherit !important;
 }
+
+.notification-item {
+    cursor: pointer;
+}
