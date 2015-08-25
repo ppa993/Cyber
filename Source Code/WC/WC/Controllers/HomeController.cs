@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using WC.Constants;
 using WC.Data;
+using WC.Hubs;
 using WC.Models;
 using WC.Utils;
 
 namespace WC.Controllers
 {
-    [Authorize]
+    [System.Web.Mvc.Authorize]
     public class HomeController : AccountController
     {
         // GET: Home
@@ -120,6 +120,97 @@ namespace WC.Controllers
             return View(user);
         }
 
+        [HttpPost]
+        public string ProcessFriendRequest(string friendId, string isAccept)
+        {
+            try
+            {
+                var hisFriend =
+                    db.Friends.First(
+                        x => x.FriendsListId.Equals(friendId, StringComparison.InvariantCultureIgnoreCase)
+                        && x.FriendId == CurrentUserID);
+                if (hisFriend != null)
+                {
+                    if (isAccept.Equals("1"))
+                    {
+                        var since = DateTime.UtcNow;
+
+                        hisFriend.FriendStatus = true;
+                        hisFriend.FriendSince = since;
+
+                        var entry = db.Entry(hisFriend);
+                        entry.Property(x => x.FriendStatus).IsModified = true;
+                        entry.Property(x => x.FriendSince).IsModified = true;
+
+                        var myFriend = new Friend
+                        {
+                            FriendsListId = CurrentUserID,
+                            FriendStatus = true,
+                            FriendId = friendId,
+                            FriendSince = since
+                        };
+                        db.Friends.Add(myFriend);
+                        db.SaveChanges();
+
+                        PushNotification(friendId, CurrentUserName, (int)NotificationType.AcceptFriendRequest);
+                    }
+                    else
+                    {
+                        db.Friends.Remove(hisFriend);
+                        db.SaveChanges();
+
+                        PushNotification(friendId, CurrentUserName, (int)NotificationType.CancelFriendRequest);
+                    }
+                }
+                else
+                {
+                    return ActionResults.Deleted.ToString();
+                }
+
+                //create sub hub context
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+
+                var data = db.Friends.Where(x => x.FriendId == CurrentUserID && !x.FriendStatus).Select(item => new FriendViewModel
+                {
+                    FriendId = item.FriendsListId,
+                    Name = item.FriendList.User.FirstName + " " + item.FriendList.User.LastName,
+                    ProfileImgUrl = item.FriendList.User.Profile_Photo.ProfileImageUrl,
+                    UserName = item.FriendList.User.UserName
+                }).ToList();
+
+                var html = RenderPartialViewToString("FriendRequest", data);
+                hubContext.Clients.All.updateRequest(CurrentUserID, html);
+
+                return ActionResults.Succeed.ToString();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+        }
+
+        [HttpPost]
+        public string SeenNotification(string notificationId)
+        {
+            try
+            {
+                var notif = db.Notifications.FirstOrDefault(x => x.NotificationID == notificationId);
+                if (notif == null || notif.UserID != CurrentUserID) return ActionResults.Deleted.ToString();
+
+                notif.Seen = true;
+
+                var entry = db.Entry(notif);
+                entry.Property(x => x.Seen).IsModified = true;
+                db.SaveChanges();
+                return ActionResults.Succeed.ToString();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return ActionResults.Failed.ToString();
+        }
 
         /// <summary>
         /// Get 10 posts from fromUser if toUser have permission

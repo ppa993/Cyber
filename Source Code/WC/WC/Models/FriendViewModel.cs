@@ -10,5 +10,6 @@ namespace WC.Models
         public string FriendId { set; get; }
         public string Name { set; get; }
         public string ProfileImgUrl { set; get; }
+        public string UserName { get; set; }
     }
 }

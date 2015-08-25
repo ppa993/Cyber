@@ -7,14 +7,17 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Security;
 using WC.Constants;
 using WC.Data;
+using WC.Hubs;
 using WC.Models;
+using WC.Utils;
 
 namespace WC.Controllers
 {
-    [Authorize]
+    [System.Web.Mvc.Authorize]
     public class AccountController : BaseController
     {
         public AccountController()
@@ -292,6 +295,74 @@ namespace WC.Controllers
         public string CurrentUserName
         {
             get { return User.Identity.Name; }
+        }
+
+        public void PushNotification(string receiver, string itemId, int notifType)
+        {
+            try
+            {
+                var byUserId = CurrentUserID;
+                var byUser = db.Users.First(x => x.UserID == byUserId);
+                var displayName = string.Format("{0} {1}", byUser.FirstName, byUser.LastName);
+                string notifContent;
+
+                switch ((NotificationType)notifType)
+                {
+                    case NotificationType.Post:
+                        notifContent = string.Format(NotificationMessage.NOTIF_POST, displayName);
+                        break;
+                    case NotificationType.CommentMyPost:
+                        notifContent = string.Format(NotificationMessage.NOTIF_COMMENT_MY_POST, displayName);
+                        break;
+                    case NotificationType.CommentOthers:
+                        notifContent =
+                            string.Format(
+                                byUser.Gender
+                                    ? NotificationMessage.NOTIF_COMMENT_HIS_POST
+                                    : NotificationMessage.NOTIF_COMMENT_HER_POST, displayName);
+                        break;
+                    case NotificationType.LikeMyPost:
+                        notifContent = string.Format(NotificationMessage.NOTIF_LIKE_MY_POST, displayName);
+                        break;
+                    case NotificationType.LikeMyComment:
+                        notifContent = string.Format(NotificationMessage.NOTIF_LIKE_MY_COMMENT, displayName);
+                        break;
+                    case NotificationType.AcceptFriendRequest:
+                        notifContent = string.Format(NotificationMessage.NOTIF_ACCEPT_REQUEST, displayName);
+                        break;
+                    default:
+                        notifContent = string.Format(NotificationMessage.NOTIF_CANCEL_REQUEST, displayName);
+                        break;
+                }
+
+
+                var notif = new Notification
+                {
+                    UserID = receiver,
+                    NotificationID = Guid.NewGuid().ToString().Replace("-", string.Empty),
+                    NotificationType = notifType,
+                    NotificationContent = notifContent,
+                    NotificationItemID = itemId,
+                    NotificationDate = DateTime.UtcNow,
+                    Seen = false
+                };
+
+                db.Notifications.Add(notif);
+                db.SaveChanges();
+
+                //create sub hub context
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+                var data =
+                    db.Notifications.Where(x => x.UserID == receiver && !x.Seen)
+                        .OrderByDescending(y => y.NotificationDate)
+                        .ToList();
+                var html = RenderPartialViewToString("NotificationPartial", data);
+                hubContext.Clients.All.recieveNotify(receiver, html);
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
         }
 
         #region Helpers

@@ -1,19 +1,16 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
 using WC.Constants;
 using WC.Data;
 using WC.Models;
 using WC.Utils;
-using Microsoft.AspNet.SignalR;
-using WC.Hubs;
 
 namespace WC.Controllers
 {
-    [System.Web.Mvc.Authorize]
+    [Authorize]
     public class PostController : AccountController
     {
         public ActionResult ViewPost(string postid)
@@ -536,92 +533,10 @@ namespace WC.Controllers
             return ActionResults.Failed.ToString();
         }
 
-        [HttpPost]
-        public string SeenNotification(string notificationId)
-        {
-            try
-            {
-                var notif = db.Notifications.FirstOrDefault(x => x.NotificationID == notificationId);
-                if (notif == null || notif.UserID != CurrentUserID) return ActionResults.Deleted.ToString();
-
-                notif.Seen = true;
-
-                var entry = db.Entry(notif);
-                entry.Property(x => x.Seen).IsModified = true;
-                db.SaveChanges();
-                return ActionResults.Succeed.ToString();
-            }
-            catch (Exception exception)
-            {
-                Helper.WriteLog(exception);
-            }
-            return ActionResults.Failed.ToString();
-        }
         #endregion
 
         #region Private Methods
-        private void PushNotification(string receiver, string itemId, int notifType)
-        {
-            try
-            {
-                var byUserId = CurrentUserID;
-                var byUser = db.Users.First(x => x.UserID == byUserId);
-                var displayName = string.Format("{0} {1}", byUser.FirstName, byUser.LastName);
-                string notifContent;
-
-                switch (notifType)
-                {
-                    case 1:
-                        notifContent = string.Format(NotificationMessage.NOTIF_POST, displayName);
-                        break;
-                    case 2:
-                        notifContent = string.Format(NotificationMessage.NOTIF_COMMENT_MY_POST, displayName);
-                        break;
-                    case 3:
-                        notifContent =
-                            string.Format(
-                                byUser.Gender
-                                    ? NotificationMessage.NOTIF_COMMENT_HIS_POST
-                                    : NotificationMessage.NOTIF_COMMENT_HER_POST, displayName);
-                        break;
-                    case 4:
-                        notifContent = string.Format(NotificationMessage.NOTIF_LIKE_MY_POST, displayName);
-                        break;
-                    default:
-                        notifContent = string.Format(NotificationMessage.NOTIF_LIKE_MY_COMMENT, displayName);
-                        break;
-                }
-
-
-                var notif = new Notification
-                {
-                    UserID = receiver,
-                    NotificationID = Guid.NewGuid().ToString().Replace("-", string.Empty),
-                    NotificationType = notifType,
-                    NotificationContent = notifContent,
-                    NotificationItemID = itemId,
-                    NotificationDate = DateTime.UtcNow,
-                    Seen = false
-                };
-
-                db.Notifications.Add(notif);
-                db.SaveChanges();
-
-                //create sub hub context
-                var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-                var data =
-                    db.Notifications.Where(x => x.UserID == receiver && !x.Seen)
-                        .OrderByDescending(y => y.NotificationDate)
-                        .ToList();
-                var html = RenderPartialViewToString("NotificationPartial", data);
-                hubContext.Clients.All.recieveNotify(receiver, html);
-            }
-            catch (Exception exception)
-            {
-                Helper.WriteLog(exception);
-            }
-        }
-
+        
         /// <summary>
         /// Get 10 posts from fromUser if toUser have permission
         /// </summary>

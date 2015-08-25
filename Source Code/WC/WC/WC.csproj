@@ -401,6 +401,7 @@
     <Content Include="Views\Shared\ChatItemViewModel.cshtml" />
     <Content Include="Views\Shared\NotificationPartial.cshtml" />
     <Content Include="Views\Shared\_ChangePostVisibleType.cshtml" />
+    <Content Include="Views\Shared\FriendRequest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

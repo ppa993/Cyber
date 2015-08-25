@@ -38,6 +38,8 @@ namespace WC.Constants
         public const string NOTIF_COMMENT_HIS_POST = "{0} also commented on his post.";
         public const string NOTIF_LIKE_MY_POST = "{0} likes your post.";
         public const string NOTIF_LIKE_MY_COMMENT = "{0} likes your comment.";
+        public const string NOTIF_ACCEPT_REQUEST = "{0} accepted your friend request.";
+        public const string NOTIF_CANCEL_REQUEST = "{0} cancelled your friend request.";
     }
 
     public enum Gender
@@ -81,7 +83,9 @@ namespace WC.Constants
         CommentMyPost,
         CommentOthers,
         LikeMyPost,
-        LikeMyComment
+        LikeMyComment,
+        AcceptFriendRequest,
+        CancelFriendRequest
     }
 
     public enum LogInResult
