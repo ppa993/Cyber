@@ -45,7 +45,6 @@ namespace WC.Controllers
             }
             return View(posts);
         }
-
         [ChildActionOnly]
         public ActionResult PostList(List<Post> Model)
         {
@@ -469,8 +468,9 @@ namespace WC.Controllers
         {
             var morePost = new MorePostViewModel();
             var fromUser = UserManager.FindById(userId);
+            var toUser = CurrentUserID;
 
-            var posts = GetPosts(fromUser);
+            var posts = GetPosts(fromUser, toUser);
             var notLoadedCount = posts.Count - loadedPostCount;
 
             if (notLoadedCount <= DefautValue.PostLoad)
@@ -543,7 +543,7 @@ namespace WC.Controllers
         /// <param name="fromUser">whose profile is being view</param>
         /// <param name="toUser">who request to view this profile</param>
         /// <returns></returns>
-        private List<Post> GetPosts(ApplicationUser fromUser)
+        private List<Post> GetPosts(ApplicationUser fromUser, string toUser)
         {
             var listView = new List<Post>();
             try
@@ -571,38 +571,29 @@ namespace WC.Controllers
 
         private bool IsAuthorizeToViewPost(Post post)
         {
-            return post.VisibleType == (int) VisibleType.Public
-                    || post.VisibleType == (int) VisibleType.Friend 
-                       && ((post.User1.FriendLists.First().Friends.Any(x => x.FriendId == CurrentUserID && x.FriendStatus)
-                            || post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
-                            || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)))
-                    || post.VisibleType == (int) VisibleType.Private 
-                        && ((post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
-                            || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase));
+            switch (post.VisibleType)
+            {
+                case (int)VisibleType.Public:
+                    return true;
 
-            //switch (post.VisibleType)
-            //{
-            //    case (int)VisibleType.Public:
-            //        return true;
+                case (int)VisibleType.Friend:
+                    if (post.User1.FriendLists.First().Friends.Any(x => x.FriendId == CurrentUserID && x.FriendStatus)
+                        || post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
+                        || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return true;
+                    }
+                    break;
 
-            //    case (int)VisibleType.Friend:
-            //        if (post.User1.FriendLists.First().Friends.Any(x => x.FriendId == CurrentUserID && x.FriendStatus)
-            //            || post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
-            //            || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
-            //        {
-            //            return true;
-            //        }
-            //        break;
-
-            //    case (int)VisibleType.Private:
-            //        if (post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
-            //            || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
-            //        {
-            //            return true;
-            //        }
-            //        break;
-            //}
-            //return false;
+                case (int)VisibleType.Private:
+                    if (post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
+                        || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return true;
+                    }
+                    break;
+            }
+            return false;
         }
         #endregion
 	}
