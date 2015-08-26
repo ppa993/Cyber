@@ -315,11 +315,8 @@ namespace WC.Controllers
                         notifContent = string.Format(NotificationMessage.NOTIF_COMMENT_MY_POST, displayName);
                         break;
                     case NotificationType.CommentOthers:
-                        notifContent =
-                            string.Format(
-                                byUser.Gender
-                                    ? NotificationMessage.NOTIF_COMMENT_HIS_POST
-                                    : NotificationMessage.NOTIF_COMMENT_HER_POST, displayName);
+                        notifContent = string.Format(NotificationMessage.NOTIF_COMMENT_OTHER, displayName,
+                            byUser.Gender ? "his" : "her");
                         break;
                     case NotificationType.LikeMyPost:
                         notifContent = string.Format(NotificationMessage.NOTIF_LIKE_MY_POST, displayName);

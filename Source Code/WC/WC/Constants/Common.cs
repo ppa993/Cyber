@@ -34,10 +34,10 @@ namespace WC.Constants
     {
         public const string NOTIF_POST = "{0} posted on your Timeline.";
         public const string NOTIF_COMMENT_MY_POST = "{0} commented on your post.";
-        public const string NOTIF_COMMENT_HER_POST = "{0} also commented on her post.";
-        public const string NOTIF_COMMENT_HIS_POST = "{0} also commented on his post.";
+        public const string NOTIF_COMMENT_OTHER = "{0} also commented on {1} post.";
         public const string NOTIF_LIKE_MY_POST = "{0} likes your post.";
         public const string NOTIF_LIKE_MY_COMMENT = "{0} likes your comment.";
+        public const string NOTIF_ADD_FRIEND = "{0} want to add you as {1} friend.";
         public const string NOTIF_ACCEPT_REQUEST = "{0} and you are friend now.";
         public const string NOTIF_CANCEL_REQUEST = "{0} cancelled your friend request.";
     }

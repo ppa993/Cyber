@@ -67,7 +67,7 @@
         }
 
         function showConfirmMsg(content, url, userid) {
-            $('#contentConfirmModal').append(content);
+            $('#contentConfirmModals').html(content);
             $('#btnConfirmYes').attr("data-item-url", url);
             $('#btnConfirmYes').attr("data-item-id", userid);
             $('#msgConfirmModal').modal('toggle');
@@ -203,18 +203,6 @@
             </form>
         </div>
     </nav>
-    <div class="menu-wrap">
-        <nav class="profile-menu">
-            <div class="profile"><img src="@Url.Content(userInfo.Profile_Photo.ProfileImageUrl)" width="60" alt="Profile Image"><span>@userInfo.FirstName @userInfo.LastName</span></div>
-            <div class="profile-menu-list">
-                <a href="http://lambdathemes.in/admin1/index.html#"><i class="fa fa-star"></i><span>Favorites</span></a>
-                <a href="http://lambdathemes.in/admin1/index.html#"><i class="fa fa-bell"></i><span>Alerts</span></a>
-                <a href="http://lambdathemes.in/admin1/index.html#"><i class="fa fa-envelope"></i><span>Messages</span></a>
-                <a href="http://lambdathemes.in/admin1/index.html#"><i class="fa fa-comment"></i><span>Comments</span></a>
-            </div>
-        </nav>
-        <button class="close-button" id="close-button">Close Menu</button>
-    </div>
     <form class="search-form" action="http://lambdathemes.in/admin1/index.html#" method="GET">
         <div class="input-group">
             <input type="text" name="search" class="form-control search-input" placeholder="Search...">
@@ -397,7 +385,7 @@
                 <div class="modal-body" id="contentModal">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closeMsg()">Close</button>
+                    <button type="button" class="btn btn-facebook" data-dismiss="modal" onclick="closeMsg()">Close</button>
                 </div>
             </div>
 
@@ -414,11 +402,11 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Message</h4>
                 </div>
-                <div class="modal-body" id="contentConfirmModal">
+                <div class="modal-body" id="contentConfirmModals">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="btnConfirmYes" data-item-url="" data-item-id="" data-dismiss="modal" onclick="closeConfirmMsg(this)">Yes</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-facebook" id="btnConfirmYes" data-item-url="" data-item-id="" data-dismiss="modal" onclick="closeConfirmMsg(this)">Yes</button>
                 </div>
             </div>
 

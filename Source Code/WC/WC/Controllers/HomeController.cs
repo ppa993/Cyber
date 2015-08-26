@@ -218,43 +218,7 @@ namespace WC.Controllers
             }
             return ActionResults.Failed.ToString();
         }
-
-        /// <summary>
-        /// Get 10 posts from fromUser if toUser have permission
-        /// </summary>
-        /// <param name="fromUser">whose profile is being view</param>
-        /// <param name="toUser">who request to view this profile</param>
-        /// <returns></returns>
-        private List<Post> GetPosts(ApplicationUser fromUser, string toUser)
-        {
-            var listView = new List<Post>();
-            try
-            {
-                if (CurrentUserName == fromUser.UserName)
-                {
-                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                                        .OrderByDescending(x => x.PostedDate)
-                                        .ToList();
-                }
-                else
-                {
-                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                                        .Where(x => x.VisibleType == (int)VisibleType.Public
-                                            || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.FirstOrDefault(y => y.UserId == fromUser.Id)
-                                                                                                            .Friends.Any(z => z.FriendId == toUser
-                                                                                                            && z.FriendStatus))
-                                            || x.UserID == toUser)
-                                        .OrderByDescending(x => x.PostedDate)
-                                        .ToList();
-                }
-            }
-            catch (Exception exception)
-            {
-                Helper.WriteLog(exception);
-            }
-            return listView;
-        }
-
+        
         public void UnFriend(string targetUserId)
         {
             var curId = User.Identity.GetUserId();
@@ -276,7 +240,7 @@ namespace WC.Controllers
         {
             string result = "";
             var since = DateTime.UtcNow;
-            var curId = User.Identity.GetUserId();
+            var curId = CurrentUserID;
             var myFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == curId && x.FriendId == targetUserId);
             var hisFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == targetUserId && x.FriendId == curId);
 
@@ -296,6 +260,7 @@ namespace WC.Controllers
                             db.Friends.Add(f);
                             db.SaveChanges();
                             result = "Pending";
+                            FriendToast(targetUserId);
                         }
                         else
                         {
@@ -365,5 +330,81 @@ namespace WC.Controllers
 
             return RedirectToAction("Profile", new { username = u.UserName });
         }
+
+        #region Private Methods
+
+        /// <summary>
+        /// Get 10 posts from fromUser if toUser have permission
+        /// </summary>
+        /// <param name="fromUser">whose profile is being view</param>
+        /// <param name="toUser">who request to view this profile</param>
+        /// <returns></returns>
+        private List<Post> GetPosts(ApplicationUser fromUser, string toUser)
+        {
+            var listView = new List<Post>();
+            try
+            {
+                if (CurrentUserName == fromUser.UserName)
+                {
+                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                                        .OrderByDescending(x => x.PostedDate)
+                                        .ToList();
+                }
+                else
+                {
+                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                                        .Where(x => x.VisibleType == (int)VisibleType.Public
+                                            || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.FirstOrDefault(y => y.UserId == fromUser.Id)
+                                                                                                            .Friends.Any(z => z.FriendId == toUser
+                                                                                                            && z.FriendStatus))
+                                            || x.UserID == toUser)
+                                        .OrderByDescending(x => x.PostedDate)
+                                        .ToList();
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return listView;
+        }
+
+        private void FriendToast(string receiverId)
+        {
+            try
+            {
+                var receiver =
+                        db.Users.FirstOrDefault(x => x.UserID.Equals(receiverId, StringComparison.InvariantCultureIgnoreCase));
+                var sender =
+                        db.Users.FirstOrDefault(x => x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase));
+                if (sender != null && receiver != null)
+                {
+                    //create toast for notif
+                    var toastUrl = Url.Action(sender.UserName, "Profile");
+                    var toastMessage = string.Format(NotificationMessage.NOTIF_ADD_FRIEND,
+                        sender.FirstName + " " + sender.LastName, sender.Gender ? "his" : "her");
+
+                    //create sub hub context
+                    var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+
+                    var data = db.Friends.Where(x => x.FriendId == receiver.UserID && !x.FriendStatus).Select(item => new FriendViewModel
+                    {
+                        FriendId = item.FriendsListId,
+                        Name = item.FriendList.User.FirstName + " " + item.FriendList.User.LastName,
+                        ProfileImgUrl = item.FriendList.User.Profile_Photo.ProfileImageUrl,
+                        UserName = item.FriendList.User.UserName
+                    }).ToList();
+
+                    var html = RenderPartialViewToString("FriendRequest", data);
+                    hubContext.Clients.All.updateRequest(receiver.UserID, html);
+                    hubContext.Clients.All.toastNotif(receiver.UserID, toastUrl, toastMessage);
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+        } 
+        #endregion
     }
 }
