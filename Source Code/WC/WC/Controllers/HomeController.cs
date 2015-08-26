@@ -133,11 +133,13 @@ namespace WC.Controllers
                     db.Friends.First(
                         x => x.FriendsListId.Equals(friendId, StringComparison.InvariantCultureIgnoreCase)
                         && x.FriendId == CurrentUserID);
+
                 if (hisFriend != null)
                 {
                     if (isAccept.Equals("1"))
                     {
                         var since = DateTime.UtcNow;
+                        var hisUsername = db.Users.First(x => x.UserID == friendId).UserName;
 
                         hisFriend.FriendStatus = true;
                         hisFriend.FriendSince = since;
@@ -157,6 +159,7 @@ namespace WC.Controllers
                         db.SaveChanges();
 
                         PushNotification(friendId, CurrentUserName, (int)NotificationType.AcceptFriendRequest);
+                        PushNotification(CurrentUserID, hisUsername, (int)NotificationType.AcceptFriendRequest);
                     }
                     else
                     {

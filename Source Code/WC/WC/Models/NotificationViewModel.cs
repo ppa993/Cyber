@@ -7,9 +7,7 @@ namespace WC.Models
 {
     public class NotificationViewModel
     {
-        public string Time { set; get; }
-        public string Message { set; get; }
-        public int Type { set; get; }
-        public string PostId { set; get; }
+        public string Url { get; set; }
+        public string Message { get; set; }
     }
 }

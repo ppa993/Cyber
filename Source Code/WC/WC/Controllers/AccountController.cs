@@ -338,8 +338,9 @@ namespace WC.Controllers
 
                 var notif = new Notification
                 {
-                    UserID = receiver,
                     NotificationID = Guid.NewGuid().ToString().Replace("-", string.Empty),
+                    UserID = receiver,
+                    NotificationFrom = byUser.Profile_Photo.ProfileImageUrl,
                     NotificationType = notifType,
                     NotificationContent = notifContent,
                     NotificationItemID = itemId,
@@ -350,6 +351,15 @@ namespace WC.Controllers
                 db.Notifications.Add(notif);
                 db.SaveChanges();
 
+                //create toast for notif
+                var toastLinkAction = (NotificationType) notifType == NotificationType.AcceptFriendRequest
+                                      || (NotificationType) notifType == NotificationType.CancelFriendRequest
+                    ? "Profile"
+                    : "Posts";
+                var toastUrl = Url.Action(itemId, toastLinkAction);
+                var toastMessage = notifContent;
+
+
                 //create sub hub context
                 var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
                 var data =
@@ -358,6 +368,7 @@ namespace WC.Controllers
                         .ToList();
                 var html = RenderPartialViewToString("NotificationPartial", data);
                 hubContext.Clients.All.recieveNotify(receiver, html);
+                hubContext.Clients.All.toastNotif(receiver, toastUrl, toastMessage);
             }
             catch (Exception exception)
             {

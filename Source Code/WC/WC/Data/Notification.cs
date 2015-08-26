@@ -14,8 +14,9 @@ namespace WC.Data
     
     public partial class Notification
     {
-        public string UserID { get; set; }
         public string NotificationID { get; set; }
+        public string UserID { get; set; }
+        public string NotificationFrom { get; set; }
         public int NotificationType { get; set; }
         public string NotificationContent { get; set; }
         public string NotificationItemID { get; set; }

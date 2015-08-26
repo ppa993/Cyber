@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CyberModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CyberModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Album">
           <Key>
             <PropertyRef Name="AlbumId" />
@@ -28,25 +28,6 @@
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="DeletedDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="Comment">
-          <Key>
-            <PropertyRef Name="CommentID" />
-          </Key>
-          <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="CommentContent" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="CommentedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModified" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CommentLike">
-          <Key>
-            <PropertyRef Name="CommentLikeID" />
-          </Key>
-          <Property Name="CommentLikeID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
         <EntityType Name="ChatBox">
           <Key>
             <PropertyRef Name="Id" />
@@ -69,6 +50,25 @@
           <Property Name="SendDate" Type="datetime" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="DeletedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CommentContent" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CommentedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CommentLike">
+          <Key>
+            <PropertyRef Name="CommentLikeID" />
+          </Key>
+          <Property Name="CommentLikeID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CommentID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="FriendList">
           <Key>
@@ -109,8 +109,9 @@
           <Key>
             <PropertyRef Name="NotificationID" />
           </Key>
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="NotificationID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="NotificationFrom" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="NotificationType" Type="int" Nullable="false" />
           <Property Name="NotificationContent" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="NotificationItemID" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -193,8 +194,6 @@
           <Property Name="Language1" Type="int" />
           <Property Name="User2" Type="nvarchar" MaxLength="128" />
           <Property Name="Language2" Type="int" />
-          <Property Name="ShowLanguage1" Type="int" />
-          <Property Name="ShowLanguage2" Type="int" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -716,10 +715,10 @@
         <EntityContainer Name="CyberModelStoreContainer">
           <EntitySet Name="Album" EntityType="Self.Album" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AlbumDetail" EntityType="Self.AlbumDetail" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CommentLike" EntityType="Self.CommentLike" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChatBox" EntityType="Self.ChatBox" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChatReply" EntityType="Self.ChatReply" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommentLike" EntityType="Self.CommentLike" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FriendList" EntityType="Self.FriendList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Friends" EntityType="Self.Friends" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Language" EntityType="Self.Language" Schema="dbo" store:Type="Tables" />
@@ -1229,8 +1228,9 @@
           <Key>
             <PropertyRef Name="NotificationID" />
           </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="NotificationID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="NotificationFrom" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="NotificationType" Type="Int32" Nullable="false" />
           <Property Name="NotificationContent" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="NotificationItemID" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -1336,8 +1336,6 @@
           <NavigationProperty Name="Language3" Relationship="CyberModel.FK__SettingCh__Langu__4D94879B" FromRole="SettingChatBox" ToRole="Language" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK__SettingCh__User1__4E88ABD4" FromRole="SettingChatBox" ToRole="User" />
           <NavigationProperty Name="User3" Relationship="CyberModel.FK__SettingCh__User2__4F7CD00D" FromRole="SettingChatBox" ToRole="User" />
-          <Property Name="ShowLanguage1" Type="Int32" />
-          <Property Name="ShowLanguage2" Type="Int32" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -2006,8 +2004,9 @@
                 <ScalarProperty Name="NotificationItemID" ColumnName="NotificationItemID" />
                 <ScalarProperty Name="NotificationContent" ColumnName="NotificationContent" />
                 <ScalarProperty Name="NotificationType" ColumnName="NotificationType" />
-                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
+                <ScalarProperty Name="NotificationFrom" ColumnName="NotificationFrom" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2088,8 +2087,6 @@
           <EntitySetMapping Name="SettingChatBoxes">
             <EntityTypeMapping TypeName="CyberModel.SettingChatBox">
               <MappingFragment StoreEntitySet="SettingChatBox">
-                <ScalarProperty Name="ShowLanguage2" ColumnName="ShowLanguage2" />
-                <ScalarProperty Name="ShowLanguage1" ColumnName="ShowLanguage1" />
                 <ScalarProperty Name="Language2" ColumnName="Language2" />
                 <ScalarProperty Name="User2" ColumnName="User2" />
                 <ScalarProperty Name="Language1" ColumnName="Language1" />

@@ -1840,16 +1840,16 @@ label {
 }
 
 .form-control {
+    font-size: 13px;
+    /*
     background: #fff;
     border-radius: 0;
     border: 1px solid #dce1e4;
-    box-shadow: none !important;
-    font-size: 13px;
-    padding: 6px 10px !important;
+    box-shadow: none !important;padding: 6px 10px !important;
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     -o-transition: all .2s ease-in-out;
-    transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;*/
 }
 
 input[disabled] {
@@ -1857,10 +1857,10 @@ input[disabled] {
     border-color: #d2d7db;
 }
 
-.form-control:focus {
+/*.form-control:focus {
     border: 1px solid #bdc5c9;
     background: #fff;
-}
+}*/
 
 .help-block {
     margin-bottom: 5px;

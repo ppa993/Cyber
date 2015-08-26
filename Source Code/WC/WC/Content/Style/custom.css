@@ -229,3 +229,14 @@
         -ms-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
         box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     }
+
+    /* Toast */
+    /*.toast-success {
+        background-color:#12AFCB
+    }
+    .toast-error {
+        background-color:#f25656
+    }*/
+    .toast-info {
+         background-color:#22BAA0
+     }

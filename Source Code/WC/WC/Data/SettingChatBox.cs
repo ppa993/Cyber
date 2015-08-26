@@ -20,8 +20,6 @@ namespace WC.Data
         public Nullable<int> Language1 { get; set; }
         public string User2 { get; set; }
         public Nullable<int> Language2 { get; set; }
-        public Nullable<int> ShowLanguage1 { get; set; }
-        public Nullable<int> ShowLanguage2 { get; set; }
     
         public virtual ChatBox ChatBox { get; set; }
         public virtual Language Language { get; set; }

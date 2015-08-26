@@ -40,8 +40,11 @@ $(function () {
             zindex: '600'
         });
     };
-    chat.client.updateRequest = function(receiver, html) {
+    chat.client.updateRequest = function (receiver, html) {
         ProcessFriendRequest(receiver, html);
+    };
+    chat.client.toastNotif = function (receiver, toastUrl, toastMessage) {
+        Toaster(receiver, toastUrl, toastMessage);
     };
     $.connection.hub.start().done(function () {
         $("#chat-box-message").keypress(function (event) {
@@ -71,6 +74,33 @@ function ProcessFriendRequest(receiver, html) {
     if (curId == receiver) {
         $("#friend-request").html('');
         $("#friend-request").append(html);
+    }
+}
+
+function Toaster(receiver, toastUrl, toastMessage) {
+    var curId = $("#chat-box-message").attr("data-item-fromid");
+    if (curId == receiver) {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-left",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr.options.onclick = function () {
+            location.href = toastUrl;
+        };
+        toastr.info(toastMessage);
     }
 }
 

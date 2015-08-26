@@ -16,25 +16,25 @@
                 @Html.ValidationSummary()
                 <div class="first-name">
                     <div class="form-group">
-                        @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control", placeholder="First Name", required="" })
+                        @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control", placeholder = "First Name", required = "", tabindex = "1" })
                     </div>
                 </div>
                 <div class="last-name">
                     <div class="form-group">
-                         @Html.TextBoxFor(m => m.Lastname, new { @class = "form-control", placeholder="Last Name", required="" })
+                         @Html.TextBoxFor(m => m.Lastname, new { @class = "form-control", placeholder = "Last Name", required = "", tabindex = "2" })
                     </div>
                 </div>
                 <div class="form-group">
-                     @Html.TextBoxFor(m => m.UserName, new {@class = "form-control", placeholder = "Username", required=""})
+                     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Username", required = "", tabindex = "3" })
                 </div>
                 <div class="form-group">
-                     @Html.TextBoxFor(m => m.Email, new {@class = "form-control", placeholder = "Email", required="", type="email"})
+                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email", required = "", type = "email", tabindex = "4" })
                 </div>
                 <div class="form-group">
-                     @Html.PasswordFor(m => m.Password, new {@class = "form-control", placeholder="Password", required=""})
+                     @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password", required = "", tabindex = "5" })
                 </div>
                 <div class="form-group">
-                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder="Re-type Password", required="" })
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Re-type Password", required = "", tabindex = "6" })
                 </div>
                 <div class="form-group">
                     <span class="birthday">
@@ -48,20 +48,20 @@
                 </div>
                 <div class=" form-group">
                     <span class="gender">
-                        @Html.RadioButtonFor(m => m.Gender, "true", new { id = "gender_male", @checked = ""})
+                        @Html.RadioButtonFor(m => m.Gender, "true", new { id = "gender_male", @checked = "", tabindex = "10" })
                         @Html.Label("gender_male", "Male")
                     </span>
                     <span class="gender">                        
-                        @Html.RadioButtonFor(m => m.Gender, "false", new { id = "gender_female"})
+                        @Html.RadioButtonFor(m => m.Gender, "false", new { id = "gender_female", tabindex = "11" })
                         @Html.Label("gender_female", "Female")
                     </span>
                 </div>
                 <span>
                     By clicking Sign Up, you agree to our Terms and that you have read our Data Policy.
                 </span>
-                <button type="submit" id="btnSubmit" class="btn btn-success btn-block m-t-xs">Sign Up</button>
+                <button type="submit" id="btnSubmit" class="btn btn-success btn-block m-t-xs" tabindex="12">Sign Up</button>
                 <p class="text-center m-t-xs text-sm">Already have an account?</p>
-                <a href="@Url.Action("Login", "Home")" class="btn btn-default btn-block m-t-xs">Login</a>
+                <a href="@Url.Action("Login", "Account")" class="btn btn-default btn-block m-t-xs" tabindex="13">Login</a>
             }
             <p class="text-center m-t-xs text-sm">2015 © Cyber team.</p>
         </div>

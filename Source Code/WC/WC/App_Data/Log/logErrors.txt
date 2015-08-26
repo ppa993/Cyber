@@ -895,3 +895,11 @@ Object reference not set to an instance of an object. -
 LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
 
 
+26/08/2015 04:28:36
+LINQ to Entities does not recognize the method 'System.String GetUserId(System.Security.Principal.IIdentity)' method, and this method cannot be translated into a store expression. - 
+
+
+26/08/2015 04:28:54
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
