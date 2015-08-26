@@ -337,7 +337,6 @@ namespace WC.Controllers
                 {
                     NotificationID = Guid.NewGuid().ToString().Replace("-", string.Empty),
                     UserID = receiver,
-                    NotificationFrom = byUser.Profile_Photo.ProfileImageUrl,
                     NotificationType = notifType,
                     NotificationContent = notifContent,
                     NotificationItemID = itemId,
