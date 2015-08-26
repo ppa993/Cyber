@@ -124,6 +124,32 @@ namespace WC.Controllers
             return View(user);
         }
 
+        public ActionResult Settings()
+        {
+            try
+            {
+                var currentUserInfo = db.Users.First(x => x.UserID == CurrentUserID);
+                if (currentUserInfo == null)
+                {
+                    return RedirectToAction("Newsfeed");
+                }
+                else
+                {
+                    var setting = currentUserInfo.MySettings.First();
+                    ViewBag.AllowOthersPost = setting.AllowOtherToPost;
+                    ViewBag.MyPost = setting.DefaultMyPostVisibility;
+                    ViewBag.OthersPost = setting.DefaultOtherPostVisibility;
+                    return View();
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return RedirectToAction("Newsfeed");
+        }
+        
+
         [HttpPost]
         public string ProcessFriendRequest(string friendId, string isAccept)
         {
@@ -219,6 +245,7 @@ namespace WC.Controllers
             return ActionResults.Failed.ToString();
         }
         
+        [HttpPost]
         public void UnFriend(string targetUserId)
         {
             var curId = User.Identity.GetUserId();
@@ -236,6 +263,7 @@ namespace WC.Controllers
             db.SaveChanges();
         }
 
+        [HttpPost]
         public string FriendControl(string targetUserId, int type)
         {
             string result = "";
@@ -317,6 +345,7 @@ namespace WC.Controllers
             var lName = fc["lname"];
             var fName = fc["fname"];
             var work = fc["work"];
+            var address = fc["address"];
             var number = fc["number"];
             var about = fc["aboutme"];
             var id = fc["iduser"];
@@ -324,12 +353,77 @@ namespace WC.Controllers
             u.LastName = lName;
             u.FirstName = fName;
             u.Work = work;
+            u.Address = address;
             u.ContactNumber = number;
             u.About = about;
             db.SaveChanges();
 
             return RedirectToAction("Profile", new { username = u.UserName });
         }
+
+
+        [HttpPost]
+        public string AllowOtherPost(bool isAllow)
+        {
+            try
+            {
+                var setting =
+                    db.MySettings.FirstOrDefault(
+                        x => x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase));
+
+                if (setting == null)
+                {
+                    return ActionResults.Deleted.ToString();
+                }
+                else
+                {
+                    setting.AllowOtherToPost = isAllow;
+                    db.SaveChanges();
+                    return ActionResults.Succeed.ToString();
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+        }
+
+        [HttpPost]
+        public string UpdateDefaultVisibleType(string name, int pk, string value)
+        {
+            try
+            {
+                var setting =
+                    db.MySettings.FirstOrDefault(
+                        x => x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase));
+
+                if (setting == null)
+                {
+                    return ActionResults.Deleted.ToString();
+                }
+                else
+                {
+                    if (name == "MyPost")
+                    {
+                        setting.DefaultMyPostVisibility = int.Parse(value);
+                    }
+                    else
+                    {
+                        setting.DefaultOtherPostVisibility = int.Parse(value);
+                    }
+                    db.SaveChanges();
+                    return ActionResults.Succeed.ToString();
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+        }
+
+
 
         #region Private Methods
 

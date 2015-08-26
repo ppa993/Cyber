@@ -371,7 +371,7 @@ namespace WC.Controllers
                 Helper.WriteLog(exception);
             }
         }
-
+        
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
