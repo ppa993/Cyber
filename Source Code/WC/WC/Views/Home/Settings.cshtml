@@ -1,0 +1,127 @@
+﻿@using WC.Data
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var isChecked = ViewBag.AllowOthersPost ? "checked" : "";
+    
+}
+
+<link href="~/Content/Style/bootstrap-editable.css" rel="stylesheet">
+<script src="~/Content/Script/bootstrap-editable.min.js"></script>
+
+<script type="text/javascript">
+
+    $.fn.editable.defaults.mode = 'inline';
+
+    $(document).ready(function() {
+        var allow = document.querySelector('.js-switch');
+        allow.onchange = function() {
+            var url = '@Url.Action("AllowOtherPost")';
+
+            $.post(url, { "isAllow": allow.checked },
+                function (data) {
+                });
+        }
+
+        $('#my-post-visibility').editable({
+            showbuttons: false,
+            value: @ViewBag.MyPost,
+            source: [
+                { value: 1, text: 'Public' },
+                { value: 2, text: 'Friend' },
+                { value: 3, text: 'Private' }
+            ]
+        });
+        $('#other-post-visibility').editable({
+            showbuttons: false,
+            value: @ViewBag.OthersPost,
+            source: [
+                { value: 1, text: 'Public' },
+                { value: 2, text: 'Friend' },
+                { value: 3, text: 'Private' }
+            ]
+        });
+    });
+</script>
+
+<div class="page-inner" style="min-height:768px !important">
+    <div class="page-title">
+        <h3>Settings</h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-success">
+                                <div class="panel-heading" role="tab" id="headingOne1">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion2" href="#1" aria-expanded="true" aria-controls="collapseOne">
+                                            My Settings
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne1">
+                                    <div class="panel-body">
+                                        <table id="table-setting" class="table table-bordered table-striped" style="clear: both">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="35%">
+                                                        <strong>Allow friends to post on my timeline</strong>
+                                                    </td>
+                                                    <td width="65%">
+                                                        <input type="checkbox" class="js-switch" @isChecked/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="35%">
+                                                        <strong>Who can see my future posts?</strong>
+                                                    </td>
+                                                    <td width="65%">
+                                                        <a href="#" id="my-post-visibility" data-type="select" data-name="MyPost" data-pk="1" data-url="@Url.Action("UpdateDefaultVisibleType")"></a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="35%">
+                                                        <strong>Who can see what others post on my timeline?</strong>
+                                                    </td>
+                                                    <td width="65%">
+                                                        <a href="#" id="other-post-visibility" data-type="select" data-name="OtherPost" data-pk="1" data-url="@Url.Action("UpdateDefaultVisibleType")"></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-danger">
+                                <div class="panel-heading" role="tab" id="headingTwo2">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion2" href="#2" aria-expanded="false" aria-controls="collapseTwo">
+                                            Change Password
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo2">
+                                    <div class="panel-body">
+                                        <p class="text-success">@ViewBag.StatusMessage</p>
+                                        @Html.Partial("_ChangePasswordPartial")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    <div class="page-footer">
+        <p class="no-s">2015 © Modern by Steelcoders.</p>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

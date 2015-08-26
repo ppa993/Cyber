@@ -20,6 +20,12 @@ namespace WC
             );
 
             routes.MapRoute(
+                "UserSetting",                                           // Route name
+                "Settings",                            // URL with parameters
+                new { controller = "Home", action = "Settings"}  // Parameter defaults
+            );
+
+            routes.MapRoute(
                 "ViewPost",                                           // Route name
                 "Posts/{postid}",                            // URL with parameters
                 new { controller = "Post", action = "ViewPost", postid = UrlParameter.Optional }  // Parameter defaults

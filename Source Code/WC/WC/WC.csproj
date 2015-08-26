@@ -313,12 +313,15 @@
     <Content Include="Content\Images\bg-input-focus.png" />
     <Content Include="Content\Images\bg-input.png" />
     <Content Include="Content\Images\Avatar\men.png" />
+    <Content Include="Content\Images\clear.png" />
+    <Content Include="Content\Images\loading.gif" />
     <Content Include="Content\Images\post-image.jpg" />
     <Content Include="Content\Images\profile-cover.png" />
     <Content Include="Content\Images\profile-menu-image.png" />
     <Content Include="Content\Images\profile-picture.png" />
     <Content Include="Content\Images\sprite.png" />
     <Content Include="Content\Images\Avatar\women.png" />
+    <Content Include="Content\Script\bootstrap-editable.min.js" />
     <Content Include="Content\Script\bootstrap.min.js" />
     <Content Include="Content\Script\classie.js" />
     <Content Include="Content\Script\curvedLines.js" />
@@ -354,6 +357,7 @@
     <Content Include="Content\Script\switchery.min.js" />
     <Content Include="Content\Script\toastr.min.js" />
     <Content Include="Content\Script\waves.min.js" />
+    <Content Include="Content\Style\bootstrap-editable.css" />
     <Content Include="Content\Style\bootstrap.min.css" />
     <Content Include="Content\Style\component.css" />
     <Content Include="Content\Style\custom.css" />
@@ -406,6 +410,7 @@
     <Content Include="Views\Shared\NotificationPartial.cshtml" />
     <Content Include="Views\Shared\_ChangePostVisibleType.cshtml" />
     <Content Include="Views\Shared\FriendRequest.cshtml" />
+    <Content Include="Views\Home\Settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
@@ -455,7 +460,7 @@
     <Content Include="Views\Shared\_SelectDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Shared\_ChangePasswordPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\Manage.cshtml" />
