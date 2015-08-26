@@ -45,6 +45,7 @@ namespace WC.Controllers
             }
             return View(posts);
         }
+
         [ChildActionOnly]
         public ActionResult PostList(List<Post> Model)
         {
@@ -470,7 +471,7 @@ namespace WC.Controllers
             var fromUser = UserManager.FindById(userId);
             var toUser = CurrentUserID;
 
-            var posts = GetPosts(fromUser, toUser);
+            var posts = GetPosts(fromUser);
             var notLoadedCount = posts.Count - loadedPostCount;
 
             if (notLoadedCount <= DefautValue.PostLoad)
@@ -543,7 +544,7 @@ namespace WC.Controllers
         /// <param name="fromUser">whose profile is being view</param>
         /// <param name="toUser">who request to view this profile</param>
         /// <returns></returns>
-        private List<Post> GetPosts(ApplicationUser fromUser, string toUser)
+        private List<Post> GetPosts(ApplicationUser fromUser)
         {
             var listView = new List<Post>();
             try

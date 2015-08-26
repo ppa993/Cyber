@@ -20,7 +20,7 @@
                             case NotificationType.CommentOthers:
                                 <li>
                                     <a data-href="@postUrl" data-id="@p.NotificationID" class="notification-item">
-                                        <div class="task-icon badge badge-success">
+                                        <div class="task-icon badge badge-info">
                                             <i class="icon-bubble"></i>
                                         </div>
                                         <p class="task-details">@p.NotificationContent</p>
@@ -32,7 +32,7 @@
                             case NotificationType.LikeMyComment:
                             <li>
                                 <a data-href="@postUrl" data-id="@p.NotificationID" class="notification-item">
-                                    <div class="task-icon badge badge-danger">
+                                    <div class="task-icon badge badge-success">
                                         <i class="icon-like"></i>
                                     </div>
                                     <span class="badge badge-roundless badge-default pull-right">@Helper.PostTime(@p.NotificationDate)</span>

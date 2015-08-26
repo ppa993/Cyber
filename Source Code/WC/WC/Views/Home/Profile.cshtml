@@ -88,6 +88,7 @@
                             if (data === "Failed") {
                                 alert("Unable to post your comment. Please try again later. Thank you!");
                             } else {
+                                textbox.val('');
                                 var countItem = document.getElementById("comment-count-" + postid);
                                 var count = parseInt(countItem.textContent) + 1;
                                 countItem.textContent = count;
@@ -96,8 +97,6 @@
                                 commentList.append(data);
                             }
                         });
-
-                    textbox.val('');
                 } else {
                     pasteIntoInput(this, "\n");
                     e.preventDefault();
