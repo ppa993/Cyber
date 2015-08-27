@@ -65,7 +65,27 @@
             },
             editable: true,
             droppable: true, // this allows things to be dropped onto the calendar
-            dropAccept: '.calendar-event',
+            //drop: function(date) {
+            //    // retrieve the dropped element's stored Event Object
+            //    var originalEventObject = $(this).data('event');
+
+            //    alert(originalEventObject.title + "Dropped on " + date.format());
+            //    // we need to copy it, so that multiple events don't have a reference to the same object
+            //    var copiedEventObject = $.extend({}, originalEventObject);
+
+            //    // assign it the date that was reported
+            //    copiedEventObject.start = date;
+
+
+            //},
+            //after render event on calendar, call this
+            eventReceive: function(event) {
+                alert(event.title + " " + event.start.format());
+            },
+            //
+            eventDrop: function (event, delta, revertFunc) {
+                alert(event.title + " dropped on " + event.start.format());
+            },
             eventLimit: true, // allow "more" link when too many events
             events: [				
 				{
