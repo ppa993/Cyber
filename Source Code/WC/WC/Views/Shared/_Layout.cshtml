@@ -100,70 +100,363 @@
         });
     </script>
     <script type="text/javascript">
-        $(document).on('click', '.notification-item', function () {
-            var notifId = $(this).data("id");
-            var linkUrl = $(this).data("href");
+        $(document).ready(function() {
+            $(document).on('click', '.notification-item', function() {
+                var notifId = $(this).data("id");
+                var linkUrl = $(this).data("href");
 
-            var url = '@Url.Action("SeenNotification", "Home")';
+                var url = '@Url.Action("SeenNotification", "Home")';
 
-            $.post(url, { "notificationId": notifId },
+                $.post(url, { "notificationId": notifId },
+                    function(data) {
+                        if (data === "Succeed") {
+                            location.href = linkUrl;
+                        } else {
+                            location.reload();
+                        }
+                    });
+            });
+
+
+            //Show report modal dialog
+            $(document).on('click', '.report-command', function() {
+                var recipient = $(this).data('id');
+                var actionType = $(this).data('type');
+
+                var url = '@Url.Action("IsAlreadyReport", "Post")';
+
+                $.post(url, { "reportItem": recipient },
+                    function(data) {
+                        if (data === "AlreadyDone") {
+                            showMsg("You're already report this item.");
+                        } else {
+                            $('#report-modal').modal('toggle');
+                        }
+                    });
+
+                $("#button-report").data('id', recipient);
+                $("#button-report").data('type', actionType);
+                $('#report-content').css('min-height', '50px').autogrow();
+            });
+
+
+            //Report
+            $("#button-report").click(function() {
+                var recipient = $(this).data('id');
+                var actionType = $(this).data('type');
+                var content = $('#report-content').val();
+
+                var postUrl = '@Url.Action("Report", "Post")';
+
+                $.post(postUrl, { "reportItem": recipient, "reportType": actionType, "reportContent": content },
+                    function(data) {
+                        if (data === "Failed") {
+                            showMsg("Unable to report this item. Please try again.");
+                        } else if (data === "Deleted") {
+                            showMsg("This item has already been deleted.");
+                        } else if (data === "AlreadyDone") {
+                            showMsg("You're already report this item.");
+                        } else {
+                            showMsg("Your report has been sent.");
+                        }
+                    });
+                $("#button-report-close").click();
+            });
+        });
+    </script>
+    <script type="text/javascript">
+    $(document).on('click', '.post-visible-type', function () {
+        var postId = $(this).data("id");
+        var current = $("#post-visible-type-" + postId);
+        var changedType = $(this).data("visible-type");
+
+        var newContent = "<span class = 'fa fa-" + changedType + "'></span> <span class='caret'></span>";
+
+        current.attr("data-visible-type", changedType);
+        current.html(newContent);
+
+        var url = '@Url.Action("ChangePostVisibleType", "Post")';
+
+        $.post(url, { "postId": postId, "visibility": changedType },
+            function (data) {
+                if (data === "Failed") {
+                    showMsg("Unable to peform your action. Please try again.");
+                } else if (data === "Delete") {
+                    showMsg("Post deleted.");
+                }
+            });
+    });
+    </script>
+    <script>
+    function pasteIntoInput(el, text) {
+        el.focus();
+        if (typeof el.selectionStart == "number"
+            && typeof el.selectionEnd == "number") {
+            var val = el.value;
+            var selStart = el.selectionStart;
+            el.value = val.slice(0, selStart) + text + val.slice(el.selectionEnd);
+            el.selectionEnd = el.selectionStart = selStart + text.length;
+        } else if (typeof document.selection != "undefined") {
+            var textRange = document.selection.createRange();
+            textRange.text = text;
+            textRange.collapse(false);
+            textRange.select();
+        }
+    }
+
+    $(document).ready(function () {
+
+        //focus on comment text box when click on Comment text
+        $(document).on('click', '.comment-text', function () {
+            var postId = $(this).attr("post-id");
+            $('#comment-area-' + postId).focus();
+            return false;
+        });
+
+        //auto submit comment when user press enter, add new line if Shift+Enter
+        $(document).on('keydown', '.comment-form', function (e) {
+            if (e.which === 13) {
+                if (e.shiftKey === false) {
+                    var url = '@Url.Action("PostComment", "Post")';
+                    var text = $(this).val();
+                    var textbox = $(this);
+                    var postid = $(this).attr("post-id");
+                    if (text === "") return;
+
+                    $.post(url, { "postId": postid, "content": text },
+                        function (data) {
+                            if (data === "Failed") {
+                                showMsg("Unable to post your comment. Please try again.");
+                            } else {
+                                textbox.val('');
+                                var countItem = document.getElementById("comment-count-" + postid);
+                                var count = parseInt(countItem.textContent) + 1;
+                                countItem.textContent = count;
+
+                                var commentList = $("#comment-list-" + postid);
+                                commentList.append(data);
+                            }
+                        });
+                } else {
+                    pasteIntoInput(this, "\n");
+                    e.preventDefault();
+                }
+            }
+        });
+
+        //like/unlike and update like count
+        $(document).on('click', '.post-like', function () {
+            var inprocess = $(this).attr("data-inprocess");
+            if (inprocess === "1") {
+                return false;
+            }
+            var curElement = $(this);
+            $(this).attr("data-inprocess", "1");
+            var postid = $(this).attr("post-id");
+            var isLike = $(this).attr("data-toogle") === "Like";
+            var url = '@Url.Action("LikeUnlikePost", "Post")';
+
+            $.post(url, { "postId": postid, "isLike": isLike },
                 function (data) {
-                    if (data === "Succeed") {
-                        location.href = linkUrl;
+                    if (data === "Failed") {
+                        showMsg("Unable to peform your action. Please try again.");
+                    } else if (data === "Deleted") {
+                        showMsg("This item has been deleted.");
+                    } else if (data !== "AlreadyDone") {
+                        var countItem = document.getElementById("post-like-count-" + postid);
+                        var count = data;
+
+                        if (isLike) {
+                            curElement.attr("data-toogle", "Unlike");
+                        } else {
+                            curElement.attr("data-toogle", "Like");
+                        }
+                        countItem.textContent = count;
+
+                        var likeStatus = document.getElementById("post-like-status-" + postid);
+                        likeStatus.innerHTML = curElement.attr("data-toogle");
+                    }
+                    curElement.attr("data-inprocess", "0");
+                });
+            return false;
+        });
+
+        //like/unlike and update like count
+        $(document).on('click', '.comment-like', function () {
+            var inprocess = $(this).attr("data-inprocess");
+            if (inprocess === "1") {
+                return false;
+            }
+            var curElement = $(this);
+            $(this).attr("data-inprocess", "1");
+            var commentid = $(this).attr("comment-id");
+            var isLike = $(this).attr("data-toogle") === "Like";
+            var url = '@Url.Action("LikeUnlikeComment", "Post")';
+
+            $.post(url, { "commentId": commentid, "isLike": isLike },
+                function (data) {
+                    if (data === "Failed") {
+                        showMsg("Unable to peform your action. Please try again.");
+                    } else if (data === "Deleted") {
+                        showMsg("This item has been deleted.");
+                    } else if (data !== "AlreadyDone") {
+                        var countItem = document.getElementById("comment-like-count-" + commentid);
+                        var count = data;
+
+                        if (isLike) {
+                            curElement.attr("data-toogle", "Unlike");
+                        } else {
+                            curElement.attr("data-toogle", "Like");
+                        }
+                        countItem.textContent = count;
+
+                        var likeStatus = document.getElementById("comment-like-status-" + commentid);
+                        likeStatus.innerHTML = curElement.attr("data-toogle");
+                    }
+                    curElement.attr("data-inprocess", "0");
+                });
+            return false;
+        });
+
+        //Show edit modal dialog
+        $(document).on('click', '.edit-command', function () {
+            var recipient = $(this).data('id');
+            var actionType = $(this).data('type');
+            $("#button-edit").data('id', recipient);
+            $("#button-edit").data('type', actionType);
+
+            var title = $('#edit-modal-label');
+            title.text('Edit ' + actionType);
+
+
+            if (actionType === "Post") {
+                var postUrl = '@Url.Action("EditPost", "Post")';
+
+
+                $.post(postUrl, { "postId": recipient },
+                    function (data) {
+                        if (data === "Failed") {
+                            showMsg("Unable to edit this post. Please try again.");
+                        } else if (data === "Deleted") {
+                            showMsg("This post has already been deleted.");
+                        } else {
+                            var content = $('#message-text');
+                            content.val(data);
+                            content.css('min-height', '50px').autogrow();
+                        }
+                    });
+            } else {
+                var commentUrl = '@Url.Action("EditComment", "Post")';
+
+                $.post(commentUrl, { "commentId": recipient },
+                    function (data) {
+                        if (data === "Failed") {
+                            showMsg("Unable to edit this comment. Please try again.");
+                        } else if (data === "Deleted") {
+                            showMsg("This comment has already been deleted.");
+                        } else {
+                            var content = $('#message-text');
+                            content.val(data);
+                            content.css('min-height', '50px').autogrow();
+                        }
+                    });
+            }
+        });
+
+        //update post/comment
+        $("#button-edit").click(function () {
+            var recipient = $(this).data('id');
+            var actionType = $(this).data('type');
+            var content = $('#message-text').val();
+
+            if (actionType === "Post") {
+                var postUrl = '@Url.Action("UpdatePost", "Post")';
+
+                $.post(postUrl, { "postId": recipient, "content": content },
+                    function (data) {
+                        if (data === "Failed") {
+                            showMsg("Unable to edit this post. Please try again.");
+                        } else if (data === "Deleted") {
+                            showMsg("This post has already been deleted.");
+                        } else {
+                            var editedContent = $('#post-edit-' + recipient);
+                            editedContent.text(content);
+                        }
+                    });
+            } else {
+                var commentUrl = '@Url.Action("UpdateComment", "Post")';
+
+                $.post(commentUrl, { "commentId": recipient, "content": content },
+                    function (data) {
+                        if (data === "Failed") {
+                            showMsg("Unable to edit this comment. Please try again.");
+                        } else if (data === "Deleted") {
+                            showMsg("This comment has already been deleted.");
+                        } else {
+                            var editedContent = $('#comment-edit-' + recipient);
+                            editedContent.text(content);
+                        }
+                    });
+            }
+            $("#button-edit-close").click();
+        });
+
+        //call confirm delete post
+        $(document).on('click', '.delete-post-command', function () {
+            var postid = $(this).attr("post-id");
+            $('#button-post-delete').attr('post-id', postid);
+        });
+
+        //delete post
+        $('#button-post-delete').click(function () {
+            var postid = $(this).attr("post-id");
+            var url = '@Url.Action("DeletePost", "Post")';
+
+            $.post(url, { "postId": postid },
+                function (data) {
+                    if (data === "Failed") {
+                        showMsg("Unable to delete this post. Please try again.");
+                    } else if (data === "Deleted") {
+                        showMsg("This post has already been deleted.");
                     } else {
-                        location.reload();
+                        $('#button-post-close').click();
+                        var element = document.getElementById('post-block-' + postid);
+                        element.parentNode.removeChild(element);
                     }
                 });
         });
+
+        //call confirm delete commment dialog
+        $(document).on('click', '.delete-comment-command', function () {
+            var commentid = $(this).attr("comment-id");
+            $('#button-comment-delete').attr('comment-id', commentid);
+        });
+
+        //delete comment
+        $('#button-comment-delete').click(function () {
+            var commentid = $(this).attr("comment-id");
+            var url = '@Url.Action("DeleteComment", "Post")';
+
+            $.post(url, { "commentId": commentid },
+                function (data) {
+                    if (data === "Failed") {
+                        showMsg("Unable to delete this comment. Please try again.");
+                    } else if (data === "Deleted") {
+                        showMsg("This comment has already been deleted.");
+                    } else {
+                        $('#button-comment-close').click();
+                        $('#comment-block-' + commentid).remove();
+                        var countItem = document.getElementById("comment-count-" + data);
+                        var count = parseInt(countItem.textContent) - 1;
+                        countItem.textContent = count;
+                    }
+                });
+        });
+    });
     </script>
-    <style>
-        .btn-blue {
-            background: #2392e5;
-            color: #fff;
-        }
 
-            .btn-blue:hover {
-                background: #1b5d8f;
-                color: #fff;
-            }
-
-            .btn-blue:focus {
-                background: #47a5eb;
-                color:#484747
-            }
-
-        .btn-orange {
-            background: #ff6a00;
-            color: #fff;
-        }
-
-            .btn-orange:hover {
-                background: #cb6013;
-                color: #fff;
-            }
-
-            .btn-orange:focus {
-                background: #ef8132;
-                color:#484747
-            }
-
-        .btn-green {
-            background: #2fbd41;
-            color: #fff;
-        }
-
-            .btn-green:hover {
-                background: #248d31;
-                color: #fff;
-            }
-
-            .btn-green:focus {
-                background: #50dc61;
-                color:#484747
-            }
-    </style>
 </head>
-<body class="page-header-fixed  pace-done">
+<body class="page-header-fixed pace-done small-sidebar">
     <div class="pace  pace-inactive">
         <div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
             <div class="pace-progress-inner"></div>
@@ -215,7 +508,7 @@
                         <i class="fa fa-bars"></i>
                     </a>
                 </div>
-                <div class="logo-box">
+                <div class="logo-box hidden-lg hidden-md hidden-sm">
                     <a href="@Url.Action("Newsfeed", "Home")" class="logo-text"><span>Cyber</span></a>
                 </div><!-- Logo Box -->
                 <div class="search-button">
@@ -225,11 +518,11 @@
                     <div class="top-menu">
                         <ul class="nav navbar-nav navbar-left">
                             <li>
-                                <a href="javascript:void(0);" class="waves-effect waves-button waves-classic sidebar-toggle"><i class="fa fa-bars"></i></a>
+                                <a href="javascript:void(0);" class="waves-effect waves-button waves-classic sidebar-toggle hidden-lg hidden-md hidden-sm"><i class="fa fa-bars"></i></a>
                             </li>
-                            <li>
+                            @*<li>
                                 <a href="#cd-nav" class="waves-effect waves-button waves-classic cd-nav-trigger"><i class="fa fa-diamond"></i></a>
-                            </li>
+                            </li>*@
                             <li>
                                 <a href="javascript:void(0);" class="waves-effect waves-button waves-classic toggle-fullscreen"><i class="fa fa-expand"></i></a>
                             </li>
@@ -243,128 +536,231 @@
                                 </li>
                                 <li id="friend-request" class="dropdown">
                                     @{
-                                        Html.RenderPartial("FriendRequest", friendRequest);
+                            Html.RenderPartial("FriendRequest", friendRequest);
                                     }
                                 </li>
                                 <li id="notify-box" class="dropdown">
                                     @{
-                                        Html.RenderPartial("NotificationPartial", notify);
+                            Html.RenderPartial("NotificationPartial", notify);
                                     }
-                                </li>
-                                <li>
-                                    <a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button waves-classic">
-                                        <span class="user-name">@displayName</span>
-                                        <img class="img-circle avatar" src="@Url.Content(userInfo.Profile_Photo.ProfileImageUrl)" width="40" height="40" alt="">
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:document.getElementById('logoutForm').submit()" class="log-out waves-effect waves-button waves-classic">
-                                        <span><i class="fa fa-sign-out m-r-xs"></i>Log Off</span>
-                                    </a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0);" class="waves-effect waves-button waves-classic" id="showRight">
                                         <i class="fa fa-comments"></i>
                                     </a>
                                 </li>
+                                <li class="dropdown">
+                                    <a href="#" data-toggle="dropdown" aria-expanded="False" class="dropdown-toggle waves-effect waves-button waves-classic">
+                                        <span class="user-name">@displayName<i class="fa fa-angle-down"></i></span>
+                                        <img class="img-circle avatar" src="@Url.Content(userInfo.Profile_Photo.ProfileImageUrl)" width="40" height="40" alt="">
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-list dropdown-profile" role="menu">
+                                        <li role="presentation">
+                                            <a href="@Url.Action(User.Identity.Name, "Profile")">
+                                                <i class="fa fa-user"></i> Profile
+                                            </a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="@Url.Action(User.Identity.Name, "Profile")">
+                                                <i class="fa fa-calendar"></i> Calendar
+                                            </a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="@Url.Action("Settings")">
+                                                <i class="fa fa-cogs"></i> Settings
+                                            </a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="javascript:document.getElementById('logoutForm').submit()" class="log-out waves-effect waves-button waves-classic">
+                                                <i class="fa fa-sign-out m-r-xs"></i>Log Off
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
-                                        }
+                        }
                         <!-- Nav -->
                     </div><!-- Top Menu -->
                 </div>
             </div>
         </div><!-- Navbar -->
         <div class="page-sidebar sidebar visible">
-            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                <div class="page-sidebar-fixed">
+                    <ul class="menu accordion-menu">
+                        <li>
+                            <a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Home</p></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Settings")" class="waves-effect waves-button"><span class="menu-icon fa fa-cogs"></span><p>Setting</p></a>
+                        </li>
+                        <li>
+                            <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon fa fa-comments"></span><p>Chat</p></a>
+                        </li>
+                    </ul>
+                </div>
+            @*<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
                 <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">
                     <ul class="menu accordion-menu">
-                        <li><a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>New Feed</p></a></li>
+                        <li><a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Home</p></a></li>
                         <li><a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
-                        @*<li class="droplink">
+                        <li class="droplink">
                                 <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>MessageBox</p></a>
-                            </li>*@
+                            </li>
                         <li>
                             <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Chat</p></a>
                         </li>
-                        <li class="droplink">
-                            <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-log-in"></span><p>Login</p><span class="arrow"></span></a>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="http://lambdathemes.in/admin1/login.html">Login Form</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/login-alt.html">Login Alt</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/register.html">Register Form</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/register-alt.html">Register Alt</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/forgot.html">Forgot Password</a></li>
-                                <li><a href="http://lambdathemes.in/admin1/lock-screen.html">Lock Screen</a></li>
-                            </ul>
-                        </li>
-
                     </ul>
                 </div>
-            </div><!-- Page Sidebar Inner -->
+            </div><!-- Page Sidebar Inner -->*@
         </div>
         @RenderBody()
     </main><!-- Page Content -->
-    <nav class="cd-nav-container" id="cd-nav">
-        <header>
-            <h3>Navigation</h3>
-            <a href="#" class="cd-close-nav">Close</a>
-        </header>
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-        {
-            @Html.AntiForgeryToken()
-            <ul class="cd-nav list-unstyled">
-                <li class="cd-selected" data-menu="index">
-                    <a href="@Url.Action("Newsfeed", "Home")">
-                        <span>
-                            <i class="glyphicon glyphicon-home"></i>
-                        </span>
-                        <p>Home</p>
-                    </a>
-                </li>
-                <li data-menu="profile">
-                    <a href="@Url.Action(User.Identity.Name, "Profile")">
-                        <span>
-                            <i class="glyphicon glyphicon-user"></i>
-                        </span>
-                        <p>Profile</p>
-                    </a>
-                </li>
-                <li data-menu="inbox">
-                    <a href="javsacript:void(0);">
-                        <span>
-                            <i class="glyphicon glyphicon-envelope"></i>
-                        </span>
-                        <p>Mailbox</p>
-                    </a>
-                </li>
-                <li data-menu="#">
-                    <a href="javsacript:void(0);">
-                        <span>
-                            <i class="glyphicon glyphicon-tasks"></i>
-                        </span>
-                        <p>Tasks</p>
-                    </a>
-                </li>
-                <li data-menu="#">
-                    <a href="javsacript:void(0);">
-                        <span>
-                            <i class="glyphicon glyphicon-cog"></i>
-                        </span>
-                        <p>Settings</p>
-                    </a>
-                </li>
-                <li data-menu="#">
-                    <a href="javascript:document.getElementById('logoutForm').submit()" class="log-out">
-                        <span>
-                            <i class="fa fa-sign-out m-r-xs"></i>
-                        </span>
-                        <p>Log Off</p>
-                    </a>
-                </li>
-            </ul>
-        }
-    </nav>
+    @*<nav class="cd-nav-container" id="cd-nav">
+            <header>
+                <h3>Navigation</h3>
+                <a href="#" class="cd-close-nav">Close</a>
+            </header>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <ul class="cd-nav list-unstyled">
+                    <li class="cd-selected" data-menu="index">
+                        <a href="@Url.Action("Newsfeed", "Home")">
+                            <span>
+                                <i class="glyphicon glyphicon-home"></i>
+                            </span>
+                            <p>Home</p>
+                        </a>
+                    </li>
+                    <li data-menu="profile">
+                        <a href="@Url.Action(User.Identity.Name, "Profile")">
+                            <span>
+                                <i class="glyphicon glyphicon-user"></i>
+                            </span>
+                            <p>Profile</p>
+                        </a>
+                    </li>
+                    <li data-menu="inbox">
+                        <a href="javsacript:void(0);">
+                            <span>
+                                <i class="glyphicon glyphicon-envelope"></i>
+                            </span>
+                            <p>Mailbox</p>
+                        </a>
+                    </li>
+                    <li data-menu="#">
+                        <a href="javsacript:void(0);">
+                            <span>
+                                <i class="glyphicon glyphicon-tasks"></i>
+                            </span>
+                            <p>Tasks</p>
+                        </a>
+                    </li>
+                    <li data-menu="#">
+                        <a href="javsacript:void(0);">
+                            <span>
+                                <i class="glyphicon glyphicon-cog"></i>
+                            </span>
+                            <p>Settings</p>
+                        </a>
+                    </li>
+                    <li data-menu="#">
+                        <a href="javascript:document.getElementById('logoutForm').submit()" class="log-out">
+                            <span>
+                                <i class="fa fa-sign-out m-r-xs"></i>
+                            </span>
+                            <p>Log Off</p>
+                        </a>
+                    </li>
+                </ul>
+            }
+        </nav>*@
     <div class="cd-overlay"></div>
+
+
+    <div class="modal fade" id="report-modal" tabindex="-1" role="dialog" aria-labelledby="report-modal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="report-modal-label">Report</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <p>Please tell us why you want to report this item:</p>
+                            <textarea class="form-control" id="report-content"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="button-report-close" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="button-report" class="btn btn-facebook" data-type="" data-id="">Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-post-modal" tabindex="-1" role="dialog" aria-labelledby="myModalPostLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalPostLabel">Delete Post</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="button-post-close" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-facebook" id="button-post-delete" post-id="">Delete Post</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="delete-comment-modal" tabindex="-1" role="dialog" aria-labelledby="myModalCommentLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalCommentLabel">Delete Comment</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="button-comment-close" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-facebook" id="button-comment-delete" comment-id="">Delete Comment</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="edit-modal-label">Edit</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <textarea class="form-control" id="message-text"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="button-edit-close" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="button-edit" class="btn btn-facebook" data-type="" data-id="">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal -->
     <div id="msgModal" class="modal fade" role="dialog">
@@ -413,6 +809,7 @@
 
     <div id="flotTip" style="display: none; position: absolute;"></div>
 </body>
+
 </html>
 <script type="text/javascript">
     $(document).ready(function () {

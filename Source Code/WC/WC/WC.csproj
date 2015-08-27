@@ -244,6 +244,9 @@
     <Compile Include="Data\Relationship_Type.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\Report.cs">
+      <DependentUpon>Cyber.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\Role.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>

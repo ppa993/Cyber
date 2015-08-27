@@ -38,7 +38,7 @@
     }
 
     .post-block .post-content {
-        padding: 20px 20px !important;
+        padding: 0 20px !important;
     }
 
     .post-block .post-comment {
@@ -144,6 +144,12 @@
     }
 
     .share-with {
+    font-size: 12px;
+    padding-left: 5px;
+    margin-bottom: 30px;
+    margin-top: 3px;
+    }
+    .change-share-with {
         font-size: 12px;
         padding-left: 5px;
     }
@@ -160,10 +166,18 @@
         float: none !important;
     }
     .dropdown-visibility li:hover {
-        background: #f7f7f7;
+        background: #42599e;
+        color: #fff;
+    }
+    .dropdown-profile {
+        -moz-min-width: 150px !important;
+        -ms-min-width: 150px !important;
+        -o-min-width: 150px !important;
+        -webkit-min-width: 150px !important;
+        min-width: 150px !important;
     }
 
-/* Button */
+    /* Button */
 .btn {
     -moz-min-width: 75px;
     -ms-min-width: 75px;
@@ -178,6 +192,50 @@
 .notification-item {
     cursor: pointer;
 }
+ .btn-blue {
+            background: #2392e5;
+            color: #fff;
+        }
+
+            .btn-blue:hover {
+                background: #1b5d8f;
+                color: #fff;
+            }
+
+            .btn-blue:focus {
+                background: #47a5eb;
+                color:#484747
+            }
+
+        .btn-orange {
+            background: #ff6a00;
+            color: #fff;
+        }
+
+            .btn-orange:hover {
+                background: #cb6013;
+                color: #fff;
+            }
+
+            .btn-orange:focus {
+                background: #ef8132;
+                color:#484747
+            }
+
+        .btn-green {
+            background: #2fbd41;
+            color: #fff;
+        }
+
+            .btn-green:hover {
+                background: #248d31;
+                color: #fff;
+            }
+
+            .btn-green:focus {
+                background: #50dc61;
+                color:#484747
+            }
 
 /* Friend request and notification dropdown */
     .friend-request {

@@ -19,9 +19,9 @@
         $.post(url, { "visibility": changedType },
             function (data) {
                 if (data === "Failed") {
-                    alert("Unable to peform your action. Please try again later.");
+                    showMsg("Unable to peform your action. Please try again.");
                 } else if (data === "Delete") {
-                    alert("Please log in first");
+                    showMsg("Please log in first");
                 }
             });
     });

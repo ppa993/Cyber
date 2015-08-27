@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="7cc4dbe49925408d893104b27c051623" Name="Diagram1" ZoomLevel="72">
         <EntityTypeShape EntityType="CyberModel.Album" Width="1.5" PointX="5.25" PointY="31.125" />
-        <EntityTypeShape EntityType="CyberModel.AlbumDetail" Width="1.5" PointX="7.5" PointY="25.25" />
         <EntityTypeShape EntityType="CyberModel.ChatBox" Width="1.5" PointX="5.25" PointY="20.25" />
         <EntityTypeShape EntityType="CyberModel.ChatReply" Width="1.5" PointX="10.5" PointY="19.125" />
         <EntityTypeShape EntityType="CyberModel.Comment" Width="1.5" PointX="8.25" PointY="14.25" />
@@ -28,8 +27,6 @@
         <EntityTypeShape EntityType="CyberModel.User" Width="1.5" PointX="3" PointY="15.5" />
         <EntityTypeShape EntityType="CyberModel.Visible_Type" Width="1.5" PointX="3" PointY="11.625" />
         <AssociationConnector Association="CyberModel.FK__Album__CreatedUs__3D5E1FD2" />
-        <AssociationConnector Association="CyberModel.FK__AlbumDeta__Album__59FA5E80" />
-        <AssociationConnector Association="CyberModel.FK__AlbumDeta__Poste__5AEE82B9" />
         <AssociationConnector Association="CyberModel.FK__ChatBox__FromUse__398D8EEE" />
         <AssociationConnector Association="CyberModel.FK__ChatBox__FromUse__3A81B327" />
         <AssociationConnector Association="CyberModel.FK__ChatBox__ToUseId__3B75D760" />
@@ -68,6 +65,12 @@
         <AssociationConnector Association="CyberModel.FK_Role_User1" />
         <AssociationConnector Association="CyberModel.FK__SettingCh__User1__4E88ABD4" />
         <AssociationConnector Association="CyberModel.FK__SettingCh__User2__4F7CD00D" />
+        <EntityTypeShape EntityType="CyberModel.Report" Width="1.5" PointX="5.25" PointY="7.375" />
+        <AssociationConnector Association="CyberModel.FK_Reports_Reports" />
+        <AssociationConnector Association="CyberModel.FK_Reports_User" />
+        <EntityTypeShape EntityType="CyberModel.AlbumDetail" Width="1.5" PointX="10.5" PointY="27" />
+        <AssociationConnector Association="CyberModel.FK__AlbumDeta__Album__59FA5E80" />
+        <AssociationConnector Association="CyberModel.FK__AlbumDeta__Poste__5AEE82B9" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

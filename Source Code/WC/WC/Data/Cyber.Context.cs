@@ -26,7 +26,6 @@ namespace WC.Data
         }
     
         public virtual DbSet<Album> Albums { get; set; }
-        public virtual DbSet<AlbumDetail> AlbumDetails { get; set; }
         public virtual DbSet<ChatBox> ChatBoxes { get; set; }
         public virtual DbSet<ChatReply> ChatReplies { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
@@ -47,5 +46,7 @@ namespace WC.Data
         public virtual DbSet<SettingChatBox> SettingChatBoxes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Visible_Type> Visible_Type { get; set; }
+        public virtual DbSet<Report> Reports { get; set; }
+        public virtual DbSet<AlbumDetail> AlbumDetails { get; set; }
     }
 }
