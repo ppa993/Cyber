@@ -22,13 +22,13 @@ namespace WC.Controllers
 
             var currentUser = UserManager.FindById(CurrentUserID);
             var setting = db.MySettings.First(x => x.UserID == currentUser.Id);
-            var posts = GetPosts(currentUser, currentUser.Id);
+            var posts = GetNewsfeed();
 
             var view = new NewsfeedViewModel
             {
                 Id = CurrentUserID,
                 Setting = setting,
-                Posts = posts
+                Posts = posts.ToList()
             };
             return View(view);
         }
@@ -36,14 +36,14 @@ namespace WC.Controllers
         public ActionResult Profile(string username)
         {
             if (string.IsNullOrEmpty(username)) return RedirectToAction("Newsfeed", "Home");
-            ViewBag.CurId = User.Identity.GetUserId();
             //fromUser: whose profile is being load
             //toUser: who request to view fromUser's profile
             var fromUser = UserManager.FindByName(username);
+            if(fromUser == null) return RedirectToAction("Newsfeed", "Home");
             var fromUserInfo = db.Users.FirstOrDefault(x => x.UserID == fromUser.Id);
             var toUser = CurrentUserID;
 
-            var postList = GetPosts(fromUser, toUser).Take(DefautValue.PostLoad).ToList();
+            var postList = GetPosts(fromUser).Take(DefautValue.PostLoad).ToList();
             var user = new ProfileViewModel();
 
             if (fromUserInfo != null)
@@ -157,8 +157,8 @@ namespace WC.Controllers
             }
             return RedirectToAction("Newsfeed");
         }
-        
 
+        #region Post Methods
         [HttpPost]
         public string ProcessFriendRequest(string friendId, string isAccept)
         {
@@ -255,6 +255,30 @@ namespace WC.Controllers
         }
         
         [HttpPost]
+        public ActionResult LoadMoreNewsfeed(int loadedPostCount)
+        {
+            var morePost = new MorePostViewModel();
+
+            var posts = GetNewsfeed().ToList();
+            var notLoadedCount = posts.Count - loadedPostCount;
+
+            if (notLoadedCount <= DefautValue.PostLoad)
+            {
+                posts = posts.Skip(loadedPostCount).Take(notLoadedCount).ToList();
+                morePost.NoMore = true;
+            }
+            else
+            {
+                posts = posts.Skip(loadedPostCount).Take(DefautValue.PostLoad).ToList();
+                morePost.NoMore = false;
+            }
+
+            morePost.Posts = RenderPartialViewToString("PostList", posts);
+
+            return Json(morePost);
+        }
+
+        [HttpPost]
         public void UnFriend(string targetUserId)
         {
             var curId = User.Identity.GetUserId();
@@ -264,7 +288,7 @@ namespace WC.Controllers
                 db.Friends.Remove(curFriend);
             }
 
-            var targetFriend= db.Friends.FirstOrDefault(x => x.FriendsListId == targetUserId && x.FriendId == curId);
+            var targetFriend = db.Friends.FirstOrDefault(x => x.FriendsListId == targetUserId && x.FriendId == curId);
             if (targetFriend != null)
             {
                 db.Friends.Remove(targetFriend);
@@ -310,7 +334,7 @@ namespace WC.Controllers
                     }
                     break;
                 case FriendType.HisPendingFriend:
-                    try 
+                    try
                     {
                         if (hisFriend != null && myFriend == null)
                         {
@@ -335,7 +359,7 @@ namespace WC.Controllers
 
                 case FriendType.MyPendingFriend:
                 case FriendType.Friend:
-                    try 
+                    try
                     {
                         result = myFriend != null ? "Remove" : ActionResults.Failed.ToString();
                     }
@@ -369,7 +393,6 @@ namespace WC.Controllers
 
             return RedirectToAction("Profile", new { username = u.UserName });
         }
-
 
         [HttpPost]
         public string AllowOtherPost(bool isAllow)
@@ -434,19 +457,12 @@ namespace WC.Controllers
                 Helper.WriteLog(exception);
                 return ActionResults.Failed.ToString();
             }
-        }
-
-
+        } 
+        #endregion
 
         #region Private Methods
 
-        /// <summary>
-        /// Get 10 posts from fromUser if toUser have permission
-        /// </summary>
-        /// <param name="fromUser">whose profile is being view</param>
-        /// <param name="toUser">who request to view this profile</param>
-        /// <returns></returns>
-        private List<Post> GetPosts(ApplicationUser fromUser, string toUser)
+        private List<Post> GetPosts(ApplicationUser fromUser)
         {
             var listView = new List<Post>();
             try
@@ -459,14 +475,12 @@ namespace WC.Controllers
                 }
                 else
                 {
-                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                                        .Where(x => x.VisibleType == (int)VisibleType.Public
-                                            || (x.VisibleType == (int)VisibleType.Friend && db.FriendLists.FirstOrDefault(y => y.UserId == fromUser.Id)
-                                                                                                            .Friends.Any(z => z.FriendId == toUser
-                                                                                                            && z.FriendStatus))
-                                            || x.UserID == toUser)
-                                        .OrderByDescending(x => x.PostedDate)
-                                        .ToList();
+                    //listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                    //                    .Where(x => IsAuthorizeToViewPost(x))
+                    //                    .OrderByDescending(x => x.PostedDate)
+                    //                    .ToList();
+                    var temp = db.Posts.Where(x => x.PostedOn == fromUser.Id).OrderByDescending(x => x.PostedDate);
+                    listView.AddRange(temp.Where(item => IsAuthorizeToViewPost(item)));
                 }
             }
             catch (Exception exception)
@@ -511,7 +525,63 @@ namespace WC.Controllers
             {
                 Helper.WriteLog(exception);
             }
-        } 
+        }
+
+        private IEnumerable<Post> GetNewsfeed()
+        {
+            var listView = new List<Post>();
+            try
+            {
+                var friends =
+                    db.Friends.Where(
+                        x => x.FriendsListId.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
+                        && x.FriendStatus);
+
+                foreach (var friend in friends)
+                {
+                    listView.AddRange(
+                        friend.User.Posts.Where(
+                            x => x.PostedDate.Date >= DateTime.UtcNow.AddDays(DefautValue.RecentNewsfeed).Date
+                                 && IsAuthorizeToViewPost(x)));
+                }
+
+                listView.AddRange(db.Posts.Where(x => x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)));
+
+                return listView.OrderByDescending(x => x.PostedDate);
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return listView;
+        }
+
+        private bool IsAuthorizeToViewPost(Post post)
+        {
+            switch (post.VisibleType)
+            {
+                case (int)VisibleType.Public:
+                    return true;
+
+                case (int)VisibleType.Friend:
+                    if (post.User1.FriendLists.First().Friends.Any(x => x.FriendId == CurrentUserID && x.FriendStatus)
+                        || post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
+                        || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return true;
+                    }
+                    break;
+
+                case (int)VisibleType.Private:
+                    if (post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
+                        || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return true;
+                    }
+                    break;
+            }
+            return false;
+        }
         #endregion
     }
 }

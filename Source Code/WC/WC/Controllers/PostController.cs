@@ -119,6 +119,10 @@ namespace WC.Controllers
             Comment comment;
             try
             {
+                var currentPost = db.Posts.First(x => x.PostID == postId);
+
+                if (!IsAuthorizeToViewPost(currentPost)) return ActionResults.Deleted.ToString();
+
                 comment = new Comment
                 {
                     CommentID = Guid.NewGuid().ToString().Replace("-", string.Empty),
@@ -134,7 +138,6 @@ namespace WC.Controllers
                 db.SaveChanges();
 
                 //push notif for user whose post got new comment
-                var currentPost = db.Posts.First(x => x.PostID == postId);
                 //don't count current commenter himself in for notif
                 var postCommenters = currentPost.Comments.Select(x => x.UserID).Where(x => x != CurrentUserID).Distinct().ToList();
                 var postOwner = currentPost.User;
@@ -533,16 +536,107 @@ namespace WC.Controllers
             return ActionResults.Failed.ToString();
         }
 
+        [HttpPost]
+        public string IsAlreadyReport(string reportItem)
+        {
+            try
+            {
+                var already = db.Reports.Any(
+                        x =>
+                            x.ReportItem.Equals(reportItem, StringComparison.InvariantCultureIgnoreCase) &&
+                            x.Reporter.Equals(CurrentUserID));
+                return already ? ActionResults.AlreadyDone.ToString() : string.Empty;
+
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.AlreadyDone.ToString();
+            }
+        }
+
+        [HttpPost]
+        public string Report(string reportItem, string reportType, string reportContent)
+        {
+            try
+            {
+                var isExisted = false;
+                switch (reportType)
+                {
+                    case "1":
+                        isExisted =
+                            db.Posts.Any(x => x.PostID.Equals(reportItem, StringComparison.InvariantCultureIgnoreCase));
+                        break;
+                    default:
+                        isExisted =
+                            db.Comments.Any(x => x.CommentID.Equals(reportItem, StringComparison.InvariantCultureIgnoreCase));
+                        break;
+                }
+                //if report item is no longer exist, return
+                if (!isExisted) return ActionResults.Deleted.ToString();
+
+                var alreadyDone =
+                    db.Reports.Any(x => x.ReportItem.Equals(reportItem, StringComparison.InvariantCultureIgnoreCase)
+                                        && x.Reporter.Equals(CurrentUserID));
+
+                //if already report this item, return
+                if (alreadyDone) return ActionResults.AlreadyDone.ToString();
+
+                var count =
+                    db.Reports.Count(
+                        x =>
+                            x.ReportItem.Equals(reportItem, StringComparison.InvariantCultureIgnoreCase) &&
+                            x.ReportType == reportType.Equals("1"));
+
+                //if this item has more than 50 reports, delete it
+                if (count >= 50)
+                {
+                    if (reportType.Equals("1"))
+                    {
+                        var post =
+                            db.Posts.FirstOrDefault(
+                                x => x.PostID.Equals(reportItem, StringComparison.InvariantCultureIgnoreCase));
+                        db.Posts.Remove(post);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        var comment =
+                            db.Comments.FirstOrDefault(
+                                x => x.CommentID.Equals(reportItem, StringComparison.InvariantCultureIgnoreCase));
+                        db.Comments.Remove(comment);
+                        db.SaveChanges();
+                    }
+                }
+                //if not, create new report
+                else
+                {
+                    var report = new Report
+                    {
+                        ReportID = Guid.NewGuid().ToString(),
+                        ReportType = reportType.Equals("1"),
+                        ReportItem = reportItem,
+                        ReportContent = reportContent,
+                        Reporter = CurrentUserID,
+                        ReportedDate = DateTime.UtcNow
+                    };
+
+                    db.Reports.Add(report);
+                    db.SaveChanges();
+                }
+                return ActionResults.Succeed.ToString();
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+        }
+
         #endregion
 
         #region Private Methods
         
-        /// <summary>
-        /// Get 10 posts from fromUser if toUser have permission
-        /// </summary>
-        /// <param name="fromUser">whose profile is being view</param>
-        /// <param name="toUser">who request to view this profile</param>
-        /// <returns></returns>
         private List<Post> GetPosts(ApplicationUser fromUser)
         {
             var listView = new List<Post>();
@@ -597,6 +691,7 @@ namespace WC.Controllers
             }
             return false;
         }
+
         #endregion
 	}
 }

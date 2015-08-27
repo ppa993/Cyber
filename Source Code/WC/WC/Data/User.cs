@@ -17,7 +17,6 @@ namespace WC.Data
         public User()
         {
             this.Albums = new HashSet<Album>();
-            this.AlbumDetails = new HashSet<AlbumDetail>();
             this.ChatBoxes = new HashSet<ChatBox>();
             this.ChatBoxes1 = new HashSet<ChatBox>();
             this.ChatBoxes2 = new HashSet<ChatBox>();
@@ -38,6 +37,8 @@ namespace WC.Data
             this.Roles = new HashSet<Role>();
             this.SettingChatBoxes = new HashSet<SettingChatBox>();
             this.SettingChatBoxes1 = new HashSet<SettingChatBox>();
+            this.Reports = new HashSet<Report>();
+            this.AlbumDetails = new HashSet<AlbumDetail>();
         }
     
         public string UserID { get; set; }
@@ -55,7 +56,6 @@ namespace WC.Data
         public string Studied { get; set; }
     
         public virtual ICollection<Album> Albums { get; set; }
-        public virtual ICollection<AlbumDetail> AlbumDetails { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes1 { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes2 { get; set; }
@@ -79,5 +79,7 @@ namespace WC.Data
         public virtual ICollection<Role> Roles { get; set; }
         public virtual ICollection<SettingChatBox> SettingChatBoxes { get; set; }
         public virtual ICollection<SettingChatBox> SettingChatBoxes1 { get; set; }
+        public virtual ICollection<Report> Reports { get; set; }
+        public virtual ICollection<AlbumDetail> AlbumDetails { get; set; }
     }
 }
