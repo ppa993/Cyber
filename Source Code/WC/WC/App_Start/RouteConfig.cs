@@ -22,7 +22,25 @@ namespace WC
             routes.MapRoute(
                 "UserSetting",                                           // Route name
                 "Settings",                            // URL with parameters
-                new { controller = "Home", action = "Settings"}  // Parameter defaults
+                new { controller = "Home", action = "Settings" }  // Parameter defaults
+            );
+
+            routes.MapRoute(
+                "SignIn",                                           // Route name
+                "LogIn",                            // URL with parameters
+                new { controller = "Account", action = "LogIn" }  // Parameter defaults
+            );
+
+            routes.MapRoute(
+                "SignUp",                                           // Route name
+                "Register",                            // URL with parameters
+                new { controller = "Account", action = "Register" }  // Parameter defaults
+            );
+
+            routes.MapRoute(
+                "UserCalendar",                                           // Route name
+                "Calendar",                            // URL with parameters
+                new { controller = "Home", action = "Calendar" }  // Parameter defaults
             );
 
             routes.MapRoute(

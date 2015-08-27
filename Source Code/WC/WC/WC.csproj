@@ -330,6 +330,7 @@
     <Content Include="Content\Script\curvedLines.js" />
     <Content Include="Content\Script\cyber.common.js" />
     <Content Include="Content\Script\dashboard.js" />
+    <Content Include="Content\Script\fullcalendar.min.js" />
     <Content Include="Content\Script\jquery-2.1.4.min.js" />
     <Content Include="Content\Script\jquery-ui.min.js" />
     <Content Include="Content\Script\jquery.blockui.js" />
@@ -355,6 +356,7 @@
     <Content Include="Content\Script\MetroJs.min.js" />
     <Content Include="Content\Script\modern.min.js" />
     <Content Include="Content\Script\modernizr.js" />
+    <Content Include="Content\Script\moment.min.js" />
     <Content Include="Content\Script\pace.min.js" />
     <Content Include="Content\Script\snap.svg-min.js" />
     <Content Include="Content\Script\switchery.min.js" />
@@ -366,6 +368,7 @@
     <Content Include="Content\Style\custom.css" />
     <Content Include="Content\Style\datepicker.css" />
     <Content Include="Content\Style\font-awesome.css" />
+    <Content Include="Content\Style\fullcalendar.min.css" />
     <Content Include="Content\Style\green.css" />
     <Content Include="Content\Style\loading.css" />
     <Content Include="Content\Style\menu_cornerbox.css" />
@@ -414,6 +417,7 @@
     <Content Include="Views\Shared\_ChangePostVisibleType.cshtml" />
     <Content Include="Views\Shared\FriendRequest.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\Home\Calendar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

@@ -158,6 +158,11 @@ namespace WC.Controllers
             return RedirectToAction("Newsfeed");
         }
 
+        public ActionResult Calendar()
+        {
+            return View();
+        }
+
         #region Post Methods
         [HttpPost]
         public string ProcessFriendRequest(string friendId, string isAccept)
