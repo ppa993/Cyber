@@ -128,3 +128,26 @@ function ClientMethods(fromId, toId) {
     });
 }
  
+$("#Upload").click(function () {
+    var formData = new FormData();
+    var totalFiles = document.getElementById("FileUpload").files.length;
+    for (var i = 0; i < totalFiles; i++) {
+        var file = document.getElementById("FileUpload").files[i];
+
+        formData.append("FileUpload", file);
+    }
+    $.ajax({
+        type: "POST",
+        url: '/Home/Upload',
+        data: formData,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            alert('succes!!');
+        },
+        error: function (error) {
+            alert("Failed");
+        }
+    });
+});

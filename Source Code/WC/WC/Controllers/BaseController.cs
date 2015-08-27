@@ -138,5 +138,18 @@ namespace WC.Controllers
             var iNextSpace = input.LastIndexOf(" ", length, StringComparison.InvariantCultureIgnoreCase);
             return string.Format("{0}...", input.Substring(0, (iNextSpace > 0) ? iNextSpace : length).Trim());
         }
+
+        [HttpPost]
+        public void Upload()
+        {
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+                var fileName = Path.GetFileName(file.FileName);
+                var path = Path.Combine(Server.MapPath("~/[Your_Folder_Name]/"), fileName);
+
+                file.SaveAs(path);
+            }
+        }
     }
 }
