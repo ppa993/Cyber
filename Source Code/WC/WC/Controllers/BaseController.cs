@@ -6,6 +6,7 @@ using WC.Data;
 using WC.Models;
 using System.Linq;
 using WC.Hubs;
+using WC.Constants;
 
 namespace WC.Controllers
 {
@@ -14,12 +15,56 @@ namespace WC.Controllers
     {
         public CyberEntities db = new CyberEntities();
 
+        public Album[] DefaultAlbum(string userId)
+        {
+            return new Album[]{
+                new Album(){
+                    AlbumId="avatar"+userId,
+                    AlbumName="Avatar",
+                    CreatedDate=DateTime.Now,
+                    CreatedUserId=userId,
+                    Deleted=false, 
+                },
+                new Album(){
+                    AlbumId="cover"+userId,
+                    AlbumName="Cover",
+                    CreatedDate=DateTime.Now,
+                    CreatedUserId=userId,
+                    Deleted=false, 
+                }
+            };
+        }
+        public AlbumDetail[] DefaultImage(string userId, bool gender)
+        {
+            return new AlbumDetail[]{
+                new AlbumDetail(){
+                    AlbumId="avatar"+userId,
+                    Deleted=false,
+                    Hide=true,
+                    PostedDate=DateTime.Now,
+                    PostedUserId=userId,
+                    Url=Common.GetAvatarDefault(gender),
+                    Active=true, 
+                },
+                new AlbumDetail(){
+                    AlbumId="cover"+userId,
+                    Deleted=false,
+                    Hide=true,
+                    PostedDate=DateTime.Now,
+                    PostedUserId=userId,
+                    Url=Common.GetCoverDefault(),
+                    Active=true, 
+                }
+            };
+        }
+
+
         public List<FriendViewModel> GetListFriendsOf(string userId)
         {
             var query = from fl in db.FriendLists
                         from f in db.Friends
                         from u in db.Users
-                            //from pp in db.Profile_Photo
+                        //from pp in db.Profile_Photo
                         where fl.Id == f.FriendsListId
                         && f.FriendId == u.UserID
                         && fl.Id == userId

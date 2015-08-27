@@ -10,6 +10,32 @@ namespace WC.Constants
         public const string SESSION_USER = "User";
         public const string MALE_AVATAR = "~/Content/Images/Avatar/men.png";
         public const string FEMALE_AVATAR = "~/Content/Images/Avatar/women.png";
+
+        public static string GetAvatarDefault(bool gender)
+        {
+            string img = "~/Content/Images/Avatar/@NAME.png";
+            string name = "";
+            Random rand = new Random();
+            if (gender)
+            {
+                name += "men" + rand.Next(1, 5).ToString();
+            }
+            else
+            {
+                name += "woman" + rand.Next(1, 5).ToString();
+            }
+
+            return img.Replace("@NAME", name);
+        }
+        public static string GetCoverDefault()
+        {
+            Random rand = new Random();
+            string cover = "~/Content/Images/Cover/cover@INDEX.jpg";
+            cover = cover.Replace("@INDEX", rand.Next(1, 10).ToString());
+            return cover;
+        }
+
+        
     }
 
     public class DateTimeFormat

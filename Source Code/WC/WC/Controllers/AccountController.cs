@@ -89,7 +89,7 @@ namespace WC.Controllers
 
             if (parseResult && ModelState.IsValid)
             {
-                var user = new ApplicationUser {UserName = model.UserName};
+                var user = new ApplicationUser { UserName = model.UserName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -131,6 +131,11 @@ namespace WC.Controllers
                         DefaultOtherPostVisibility = (int)VisibleType.Friend
                     };
                     db.MySettings.Add(mySetting);
+
+                    //Init default album avatar and cover
+                    db.Albums.AddRange(DefaultAlbum(user.Id));
+                    //Init default image
+                    db.AlbumDetails.AddRange(DefaultImage(user.Id, userInfo.Gender));
 
                     db.SaveChanges();
 
@@ -348,8 +353,8 @@ namespace WC.Controllers
                 db.SaveChanges();
 
                 //create toast for notif
-                var toastLinkAction = (NotificationType) notifType == NotificationType.AcceptFriendRequest
-                                      || (NotificationType) notifType == NotificationType.CancelFriendRequest
+                var toastLinkAction = (NotificationType)notifType == NotificationType.AcceptFriendRequest
+                                      || (NotificationType)notifType == NotificationType.CancelFriendRequest
                     ? "Profile"
                     : "Posts";
                 var toastUrl = Url.Action(itemId, toastLinkAction);
@@ -371,7 +376,7 @@ namespace WC.Controllers
                 Helper.WriteLog(exception);
             }
         }
-        
+
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
