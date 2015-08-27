@@ -127,7 +127,7 @@ function ClientMethods(fromId, toId) {
         }
     });
 }
- 
+
 $("#Upload").click(function () {
     var formData = new FormData();
     var totalFiles = document.getElementById("FileUpload").files.length;

@@ -17,18 +17,24 @@ namespace WC.Data
         public User()
         {
             this.Albums = new HashSet<Album>();
+            this.AlbumDetails = new HashSet<AlbumDetail>();
+            this.Comments = new HashSet<Comment>();
+            this.CommentLikes = new HashSet<CommentLike>();
             this.ChatBoxes = new HashSet<ChatBox>();
             this.ChatBoxes1 = new HashSet<ChatBox>();
             this.ChatBoxes2 = new HashSet<ChatBox>();
             this.ChatBoxes3 = new HashSet<ChatBox>();
+            this.ChatBoxes4 = new HashSet<ChatBox>();
+            this.ChatBoxes5 = new HashSet<ChatBox>();
             this.ChatReplies = new HashSet<ChatReply>();
             this.ChatReplies1 = new HashSet<ChatReply>();
-            this.Comments = new HashSet<Comment>();
-            this.CommentLikes = new HashSet<CommentLike>();
+            this.ChatReplies2 = new HashSet<ChatReply>();
             this.FriendLists = new HashSet<FriendList>();
             this.FriendLists1 = new HashSet<FriendList>();
+            this.FriendLists2 = new HashSet<FriendList>();
             this.Friends = new HashSet<Friend>();
             this.Friends1 = new HashSet<Friend>();
+            this.Friends2 = new HashSet<Friend>();
             this.MySettings = new HashSet<MySetting>();
             this.Notifications = new HashSet<Notification>();
             this.Posts = new HashSet<Post>();
@@ -38,7 +44,6 @@ namespace WC.Data
             this.SettingChatBoxes = new HashSet<SettingChatBox>();
             this.SettingChatBoxes1 = new HashSet<SettingChatBox>();
             this.Reports = new HashSet<Report>();
-            this.AlbumDetails = new HashSet<AlbumDetail>();
         }
     
         public string UserID { get; set; }
@@ -56,30 +61,34 @@ namespace WC.Data
         public string Studied { get; set; }
     
         public virtual ICollection<Album> Albums { get; set; }
+        public virtual ICollection<AlbumDetail> AlbumDetails { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<CommentLike> CommentLikes { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes1 { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes2 { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes3 { get; set; }
+        public virtual ICollection<ChatBox> ChatBoxes4 { get; set; }
+        public virtual ICollection<ChatBox> ChatBoxes5 { get; set; }
         public virtual ICollection<ChatReply> ChatReplies { get; set; }
         public virtual ICollection<ChatReply> ChatReplies1 { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
-        public virtual ICollection<CommentLike> CommentLikes { get; set; }
+        public virtual ICollection<ChatReply> ChatReplies2 { get; set; }
         public virtual ICollection<FriendList> FriendLists { get; set; }
         public virtual ICollection<FriendList> FriendLists1 { get; set; }
+        public virtual ICollection<FriendList> FriendLists2 { get; set; }
         public virtual ICollection<Friend> Friends { get; set; }
         public virtual ICollection<Friend> Friends1 { get; set; }
+        public virtual ICollection<Friend> Friends2 { get; set; }
         public virtual ICollection<MySetting> MySettings { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Post> Posts1 { get; set; }
         public virtual ICollection<PostLike> PostLikes { get; set; }
-        public virtual Profile_Photo Profile_Photo { get; set; }
         public virtual Relationship_Type Relationship_Type { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<Role> Roles { get; set; }
         public virtual ICollection<SettingChatBox> SettingChatBoxes { get; set; }
         public virtual ICollection<SettingChatBox> SettingChatBoxes1 { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
-        public virtual ICollection<AlbumDetail> AlbumDetails { get; set; }
     }
 }

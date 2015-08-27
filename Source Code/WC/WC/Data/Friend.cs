@@ -21,7 +21,9 @@ namespace WC.Data
     
         public virtual FriendList FriendList { get; set; }
         public virtual FriendList FriendList1 { get; set; }
+        public virtual FriendList FriendList2 { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual User User2 { get; set; }
     }
 }

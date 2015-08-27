@@ -107,12 +107,12 @@ namespace WC.Controllers
                     db.Users.Add(userInfo);
                     db.SaveChanges();
 
-                    var photo = new Profile_Photo
-                    {
-                        UserID = userInfo.UserID,
-                        ProfileImageUrl = userInfo.Gender ? Common.MALE_AVATAR : Common.FEMALE_AVATAR
-                    };
-                    db.Profile_Photo.Add(photo);
+                    //var photo = new Profile_Photo
+                    //{
+                    //    UserID = userInfo.UserID,
+                    //    ProfileImageUrl = userInfo.Gender ? Common.MALE_AVATAR : Common.FEMALE_AVATAR
+                    //};
+                    //db.Profile_Photo.Add(photo);
 
                     var friendList = new FriendList
                     {

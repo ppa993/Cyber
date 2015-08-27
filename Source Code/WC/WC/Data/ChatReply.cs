@@ -24,7 +24,9 @@ namespace WC.Data
     
         public virtual ChatBox ChatBox { get; set; }
         public virtual ChatBox ChatBox1 { get; set; }
+        public virtual ChatBox ChatBox2 { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual User User2 { get; set; }
     }
 }

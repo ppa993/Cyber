@@ -10,15 +10,14 @@
 {
     var isPoster = item.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
     var isOwner = item.PostedOn.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
-    var alreadyLike = item.PostLikes.Any(x => x.UserID == currentUserId)
-        ? "Unlike"
-        : "Like";
+    var photo = ((WC.Controllers.BaseController)this.ViewContext.Controller).UrlImage("avatar", item.UserID);
+    var alreadyLike = item.PostLikes.Any(x => x.UserID == currentUserId) ? "Unlike" : "Like";
 
     <li id="post-block-@item.PostID" class="timeline-item">
         <div class="panel panel-white">
             <div class="panel-body post-block">
                 <div class="timeline-item-header post-header">
-                    <img src="@Url.Content(item.User.Profile_Photo.ProfileImageUrl)" alt="">
+                    <img src="@Url.Content(photo)" alt="">
                     <p>
                         <a href="@Url.Action(item.User.UserName, "Profile")">@item.User.FirstName @item.User.LastName</a>
                         @if (!item.UserID.Equals(item.PostedOn, StringComparison.InvariantCultureIgnoreCase))
@@ -98,15 +97,17 @@
                             {
                                 var comments = item.Comments.OrderBy(x => x.CommentedDate);
                                 //Html.RenderAction("CommentList", "Home", new { Model = item.Comments as List<WC.Data.Comment> });
+
                                 foreach (var comment in comments)
                                 {
                                     var isCommenter = comment.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
                                     var commentAlreadyLike = comment.CommentLikes.Any(x => x.UserID == User.Identity.GetUserId())
                                                         ? "Unlike"
                                                         : "Like";
+                                    var cmtPhoto = ((WC.Controllers.BaseController)this.ViewContext.Controller).UrlImage("avatar", comment.UserID);
                                     <div id="comment-block-@comment.CommentID" class="timeline-comment">
                                         <div class="timeline-comment-header">
-                                            <img src="@Url.Content(comment.User.Profile_Photo.ProfileImageUrl)" alt="">
+                                            <img src="@Url.Content(cmtPhoto)" alt="">
                                             <p>
                                                 <a href="@Url.Action(comment.User.UserName, "Profile")">@comment.User.FirstName @comment.User.LastName</a> <span id="comment-edit-@comment.CommentID" style="white-space: pre-line; font-weight: 400">@comment.CommentContent</span>
                                             </p>
@@ -148,5 +149,4 @@
             </div>
         </div>
     </li>
-}
-
+                        }

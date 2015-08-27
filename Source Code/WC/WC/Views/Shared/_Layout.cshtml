@@ -5,6 +5,9 @@
     var db = new CyberEntities();
     var currentUserId = User.Identity.GetUserId();
     var userInfo = new User();
+    var photo = db.AlbumDetails.FirstOrDefault(x => x.Active && x.PostedUserId == currentUserId && x.AlbumId == "avatar" + currentUserId);
+    var userPhoto = "";
+    if (userInfo != null) { userPhoto = photo.Url; }
     var displayName = "";
     var friendList = new List<FriendViewModel>();
     var friendRequest = new List<FriendViewModel>();
@@ -15,20 +18,24 @@
         {
             displayName = userInfo.FirstName;
             var list = userInfo.FriendLists.First().Friends.Where(x => x.FriendStatus);
-            friendList = list.Select(item => new FriendViewModel
-            {
-                FriendId = item.FriendId,
-                Name = item.User.FirstName + " " + item.User.LastName,
-                ProfileImgUrl = item.User.Profile_Photo.ProfileImageUrl,
-                UserName = item.FriendList.User.UserName
-            }).OrderBy(x => x.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
-            friendRequest = db.Friends.Where(x => x.FriendId == currentUserId && !x.FriendStatus).Select(item => new FriendViewModel
-            {
-                FriendId = item.FriendsListId,
-                Name = item.FriendList.User.FirstName + " " + item.FriendList.User.LastName,
-                ProfileImgUrl = item.FriendList.User.Profile_Photo.ProfileImageUrl,
-                UserName = item.FriendList.User.UserName
-            }).ToList();
+            //friendList = list.Select(item => new FriendViewModel
+            //{
+            //    FriendId = item.FriendId,
+            //    Name = item.User.FirstName + " " + item.User.LastName,
+            //    ProfileImgUrl = item.User.Profile_Photo.ProfileImageUrl,
+            //    UserName = item.FriendList.User.UserName
+            //}).OrderBy(x => x.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
+            friendList = ((WC.Controllers.BaseController)this.ViewContext.Controller).FriendList(currentUserId); 
+            friendRequest = ((WC.Controllers.BaseController)this.ViewContext.Controller).FriendRequest(currentUserId);
+
+
+            //friendRequest = db.Friends.Where(x => x.FriendId == currentUserId && !x.FriendStatus).Select(item => new FriendViewModel
+            //{
+            //    FriendId = item.FriendsListId,
+            //    Name = item.FriendList.User.FirstName + " " + item.FriendList.User.LastName,
+            //    ProfileImgUrl = ,
+            //    UserName = item.FriendList.User.UserName
+            //}).ToList();
         }
     }
     var notify = db.Notifications.Where(x => x.UserID == currentUserId && !x.Seen).OrderByDescending(y => y.NotificationDate).ToList();
@@ -521,8 +528,8 @@
                                 <a href="javascript:void(0);" class="waves-effect waves-button waves-classic sidebar-toggle hidden-lg hidden-md hidden-sm"><i class="fa fa-bars"></i></a>
                             </li>
                             @*<li>
-                                <a href="#cd-nav" class="waves-effect waves-button waves-classic cd-nav-trigger"><i class="fa fa-diamond"></i></a>
-                            </li>*@
+                                    <a href="#cd-nav" class="waves-effect waves-button waves-classic cd-nav-trigger"><i class="fa fa-diamond"></i></a>
+                                </li>*@
                             <li>
                                 <a href="javascript:void(0);" class="waves-effect waves-button waves-classic toggle-fullscreen"><i class="fa fa-expand"></i></a>
                             </li>
@@ -536,12 +543,12 @@
                                 </li>
                                 <li id="friend-request" class="dropdown">
                                     @{
-                            Html.RenderPartial("FriendRequest", friendRequest);
+                                        Html.RenderPartial("FriendRequest", friendRequest);
                                     }
                                 </li>
                                 <li id="notify-box" class="dropdown">
                                     @{
-                            Html.RenderPartial("NotificationPartial", notify);
+                                        Html.RenderPartial("NotificationPartial", notify);
                                     }
                                 </li>
                                 <li>
@@ -552,7 +559,7 @@
                                 <li class="dropdown">
                                     <a href="#" data-toggle="dropdown" aria-expanded="False" class="dropdown-toggle waves-effect waves-button waves-classic">
                                         <span class="user-name">@displayName<i class="fa fa-angle-down"></i></span>
-                                        <img class="img-circle avatar" src="@Url.Content(userInfo.Profile_Photo.ProfileImageUrl)" width="40" height="40" alt="">
+                                        <img class="img-circle avatar" src="@Url.Content(userPhoto)" width="40" height="40" alt="">
                                     </a>
                                     <ul class="dropdown-menu dropdown-list dropdown-profile" role="menu">
                                         <li role="presentation">
@@ -578,43 +585,43 @@
                                     </ul>
                                 </li>
                             </ul>
-                        }
+                                        }
                         <!-- Nav -->
                     </div><!-- Top Menu -->
                 </div>
             </div>
         </div><!-- Navbar -->
         <div class="page-sidebar sidebar visible">
-                <div class="page-sidebar-fixed">
-                    <ul class="menu accordion-menu">
-                        <li>
-                            <a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Home</p></a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Settings")" class="waves-effect waves-button"><span class="menu-icon fa fa-cogs"></span><p>Setting</p></a>
-                        </li>
-                        <li>
-                            <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon fa fa-comments"></span><p>Chat</p></a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="page-sidebar-fixed">
+                <ul class="menu accordion-menu">
+                    <li>
+                        <a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Home</p></a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Settings")" class="waves-effect waves-button"><span class="menu-icon fa fa-cogs"></span><p>Setting</p></a>
+                    </li>
+                    <li>
+                        <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon fa fa-comments"></span><p>Chat</p></a>
+                    </li>
+                </ul>
+            </div>
             @*<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">
-                    <ul class="menu accordion-menu">
-                        <li><a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Home</p></a></li>
-                        <li><a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
-                        <li class="droplink">
-                                <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>MessageBox</p></a>
+                    <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">
+                        <ul class="menu accordion-menu">
+                            <li><a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Home</p></a></li>
+                            <li><a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
+                            <li class="droplink">
+                                    <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>MessageBox</p></a>
+                                </li>
+                            <li>
+                                <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Chat</p></a>
                             </li>
-                        <li>
-                            <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Chat</p></a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- Page Sidebar Inner -->*@
+                        </ul>
+                    </div>
+                </div><!-- Page Sidebar Inner -->*@
         </div>
         @RenderBody()
     </main><!-- Page Content -->

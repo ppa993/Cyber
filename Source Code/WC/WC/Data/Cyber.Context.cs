@@ -26,10 +26,11 @@ namespace WC.Data
         }
     
         public virtual DbSet<Album> Albums { get; set; }
-        public virtual DbSet<ChatBox> ChatBoxes { get; set; }
-        public virtual DbSet<ChatReply> ChatReplies { get; set; }
+        public virtual DbSet<AlbumDetail> AlbumDetails { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<CommentLike> CommentLikes { get; set; }
+        public virtual DbSet<ChatBox> ChatBoxes { get; set; }
+        public virtual DbSet<ChatReply> ChatReplies { get; set; }
         public virtual DbSet<FriendList> FriendLists { get; set; }
         public virtual DbSet<Friend> Friends { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
@@ -39,7 +40,6 @@ namespace WC.Data
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Post_Type> Post_Type { get; set; }
         public virtual DbSet<PostLike> PostLikes { get; set; }
-        public virtual DbSet<Profile_Photo> Profile_Photo { get; set; }
         public virtual DbSet<Relationship_Type> Relationship_Type { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Role_Type> Role_Type { get; set; }
@@ -47,6 +47,5 @@ namespace WC.Data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Visible_Type> Visible_Type { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
-        public virtual DbSet<AlbumDetail> AlbumDetails { get; set; }
     }
 }

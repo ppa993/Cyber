@@ -238,9 +238,6 @@
     <Compile Include="Data\Post_Type.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
-    <Compile Include="Data\Profile_Photo.cs">
-      <DependentUpon>Cyber.tt</DependentUpon>
-    </Compile>
     <Compile Include="Data\Relationship_Type.cs">
       <DependentUpon>Cyber.tt</DependentUpon>
     </Compile>
@@ -285,6 +282,7 @@
     <Compile Include="Models\AddFriendViewModel.cs" />
     <Compile Include="Models\FriendViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LiteAlbum.cs" />
     <Compile Include="Models\NotificationViewModel.cs" />
     <Compile Include="Models\PostViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -330,6 +328,7 @@
     <Content Include="Content\Script\curvedLines.js" />
     <Content Include="Content\Script\cyber.common.js" />
     <Content Include="Content\Script\dashboard.js" />
+    <Content Include="Content\Script\dropzone.js" />
     <Content Include="Content\Script\jquery-2.1.4.min.js" />
     <Content Include="Content\Script\jquery-ui.min.js" />
     <Content Include="Content\Script\jquery.blockui.js" />
@@ -350,6 +349,8 @@
     <Content Include="Content\Script\jquery.validate.unobtrusive.js" />
     <Content Include="Content\Script\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\Script\jquery.waypoints.min.js" />
+    <Content Include="Content\Script\jssor.js" />
+    <Content Include="Content\Script\jssor.slider.js" />
     <Content Include="Content\Script\main%281%29.js" />
     <Content Include="Content\Script\main.js" />
     <Content Include="Content\Script\MetroJs.min.js" />
@@ -365,6 +366,7 @@
     <Content Include="Content\Style\component.css" />
     <Content Include="Content\Style\custom.css" />
     <Content Include="Content\Style\datepicker.css" />
+    <Content Include="Content\Style\dropzone.css" />
     <Content Include="Content\Style\font-awesome.css" />
     <Content Include="Content\Style\green.css" />
     <Content Include="Content\Style\loading.css" />
@@ -414,8 +416,11 @@
     <Content Include="Views\Shared\_ChangePostVisibleType.cshtml" />
     <Content Include="Views\Shared\FriendRequest.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\Shared\PostListPartial.cshtml" />
+    <Content Include="Views\Shared\LiteAlbumPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Images\UserUpload\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>

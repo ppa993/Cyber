@@ -18,6 +18,7 @@ namespace WC.Data
         {
             this.ChatReplies = new HashSet<ChatReply>();
             this.ChatReplies1 = new HashSet<ChatReply>();
+            this.ChatReplies2 = new HashSet<ChatReply>();
             this.SettingChatBoxes = new HashSet<SettingChatBox>();
         }
     
@@ -32,8 +33,11 @@ namespace WC.Data
         public virtual User User1 { get; set; }
         public virtual User User2 { get; set; }
         public virtual User User3 { get; set; }
+        public virtual User User4 { get; set; }
+        public virtual User User5 { get; set; }
         public virtual ICollection<ChatReply> ChatReplies { get; set; }
         public virtual ICollection<ChatReply> ChatReplies1 { get; set; }
+        public virtual ICollection<ChatReply> ChatReplies2 { get; set; }
         public virtual ICollection<SettingChatBox> SettingChatBoxes { get; set; }
     }
 }

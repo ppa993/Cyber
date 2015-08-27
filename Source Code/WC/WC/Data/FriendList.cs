@@ -18,6 +18,7 @@ namespace WC.Data
         {
             this.Friends = new HashSet<Friend>();
             this.Friends1 = new HashSet<Friend>();
+            this.Friends2 = new HashSet<Friend>();
         }
     
         public string Id { get; set; }
@@ -26,7 +27,9 @@ namespace WC.Data
     
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual User User2 { get; set; }
         public virtual ICollection<Friend> Friends { get; set; }
         public virtual ICollection<Friend> Friends1 { get; set; }
+        public virtual ICollection<Friend> Friends2 { get; set; }
     }
 }

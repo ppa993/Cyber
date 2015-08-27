@@ -2,26 +2,47 @@
 @using WC.Models
 @model ProfileViewModel
 @{
+    var db = new CyberEntities();
+    var litePhoto = (from u in db.Users
+                     from a in db.AlbumDetails
+                     where u.UserID == Model.Id
+                     && u.UserID == a.PostedUserId
+                     select new LiteAlbum()
+                     {
+                         AlbumId = a.AlbumId,
+                         DetailAlbumId = a.Id,
+                         Url = a.Url,
+                         UserId = u.UserID
+                     }).Take(8).ToList();
     ViewBag.Title = Model.DisplayName;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link href="~/Content/Style/dropzone.css" rel="stylesheet" />
+<script src="~/Content/Script/dropzone.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <script type="text/javascript">
-    function PostStatus() {
-        var url = '@Url.Action("PostStatus", "Post")';
-        var text = $("#status-content").val();
-        if (text === "") return;
+    function PostStatus() { 
+        var files = myDropzone.files;
+        alert(files.length);
+        var text = $("#status-content").val();  
 
-        $.post(url, { "postedOn": '@Model.Id', "content": text },
-            function (data) {
-                if (data === "Failed") {
-                    showMsg("Unable to post your status. Please try again.");
-                } else {
-                    $("#timeline-posts").prepend(data);
-                    $("#status-content").val('');
-                }
-            });
+        $.post('@Url.Action("PostStatus", "Post")', { "postedOn": '@Model.Id', "content": text },
+                function (data) {
+                    if (data === "Failed") {
+                        showMsg("Unable to post your status. Please try again.");
+                    } else {
+                        $("#timeline-posts").prepend(data);
+                        $("#status-content").val('');
+                    }
+                });
     }
+
+    Dropzone.myAwesomeDropzone = false;
+
+    var myDropzone = new Dropzone(element, {
+        url: '@Url.Action("UploadImage")',
+        autoProcessQueue: false,
+    }); 
 </script>
 
 <script type="text/javascript">
@@ -47,12 +68,7 @@
         var url = $("#btnUpdateProfileModal").attr("data-item-url");
     }
 
-    $(function () {
-        //$(document).on('mouseenter', '.divbutton', function () {
-        //    $(this).find(":button").show();
-        //}).on('mouseleave', '.divbutton', function () {
-        //    $(this).find(":button").hide();
-        //});
+    $(function () {  
 
         $("#imgprofile").mouseenter(function () {
             $("#btchangeavatar").show();
@@ -62,6 +78,20 @@
             $("#btchangeavatar").hide();
         });
     });
+
+    var i = 0;
+    function OpenUploadPost() {
+        i++;
+        if (i == 1) {
+            $("#dropzone").show();
+        }
+        else {
+            $("#dropzone").show();
+            i = 0;
+        }
+    }
+
+
 </script>
 <style>
     .btn-available {
@@ -87,7 +117,6 @@
         .btn-added:hover {
             background: #0272c3;
         }
-
 </style>
 <input type="hidden" id="hidden-user-id" value="@Model.Id" />
 <link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
@@ -98,7 +127,7 @@
                 <div id="imgprofile" class="profile-image-container" style="position:relative">
                     <img src="@Url.Content(Model.Avatar)" alt="" />
                     <a href="javascript:void(0);" class="btn" id="btchangeavatar" onclick="return showMsg('In processing...');"
-                       style="position:absolute; bottom:-30px; left:125px; display:none"><i>Change Avatar</i></a>
+                       style="position:absolute; bottom:-30px; left:145px; display:none"><i>Change Avatar</i></a>
                 </div>
             </div>
             <div class="col-md-12 profile-info">
@@ -158,51 +187,67 @@
                 <hr>
                 @if (!Model.IsMyTimeline && ViewData["FriendStatus"] != null)
                 {
-                    switch (((AddFriendViewModel) ViewData["FriendStatus"]).Type)
+                    switch (((AddFriendViewModel)ViewData["FriendStatus"]).Type)
                     {
                         case FriendType.NoneFriend:
-                            <button class="btn btn-block btn-available" onclick="FriendControl(0);">
-                                <i class="fa fa-plus m-r-xs"></i>Add Friend
-                            </button>
+                <button class="btn btn-block btn-available" onclick="FriendControl(0);">
+                    <i class="fa fa-plus m-r-xs"></i>Add Friend
+                </button>
                             break;
                         case FriendType.MyPendingFriend:
-                            <button class="btn btn-block btn-wait-accept" onclick="FriendControl(1);">
-                                <i class="fa fa-plus m-r-xs"></i>Pending
-                            </button>
+                <button class="btn btn-block btn-wait-accept" onclick="FriendControl(1);">
+                    <i class="fa fa-plus m-r-xs"></i>Pending
+                </button>
                             break;
                         case FriendType.HisPendingFriend:
-                            <button class="btn btn-block btn-wait-accept" onclick="FriendControl(2);">
-                                <i class="fa fa-plus m-r-xs"></i>Accept
-                            </button>
+                <button class="btn btn-block btn-wait-accept" onclick="FriendControl(2);">
+                    <i class="fa fa-plus m-r-xs"></i>Accept
+                </button>
                             break;
                         case FriendType.Friend:
-                            <button class="btn btn-block btn-added" onclick="FriendControl(3);">
-                                <i class="fa fa-plus m-r-xs"></i>Friend
-                            </button>
+                <button class="btn btn-block btn-added" onclick="FriendControl(3);">
+                    <i class="fa fa-plus m-r-xs"></i>Friend
+                </button>
                             break;
                     }
                 }
-                <hr/>
-                <div class="panel panel-white">
+                <hr />
+                <div id="box_photo" class="panel panel-white">
                     <div class="panel-heading">
-                        <div class="panel-title">Friends <small>(@Model.FriendCount)</small>
+                        <div class="panel-title">
+                            Photo
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        @{
+                            if (litePhoto.Any())
+                            {
+                                Html.RenderPartial("LiteAlbumPartial", litePhoto);
+                            }
+                        }
+                    </div>
+                </div>
+                <div id="box_friend" class="panel panel-white">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            Friends <small>(@Model.FriendCount)</small>
                         </div>
                     </div>
                     <div class="panel-body">
                         <div class="team">
                             @foreach (var friend in @Model.Friends)
                             {
-                                <div class="team-member">
-                                    <a href="@Url.Action(friend.User.UserName, "Profile")">
-                                        <img src="@Url.Content(friend.User.Profile_Photo.ProfileImageUrl)" alt="@friend.User.FirstName @friend.User.LastName" data-toggle="tooltip" title="@friend.User.FirstName @friend.User.LastName"/>
-
-                                    </a>
-                                </div>
+                                var photo = db.AlbumDetails.FirstOrDefault(x => x.Active && x.PostedUserId == friend.FriendId && x.AlbumId == "avatar" + friend.FriendId);
+                            <div class="team-member">
+                                <a href="@Url.Action(friend.User.UserName, "Profile")">
+                                    <img src="@Url.Content(photo.Url)" alt="@friend.User.FirstName @friend.User.LastName" data-toggle="tooltip" title="@friend.User.FirstName @friend.User.LastName" />
+                                </a>
+                            </div>
                             }
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-white">
+                <div id="box_about" class="panel panel-white">
                     <div class="panel-heading">
                         <div class="panel-title">About me</div>
                     </div>
@@ -218,13 +263,25 @@
                         <div class="panel-body">
                             <div class="post">
                                 <textarea id="status-content" class="form-control" placeholder="What's in your mind?" rows="4=6"></textarea>
+                                <div id="dropzone" style="display:none;">
+                                    <form action="@Url.Action("UploadImage")" class="dropzone dz-clickable" id="demo-upload" enctype="multipart/form-data">
+
+                                        <div class="dz-message">
+                                            Drop files here or click to upload.<br>
+                                        </div>
+                                        <div class="fallback">
+                                            <input id="file_upload_post" type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
+                                        </div>
+                                    </form>
+
+                                </div>
                                 <div class="post-options">
-                                    <a href="#"><i class="icon-camera"></i></a>
+                                    <a href="javascript:void(0);" onclick="OpenUploadPost();"><i class="icon-camera"></i></a>
                                     <a href="#"><i class="icon-camcorder"></i></a>
                                     <a href="#"><i class="icon-music-tone-alt"></i></a>
                                     <a href="#"><i class="icon-link"></i></a>
                                     <a href="#"><i class="icon-microphone"></i></a>
-                                    <button class="btn btn-facebook pull-right" onclick=" PostStatus(); ">Post</button>
+                                    <button id="btn_upload_post" class="btn btn-facebook pull-right" onclick=" PostStatus(); ">Post</button>
                                     @if (Model.IsMyTimeline)
                                     {
                                         Html.RenderPartial("_SelectVisibility", Model.Setting);
@@ -245,7 +302,8 @@
                     <ul class="list-unstyled" id="timeline-posts">
                         @if (Model.Posts.Count > 0)
                         {
-                            Html.RenderAction("PostList", "Post", new {Model = Model.Posts as List<Post>});
+                            //Html.RenderAction("PostList", "Post", new {Model = Model.Posts as List<Post>});
+                            Html.RenderPartial("PostListPartial", Model.Posts as List<Post>);
                         }
                     </ul>
                 </div>

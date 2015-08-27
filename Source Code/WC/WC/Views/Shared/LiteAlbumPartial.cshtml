@@ -1,0 +1,31 @@
+﻿@model List<WC.Models.LiteAlbum>
+@section script{
+    <script src="~/Content/Script/jssor.js"></script>
+    <script src="~/Content/Script/jssor.slider.js"></script>
+    <script>
+
+        jQuery(document).ready(function ($) {
+            var options = {
+
+                $AutoPlay: true,                                   //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
+                $DragOrientation: 1                                //[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0)
+            };
+
+            var jssor_slider1 = new $JssorSlider$("slider1_container", options);
+        });
+    </script>
+}
+@if (Model.Count != 0)
+{
+    foreach (var p in Model)
+    {
+        <a class="box_photo_a" href="javascript:void(0);" data-detail-id="@p.DetailAlbumId" data-album-id="@p.DetailAlbumId"
+           data-user-id="@p.UserId">
+            <img class="box_photo_img" src="@Url.Content(p.Url)" />
+        </a>
+    }
+}
+else
+{
+    <span>Empty folder</span>
+}
