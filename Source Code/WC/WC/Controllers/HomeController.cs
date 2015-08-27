@@ -56,6 +56,11 @@ namespace WC.Controllers
                 user.DisplayName = fromUserInfo.FirstName + " " + fromUserInfo.LastName;
                 user.Address = fromUserInfo.Address;
                 user.Email = fromUserInfo.Email;
+                user.BirthDay = fromUserInfo.MySettings.First().ShowBirthday == (int) ShowBirthDay.Show
+                    ? fromUserInfo.BirthDay.ToString(DateTimeFormat.DDMMYYYY)
+                    : fromUserInfo.MySettings.First().ShowBirthday == (int) ShowBirthDay.HideYear
+                        ? fromUserInfo.BirthDay.ToString(DateTimeFormat.DDMM)
+                        : string.Empty;
                 user.Gender = fromUserInfo.Gender;
                 user.FriendCount = fromUserInfo.Friends.Count(x => x.FriendStatus);
                 user.Posts = postList;
@@ -124,8 +129,10 @@ namespace WC.Controllers
             return View(user);
         }
 
-        public ActionResult Settings()
+        public ActionResult Settings(ManageMessageId? message)
         {
+            ViewBag.StatusMessage =
+                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed." : "";
             try
             {
                 var currentUserInfo = db.Users.First(x => x.UserID == CurrentUserID);
@@ -136,9 +143,11 @@ namespace WC.Controllers
                 else
                 {
                     var setting = currentUserInfo.MySettings.First();
+                    ViewBag.DisplayName = currentUserInfo.FirstName + " " + currentUserInfo.LastName;
                     ViewBag.AllowOthersPost = setting.AllowOtherToPost;
                     ViewBag.MyPost = setting.DefaultMyPostVisibility;
                     ViewBag.OthersPost = setting.DefaultOtherPostVisibility;
+                    ViewBag.ShowBirthday = setting.ShowBirthday;
                     return View();
                 }
             }
@@ -408,9 +417,13 @@ namespace WC.Controllers
                     {
                         setting.DefaultMyPostVisibility = int.Parse(value);
                     }
-                    else
+                    else if (name == "OtherPost")
                     {
                         setting.DefaultOtherPostVisibility = int.Parse(value);
+                    }
+                    else
+                    {
+                        setting.ShowBirthday = int.Parse(value);
                     }
                     db.SaveChanges();
                     return ActionResults.Succeed.ToString();

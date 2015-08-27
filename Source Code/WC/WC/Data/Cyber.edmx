@@ -106,6 +106,7 @@
           <Property Name="DefaultMyPostVisibility" Type="int" Nullable="false" />
           <Property Name="DefaultOtherPostVisibility" Type="int" Nullable="false" />
           <Property Name="AllowOtherToPost" Type="bit" Nullable="false" />
+          <Property Name="ShowBirthday" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -1336,6 +1337,7 @@
           <Property Name="DefaultMyPostVisibility" Type="Int32" Nullable="false" />
           <Property Name="DefaultOtherPostVisibility" Type="Int32" Nullable="false" />
           <Property Name="AllowOtherToPost" Type="Boolean" Nullable="false" />
+          <Property Name="ShowBirthday" Type="Int32" Nullable="false" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_MySetting_User" FromRole="MySetting" ToRole="User" />
           <NavigationProperty Name="Visible_Type" Relationship="CyberModel.FK_MySetting_Visible_Type" FromRole="MySetting" ToRole="Visible_Type" />
         </EntityType>
@@ -2104,6 +2106,7 @@
           <EntitySetMapping Name="MySettings">
             <EntityTypeMapping TypeName="CyberModel.MySetting">
               <MappingFragment StoreEntitySet="MySetting">
+                <ScalarProperty Name="ShowBirthday" ColumnName="ShowBirthday" />
                 <ScalarProperty Name="AllowOtherToPost" ColumnName="AllowOtherToPost" />
                 <ScalarProperty Name="DefaultOtherPostVisibility" ColumnName="DefaultOtherPostVisibility" />
                 <ScalarProperty Name="DefaultMyPostVisibility" ColumnName="DefaultMyPostVisibility" />

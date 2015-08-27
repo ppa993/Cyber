@@ -19,6 +19,7 @@ namespace WC.Data
         public int DefaultMyPostVisibility { get; set; }
         public int DefaultOtherPostVisibility { get; set; }
         public bool AllowOtherToPost { get; set; }
+        public int ShowBirthday { get; set; }
     
         public virtual User User { get; set; }
         public virtual Visible_Type Visible_Type { get; set; }

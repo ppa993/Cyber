@@ -128,7 +128,8 @@ namespace WC.Controllers
                         UserID = user.Id,
                         AllowOtherToPost = true,
                         DefaultMyPostVisibility = (int)VisibleType.Friend,
-                        DefaultOtherPostVisibility = (int)VisibleType.Friend
+                        DefaultOtherPostVisibility = (int)VisibleType.Friend,
+                        ShowBirthday = (int)ShowBirthDay.Show
                     };
                     db.MySettings.Add(mySetting);
 
@@ -157,26 +158,6 @@ namespace WC.Controllers
             return View(model);
         }
 
-
-        //
-        // POST: /Account/Disassociate
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
-        {
-            ManageMessageId? message = null;
-            IdentityResult result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
-            if (result.Succeeded)
-            {
-                message = ManageMessageId.RemoveLoginSuccess;
-            }
-            else
-            {
-                message = ManageMessageId.Error;
-            }
-            return RedirectToAction("Manage", new { Message = message });
-        }
-
         //
         // GET: /Account/Manage
         public ActionResult Manage(ManageMessageId? message)
@@ -188,7 +169,7 @@ namespace WC.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
-            ViewBag.ReturnUrl = Url.Action("Manage");
+            ViewBag.ReturnUrl = Url.Action("Settings", "");
             return View();
         }
 
@@ -200,7 +181,7 @@ namespace WC.Controllers
         {
             bool hasPassword = HasPassword();
             ViewBag.HasLocalPassword = hasPassword;
-            ViewBag.ReturnUrl = Url.Action("Manage");
+            ViewBag.ReturnUrl = Url.Action("Settings","");
             if (hasPassword)
             {
                 if (ModelState.IsValid)
@@ -208,7 +189,7 @@ namespace WC.Controllers
                     IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+                        return RedirectToAction("Settings", "", new { Message = ManageMessageId.ChangePasswordSuccess });
                     }
                     else
                     {
@@ -230,7 +211,7 @@ namespace WC.Controllers
                     IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+                        return RedirectToAction("Settings", "", new { Message = ManageMessageId.SetPasswordSuccess });
                     }
                     else
                     {
@@ -242,35 +223,7 @@ namespace WC.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
-        //
-        // POST: /Account/LinkLogin
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LinkLogin(string provider)
-        {
-            // Request a redirect to the external login provider to link a login for the current user
-            return new ChallengeResult(provider, Url.Action("LinkLoginCallback", "Account"), User.Identity.GetUserId());
-        }
-
-        //
-        // GET: /Account/LinkLoginCallback
-        public async Task<ActionResult> LinkLoginCallback()
-        {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
-            if (loginInfo == null)
-            {
-                return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
-            }
-            var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Manage");
-            }
-            return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
-        }
-
-
+        
         //
         // POST: /Account/LogOff
         [HttpPost]
@@ -280,7 +233,6 @@ namespace WC.Controllers
             AuthenticationManager.SignOut();
             return RedirectToAction("Login", "Account");
         }
-
 
         protected override void Dispose(bool disposing)
         {

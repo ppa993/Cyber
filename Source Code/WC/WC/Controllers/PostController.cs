@@ -27,7 +27,7 @@ namespace WC.Controllers
                     ViewBag.Title = TruncateAtWord(post.PostContent, 50);
 
                     //update seen notify
-                    var notify = db.Notifications.FirstOrDefault(x => x.UserID == User.Identity.GetUserId() && x.NotificationItemID == postid && !x.Seen);
+                    var notify = db.Notifications.FirstOrDefault(x => x.UserID == CurrentUserID && x.NotificationItemID == postid && !x.Seen);
                     if (notify != null)
                     {
                         notify.Seen = true;
@@ -469,7 +469,6 @@ namespace WC.Controllers
         {
             var morePost = new MorePostViewModel();
             var fromUser = UserManager.FindById(userId);
-            var toUser = CurrentUserID;
 
             var posts = GetPosts(fromUser);
             var notLoadedCount = posts.Count - loadedPostCount;
@@ -557,10 +556,12 @@ namespace WC.Controllers
                 }
                 else
                 {
-                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                                        .Where(x => IsAuthorizeToViewPost(x))
-                                        .OrderByDescending(x => x.PostedDate)
-                                        .ToList();
+                    //listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                    //                    .Where(x => IsAuthorizeToViewPost(x))
+                    //                    .OrderByDescending(x => x.PostedDate)
+                    //                    .ToList();
+                    var temp = db.Posts.Where(x => x.PostedOn == fromUser.Id).OrderByDescending(x => x.PostedDate);
+                    listView.AddRange(temp.Where(item => IsAuthorizeToViewPost(item)));
                 }
             }
             catch (Exception exception)

@@ -42,6 +42,15 @@
                 { value: 3, text: 'Private' }
             ]
         });
+        $('#show-birthday').editable({
+            showbuttons: false,
+            value: @ViewBag.ShowBirthday,
+            source: [
+                { value: 1, text: 'Friends' },
+                { value: 2, text: 'Friends, but hide year' },
+                { value: 3, text: 'Only me' }
+            ]
+        });
     });
 </script>
 
@@ -56,9 +65,24 @@
                     <div class="panel-body">
                         <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
                             <div class="panel panel-success">
+                                <div class="panel-heading" role="tab" id="headingTwo2">
+                                    <h4 class="panel-title">
+                                        <a class="" data-toggle="collapse" href="#2" aria-expanded="True" aria-controls="collapseTwo">
+                                            Change Password
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo2">
+                                    <div class="panel-body">
+                                        <p class="text-success">@ViewBag.StatusMessage</p>
+                                        @Html.Partial("_ChangePasswordPartial")
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-success">
                                 <div class="panel-heading" role="tab" id="headingOne1">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion2" href="#1" aria-expanded="true" aria-controls="collapseOne">
+                                        <a data-toggle="collapse" href="#1" aria-expanded="True" aria-controls="collapseOne">
                                             My Settings
                                         </a>
                                     </h4>
@@ -72,7 +96,7 @@
                                                         <strong>Allow friends to post on my timeline</strong>
                                                     </td>
                                                     <td width="65%">
-                                                        <input type="checkbox" class="js-switch" @isChecked/>
+                                                        <input type="checkbox" class="js-switch" @isChecked />
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -91,23 +115,16 @@
                                                         <a href="#" id="other-post-visibility" data-type="select" data-name="OtherPost" data-pk="1" data-url="@Url.Action("UpdateDefaultVisibleType")"></a>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td width="35%">
+                                                        <strong>Who can see my birthday?</strong>
+                                                    </td>
+                                                    <td width="65%">
+                                                        <a href="#" id="show-birthday" data-type="select" data-name="ShowBirthday" data-pk="1" data-url="@Url.Action("UpdateDefaultVisibleType")"></a>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="panel panel-danger">
-                                <div class="panel-heading" role="tab" id="headingTwo2">
-                                    <h4 class="panel-title">
-                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion2" href="#2" aria-expanded="false" aria-controls="collapseTwo">
-                                            Change Password
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo2">
-                                    <div class="panel-body">
-                                        <p class="text-success">@ViewBag.StatusMessage</p>
-                                        @Html.Partial("_ChangePasswordPartial")
                                     </div>
                                 </div>
                             </div>
@@ -118,7 +135,7 @@
         </div><!-- Row -->
     </div><!-- Main Wrapper -->
     <div class="page-footer">
-        <p class="no-s">2015 © Modern by Steelcoders.</p>
+        <p class="no-s">2015 © Cyber</p>
     </div>
 </div>
 

@@ -405,7 +405,7 @@
                 <h3 class="text-center">@Model.DisplayName</h3>
                 <hr>
                 <script type="text/javascript">
-                    $(function () {
+                    $(function() {
                         var li = '<li><p><i class="#ICON m-r-xs"></i>#STRING</p></li>';
                         if ('@Model.Address' != '') {
                             var address = li.replace('#ICON', 'icon-map');
@@ -448,7 +448,7 @@
                 <hr>
                 @if (!Model.IsMyTimeline && ViewData["FriendStatus"] != null)
                 {
-                    switch (((AddFriendViewModel)ViewData["FriendStatus"]).Type)
+                    switch (((AddFriendViewModel) ViewData["FriendStatus"]).Type)
                     {
                         case FriendType.NoneFriend:
                             <button class="btn btn-block btn-available" onclick="FriendControl(0);">
@@ -472,10 +472,11 @@
                             break;
                     }
                 }
-                <hr />
+                <hr/>
                 <div class="panel panel-white">
                     <div class="panel-heading">
-                        <div class="panel-title">Friends <small>(@Model.FriendCount)</small></div>
+                        <div class="panel-title">Friends <small>(@Model.FriendCount)</small>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="team">
@@ -483,7 +484,7 @@
                             {
                                 <div class="team-member">
                                     <a href="@Url.Action(friend.User.UserName, "Profile")">
-                                        <img src="@Url.Content(friend.User.Profile_Photo.ProfileImageUrl)" alt="@friend.User.FirstName @friend.User.LastName" data-toggle="tooltip" title="@friend.User.FirstName @friend.User.LastName" />
+                                        <img src="@Url.Content(friend.User.Profile_Photo.ProfileImageUrl)" alt="@friend.User.FirstName @friend.User.LastName" data-toggle="tooltip" title="@friend.User.FirstName @friend.User.LastName"/>
 
                                     </a>
                                 </div>
@@ -534,7 +535,7 @@
                     <ul class="list-unstyled" id="timeline-posts">
                         @if (Model.Posts.Count > 0)
                         {
-                            Html.RenderAction("PostList", "Post", new { Model = Model.Posts as List<Post> });
+                            Html.RenderAction("PostList", "Post", new {Model = Model.Posts as List<Post>});
                         }
                     </ul>
                 </div>
@@ -550,6 +551,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="page-footer">
+        <p class="no-s">2015 © Cyber</p>
     </div>
 </div>
 <script>

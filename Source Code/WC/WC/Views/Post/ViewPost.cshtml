@@ -305,12 +305,15 @@
                     <div class="profile-timeline">
                         <ul class="list-unstyled" id="timeline-posts">
                             @{
-                                Html.RenderAction("PostList", "Post", new { Model });
+                                Html.RenderAction("PostList", "Post", new {Model});
                             }
                         </ul>
                     </div>
                 </div>
             }
         </div>
+    </div>
+    <div class="page-footer">
+        <p class="no-s">2015 © Cyber</p>
     </div>
 </div>
