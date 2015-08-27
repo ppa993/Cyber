@@ -298,3 +298,8 @@
     .toast-info {
          background-color:#22BAA0
      }
+
+    /* Layout fixed nav */
+    .fixed {
+        position: fixed;
+    }
