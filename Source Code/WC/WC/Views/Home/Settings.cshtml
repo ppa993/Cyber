@@ -17,11 +17,11 @@
     $(document).ready(function() {
         var allow = document.querySelector('.js-switch');
         allow.onchange = function() {
-            var url = '@Url.Action("AllowOtherPost")';
+        var url = '@Url.Action("AllowOtherPost")';
 
-            $.post(url, { "isAllow": allow.checked },
-                function (data) {
-                });
+        $.post(url, { "isAllow": allow.checked },
+            function (data) {
+            });
         }
 
         $('#my-post-visibility').editable({
