@@ -1091,3 +1091,39 @@ The statement has been terminated.
    at System.Data.Entity.Internal.InternalContext.SaveChanges()
 
 
+28/8/2015 2:39:29 PM
+LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String, System.StringComparison)' method, and this method cannot be translated into a store expression. - 
+
+
+28/8/2015 2:39:38 PM
+LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String, System.StringComparison)' method, and this method cannot be translated into a store expression. - 
+
+
+28/8/2015 2:40:23 PM
+LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String, System.StringComparison)' method, and this method cannot be translated into a store expression. - 
+
+
+28/8/2015 2:40:25 PM
+LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String, System.StringComparison)' method, and this method cannot be translated into a store expression. - 
+
+
+28/8/2015 2:40:25 PM
+LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String, System.StringComparison)' method, and this method cannot be translated into a store expression. - 
+
+
+28/8/2015 2:41:46 PM
+LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String, System.StringComparison)' method, and this method cannot be translated into a store expression. - 
+
+
+28/8/2015 2:42:51 PM
+LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String, System.StringComparison)' method, and this method cannot be translated into a store expression. - 
+
+
+28/8/2015 2:44:21 PM
+LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String, System.StringComparison)' method, and this method cannot be translated into a store expression. - 
+
+
+28/8/2015 2:45:08 PM
+LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String, System.StringComparison)' method, and this method cannot be translated into a store expression. - 
+
+
