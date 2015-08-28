@@ -561,7 +561,7 @@
                                             </a>
                                         </li>
                                         <li role="presentation">
-                                            <a href="@Url.Action(User.Identity.Name, "Profile")">
+                                            <a href="@Url.Action("Calendar")">
                                                 <i class="fa fa-calendar"></i> Calendar
                                             </a>
                                         </li>
@@ -775,7 +775,7 @@
                 <div class="modal-body" id="contentModal">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-facebook" data-dismiss="modal" onclick="closeMsg()">Close</button>
+                    <button type="button" class="btn btn-facebook" id="btn-close-message" data-dismiss="modal" onclick="closeMsg()">Close</button>
                 </div>
             </div>
 

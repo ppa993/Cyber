@@ -1,0 +1,10 @@
+﻿@model List<WC.Data.MyEvent>
+
+@foreach (var item in Model) {
+    <div class="calendar-event">
+        <p>@item.EventTitle</p>
+        <a href="javascript:void(0);" data-id="@item.EventID" class="remove-calendar-event">
+            <i class="fa fa-remove"></i>
+        </a>
+    </div>
+}

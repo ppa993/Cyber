@@ -17,6 +17,8 @@ namespace WC.Data
         public User()
         {
             this.Albums = new HashSet<Album>();
+            this.AlbumDetails = new HashSet<AlbumDetail>();
+            this.CalendarEvents = new HashSet<CalendarEvent>();
             this.ChatBoxes = new HashSet<ChatBox>();
             this.ChatBoxes1 = new HashSet<ChatBox>();
             this.ChatBoxes2 = new HashSet<ChatBox>();
@@ -34,11 +36,11 @@ namespace WC.Data
             this.Posts = new HashSet<Post>();
             this.Posts1 = new HashSet<Post>();
             this.PostLikes = new HashSet<PostLike>();
+            this.Reports = new HashSet<Report>();
             this.Roles = new HashSet<Role>();
             this.SettingChatBoxes = new HashSet<SettingChatBox>();
             this.SettingChatBoxes1 = new HashSet<SettingChatBox>();
-            this.Reports = new HashSet<Report>();
-            this.AlbumDetails = new HashSet<AlbumDetail>();
+            this.MyEvents = new HashSet<MyEvent>();
         }
     
         public string UserID { get; set; }
@@ -56,6 +58,8 @@ namespace WC.Data
         public string Studied { get; set; }
     
         public virtual ICollection<Album> Albums { get; set; }
+        public virtual ICollection<AlbumDetail> AlbumDetails { get; set; }
+        public virtual ICollection<CalendarEvent> CalendarEvents { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes1 { get; set; }
         public virtual ICollection<ChatBox> ChatBoxes2 { get; set; }
@@ -75,11 +79,11 @@ namespace WC.Data
         public virtual ICollection<PostLike> PostLikes { get; set; }
         public virtual Profile_Photo Profile_Photo { get; set; }
         public virtual Relationship_Type Relationship_Type { get; set; }
+        public virtual ICollection<Report> Reports { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<Role> Roles { get; set; }
         public virtual ICollection<SettingChatBox> SettingChatBoxes { get; set; }
         public virtual ICollection<SettingChatBox> SettingChatBoxes1 { get; set; }
-        public virtual ICollection<Report> Reports { get; set; }
-        public virtual ICollection<AlbumDetail> AlbumDetails { get; set; }
+        public virtual ICollection<MyEvent> MyEvents { get; set; }
     }
 }

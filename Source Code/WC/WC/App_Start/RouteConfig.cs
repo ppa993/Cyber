@@ -40,7 +40,7 @@ namespace WC
             routes.MapRoute(
                 "UserCalendar",                                           // Route name
                 "Calendar",                            // URL with parameters
-                new { controller = "Home", action = "Calendar" }  // Parameter defaults
+                new { controller = "Calendar", action = "Calendar" }  // Parameter defaults
             );
 
             routes.MapRoute(

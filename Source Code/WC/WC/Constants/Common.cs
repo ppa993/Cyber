@@ -45,6 +45,8 @@ namespace WC.Constants
         public const string HHMM = "HH:mm";
         public const string DDMM = "dd/MM";
         public const string DDMMYYYY = "dd/MM/yyyy";
+        public const string YYYYMMDD = "yyyy-MM-dd";
+        public const string YYYYMMDDHHMMSS = "yyyy-MM-dd HH:mm:ss";
     }
 
     public class Message
