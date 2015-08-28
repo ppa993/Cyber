@@ -61,13 +61,13 @@
                             $(".add-event").blur();
                             showMsg('Can not add a duplicate event');
                         } else {
-                            $('<div class="calendar-event"><p>' + title + '</p><a href="javascript:void(0);" data-id="'+ data +'" class="remove-calendar-event"><i class="fa fa-remove"></i></a></div>').insertBefore(".add-event");
+                            $('<div class="calendar-event"><p>' + title + '</p><a href="javascript:void(0);" data-id="' + data + '" class="remove-calendar-event"><i class="fa fa-remove"></i></a></div>').insertBefore(".add-event");
+                            drag();
                         }
                     });
             } else if (e.which == 13) {
                 alert('Please enter event name');
             }
-            drag();
         });
 
 
@@ -155,7 +155,7 @@
                                 } else if (data === "Deleted") {
                                     showMsg('This event has been deleted.');
                                 } else {
-                                    calendar.fullCalendar('refetchEvents');
+                                    calendar.fullCalendar('removeEvents', calEvent.id);
                                 }
                             });
                     }
@@ -171,11 +171,6 @@
     <div class="page-title">
         <h3>Personal Calendar</h3>
         <div class="page-breadcrumb">
-            <ol class="breadcrumb">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Extra</a></li>
-                <li class="active">Calendar</li>
-            </ol>
         </div>
     </div>
     <div id="main-wrapper">

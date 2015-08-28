@@ -33,19 +33,25 @@ namespace WC.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetEvents()
+        public ActionResult GetEvents(string start, string end)
         {
             try
             {
+                var startDate = DateTime.Parse(start, CultureInfo.InvariantCulture);
+                var endDate = DateTime.Parse(end, CultureInfo.InvariantCulture);
+                var startDateOfYyear = startDate.DayOfYear;
+                var endDateOfYear = endDate.DayOfYear;
+
                 var events = new List<EventViewModel> ();
                 var friends =
                     db.Friends.Where(
                         x =>
-                            x.FriendsListId.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase) &&
-                            x.FriendStatus);
+                            x.FriendsListId.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase));
 
                 foreach (var friend in friends)
                 {
+                    if (startDateOfYyear > friend.User.BirthDay.DayOfYear ||
+                        friend.User.BirthDay.DayOfYear > endDateOfYear) continue;
                     var birthdayEvent = new EventViewModel
                     {
                         id = Guid.NewGuid().ToString(),
@@ -62,7 +68,7 @@ namespace WC.Controllers
 
                 var myCalendarEvents =
                     db.CalendarEvents.Where(
-                        x => x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase));
+                        x => x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase) && x.EventDate >= startDate && x.EventDate <= endDate);
 
                 foreach (var calendarEvent in myCalendarEvents)
                 {
