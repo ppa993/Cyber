@@ -1,0 +1,211 @@
+﻿@using WC.Data
+@{
+    ViewBag.Title = "Calendar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Style/fullcalendar.min.css" rel="stylesheet" type="text/css">
+<link href="~/Content/Style/qtip.css" rel="stylesheet" type="text/css">
+<script src="~/Content/Script/moment.min.js"></script> 
+<script src="~/Content/Script/fullcalendar.min.js"></script> 
+<script src="~/Content/Script/qtip.js"></script> 
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(document).on('click', '.remove-calendar-event', function() {
+            $(this).closest('.calendar-event').fadeOut();
+            var eventId = $(this).data("id");
+            debugger;
+            //save this event for later use
+            var url = '@Url.Action("DeleteMyEvent")';
+            $.post(url, { "eventID": eventId },
+                function (data) {
+                    if (data === "Failed") {
+                        showMsg('Unable to delete event');
+                    } else {
+                        return false;
+                    }
+                });
+        });
+
+        var drag = function () {
+            $('.calendar-event').each(function () {
+
+                // store data so the calendar knows to render an event upon drop
+                $(this).data('event', {
+                    title: $.trim($(this).text()), // use the element's text as the event title
+                    stick: false // maintain when user navigates (see docs on the renderEvent method)
+                });
+
+                // make the event draggable using jQuery UI
+                $(this).draggable({
+                    zIndex: 1111999,
+                    revert: true,      // will cause the event to go back to its
+                    revertDuration: 0  //  original position after the drag
+                });
+            });
+        };
+
+        $(".add-event").keypress(function (e) {
+            if ((e.which == 13) && (!$(this).val().length == 0)) {
+                var title = $(this).val();
+                $(this).val('');
+                //save this event for later use
+                var url = '@Url.Action("AddMyEvent")';
+                $.post(url, { "eventTitle": title },
+                    function (data) {
+                        if (data === "Failed") {
+                            showMsg('Unable to add your new event');
+                        } else if (data === "AlreadyDone") {
+                            $(".add-event").blur();
+                            showMsg('Can not add a duplicate event');
+                        } else {
+                            $('<div class="calendar-event"><p>' + title + '</p><a href="javascript:void(0);" data-id="'+ data +'" class="remove-calendar-event"><i class="fa fa-remove"></i></a></div>').insertBefore(".add-event");
+                        }
+                    });
+            } else if (e.which == 13) {
+                alert('Please enter event name');
+            }
+            drag();
+        });
+
+
+        drag();
+
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth();
+        var year = date.getFullYear();
+
+        var calendar = $('#calendar').fullCalendar({
+
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: ''
+                //right: 'month,agendaWeek,agendaDay'
+            },
+            events: '@Url.Action("GetEvents")',
+            eventLimit: true, // allow "more" link when too many events
+            allDayDefault: true, //every event is all day
+
+            //allow things to be editable and droptable
+            editable: true,
+            droppable: true, 
+            
+            //default option for event
+            eventBackgroundColor: '#b3dc6c',
+            eventBorderColor: "#16a765",
+            eventTextColor: '#333333',
+
+            //call when drop an event from site panel, not event already in calendar
+            drop: function(date) {
+                var originalEventObject = $(this).data('event');
+                var url = '@Url.Action("AddCalendarEvent")';
+                $.post(url, { "eventDate": date.format(), "eventTitle": originalEventObject.title },
+                    function (data) {
+                        if (data === "Failed") {
+                            showMsg('Unable to add your event to calendar.');
+                        } else {
+                            calendar.fullCalendar('refetchEvents');
+                        }
+                    });
+                return false;
+            },
+            
+            //call when moving an event in calendar to another date
+            eventDrop: function (event, delta, revertFunc) {
+
+                var url = '@Url.Action("EditCalendarEvent")';
+                $.post(url, { "eventID": event.id, "eventDate": event.start.format() },
+                    function (data) {
+                        if (data === "Failed") {
+                            showMsg('Unable to move your event to calendar.');
+                        }else if (data === "Deleted") {
+                            showMsg('This event has been deleted.');
+                        }
+                    });
+            },
+
+            eventRender: function(event, element) {
+                element.qtip({
+                    content: event.title,
+                    position: {
+                        my: 'bottom center',
+                        at: 'top center'
+                    }
+                });
+            },
+
+            //call when click on an event
+            eventClick: function (calEvent, jsEvent, view) {
+                debugger;
+                if (jQuery.inArray('birthday', calEvent.className) !== -1) {
+                    // do nothing when click on birthday event
+                    return false;
+                }
+                else {
+                    if (confirm('Delete this event?')) {
+                        var url = '@Url.Action("DeleteCalendarEvent")';
+                        $.post(url, { "eventID": calEvent.id },
+                            function (data) {
+                                if (data === "Failed") {
+                                    showMsg('Unable to delete your event.');
+                                } else if (data === "Deleted") {
+                                    showMsg('This event has been deleted.');
+                                } else {
+                                    calendar.fullCalendar('refetchEvents');
+                                }
+                            });
+                    }
+                }
+            }
+
+        });
+
+    });
+</script>
+
+<div class="page-inner" style="min-height:768px !important">
+    <div class="page-title">
+        <h3>Personal Calendar</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Extra</a></li>
+                <li class="active">Calendar</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Events</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="events">
+                            @{
+                                Html.RenderAction("MyEvents", "Calendar", new { Model = ViewBag.MyEvents as List<MyEvent> });
+                            }
+                        </div>
+                        <input class="form-control add-event" type="text" placeholder="Add Event" maxlength="255">
+                    </div>
+                </div>
+            </div>
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    <div class="page-footer">
+        <p class="no-s">2015 © Cyber.</p>
+    </div>
+</div>
+
