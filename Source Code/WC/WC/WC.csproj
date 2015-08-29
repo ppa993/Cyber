@@ -429,6 +429,7 @@
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Calendar\Calendar.cshtml" />
     <Content Include="Views\Shared\MyEvents.cshtml" />
+    <Content Include="Views\Shared\PostListPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />

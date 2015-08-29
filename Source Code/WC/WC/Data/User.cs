@@ -31,6 +31,7 @@ namespace WC.Data
             this.FriendLists1 = new HashSet<FriendList>();
             this.Friends = new HashSet<Friend>();
             this.Friends1 = new HashSet<Friend>();
+            this.MyEvents = new HashSet<MyEvent>();
             this.MySettings = new HashSet<MySetting>();
             this.Notifications = new HashSet<Notification>();
             this.Posts = new HashSet<Post>();
@@ -40,7 +41,6 @@ namespace WC.Data
             this.Roles = new HashSet<Role>();
             this.SettingChatBoxes = new HashSet<SettingChatBox>();
             this.SettingChatBoxes1 = new HashSet<SettingChatBox>();
-            this.MyEvents = new HashSet<MyEvent>();
         }
     
         public string UserID { get; set; }
@@ -72,6 +72,7 @@ namespace WC.Data
         public virtual ICollection<FriendList> FriendLists1 { get; set; }
         public virtual ICollection<Friend> Friends { get; set; }
         public virtual ICollection<Friend> Friends1 { get; set; }
+        public virtual ICollection<MyEvent> MyEvents { get; set; }
         public virtual ICollection<MySetting> MySettings { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
@@ -84,6 +85,5 @@ namespace WC.Data
         public virtual ICollection<Role> Roles { get; set; }
         public virtual ICollection<SettingChatBox> SettingChatBoxes { get; set; }
         public virtual ICollection<SettingChatBox> SettingChatBoxes1 { get; set; }
-        public virtual ICollection<MyEvent> MyEvents { get; set; }
     }
 }

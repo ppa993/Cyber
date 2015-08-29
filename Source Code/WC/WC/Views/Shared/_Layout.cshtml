@@ -5,6 +5,9 @@
     var db = new CyberEntities();
     var currentUserId = User.Identity.GetUserId();
     var userInfo = new User();
+    var photo = db.AlbumDetails.FirstOrDefault(x => x.Active && x.PostedUserId == currentUserId && x.AlbumId == "avatar" + currentUserId);
+    var userPhoto = "";
+    if (userInfo != null) { userPhoto = photo.Url; }
     var displayName = "";
     var friendList = new List<FriendViewModel>();
     var friendRequest = new List<FriendViewModel>();
@@ -15,20 +18,8 @@
         {
             displayName = userInfo.FirstName;
             var list = userInfo.FriendLists.First().Friends.Where(x => x.FriendStatus);
-            friendList = list.Select(item => new FriendViewModel
-            {
-                FriendId = item.FriendId,
-                Name = item.User.FirstName + " " + item.User.LastName,
-                ProfileImgUrl = item.User.Profile_Photo.ProfileImageUrl,
-                UserName = item.FriendList.User.UserName
-            }).OrderBy(x => x.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
-            friendRequest = db.Friends.Where(x => x.FriendId == currentUserId && !x.FriendStatus).Select(item => new FriendViewModel
-            {
-                FriendId = item.FriendsListId,
-                Name = item.FriendList.User.FirstName + " " + item.FriendList.User.LastName,
-                ProfileImgUrl = item.FriendList.User.Profile_Photo.ProfileImageUrl,
-                UserName = item.FriendList.User.UserName
-            }).ToList();
+            friendList = ((WC.Controllers.BaseController)this.ViewContext.Controller).FriendList(currentUserId);
+            friendRequest = ((WC.Controllers.BaseController)this.ViewContext.Controller).FriendRequest(currentUserId);
         }
     }
     var notify = db.Notifications.Where(x => x.UserID == currentUserId && !x.Seen).OrderByDescending(y => y.NotificationDate).ToList();
@@ -62,7 +53,10 @@
             $('#contentModal').append(content);
             $('#msgModal').modal('toggle');
         }
-
+        function showCloneMsg(content) {
+            $('#contentCloneModal').append(content);
+            $('#msgCloneModal').modal('toggle');
+        }
         function closeMsg() {
             location.reload();
         }
@@ -100,15 +94,15 @@
         });
     </script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            $(document).on('click', '.notification-item', function() {
+        $(document).ready(function () {
+            $(document).on('click', '.notification-item', function () {
                 var notifId = $(this).data("id");
                 var linkUrl = $(this).data("href");
 
                 var url = '@Url.Action("SeenNotification", "Home")';
 
                 $.post(url, { "notificationId": notifId },
-                    function(data) {
+                    function (data) {
                         if (data === "Succeed") {
                             location.href = linkUrl;
                         } else {
@@ -119,14 +113,14 @@
 
 
             //Show report modal dialog
-            $(document).on('click', '.report-command', function() {
+            $(document).on('click', '.report-command', function () {
                 var recipient = $(this).data('id');
                 var actionType = $(this).data('type');
 
                 var url = '@Url.Action("IsAlreadyReport", "Post")';
 
                 $.post(url, { "reportItem": recipient },
-                    function(data) {
+                    function (data) {
                         if (data === "AlreadyDone") {
                             showMsg("You're already report this item.");
                         } else {
@@ -141,7 +135,7 @@
 
 
             //Report
-            $("#button-report").click(function() {
+            $("#button-report").click(function () {
                 var recipient = $(this).data('id');
                 var actionType = $(this).data('type');
                 var content = $('#report-content').val();
@@ -149,7 +143,7 @@
                 var postUrl = '@Url.Action("Report", "Post")';
 
                 $.post(postUrl, { "reportItem": recipient, "reportType": actionType, "reportContent": content },
-                    function(data) {
+                    function (data) {
                         if (data === "Failed") {
                             showMsg("Unable to report this item. Please try again.");
                         } else if (data === "Deleted") {
@@ -165,294 +159,294 @@
         });
     </script>
     <script type="text/javascript">
-    $(document).on('click', '.post-visible-type', function () {
-        var postId = $(this).data("id");
-        var current = $("#post-visible-type-" + postId);
-        var changedType = $(this).data("visible-type");
+        $(document).on('click', '.post-visible-type', function () {
+            var postId = $(this).data("id");
+            var current = $("#post-visible-type-" + postId);
+            var changedType = $(this).data("visible-type");
 
-        var newContent = "<span class = 'fa fa-" + changedType + "'></span> <span class='caret'></span>";
+            var newContent = "<span class = 'fa fa-" + changedType + "'></span> <span class='caret'></span>";
 
-        current.attr("data-visible-type", changedType);
-        current.html(newContent);
+            current.attr("data-visible-type", changedType);
+            current.html(newContent);
 
-        var url = '@Url.Action("ChangePostVisibleType", "Post")';
+            var url = '@Url.Action("ChangePostVisibleType", "Post")';
 
-        $.post(url, { "postId": postId, "visibility": changedType },
-            function (data) {
-                if (data === "Failed") {
-                    showMsg("Unable to peform your action. Please try again.");
-                } else if (data === "Delete") {
-                    showMsg("Post deleted.");
-                }
-            });
-    });
+            $.post(url, { "postId": postId, "visibility": changedType },
+                function (data) {
+                    if (data === "Failed") {
+                        showMsg("Unable to peform your action. Please try again.");
+                    } else if (data === "Delete") {
+                        showMsg("Post deleted.");
+                    }
+                });
+        });
     </script>
     <script>
-    function pasteIntoInput(el, text) {
-        el.focus();
-        if (typeof el.selectionStart == "number"
-            && typeof el.selectionEnd == "number") {
-            var val = el.value;
-            var selStart = el.selectionStart;
-            el.value = val.slice(0, selStart) + text + val.slice(el.selectionEnd);
-            el.selectionEnd = el.selectionStart = selStart + text.length;
-        } else if (typeof document.selection != "undefined") {
-            var textRange = document.selection.createRange();
-            textRange.text = text;
-            textRange.collapse(false);
-            textRange.select();
+        function pasteIntoInput(el, text) {
+            el.focus();
+            if (typeof el.selectionStart == "number"
+                && typeof el.selectionEnd == "number") {
+                var val = el.value;
+                var selStart = el.selectionStart;
+                el.value = val.slice(0, selStart) + text + val.slice(el.selectionEnd);
+                el.selectionEnd = el.selectionStart = selStart + text.length;
+            } else if (typeof document.selection != "undefined") {
+                var textRange = document.selection.createRange();
+                textRange.text = text;
+                textRange.collapse(false);
+                textRange.select();
+            }
         }
-    }
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        //focus on comment text box when click on Comment text
-        $(document).on('click', '.comment-text', function () {
-            var postId = $(this).attr("post-id");
-            $('#comment-area-' + postId).focus();
-            return false;
-        });
+            //focus on comment text box when click on Comment text
+            $(document).on('click', '.comment-text', function () {
+                var postId = $(this).attr("post-id");
+                $('#comment-area-' + postId).focus();
+                return false;
+            });
 
-        //auto submit comment when user press enter, add new line if Shift+Enter
-        $(document).on('keydown', '.comment-form', function (e) {
-            if (e.which === 13) {
-                if (e.shiftKey === false) {
-                    var url = '@Url.Action("PostComment", "Post")';
-                    var text = $(this).val();
-                    var textbox = $(this);
-                    var postid = $(this).attr("post-id");
-                    if (text === "") return;
+            //auto submit comment when user press enter, add new line if Shift+Enter
+            $(document).on('keydown', '.comment-form', function (e) {
+                if (e.which === 13) {
+                    if (e.shiftKey === false) {
+                        var url = '@Url.Action("PostComment", "Post")';
+                        var text = $(this).val();
+                        var textbox = $(this);
+                        var postid = $(this).attr("post-id");
+                        if (text === "") return;
 
-                    $.post(url, { "postId": postid, "content": text },
+                        $.post(url, { "postId": postid, "content": text },
+                            function (data) {
+                                if (data === "Failed") {
+                                    showMsg("Unable to post your comment. Please try again.");
+                                } else {
+                                    textbox.val('');
+                                    var countItem = document.getElementById("comment-count-" + postid);
+                                    var count = parseInt(countItem.textContent) + 1;
+                                    countItem.textContent = count;
+
+                                    var commentList = $("#comment-list-" + postid);
+                                    commentList.append(data);
+                                }
+                            });
+                    } else {
+                        pasteIntoInput(this, "\n");
+                        e.preventDefault();
+                    }
+                }
+            });
+
+            //like/unlike and update like count
+            $(document).on('click', '.post-like', function () {
+                var inprocess = $(this).attr("data-inprocess");
+                if (inprocess === "1") {
+                    return false;
+                }
+                var curElement = $(this);
+                $(this).attr("data-inprocess", "1");
+                var postid = $(this).attr("post-id");
+                var isLike = $(this).attr("data-toogle") === "Like";
+                var url = '@Url.Action("LikeUnlikePost", "Post")';
+
+                $.post(url, { "postId": postid, "isLike": isLike },
+                    function (data) {
+                        if (data === "Failed") {
+                            showMsg("Unable to peform your action. Please try again.");
+                        } else if (data === "Deleted") {
+                            showMsg("This item has been deleted.");
+                        } else if (data !== "AlreadyDone") {
+                            var countItem = document.getElementById("post-like-count-" + postid);
+                            var count = data;
+
+                            if (isLike) {
+                                curElement.attr("data-toogle", "Unlike");
+                            } else {
+                                curElement.attr("data-toogle", "Like");
+                            }
+                            countItem.textContent = count;
+
+                            var likeStatus = document.getElementById("post-like-status-" + postid);
+                            likeStatus.innerHTML = curElement.attr("data-toogle");
+                        }
+                        curElement.attr("data-inprocess", "0");
+                    });
+                return false;
+            });
+
+            //like/unlike and update like count
+            $(document).on('click', '.comment-like', function () {
+                var inprocess = $(this).attr("data-inprocess");
+                if (inprocess === "1") {
+                    return false;
+                }
+                var curElement = $(this);
+                $(this).attr("data-inprocess", "1");
+                var commentid = $(this).attr("comment-id");
+                var isLike = $(this).attr("data-toogle") === "Like";
+                var url = '@Url.Action("LikeUnlikeComment", "Post")';
+
+                $.post(url, { "commentId": commentid, "isLike": isLike },
+                    function (data) {
+                        if (data === "Failed") {
+                            showMsg("Unable to peform your action. Please try again.");
+                        } else if (data === "Deleted") {
+                            showMsg("This item has been deleted.");
+                        } else if (data !== "AlreadyDone") {
+                            var countItem = document.getElementById("comment-like-count-" + commentid);
+                            var count = data;
+
+                            if (isLike) {
+                                curElement.attr("data-toogle", "Unlike");
+                            } else {
+                                curElement.attr("data-toogle", "Like");
+                            }
+                            countItem.textContent = count;
+
+                            var likeStatus = document.getElementById("comment-like-status-" + commentid);
+                            likeStatus.innerHTML = curElement.attr("data-toogle");
+                        }
+                        curElement.attr("data-inprocess", "0");
+                    });
+                return false;
+            });
+
+            //Show edit modal dialog
+            $(document).on('click', '.edit-command', function () {
+                var recipient = $(this).data('id');
+                var actionType = $(this).data('type');
+                $("#button-edit").data('id', recipient);
+                $("#button-edit").data('type', actionType);
+
+                var title = $('#edit-modal-label');
+                title.text('Edit ' + actionType);
+
+
+                if (actionType === "Post") {
+                    var postUrl = '@Url.Action("EditPost", "Post")';
+
+
+                    $.post(postUrl, { "postId": recipient },
                         function (data) {
                             if (data === "Failed") {
-                                showMsg("Unable to post your comment. Please try again.");
+                                showMsg("Unable to edit this post. Please try again.");
+                            } else if (data === "Deleted") {
+                                showMsg("This post has already been deleted.");
                             } else {
-                                textbox.val('');
-                                var countItem = document.getElementById("comment-count-" + postid);
-                                var count = parseInt(countItem.textContent) + 1;
-                                countItem.textContent = count;
-
-                                var commentList = $("#comment-list-" + postid);
-                                commentList.append(data);
+                                var content = $('#message-text');
+                                content.val(data);
+                                content.css('min-height', '50px').autogrow();
                             }
                         });
                 } else {
-                    pasteIntoInput(this, "\n");
-                    e.preventDefault();
+                    var commentUrl = '@Url.Action("EditComment", "Post")';
+
+                    $.post(commentUrl, { "commentId": recipient },
+                        function (data) {
+                            if (data === "Failed") {
+                                showMsg("Unable to edit this comment. Please try again.");
+                            } else if (data === "Deleted") {
+                                showMsg("This comment has already been deleted.");
+                            } else {
+                                var content = $('#message-text');
+                                content.val(data);
+                                content.css('min-height', '50px').autogrow();
+                            }
+                        });
                 }
-            }
-        });
+            });
 
-        //like/unlike and update like count
-        $(document).on('click', '.post-like', function () {
-            var inprocess = $(this).attr("data-inprocess");
-            if (inprocess === "1") {
-                return false;
-            }
-            var curElement = $(this);
-            $(this).attr("data-inprocess", "1");
-            var postid = $(this).attr("post-id");
-            var isLike = $(this).attr("data-toogle") === "Like";
-            var url = '@Url.Action("LikeUnlikePost", "Post")';
+            //update post/comment
+            $("#button-edit").click(function () {
+                var recipient = $(this).data('id');
+                var actionType = $(this).data('type');
+                var content = $('#message-text').val();
 
-            $.post(url, { "postId": postid, "isLike": isLike },
-                function (data) {
-                    if (data === "Failed") {
-                        showMsg("Unable to peform your action. Please try again.");
-                    } else if (data === "Deleted") {
-                        showMsg("This item has been deleted.");
-                    } else if (data !== "AlreadyDone") {
-                        var countItem = document.getElementById("post-like-count-" + postid);
-                        var count = data;
+                if (actionType === "Post") {
+                    var postUrl = '@Url.Action("UpdatePost", "Post")';
 
-                        if (isLike) {
-                            curElement.attr("data-toogle", "Unlike");
-                        } else {
-                            curElement.attr("data-toogle", "Like");
-                        }
-                        countItem.textContent = count;
+                    $.post(postUrl, { "postId": recipient, "content": content },
+                        function (data) {
+                            if (data === "Failed") {
+                                showMsg("Unable to edit this post. Please try again.");
+                            } else if (data === "Deleted") {
+                                showMsg("This post has already been deleted.");
+                            } else {
+                                var editedContent = $('#post-edit-' + recipient);
+                                editedContent.text(content);
+                            }
+                        });
+                } else {
+                    var commentUrl = '@Url.Action("UpdateComment", "Post")';
 
-                        var likeStatus = document.getElementById("post-like-status-" + postid);
-                        likeStatus.innerHTML = curElement.attr("data-toogle");
-                    }
-                    curElement.attr("data-inprocess", "0");
-                });
-            return false;
-        });
+                    $.post(commentUrl, { "commentId": recipient, "content": content },
+                        function (data) {
+                            if (data === "Failed") {
+                                showMsg("Unable to edit this comment. Please try again.");
+                            } else if (data === "Deleted") {
+                                showMsg("This comment has already been deleted.");
+                            } else {
+                                var editedContent = $('#comment-edit-' + recipient);
+                                editedContent.text(content);
+                            }
+                        });
+                }
+                $("#button-edit-close").click();
+            });
 
-        //like/unlike and update like count
-        $(document).on('click', '.comment-like', function () {
-            var inprocess = $(this).attr("data-inprocess");
-            if (inprocess === "1") {
-                return false;
-            }
-            var curElement = $(this);
-            $(this).attr("data-inprocess", "1");
-            var commentid = $(this).attr("comment-id");
-            var isLike = $(this).attr("data-toogle") === "Like";
-            var url = '@Url.Action("LikeUnlikeComment", "Post")';
+            //call confirm delete post
+            $(document).on('click', '.delete-post-command', function () {
+                var postid = $(this).attr("post-id");
+                $('#button-post-delete').attr('post-id', postid);
+            });
 
-            $.post(url, { "commentId": commentid, "isLike": isLike },
-                function (data) {
-                    if (data === "Failed") {
-                        showMsg("Unable to peform your action. Please try again.");
-                    } else if (data === "Deleted") {
-                        showMsg("This item has been deleted.");
-                    } else if (data !== "AlreadyDone") {
-                        var countItem = document.getElementById("comment-like-count-" + commentid);
-                        var count = data;
+            //delete post
+            $('#button-post-delete').click(function () {
+                var postid = $(this).attr("post-id");
+                var url = '@Url.Action("DeletePost", "Post")';
 
-                        if (isLike) {
-                            curElement.attr("data-toogle", "Unlike");
-                        } else {
-                            curElement.attr("data-toogle", "Like");
-                        }
-                        countItem.textContent = count;
-
-                        var likeStatus = document.getElementById("comment-like-status-" + commentid);
-                        likeStatus.innerHTML = curElement.attr("data-toogle");
-                    }
-                    curElement.attr("data-inprocess", "0");
-                });
-            return false;
-        });
-
-        //Show edit modal dialog
-        $(document).on('click', '.edit-command', function () {
-            var recipient = $(this).data('id');
-            var actionType = $(this).data('type');
-            $("#button-edit").data('id', recipient);
-            $("#button-edit").data('type', actionType);
-
-            var title = $('#edit-modal-label');
-            title.text('Edit ' + actionType);
-
-
-            if (actionType === "Post") {
-                var postUrl = '@Url.Action("EditPost", "Post")';
-
-
-                $.post(postUrl, { "postId": recipient },
+                $.post(url, { "postId": postid },
                     function (data) {
                         if (data === "Failed") {
-                            showMsg("Unable to edit this post. Please try again.");
+                            showMsg("Unable to delete this post. Please try again.");
                         } else if (data === "Deleted") {
                             showMsg("This post has already been deleted.");
                         } else {
-                            var content = $('#message-text');
-                            content.val(data);
-                            content.css('min-height', '50px').autogrow();
+                            $('#button-post-close').click();
+                            var element = document.getElementById('post-block-' + postid);
+                            element.parentNode.removeChild(element);
                         }
                     });
-            } else {
-                var commentUrl = '@Url.Action("EditComment", "Post")';
+            });
 
-                $.post(commentUrl, { "commentId": recipient },
+            //call confirm delete commment dialog
+            $(document).on('click', '.delete-comment-command', function () {
+                var commentid = $(this).attr("comment-id");
+                $('#button-comment-delete').attr('comment-id', commentid);
+            });
+
+            //delete comment
+            $('#button-comment-delete').click(function () {
+                var commentid = $(this).attr("comment-id");
+                var url = '@Url.Action("DeleteComment", "Post")';
+
+                $.post(url, { "commentId": commentid },
                     function (data) {
                         if (data === "Failed") {
-                            showMsg("Unable to edit this comment. Please try again.");
+                            showMsg("Unable to delete this comment. Please try again.");
                         } else if (data === "Deleted") {
                             showMsg("This comment has already been deleted.");
                         } else {
-                            var content = $('#message-text');
-                            content.val(data);
-                            content.css('min-height', '50px').autogrow();
+                            $('#button-comment-close').click();
+                            $('#comment-block-' + commentid).remove();
+                            var countItem = document.getElementById("comment-count-" + data);
+                            var count = parseInt(countItem.textContent) - 1;
+                            countItem.textContent = count;
                         }
                     });
-            }
+            });
         });
-
-        //update post/comment
-        $("#button-edit").click(function () {
-            var recipient = $(this).data('id');
-            var actionType = $(this).data('type');
-            var content = $('#message-text').val();
-
-            if (actionType === "Post") {
-                var postUrl = '@Url.Action("UpdatePost", "Post")';
-
-                $.post(postUrl, { "postId": recipient, "content": content },
-                    function (data) {
-                        if (data === "Failed") {
-                            showMsg("Unable to edit this post. Please try again.");
-                        } else if (data === "Deleted") {
-                            showMsg("This post has already been deleted.");
-                        } else {
-                            var editedContent = $('#post-edit-' + recipient);
-                            editedContent.text(content);
-                        }
-                    });
-            } else {
-                var commentUrl = '@Url.Action("UpdateComment", "Post")';
-
-                $.post(commentUrl, { "commentId": recipient, "content": content },
-                    function (data) {
-                        if (data === "Failed") {
-                            showMsg("Unable to edit this comment. Please try again.");
-                        } else if (data === "Deleted") {
-                            showMsg("This comment has already been deleted.");
-                        } else {
-                            var editedContent = $('#comment-edit-' + recipient);
-                            editedContent.text(content);
-                        }
-                    });
-            }
-            $("#button-edit-close").click();
-        });
-
-        //call confirm delete post
-        $(document).on('click', '.delete-post-command', function () {
-            var postid = $(this).attr("post-id");
-            $('#button-post-delete').attr('post-id', postid);
-        });
-
-        //delete post
-        $('#button-post-delete').click(function () {
-            var postid = $(this).attr("post-id");
-            var url = '@Url.Action("DeletePost", "Post")';
-
-            $.post(url, { "postId": postid },
-                function (data) {
-                    if (data === "Failed") {
-                        showMsg("Unable to delete this post. Please try again.");
-                    } else if (data === "Deleted") {
-                        showMsg("This post has already been deleted.");
-                    } else {
-                        $('#button-post-close').click();
-                        var element = document.getElementById('post-block-' + postid);
-                        element.parentNode.removeChild(element);
-                    }
-                });
-        });
-
-        //call confirm delete commment dialog
-        $(document).on('click', '.delete-comment-command', function () {
-            var commentid = $(this).attr("comment-id");
-            $('#button-comment-delete').attr('comment-id', commentid);
-        });
-
-        //delete comment
-        $('#button-comment-delete').click(function () {
-            var commentid = $(this).attr("comment-id");
-            var url = '@Url.Action("DeleteComment", "Post")';
-
-            $.post(url, { "commentId": commentid },
-                function (data) {
-                    if (data === "Failed") {
-                        showMsg("Unable to delete this comment. Please try again.");
-                    } else if (data === "Deleted") {
-                        showMsg("This comment has already been deleted.");
-                    } else {
-                        $('#button-comment-close').click();
-                        $('#comment-block-' + commentid).remove();
-                        var countItem = document.getElementById("comment-count-" + data);
-                        var count = parseInt(countItem.textContent) - 1;
-                        countItem.textContent = count;
-                    }
-                });
-        });
-    });
     </script>
 
 </head>
@@ -521,8 +515,8 @@
                                 <a href="javascript:void(0);" class="waves-effect waves-button waves-classic sidebar-toggle hidden-lg hidden-md hidden-sm"><i class="fa fa-bars"></i></a>
                             </li>
                             @*<li>
-                                <a href="#cd-nav" class="waves-effect waves-button waves-classic cd-nav-trigger"><i class="fa fa-diamond"></i></a>
-                            </li>*@
+                                    <a href="#cd-nav" class="waves-effect waves-button waves-classic cd-nav-trigger"><i class="fa fa-diamond"></i></a>
+                                </li>*@
                             <li>
                                 <a href="javascript:void(0);" class="waves-effect waves-button waves-classic toggle-fullscreen"><i class="fa fa-expand"></i></a>
                             </li>
@@ -536,12 +530,12 @@
                                 </li>
                                 <li id="friend-request" class="dropdown">
                                     @{
-                            Html.RenderPartial("FriendRequest", friendRequest);
+                                        Html.RenderPartial("FriendRequest", friendRequest);
                                     }
                                 </li>
                                 <li id="notify-box" class="dropdown">
                                     @{
-                            Html.RenderPartial("NotificationPartial", notify);
+                                        Html.RenderPartial("NotificationPartial", notify);
                                     }
                                 </li>
                                 <li>
@@ -578,7 +572,7 @@
                                     </ul>
                                 </li>
                             </ul>
-                        }
+                                        }
                         <!-- Nav -->
                     </div><!-- Top Menu -->
                 </div>
@@ -601,83 +595,10 @@
                     </li>
                 </ul>
             </div>
-            @*<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">
-                    <ul class="menu accordion-menu">
-                        <li><a href="@Url.Action("Newsfeed", "Home")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Home</p></a></li>
-                        <li><a href="@Url.Action(User.Identity.Name, "Profile")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
-                        <li class="droplink">
-                                <a href="http://lambdathemes.in/admin1/index.html#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>MessageBox</p></a>
-                            </li>
-                        <li>
-                            <a id="showRight_t2" href="javascript:void(0);" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Chat</p></a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- Page Sidebar Inner -->*@
         </div>
         @RenderBody()
     </main><!-- Page Content -->
-    @*<nav class="cd-nav-container" id="cd-nav">
-            <header>
-                <h3>Navigation</h3>
-                <a href="#" class="cd-close-nav">Close</a>
-            </header>
-            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-            {
-                @Html.AntiForgeryToken()
-                <ul class="cd-nav list-unstyled">
-                    <li class="cd-selected" data-menu="index">
-                        <a href="@Url.Action("Newsfeed", "Home")">
-                            <span>
-                                <i class="glyphicon glyphicon-home"></i>
-                            </span>
-                            <p>Home</p>
-                        </a>
-                    </li>
-                    <li data-menu="profile">
-                        <a href="@Url.Action(User.Identity.Name, "Profile")">
-                            <span>
-                                <i class="glyphicon glyphicon-user"></i>
-                            </span>
-                            <p>Profile</p>
-                        </a>
-                    </li>
-                    <li data-menu="inbox">
-                        <a href="javsacript:void(0);">
-                            <span>
-                                <i class="glyphicon glyphicon-envelope"></i>
-                            </span>
-                            <p>Mailbox</p>
-                        </a>
-                    </li>
-                    <li data-menu="#">
-                        <a href="javsacript:void(0);">
-                            <span>
-                                <i class="glyphicon glyphicon-tasks"></i>
-                            </span>
-                            <p>Tasks</p>
-                        </a>
-                    </li>
-                    <li data-menu="#">
-                        <a href="javsacript:void(0);">
-                            <span>
-                                <i class="glyphicon glyphicon-cog"></i>
-                            </span>
-                            <p>Settings</p>
-                        </a>
-                    </li>
-                    <li data-menu="#">
-                        <a href="javascript:document.getElementById('logoutForm').submit()" class="log-out">
-                            <span>
-                                <i class="fa fa-sign-out m-r-xs"></i>
-                            </span>
-                            <p>Log Off</p>
-                        </a>
-                    </li>
-                </ul>
-            }
-        </nav>*@
+
     <div class="cd-overlay"></div>
 
 
@@ -781,7 +702,25 @@
 
         </div>
     </div>
+    <!-- Modal -->
+    <div id="msgCloneModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                <div class="modal-body" id="contentCloneModal">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-facebook" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <!-- Modal -->
     <div id="msgConfirmModal" class="modal fade" role="dialog">
         <div class="modal-dialog">

@@ -35,6 +35,7 @@ namespace WC.Data
         public virtual DbSet<FriendList> FriendLists { get; set; }
         public virtual DbSet<Friend> Friends { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
+        public virtual DbSet<MyEvent> MyEvents { get; set; }
         public virtual DbSet<MySetting> MySettings { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Notification_Type> Notification_Type { get; set; }
@@ -49,6 +50,5 @@ namespace WC.Data
         public virtual DbSet<SettingChatBox> SettingChatBoxes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Visible_Type> Visible_Type { get; set; }
-        public virtual DbSet<MyEvent> MyEvents { get; set; }
     }
 }
