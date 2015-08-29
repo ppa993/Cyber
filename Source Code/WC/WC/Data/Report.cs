@@ -21,8 +21,6 @@ namespace WC.Data
         public string Reporter { get; set; }
         public System.DateTime ReportedDate { get; set; }
     
-        public virtual Report Reports1 { get; set; }
-        public virtual Report Report1 { get; set; }
         public virtual User User { get; set; }
     }
 }

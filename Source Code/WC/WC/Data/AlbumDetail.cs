@@ -21,9 +21,10 @@ namespace WC.Data
         public string Url { get; set; }
         public bool Deleted { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
-        public bool Hide { get; set; }
         public bool Active { get; set; }
-    
+        public bool Hide { get; set; }
+        public string PostID { get; set; }
+
         public virtual Album Album { get; set; }
         public virtual User User { get; set; }
     }
