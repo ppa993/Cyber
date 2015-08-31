@@ -51,7 +51,7 @@
                     <ul class="list-unstyled" id="timeline-posts">
                         @if (Model.Posts.Any())
                         {
-                            Html.RenderPartial("PostListPartial", Model.Posts as List<Post>);
+                            Html.RenderAction("PostListPartial", "Post", new { Model = Model.Posts as List<Post> });
                         }
                     </ul>
                 </div>

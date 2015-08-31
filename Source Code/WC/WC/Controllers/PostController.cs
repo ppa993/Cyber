@@ -47,7 +47,7 @@ namespace WC.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult PostList(List<Post> Model)
+        public ActionResult PostListPartial(List<Post> Model)
         {
             return PartialView(Model);
         }
@@ -72,6 +72,7 @@ namespace WC.Controllers
                 var setting = user.MySettings.First();
 
                 var postVisible = CurrentUserID == postedOn ? setting.DefaultMyPostVisibility : setting.DefaultOtherPostVisibility;
+
                 post = new Post
                 {
                     PostID = Guid.NewGuid().ToString().Replace("-", string.Empty),
@@ -87,6 +88,10 @@ namespace WC.Controllers
                 db.Posts.Add(post);
                 db.SaveChanges();
 
+                string[] infoPost = new string[] { "", "" };
+                infoPost[0] = post.PostID;
+                infoPost[1] = user.UserID;
+                Session["PostIDPosted"] = infoPost;
                 //if is not post on his own timeline, then push new notif for user who has been posted on
                 if (postedOn != CurrentUserID)
                 {
@@ -107,7 +112,7 @@ namespace WC.Controllers
 
             listView.Add(view);
 
-            var str = RenderPartialViewToString("PostList", listView);
+            var str = RenderPartialViewToString("PostListPartial", listView);
 
             return str;
 
@@ -264,8 +269,8 @@ namespace WC.Controllers
         {
             try
             {
-                var post =
-                    db.Posts.FirstOrDefault(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase));
+                var post = db.Posts.FirstOrDefault(x => x.PostID.Equals(postId, StringComparison.InvariantCultureIgnoreCase));
+
                 if (post != null)
                 {
                     if (post.UserID == CurrentUserID || post.PostedOn == CurrentUserID)
@@ -487,7 +492,7 @@ namespace WC.Controllers
                 morePost.NoMore = false;
             }
 
-            morePost.Posts = RenderPartialViewToString("PostList", posts);
+            morePost.Posts = RenderPartialViewToString("PostListPartial", posts);
 
             return Json(morePost);
         }
@@ -636,7 +641,7 @@ namespace WC.Controllers
         #endregion
 
         #region Private Methods
-        
+
         private List<Post> GetPosts(ApplicationUser fromUser)
         {
             var listView = new List<Post>();
@@ -693,5 +698,5 @@ namespace WC.Controllers
         }
 
         #endregion
-	}
+    }
 }

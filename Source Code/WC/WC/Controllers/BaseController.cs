@@ -64,6 +64,14 @@ namespace WC.Controllers
                     PostedUserId=userId,
                     Url=Common.GetCoverDefault(),
                     Active=true,
+                },new AlbumDetail(){
+                    AlbumId="upload"+userId,
+                    Deleted=false,
+                    Hide=true,
+                    PostedDate=DateTime.Now,
+                    PostedUserId=userId,
+                    Url=Common.GetCoverDefault(),
+                    Active=true,
                 }
             };
         }
@@ -110,6 +118,7 @@ namespace WC.Controllers
                             UserId = cbd.UserIdReply,
                             Message = cbd.Content,
                             Name = u.FirstName + " " + u.LastName,
+                            UserName = u.UserName,
                             ProfileImgUrl = a.Url,
                             SentTime = cbd.SendDate
                         };
@@ -142,6 +151,7 @@ namespace WC.Controllers
 
         public static string RenderViewToString(string controlName, object model)
         {
+            if (model == null || string.IsNullOrEmpty(controlName)) return string.Empty;
             ViewPage viewPage = new ViewPage() { ViewContext = new ViewContext() };
 
             viewPage.ViewData = new ViewDataDictionary(model);
@@ -226,41 +236,41 @@ namespace WC.Controllers
 
 
         public List<FriendViewModel> FriendList(string userId)
-        {
-            return (from fl in db.FriendLists
-                    from f in db.Friends
-                    from u in db.Users
-                    from a in db.AlbumDetails
-                    where fl.Id == f.FriendsListId && fl.Id == userId
-                            && f.FriendId == u.UserID && f.FriendStatus
-                            && u.UserID == a.PostedUserId
-                            && a.AlbumId == "avatar" + u.UserID
-                    select new FriendViewModel()
-                    {
-                        FriendId = f.FriendId,
-                        Name = u.FirstName + " " + u.LastName,
-                        ProfileImgUrl = a.Url,
-                        UserName = u.UserName
-                    }).OrderBy(x => x.Name).ToList();
+        {           
+            var list = db.FriendLists.FirstOrDefault(x => x.Id == userId).Friends.Where(x => x.FriendStatus);
+
+            var friendList = new List<FriendViewModel>();
+            foreach(var item in list)
+            {
+                var request = new FriendViewModel
+                {
+                    FriendId = item.FriendId,
+                    Name = item.User.FirstName + " " + item.User.LastName,
+                    ProfileImgUrl = UrlImage("avatar", item.FriendId)
+                };
+                friendList.Add(request);
+            }
+
+            return friendList;
         }
         public List<FriendViewModel> FriendRequest(string userId)
         {
-            return (from fl in db.FriendLists
-                    from f in db.Friends
-                    from u in db.Users
-                    from a in db.AlbumDetails
-                    where fl.Id == f.FriendsListId
-                            && f.FriendId == u.UserID && !f.FriendStatus
-                            && u.UserID == a.PostedUserId
-                            && a.AlbumId == "avatar" + u.UserID
-                    select new FriendViewModel()
-                    {
-                        FriendId = f.FriendId,
-                        Name = u.FirstName + " " + u.LastName,
-                        ProfileImgUrl = a.Url,
-                        UserName = u.UserName
-                    }).Where(x => x.FriendId == userId).ToList();
-        }
+            var friends = db.Friends.Where(x => x.FriendId == userId && !x.FriendStatus);
+            var friendRequest = new List<FriendViewModel>();
 
+            foreach(var item in friends)
+            {
+                var request = new FriendViewModel
+                {
+                    FriendId = item.FriendsListId,
+                    Name = item.FriendList.User.FirstName + " " + item.FriendList.User.LastName,
+                    ProfileImgUrl = UrlImage("avatar", item.FriendsListId),
+                    UserName = item.FriendList.User.UserName
+                };
+                friendRequest.Add(request);
+            }
+
+            return friendRequest;
+        }
     }
 }

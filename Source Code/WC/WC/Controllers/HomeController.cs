@@ -66,8 +66,8 @@ namespace WC.Controllers
                 user.Posts = postList;
                 user.Work = fromUserInfo.Work;
                 user.ContactNumber = fromUserInfo.ContactNumber;
-                user.Avatar = fromUserInfo.Profile_Photo.ProfileImageUrl;
-                user.Cover = fromUserInfo.Profile_Photo.CoverImageUrl;
+                user.Avatar = UrlImage("avatar", fromUserInfo.UserID);
+                user.Cover = UrlImage("cover", fromUserInfo.UserID);
                 user.AllowOtherToPost = fromUserInfo.MySettings.First().AllowOtherToPost;
                 user.IsMyTimeline = fromUser.Id.Equals(toUser, StringComparison.InvariantCultureIgnoreCase);
                 user.Setting = fromUserInfo.MySettings.First();
@@ -216,7 +216,7 @@ namespace WC.Controllers
                 {
                     FriendId = item.FriendsListId,
                     Name = item.FriendList.User.FirstName + " " + item.FriendList.User.LastName,
-                    ProfileImgUrl = item.FriendList.User.Profile_Photo.ProfileImageUrl,
+                    ProfileImgUrl = UrlImage("avatar", item.FriendsListId),
                     UserName = item.FriendList.User.UserName
                 }).ToList();
 
@@ -272,8 +272,13 @@ namespace WC.Controllers
                 posts = posts.Skip(loadedPostCount).Take(DefautValue.PostLoad).ToList();
                 morePost.NoMore = false;
             }
+            if (morePost.NoMore)
+            {
+                morePost.Posts = "";
+                return Json(morePost);
+            }
 
-            morePost.Posts = RenderPartialViewToString("PostList", posts);
+            morePost.Posts = RenderPartialViewToString("PostListPartial", posts);
 
             return Json(morePost);
         }
@@ -475,12 +480,12 @@ namespace WC.Controllers
                 }
                 else
                 {
-                    //listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                    //                    .Where(x => IsAuthorizeToViewPost(x))
-                    //                    .OrderByDescending(x => x.PostedDate)
-                    //                    .ToList();
-                    var temp = db.Posts.Where(x => x.PostedOn == fromUser.Id).OrderByDescending(x => x.PostedDate);
-                    listView.AddRange(temp.Where(item => IsAuthorizeToViewPost(item)));
+                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                                        //.Where(x => IsAuthorizeToViewPost(x))
+                                        .OrderByDescending(x => x.PostedDate)
+                                        .ToList();
+                    //var temp = db.Posts.Where(x => x.PostedOn == fromUser.Id).OrderByDescending(x => x.PostedDate);
+                    //listView.AddRange(temp.Where(item => IsAuthorizeToViewPost(item)));
                 }
             }
             catch (Exception exception)
@@ -512,7 +517,7 @@ namespace WC.Controllers
                     {
                         FriendId = item.FriendsListId,
                         Name = item.FriendList.User.FirstName + " " + item.FriendList.User.LastName,
-                        ProfileImgUrl = item.FriendList.User.Profile_Photo.ProfileImageUrl,
+                        ProfileImgUrl = UrlImage("avatar", item.FriendsListId),
                         UserName = item.FriendList.User.UserName
                     }).ToList();
 

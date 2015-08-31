@@ -1,37 +1,43 @@
 /* Write your custom CSS here */
 
+
 /* Register */
-    .login-box .logo-name {
-        font-size: 32px;
-        color: #141823;
-    }
-    .login-box p.title {
-        font-size: 18px;
-    }
-    .form-group .birthday {
-        color: #141823;
-        font-size: 16px;
-    }
-    .first-name {
-        float: left;
-        width: 50%;
-        padding-right: 2.5%;
-    }
-    .last-name {
-        float: left;
-        width: 50%;
-        padding-left: 2.5%;
-    }
-    .gender label {
-        width: 20%;
-    }
+.login-box .logo-name {
+    font-size: 32px;
+    color: #141823;
+}
+
+.login-box p.title {
+    font-size: 18px;
+}
+
+.form-group .birthday {
+    color: #141823;
+    font-size: 16px;
+}
+
+.first-name {
+    float: left;
+    width: 50%;
+    padding-right: 2.5%;
+}
+
+.last-name {
+    float: left;
+    width: 50%;
+    padding-left: 2.5%;
+}
+
+.gender label {
+    width: 20%;
+}
 
 
 /* Timeline */
 
-    .post-block {
-        padding: 0 !important;
-    }
+.post-block {
+    padding: 0 !important;
+}
 
     .post-block .post-header {
         padding: 20px !important;
@@ -46,138 +52,147 @@
         background-color: #f6f7f8;
     }
 
-    .profile-timeline ul li .timeline-item-post {
-        padding: 0;
+.profile-timeline ul li .timeline-item-post {
+    padding: 0;
+}
+
+.profile-timeline ul li .timeline-item-header {
+    overflow: visible;
+}
+
+    .profile-timeline ul li .timeline-item-header small a {
+        color: #8E8E8E;
     }
 
-    .profile-timeline ul li .timeline-item-header {
-        overflow: visible;
-    }
-        .profile-timeline ul li .timeline-item-header small a {
-            color: #8E8E8E;
-        }
+.timeline-comment .timeline-comment-header p {
+    padding: 0 5px 5px 0;
+    text-align: justify;
+}
 
-    .timeline-comment .timeline-comment-header p {
-        padding: 0 5px 5px 0;
-        text-align: justify;
-    }
+.timeline-comment {
+    border-bottom: none;
+}
 
-    .timeline-comment {
-        border-bottom: none;
-    }
-
-    .timeline-options {
-        border-bottom: none;
-        margin-bottom: 0;
-    }
+.timeline-options {
+    border-bottom: none;
+    margin-bottom: 0;
+}
 
     .timeline-options a {
         color: #337ab7;
     }
 
-    .comment-like {
-        padding-left: 40px;
-        padding-right: 5px;
-    }
+.comment-like {
+    padding-left: 40px;
+    padding-right: 5px;
+}
 
-    a.comment-like {
-        text-decoration: none;
-    }
+a.comment-like {
+    text-decoration: none;
+}
 
     a.comment-like:hover {
         color: #22BAA0;
     }
 
-    small {
-        color: #9197a3;
-    }
+small {
+    color: #9197a3;
+}
 
-    .remove-content {
-        -ms-border-radius: 4px;
-        border-radius: 4px;
-        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-        -ms-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-    }
+.remove-content {
+    -ms-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    -ms-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
 
     .remove-content:before, .remove-content:after {
         content: none;
     }
 
-    .post-dropdown-caret {
-        top: -25px;
-    }
+.post-dropdown-caret {
+    top: -25px;
+}
 
-    .dropdown-menu {
-        -moz-min-width: 100px;
-        -ms-min-width: 100px;
-        -o-min-width: 100px;
-        -webkit-min-width: 100px;
-        min-width: 100px;
-    }
+.dropdown-menu {
+    -moz-min-width: 100px;
+    -ms-min-width: 100px;
+    -o-min-width: 100px;
+    -webkit-min-width: 100px;
+    min-width: 100px;
+}
 
-    .modal-header {
-        -ms-border-radius: 6px 6px 0 0;
-        border-radius: 6px 6px 0 0;
-        background-color: #f6f7f8;
-    }
+.modal-header {
+    -ms-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+    background-color: #f6f7f8;
+}
 
-    .timeline-comment, .timeline-comment .timeline-comment-header {
-        overflow: visible;
-        min-height: 10px;
-    }
+.timeline-comment, .timeline-comment .timeline-comment-header {
+    overflow: visible;
+    min-height: 10px;
+}
 
-    .clear {
-        clear: both;
-    }
-    .no-decoration, .no-decoration:hover {
-        text-decoration: none;
-        cursor: default;
-    }
+.clear {
+    clear: both;
+}
 
-    .space {
-        margin-right: 10px;
-    }
-    
-    .post-options {
-        overflow: visible;
-    }
+.no-decoration, .no-decoration:hover {
+    text-decoration: none;
+    cursor: default;
+}
 
-    .share-with {
+.space {
+    margin-right: 10px;
+}
+
+.post-options {
+    overflow: visible;
+}
+
+.share-with {
     font-size: 12px;
     padding-left: 5px;
     margin-bottom: 30px;
     margin-top: 3px;
-    }
-    .change-share-with {
-        font-size: 12px;
-        padding-left: 5px;
-    }
-    .fa-1:before {
-        content: "\f0ac";
-    }
-    .fa-2:before {
-        content: "\f0c0";
-    }
-    .fa-3:before {
-        content: "\f023";
-    }
-    .dropdown-visibility li a {
-        float: none !important;
-    }
-    .dropdown-visibility li:hover {
-        background: #42599e;
-        color: #fff;
-    }
-    .dropdown-profile {
-        -moz-min-width: 150px !important;
-        -ms-min-width: 150px !important;
-        -o-min-width: 150px !important;
-        -webkit-min-width: 150px !important;
-        min-width: 150px !important;
-    }
+}
 
-    /* Button */
+.change-share-with {
+    font-size: 12px;
+    padding-left: 5px;
+}
+
+.fa-1:before {
+    content: "\f0ac";
+}
+
+.fa-2:before {
+    content: "\f0c0";
+}
+
+.fa-3:before {
+    content: "\f023";
+}
+
+.dropdown-visibility li a {
+    float: none !important;
+}
+
+.dropdown-visibility li:hover {
+    background: #42599e;
+    color: #fff;
+}
+
+.dropdown-profile {
+    -moz-min-width: 150px !important;
+    -ms-min-width: 150px !important;
+    -o-min-width: 150px !important;
+    -webkit-min-width: 150px !important;
+    min-width: 150px !important;
+}
+
+/* Button */
 .btn {
     -moz-min-width: 75px;
     -ms-min-width: 75px;
@@ -185,6 +200,7 @@
     -webkit-min-width: 75px;
     min-width: 75px;
 }
+
 .close-chat {
     width: inherit !important;
 }
@@ -192,114 +208,122 @@
 .notification-item {
     cursor: pointer;
 }
- .btn-blue {
-            background: #2392e5;
-            color: #fff;
-        }
 
-            .btn-blue:hover {
-                background: #1b5d8f;
-                color: #fff;
-            }
+.btn-blue {
+    background: #2392e5;
+    color: #fff;
+}
 
-            .btn-blue:focus {
-                background: #47a5eb;
-                color:#484747
-            }
+    .btn-blue:hover {
+        background: #1b5d8f;
+        color: #fff;
+    }
 
-        .btn-orange {
-            background: #ff6a00;
-            color: #fff;
-        }
+    .btn-blue:focus {
+        background: #47a5eb;
+        color: #484747;
+    }
 
-            .btn-orange:hover {
-                background: #cb6013;
-                color: #fff;
-            }
+.btn-orange {
+    background: #ff6a00;
+    color: #fff;
+}
 
-            .btn-orange:focus {
-                background: #ef8132;
-                color:#484747
-            }
+    .btn-orange:hover {
+        background: #cb6013;
+        color: #fff;
+    }
 
-        .btn-green {
-            background: #2fbd41;
-            color: #fff;
-        }
+    .btn-orange:focus {
+        background: #ef8132;
+        color: #484747;
+    }
 
-            .btn-green:hover {
-                background: #248d31;
-                color: #fff;
-            }
+.btn-green {
+    background: #2fbd41;
+    color: #fff;
+}
 
-            .btn-green:focus {
-                background: #50dc61;
-                color:#484747
-            }
+    .btn-green:hover {
+        background: #248d31;
+        color: #fff;
+    }
+
+    .btn-green:focus {
+        background: #50dc61;
+        color: #484747;
+    }
 
 /* Friend request and notification dropdown */
-    .friend-request {
-        font-size: 13px;
-        text-decoration: none;
-        display: block;
-        padding: 8px 10px 8px 15px;
-        position: relative;
-    }
+.friend-request {
+    font-size: 13px;
+    text-decoration: none;
+    display: block;
+    padding: 8px 10px 8px 15px;
+    position: relative;
+}
+
     .friend-request .msg-img, .friend-request .msg-name {
         float: left;
         position: relative;
     }
-    .friend-request .msg-img img {
-        width: 40px;
-        height: 40px;
-    }
+
+        .friend-request .msg-img img {
+            width: 40px;
+            height: 40px;
+        }
+
     .friend-request a {
         color: #337ab7 !important;
         font-weight: bold;
     }
-    .friend-request a:hover {
-        color: #22BAA0 !important;
-        background: transparent !important;
-    }
-    .dropdown-request {
-        width: 380px;
-    }
-    .dropdown-request-none {
-        width: 260px;
-    }
-    .dropdown-notif {
-        width: 350px;
-    }
-    .dropdown-notif-none {
-        width: 240px;
-    }
-    .replace {
-        height: 40px;
-    }
-    .margin-top {
-        margin-top: 3px;
-    }
-    .messages ul li:hover {
-        background: #f7f7f7;
-    }
-    .box-shadow {
-        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-        -ms-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-    }
 
-    /* Toast */
-    /*.toast-success {
+        .friend-request a:hover {
+            color: #22BAA0 !important;
+            background: transparent !important;
+        }
+
+.dropdown-request {
+    width: 380px;
+}
+
+.dropdown-request-none {
+    width: 260px;
+}
+
+.dropdown-notif {
+    width: 350px;
+}
+
+.dropdown-notif-none {
+    width: 240px;
+}
+
+.replace {
+    height: 40px;
+}
+
+.margin-top {
+    margin-top: 3px;
+}
+
+.messages ul li:hover {
+    background: #f7f7f7;
+}
+
+.box-shadow {
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    -ms-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+/* Toast */
+/*.toast-success {
         background-color:#12AFCB
     }
     .toast-error {
         background-color:#f25656
     }*/
-    .toast-info {
-         background-color:#22BAA0
-     }
-
-    /* Layout fixed nav */
-    .fixed {
-        position: fixed;
-    }
+.toast-info {
+    background-color: #22BAA0;
+}

@@ -5,31 +5,30 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7cc4dbe49925408d893104b27c051623" Name="Diagram1" ZoomLevel="72">
-        <EntityTypeShape EntityType="CyberModel.Album" Width="1.5" PointX="5.25" PointY="44.625" />
-        <EntityTypeShape EntityType="CyberModel.AlbumDetail" Width="1.5" PointX="10.5" PointY="33.125" />
-        <EntityTypeShape EntityType="CyberModel.CalendarEvent" Width="1.5" PointX="7.25" PointY="31.75" />
-        <EntityTypeShape EntityType="CyberModel.ChatBox" Width="1.5" PointX="5.25" PointY="34.625" />
-        <EntityTypeShape EntityType="CyberModel.ChatReply" Width="1.5" PointX="10.5" PointY="28.625" />
-        <EntityTypeShape EntityType="CyberModel.Comment" Width="1.5" PointX="8.25" PointY="23.25" />
-        <EntityTypeShape EntityType="CyberModel.CommentLike" Width="1.5" PointX="10.5" PointY="23.625" />
-        <EntityTypeShape EntityType="CyberModel.FriendList" Width="1.5" PointX="5.25" PointY="39" />
-        <EntityTypeShape EntityType="CyberModel.Friend" Width="1.5" PointX="7.5" PointY="34" />
-        <EntityTypeShape EntityType="CyberModel.Language" Width="1.5" PointX="5.25" PointY="13.25" />
-        <EntityTypeShape EntityType="CyberModel.MyEvent" Width="1.5" PointX="5.25" PointY="47.875" />
-        <EntityTypeShape EntityType="CyberModel.MySetting" Width="1.5" PointX="5.25" PointY="19.25" />
-        <EntityTypeShape EntityType="CyberModel.Notification" Width="1.5" PointX="8.25" PointY="19.25" />
-        <EntityTypeShape EntityType="CyberModel.Notification_Type" Width="1.5" PointX="6" PointY="16.75" />
-        <EntityTypeShape EntityType="CyberModel.Post" Width="1.5" PointX="5.25" PointY="26.75" />
-        <EntityTypeShape EntityType="CyberModel.Post_Type" Width="1.5" PointX="3" PointY="29.75" />
-        <EntityTypeShape EntityType="CyberModel.PostLike" Width="1.5" PointX="10.5" PointY="20.25" />
-        <EntityTypeShape EntityType="CyberModel.Profile_Photo" Width="1.5" PointX="5.25" PointY="42" />
-        <EntityTypeShape EntityType="CyberModel.Relationship_Type" Width="1.5" PointX="0.75" PointY="23.75" />
-        <EntityTypeShape EntityType="CyberModel.Report" Width="1.5" PointX="5.25" PointY="50.625" />
-        <EntityTypeShape EntityType="CyberModel.Role" Width="1.5" PointX="5.25" PointY="23.375" />
-        <EntityTypeShape EntityType="CyberModel.Role_Type" Width="1.5" PointX="3" PointY="32.75" />
-        <EntityTypeShape EntityType="CyberModel.SettingChatBox" Width="1.5" PointX="7.5" PointY="27.625" />
-        <EntityTypeShape EntityType="CyberModel.User" Width="1.5" PointX="3" PointY="20.125" />
-        <EntityTypeShape EntityType="CyberModel.Visible_Type" Width="1.5" PointX="3" PointY="16.75" />
+        <EntityTypeShape EntityType="CyberModel.Album" Width="1.5" PointX="5.25" PointY="43.625" />
+        <EntityTypeShape EntityType="CyberModel.AlbumDetail" Width="1.5" PointX="7.5" PointY="30.875" />
+        <EntityTypeShape EntityType="CyberModel.CalendarEvent" Width="1.5" PointX="5.25" PointY="38.125" />
+        <EntityTypeShape EntityType="CyberModel.ChatBox" Width="1.5" PointX="5.25" PointY="46.875" />
+        <EntityTypeShape EntityType="CyberModel.ChatReply" Width="1.5" PointX="10.5" PointY="34.125" />
+        <EntityTypeShape EntityType="CyberModel.Comment" Width="1.5" PointX="10.5" PointY="21.875" />
+        <EntityTypeShape EntityType="CyberModel.CommentLike" Width="1.5" PointX="12.75" PointY="22.25" />
+        <EntityTypeShape EntityType="CyberModel.FriendList" Width="1.5" PointX="5.25" PointY="31.75" />
+        <EntityTypeShape EntityType="CyberModel.Friend" Width="1.5" PointX="7.5" PointY="26.25" />
+        <EntityTypeShape EntityType="CyberModel.Language" Width="1.5" PointX="5.25" PointY="28.75" />
+        <EntityTypeShape EntityType="CyberModel.MyEvent" Width="1.5" PointX="5.25" PointY="40.875" />
+        <EntityTypeShape EntityType="CyberModel.MySetting" Width="1.5" PointX="5.25" PointY="17" />
+        <EntityTypeShape EntityType="CyberModel.Notification" Width="1.5" PointX="8.25" PointY="21.875" />
+        <EntityTypeShape EntityType="CyberModel.Notification_Type" Width="1.5" PointX="6" PointY="11.5" />
+        <EntityTypeShape EntityType="CyberModel.Post" Width="1.5" PointX="5.25" PointY="20.5" />
+        <EntityTypeShape EntityType="CyberModel.Post_Type" Width="1.5" PointX="3" PointY="28.5" />
+        <EntityTypeShape EntityType="CyberModel.PostLike" Width="1.5" PointX="10.5" PointY="18.25" />
+        <EntityTypeShape EntityType="CyberModel.Relationship_Type" Width="1.5" PointX="0.75" PointY="22.5" />
+        <EntityTypeShape EntityType="CyberModel.Report" Width="1.5" PointX="5.25" PointY="25.125" />
+        <EntityTypeShape EntityType="CyberModel.Role" Width="1.5" PointX="8.25" PointY="18.125" />
+        <EntityTypeShape EntityType="CyberModel.Role_Type" Width="1.5" PointX="6" PointY="14.5" />
+        <EntityTypeShape EntityType="CyberModel.SettingChatBox" Width="1.5" PointX="7.5" PointY="35.125" />
+        <EntityTypeShape EntityType="CyberModel.User" Width="1.5" PointX="3" PointY="19" />
+        <EntityTypeShape EntityType="CyberModel.Visible_Type" Width="1.5" PointX="3" PointY="16.375" />
         <AssociationConnector Association="CyberModel.FK__Album__CreatedUs__3E52440B" />
         <AssociationConnector Association="CyberModel.FK__AlbumDeta__Album__5BE2A6F2" />
         <AssociationConnector Association="CyberModel.FK__AlbumDeta__Poste__5CD6CB2B" />
@@ -66,7 +65,6 @@
         <AssociationConnector Association="CyberModel.FK_Post_Visible_Type" />
         <AssociationConnector Association="CyberModel.FK_PostLike_Post" />
         <AssociationConnector Association="CyberModel.FK_PostLike_User" />
-        <AssociationConnector Association="CyberModel.FK_Profile_Photo_User" />
         <AssociationConnector Association="CyberModel.FK_User_Relationship_Type" />
         <AssociationConnector Association="CyberModel.FK_Reports_User" />
         <AssociationConnector Association="CyberModel.FK_Role_Role_Type" />

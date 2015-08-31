@@ -29,6 +29,7 @@
           <Property Name="DeletedDate" Type="datetime" />
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="Hide" Type="bit" Nullable="false" />
+          <Property Name="PostID" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CalendarEvents">
           <Key>
@@ -172,14 +173,6 @@
           <Property Name="PostLikeID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="PostID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Profile_Photo">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ProfileImageUrl" Type="varchar" MaxLength="255" />
-          <Property Name="CoverImageUrl" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Relationship_Type">
           <Key>
@@ -707,18 +700,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Profile_Photo_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Profile_Photo" Type="Self.Profile_Photo" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Profile_Photo">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Reports_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Reports" Type="Self.Reports" Multiplicity="*" />
@@ -797,7 +778,6 @@
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post_Type" EntityType="Self.Post_Type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PostLike" EntityType="Self.PostLike" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Profile_Photo" EntityType="Self.Profile_Photo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relationship_Type" EntityType="Self.Relationship_Type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reports" EntityType="Self.Reports" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
@@ -957,10 +937,6 @@
             <End Role="User" EntitySet="User" />
             <End Role="PostLike" EntitySet="PostLike" />
           </AssociationSet>
-          <AssociationSet Name="FK_Profile_Photo_User" Association="Self.FK_Profile_Photo_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Profile_Photo" EntitySet="Profile_Photo" />
-          </AssociationSet>
           <AssociationSet Name="FK_Reports_User" Association="Self.FK_Reports_User">
             <End Role="User" EntitySet="User" />
             <End Role="Reports" EntitySet="Reports" />
@@ -1004,7 +980,6 @@
           <EntitySet Name="Posts" EntityType="CyberModel.Post" />
           <EntitySet Name="Post_Type" EntityType="CyberModel.Post_Type" />
           <EntitySet Name="PostLikes" EntityType="CyberModel.PostLike" />
-          <EntitySet Name="Profile_Photo" EntityType="CyberModel.Profile_Photo" />
           <EntitySet Name="Relationship_Type" EntityType="CyberModel.Relationship_Type" />
           <EntitySet Name="Reports" EntityType="CyberModel.Report" />
           <EntitySet Name="Roles" EntityType="CyberModel.Role" />
@@ -1156,10 +1131,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="PostLike" EntitySet="PostLikes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Profile_Photo_User" Association="CyberModel.FK_Profile_Photo_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Profile_Photo" EntitySet="Profile_Photo" />
-          </AssociationSet>
           <AssociationSet Name="FK_User_Relationship_Type" Association="CyberModel.FK_User_Relationship_Type">
             <End Role="Relationship_Type" EntitySet="Relationship_Type" />
             <End Role="User" EntitySet="Users" />
@@ -1215,6 +1186,7 @@
           <Property Name="DeletedDate" Type="DateTime" Precision="3" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="Hide" Type="Boolean" Nullable="false" />
+          <Property Name="PostID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Album" Relationship="CyberModel.FK__AlbumDeta__Album__5BE2A6F2" FromRole="AlbumDetail" ToRole="Album" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK__AlbumDeta__Poste__5CD6CB2B" FromRole="AlbumDetail" ToRole="User" />
         </EntityType>
@@ -1403,15 +1375,6 @@
           <NavigationProperty Name="Post" Relationship="CyberModel.FK_PostLike_Post" FromRole="PostLike" ToRole="Post" />
           <NavigationProperty Name="User" Relationship="CyberModel.FK_PostLike_User" FromRole="PostLike" ToRole="User" />
         </EntityType>
-        <EntityType Name="Profile_Photo">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ProfileImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="CoverImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="User" Relationship="CyberModel.FK_Profile_Photo_User" FromRole="Profile_Photo" ToRole="User" />
-        </EntityType>
         <EntityType Name="Relationship_Type">
           <Key>
             <PropertyRef Name="RelationshipID" />
@@ -1506,7 +1469,6 @@
           <NavigationProperty Name="Posts" Relationship="CyberModel.FK_Post_User" FromRole="User" ToRole="Post" />
           <NavigationProperty Name="Posts1" Relationship="CyberModel.FK_Post_User1" FromRole="User" ToRole="Post" />
           <NavigationProperty Name="PostLikes" Relationship="CyberModel.FK_PostLike_User" FromRole="User" ToRole="PostLike" />
-          <NavigationProperty Name="Profile_Photo" Relationship="CyberModel.FK_Profile_Photo_User" FromRole="User" ToRole="Profile_Photo" />
           <NavigationProperty Name="Relationship_Type" Relationship="CyberModel.FK_User_Relationship_Type" FromRole="User" ToRole="Relationship_Type" />
           <NavigationProperty Name="Reports" Relationship="CyberModel.FK_Reports_User" FromRole="User" ToRole="Report" />
           <NavigationProperty Name="Role" Relationship="CyberModel.FK_Role_User" FromRole="User" ToRole="Role" />
@@ -1955,18 +1917,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Profile_Photo_User">
-          <End Type="CyberModel.User" Role="User" Multiplicity="1" />
-          <End Type="CyberModel.Profile_Photo" Role="Profile_Photo" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Profile_Photo">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_User_Relationship_Type">
           <End Type="CyberModel.Relationship_Type" Role="Relationship_Type" Multiplicity="1" />
           <End Type="CyberModel.User" Role="User" Multiplicity="*" />
@@ -2072,6 +2022,7 @@
           <EntitySetMapping Name="AlbumDetails">
             <EntityTypeMapping TypeName="CyberModel.AlbumDetail">
               <MappingFragment StoreEntitySet="AlbumDetail">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
                 <ScalarProperty Name="Hide" ColumnName="Hide" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
@@ -2238,15 +2189,6 @@
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="PostID" ColumnName="PostID" />
                 <ScalarProperty Name="PostLikeID" ColumnName="PostLikeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Profile_Photo">
-            <EntityTypeMapping TypeName="CyberModel.Profile_Photo">
-              <MappingFragment StoreEntitySet="Profile_Photo">
-                <ScalarProperty Name="CoverImageUrl" ColumnName="CoverImageUrl" />
-                <ScalarProperty Name="ProfileImageUrl" ColumnName="ProfileImageUrl" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

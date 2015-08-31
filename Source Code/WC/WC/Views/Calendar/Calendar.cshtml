@@ -59,7 +59,7 @@
                             showMsg('Unable to add your new event');
                         } else if (data === "AlreadyDone") {
                             $(".add-event").blur();
-                            showMsg('Can not add a duplicate event');
+                            showCloneMsg('Can not add a duplicate event');
                         } else {
                             $('<div class="calendar-event"><p>' + title + '</p><a href="javascript:void(0);" data-id="' + data + '" class="remove-calendar-event"><i class="fa fa-remove"></i></a></div>').insertBefore(".add-event");
                             drag();

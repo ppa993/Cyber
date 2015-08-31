@@ -1127,3 +1127,131 @@ LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String
 LINQ to Entities does not recognize the method 'Boolean StartsWith(System.String, System.StringComparison)' method, and this method cannot be translated into a store expression. - 
 
 
+29/8/2015 8:24:50 AM
+The method 'First' can only be used as a final query operation. Consider using the method 'FirstOrDefault' in this instance instead. - 
+
+
+29/8/2015 8:37:15 AM
+The method 'First' can only be used as a final query operation. Consider using the method 'FirstOrDefault' in this instance instead. - 
+
+
+29/8/2015 8:37:33 AM
+The method 'First' can only be used as a final query operation. Consider using the method 'FirstOrDefault' in this instance instead. - 
+
+
+29/8/2015 8:37:41 AM
+The method 'First' can only be used as a final query operation. Consider using the method 'FirstOrDefault' in this instance instead. - 
+
+
+29/8/2015 8:38:35 AM
+The method 'First' can only be used as a final query operation. Consider using the method 'FirstOrDefault' in this instance instead. - 
+
+
+29/8/2015 8:40:45 AM
+The method 'First' can only be used as a final query operation. Consider using the method 'FirstOrDefault' in this instance instead. - 
+
+
+30/8/2015 1:59:03 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 1:59:17 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 1:59:18 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 1:59:19 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 1:59:54 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:03:21 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:15:09 PM
+The file '/NotificationPartial' does not exist. - 
+
+
+30/8/2015 2:15:10 PM
+The file '/NotificationPartial' does not exist. - 
+
+
+30/8/2015 2:15:10 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:21:46 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:22:03 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:22:15 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:22:46 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:23:05 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:23:09 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:25:31 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:26:26 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+30/8/2015 2:29:52 PM
+The file '/NotificationPartial' does not exist. - 
+
+
+30/8/2015 2:30:22 PM
+The file '/NotificationPartial' does not exist. - 
+
+
+30/8/2015 2:30:33 PM
+The file '/NotificationPartial' does not exist. - 
+
+
+30/8/2015 2:31:01 PM
+The file '/NotificationPartial' does not exist. - 
+
+
+30/8/2015 2:31:05 PM
+The file '/NotificationPartial' does not exist. - 
+
+
+30/8/2015 2:43:32 PM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+31/8/2015 4:34:16 AM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+31/8/2015 4:36:52 AM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+
+31/8/2015 4:41:16 AM
+LINQ to Entities does not recognize the method 'Boolean IsAuthorizeToViewPost(WC.Data.Post)' method, and this method cannot be translated into a store expression. - 
+
+

@@ -47,7 +47,7 @@ namespace WC.Controllers
                     db.Friends.Where(
                         x =>
                             x.FriendsListId.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
-                            && x.User.MySettings.First().ShowBirthday != (int)ShowBirthDay.Hide);
+                            && x.User.MySettings.FirstOrDefault().ShowBirthday != (int)ShowBirthDay.Hide);
 
                 foreach (var friend in friends)
                 {

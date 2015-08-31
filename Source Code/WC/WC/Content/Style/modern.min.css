@@ -456,7 +456,7 @@ h3, h4, h5 {
 }
 
 .m-t-lg {
-    margin-top: 25px;
+    margin-top: 0;
 }
 
 .m-r-lg {
@@ -2177,7 +2177,7 @@ tr.group, tr.group:hover {
 }
 
 .dropzone {
-    border: 1px solid #f1f1f1;
+    /*border: 1px solid #f1f1f1;*/
     border-radius: 0;
     background: #f9f9f9;
 }
@@ -4160,7 +4160,7 @@ body:not(.small-sidebar) .horizontal-bar .menu.accordion-menu > li > a > .menu-i
 .post-options {
     overflow: hidden;
     margin-top: 15px;
-    margin-left: 15px;
+    margin-left: 5px;
 }
 
     .post-options a {

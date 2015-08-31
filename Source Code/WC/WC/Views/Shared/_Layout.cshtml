@@ -122,15 +122,15 @@
                 $.post(url, { "reportItem": recipient },
                     function (data) {
                         if (data === "AlreadyDone") {
-                            showMsg("You're already report this item.");
+                            showCloneMsg("You're already report this item.");
                         } else {
                             $('#report-modal').modal('toggle');
                         }
                     });
-
                 $("#button-report").data('id', recipient);
                 $("#button-report").data('type', actionType);
                 $('#report-content').css('min-height', '50px').autogrow();
+                return false;
             });
 
 
@@ -149,9 +149,9 @@
                         } else if (data === "Deleted") {
                             showMsg("This item has already been deleted.");
                         } else if (data === "AlreadyDone") {
-                            showMsg("You're already report this item.");
+                            showCloneMsg("You're already report this item.");
                         } else {
-                            showMsg("Your report has been sent.");
+                            showCloneMsg("Your report has been sent.");
                         }
                     });
                 $("#button-report-close").click();
@@ -546,7 +546,7 @@
                                 <li class="dropdown">
                                     <a href="#" data-toggle="dropdown" aria-expanded="False" class="dropdown-toggle waves-effect waves-button waves-classic">
                                         <span class="user-name">@displayName<i class="fa fa-angle-down"></i></span>
-                                        <img class="img-circle avatar" src="@Url.Content(userInfo.Profile_Photo.ProfileImageUrl)" width="40" height="40" alt="">
+                                        <img class="img-circle avatar" src="@Url.Content(userPhoto)" width="40" height="40" alt="">
                                     </a>
                                     <ul class="dropdown-menu dropdown-list dropdown-profile" role="menu">
                                         <li role="presentation">

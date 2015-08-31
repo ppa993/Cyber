@@ -78,7 +78,6 @@ namespace WC.Data
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Post> Posts1 { get; set; }
         public virtual ICollection<PostLike> PostLikes { get; set; }
-        public virtual Profile_Photo Profile_Photo { get; set; }
         public virtual Relationship_Type Relationship_Type { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
         public virtual Role Role { get; set; }
