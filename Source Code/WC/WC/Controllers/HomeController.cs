@@ -481,11 +481,13 @@ namespace WC.Controllers
                 else
                 {
                     listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                                        //.Where(x => IsAuthorizeToViewPost(x))
+                                        .Where(x => x.VisibleType == (int)VisibleType.Public
+                                                || (x.VisibleType == (int)VisibleType.Friend
+                                                    && x.User1.FriendLists.FirstOrDefault().Friends.Any(y => y.FriendId == CurrentUserID && y.FriendStatus))
+                                                || (x.VisibleType == (int)VisibleType.Private
+                                                    && x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)))
                                         .OrderByDescending(x => x.PostedDate)
                                         .ToList();
-                    //var temp = db.Posts.Where(x => x.PostedOn == fromUser.Id).OrderByDescending(x => x.PostedDate);
-                    //listView.AddRange(temp.Where(item => IsAuthorizeToViewPost(item)));
                 }
             }
             catch (Exception exception)
@@ -547,7 +549,11 @@ namespace WC.Controllers
                     listView.AddRange(
                         friend.User.Posts.Where(
                             x => x.PostedDate.Date >= DateTime.UtcNow.AddDays(DefautValue.RecentNewsfeed).Date
-                                 && IsAuthorizeToViewPost(x)));
+                                 && (x.VisibleType == (int)VisibleType.Public
+                                                || (x.VisibleType == (int)VisibleType.Friend
+                                                    && x.User1.FriendLists.FirstOrDefault().Friends.Any(y => y.FriendId == CurrentUserID && y.FriendStatus))
+                                                || (x.VisibleType == (int)VisibleType.Private
+                                                    && x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)))));
                 }
 
                 listView.AddRange(db.Posts.Where(x => x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)));

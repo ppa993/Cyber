@@ -185,7 +185,7 @@ namespace WC.Controllers
             for (int i = 0; i < Request.Files.Count; i++)
             {
                 var file = Request.Files[i];
-                var fileName = Path.GetFileName(file.FileName);
+                var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
                 var path = Path.Combine(Server.MapPath("~/Content/Images/UserUpload/"), fileName);
                 file.SaveAs(path);
                 //p.Add(path);
@@ -202,7 +202,7 @@ namespace WC.Controllers
                         PostID = postInfo[0],
                         Url = "~/Content/Images/UserUpload/" + fileName,
                         PostedUserId = postInfo[1],
-                        PostedDate = DateTime.Now
+                        PostedDate = DateTime.UtcNow
                     });
 
                     Session["PostIDPosted"] = null;
