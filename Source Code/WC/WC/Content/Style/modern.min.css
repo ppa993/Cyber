@@ -4160,7 +4160,7 @@ body:not(.small-sidebar) .horizontal-bar .menu.accordion-menu > li > a > .menu-i
 .post-options {
     overflow: hidden;
     margin-top: 15px;
-    margin-left: 5px;
+    margin-left: 15px;
 }
 
     .post-options a {

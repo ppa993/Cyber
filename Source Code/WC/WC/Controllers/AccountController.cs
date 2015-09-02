@@ -312,7 +312,7 @@ namespace WC.Controllers
                     db.Notifications.Where(x => x.UserID == receiver && !x.Seen)
                         .OrderByDescending(y => y.NotificationDate)
                         .ToList();
-                var html = RenderPartialViewToString("NotificationPartial", data);
+                var html = RenderViewToString("NotificationPartial", data);
                 hubContext.Clients.All.recieveNotify(receiver, html);
                 hubContext.Clients.All.toastNotif(receiver, toastUrl, toastMessage);
             }

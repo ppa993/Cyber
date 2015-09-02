@@ -21,111 +21,8 @@
                 }
             });
     }
-    
-    var i = 0;
-    function OpenUploadPost() {
-        i++;
-        if (i == 1) {
-            $("#dropzone").show();
-        }
-        else {
-            $("#dropzone").hide();
-            i = 0;
-        }
-    }
-</script>
-<script type="text/javascript">
-    function PostStatus() {
-
-    }
-    var dropzone = null;
-    $(function () {
-        Dropzone.autoDiscover = false;
-        dropzone = new Dropzone("#dropzone", {
-            url: '@Url.Action("UploadImage")',
-            maxFilesize: 256,
-            paramName: "file",
-            autoProcessQueue: false,
-            addRemoveLinks: true,
-            previewsContainer: '#demo-upload',
-            clickable: true,
-
-        });
-        dropzone.on("removedfile", function (file) {
-            if (!this.files.length) {
-                $(".dz-message").show();
-            }
-        });
-
-        dropzone.on("addedfile", function (file) {
-            if (this.files.length) {
-                $(".dz-message").hide();
-            }
-        });
-
-        dropzone.on("success", function (file) {
-
-        });
-        dropzone.on('dragover', function (e) {
-            $("#dropzone").addClass('border-dropzone');
-        });
-        dropzone.on('dragenter', function () {
-            $("#dropzone").addClass('border-dropzone');
-        });
-        dropzone.on('dragleave', function () {
-            $("#dropzone").removeClass('border-dropzone');
-        });
-        dropzone.on('drop', function () {
-            $("#dropzone").removeClass('border-dropzone');
-        });
-        dropzone.on("queuecomplete", function (file) {
-
-            showMsg('Your status was uploaded !');
-
-        });
-        dropzone.on("complete", function (file) {
-            //dropzone.removeFile(file);
-            //if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-            //    doSomething();
-            //}
-        });
-
-        var html = '';
-        $("#btn_upload_post").button().click(function () {
-            var text = $("#status-content").val();
-            if (text == '') {
-                showCloneMsg('Write something !');
-                return;
-            }
-
-
-            $.post('@Url.Action("PostStatus", "Post")', { "postedOn": '@Model.Id', "content": text },
-                    function (data) {
-                        if (data === "Failed") {
-                            showCloneMsg("Unable to post your status. Please try again.");
-                        } else {
-                            html = data;
-                            dropzone.processQueue();
-                            $("#status-content").val('');
-                        }
-                    });
-
-
-        });
-        function uploadFile() {
-            alert(dropzone.files.length);
-
-            if (!dropzone.files.length) {
-                dropzone.processQueue();
-            }
-        }
-    })
-
 </script>
 
-<link href="~/Content/Style/dropzone.css" rel="stylesheet" />
-<script src="~/Content/Script/dropzone.js"></script>
-<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
 
 <input type="hidden" id="hidden-user-id" value="@Model.Id" />
@@ -138,19 +35,13 @@
                     <div class="panel-body">
                         <div class="post">
                             <textarea id="status-content" class="form-control" placeholder="What's in your mind?" rows="4=6"></textarea>
-                            <div id="dropzone" style="display:none;">
-                                <form action="@Url.Action("UploadImage")" class="dropzone dz-clickable" id="demo-upload" enctype="multipart/form-data">
-                                    <div class="dz-message">
-                                        Drop files here or click to upload.<br>
-                                    </div>
-                                    <div class="fallback">
-                                        <input id="file_upload_post" type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
-                                    </div>
-                                </form>
-                            </div>
                             <div class="post-options">
-                                <a href="javascript:void(0);" onclick="OpenUploadPost();"><i class="icon-camera"></i></a>
-                                <button id="btn_upload_post" class="btn btn-facebook pull-right">Post</button>
+                                <a href="#"><i class="icon-camera"></i></a>
+                                <a href="#"><i class="icon-camcorder"></i></a>
+                                <a href="#"><i class="icon-music-tone-alt"></i></a>
+                                <a href="#"><i class="icon-link"></i></a>
+                                <a href="#"><i class="icon-microphone"></i></a>
+                                <button class="btn btn-facebook pull-right" onclick=" PostStatus(); ">Post</button>
                                 @{ Html.RenderPartial("_SelectVisibility", Model.Setting); }
                             </div>
                         </div>
@@ -160,7 +51,7 @@
                     <ul class="list-unstyled" id="timeline-posts">
                         @if (Model.Posts.Any())
                         {
-                            Html.RenderAction("PostListPartial", "Post", new { Model = Model.Posts as List<Post> });
+                            Html.RenderPartial("PostListPartial", Model.Posts as List<Post>);
                         }
                     </ul>
                 </div>

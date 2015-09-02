@@ -20,6 +20,12 @@ namespace WC
             );
 
             routes.MapRoute(
+                "UserAlbum",                                           // Route name
+                "Photos/{username}",                            // URL with parameters
+                new { controller = "Album", action = "Photos", username = UrlParameter.Optional }  // Parameter defaults
+            );
+
+            routes.MapRoute(
                 "UserSetting",                                           // Route name
                 "Settings",                            // URL with parameters
                 new { controller = "Home", action = "Settings" }  // Parameter defaults

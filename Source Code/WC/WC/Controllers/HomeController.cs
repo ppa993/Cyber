@@ -66,8 +66,8 @@ namespace WC.Controllers
                 user.Posts = postList;
                 user.Work = fromUserInfo.Work;
                 user.ContactNumber = fromUserInfo.ContactNumber;
-                user.Avatar = UrlImage("avatar", fromUserInfo.UserID);
-                user.Cover = UrlImage("cover", fromUserInfo.UserID);
+                user.Avatar = UrlImage("avatar",CurrentUserID);
+                user.Cover = UrlImage("cover", CurrentUserID);
                 user.AllowOtherToPost = fromUserInfo.MySettings.First().AllowOtherToPost;
                 user.IsMyTimeline = fromUser.Id.Equals(toUser, StringComparison.InvariantCultureIgnoreCase);
                 user.Setting = fromUserInfo.MySettings.First();
@@ -128,6 +128,7 @@ namespace WC.Controllers
 
             return View(user);
         }
+         
 
         public ActionResult Settings(ManageMessageId? message)
         {
@@ -220,7 +221,7 @@ namespace WC.Controllers
                     UserName = item.FriendList.User.UserName
                 }).ToList();
 
-                var html = RenderPartialViewToString("FriendRequest", data);
+                var html = RenderViewToString("FriendRequest", data);
                 hubContext.Clients.All.updateRequest(CurrentUserID, html);
 
                 return ActionResults.Succeed.ToString();
@@ -278,7 +279,7 @@ namespace WC.Controllers
                 return Json(morePost);
             }
 
-            morePost.Posts = RenderPartialViewToString("PostListPartial", posts);
+            morePost.Posts = RenderViewToString("PostListPartial", posts);
 
             return Json(morePost);
         }
@@ -480,14 +481,12 @@ namespace WC.Controllers
                 }
                 else
                 {
-                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                                        .Where(x => x.VisibleType == (int)VisibleType.Public
-                                                || (x.VisibleType == (int)VisibleType.Friend
-                                                    && x.User1.FriendLists.FirstOrDefault().Friends.Any(y => y.FriendId == CurrentUserID && y.FriendStatus))
-                                                || (x.VisibleType == (int)VisibleType.Private
-                                                    && x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)))
-                                        .OrderByDescending(x => x.PostedDate)
-                                        .ToList();
+                    //listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                    //                    .Where(x => IsAuthorizeToViewPost(x))
+                    //                    .OrderByDescending(x => x.PostedDate)
+                    //                    .ToList();
+                    var temp = db.Posts.Where(x => x.PostedOn == fromUser.Id).OrderByDescending(x => x.PostedDate);
+                    listView.AddRange(temp.Where(item => IsAuthorizeToViewPost(item)));
                 }
             }
             catch (Exception exception)
@@ -523,7 +522,7 @@ namespace WC.Controllers
                         UserName = item.FriendList.User.UserName
                     }).ToList();
 
-                    var html = RenderPartialViewToString("FriendRequest", data);
+                    var html = RenderViewToString("FriendRequest", data);
                     hubContext.Clients.All.updateRequest(receiver.UserID, html);
                     hubContext.Clients.All.toastNotif(receiver.UserID, toastUrl, toastMessage);
                 }
@@ -549,11 +548,7 @@ namespace WC.Controllers
                     listView.AddRange(
                         friend.User.Posts.Where(
                             x => x.PostedDate.Date >= DateTime.UtcNow.AddDays(DefautValue.RecentNewsfeed).Date
-                                 && (x.VisibleType == (int)VisibleType.Public
-                                                || (x.VisibleType == (int)VisibleType.Friend
-                                                    && x.User1.FriendLists.FirstOrDefault().Friends.Any(y => y.FriendId == CurrentUserID && y.FriendStatus))
-                                                || (x.VisibleType == (int)VisibleType.Private
-                                                    && x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)))));
+                                 && IsAuthorizeToViewPost(x)));
                 }
 
                 listView.AddRange(db.Posts.Where(x => x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)));

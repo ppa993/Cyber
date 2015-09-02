@@ -1,0 +1,162 @@
+﻿@using WC.Data
+@using WC.Models
+@model List<AlbumDetail>
+@{
+    Random rand = new Random();
+}
+<link href="~/Content/Style/dropzone.css" rel="stylesheet" />
+<script src="~/Content/Script/dropzone.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
+<style>
+    .row-info {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .img-info {
+        width: 150px;
+        margin-right: 15px;
+    }
+
+    .photo-panel {
+        width: 100%;
+        color: #fff;
+        min-height: 30px;
+    }
+
+    .photo-object {
+        width: 100%;
+        margin-bottom:30px; 
+    }
+
+    .photo-link{
+        
+    }
+</style>
+
+<script>
+    var coverDropzone = null;
+    $(function () {
+        Dropzone.autoDiscover = false;
+        coverDropzone = new Dropzone("#coverDropzone", {
+            url: '@Url.Action("UploadCover")',
+            maxFilesize: 256,
+            paramName: "file",
+            autoProcessQueue: false,
+            addRemoveLinks: true,
+            previewsContainer: '#cover-upload-form',
+            clickable: true,
+        });
+        coverDropzone.on("removedfile", function (file) {
+            if (!this.files.length) {
+                $(".dz-message").show();
+            }
+        });
+        coverDropzone.on("addedfile", function (file) {
+            if (this.files.length) {
+                $(".dz-message").hide();
+            }
+        });
+        coverDropzone.on("success", function (file) {
+        });
+        coverDropzone.on('dragover', function (e) {
+            $("#coverDropzone").addClass('border-dropzone');
+        });
+        coverDropzone.on('dragenter', function () {
+            $("#coverDropzone").addClass('border-dropzone');
+        });
+        coverDropzone.on('dragleave', function () {
+            $("#coverDropzone").removeClass('border-dropzone');
+        });
+        coverDropzone.on('drop', function () {
+            $("#coverDropzone").removeClass('border-dropzone');
+        });
+        coverDropzone.on("queuecomplete", function (file) {
+            showMsg('Your status was uploaded !');
+        });
+        coverDropzone.on("complete", function (file) {
+            coverDropzone.removeFile(file);
+        });
+        $("#cover-upload-btn").button().click(function () {
+            if (coverDropzone.files.length == 0) {
+                showCloneMsg('Choose a photo...');
+                return;
+            }
+            coverDropzone.processQueue();
+        });
+    });
+
+</script>
+<div class="page-inner" style="min-height: 1080px !important">
+    <div id="main-wrapper">
+        <div class="row row-info " style="margin-top: 30px;">
+            <div class="panel-body panel-white">
+                <div class="col-md-2" style="text-align:center;">
+                    <img src="~/Content/Images/Avatar/woman4.png" class="img-info" />
+                </div>
+                <div class="col-md-10">
+                    <div id="coverDropzone">
+                        <form action="@Url.Action("UploadPhotos")" class="dropzone dz-clickable" id="cover-upload-form" enctype="multipart/form-data">
+                            <div class="dz-message">
+                                Drop files here or click to upload.<br>
+                            </div>
+                            <div class="fallback">
+                                <input id="cover-upload-file" type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-info" style="margin-top:10px;">
+            <div class="panel panel-white">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        Photo's ...
+                    </div>
+                </div>
+                <div class="panel-body">
+                    @if (Model.Count == 0)
+                    {
+                        <div class="panel-title" style="text-align:center">
+                            No photo
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-4">
+                            @for (int i = 0; i < Model.Count / 3; i++)
+                            { 
+                                <a href="javascript:void(0);" class="photo-link">
+                                    <img src="@Url.Content(Model[i].Url)" class="photo-object"/>
+                                </a>
+                            }
+                        </div>
+                        <div class="col-md-4">
+                            @for (int i = Model.Count / 3; i < Model.Count * 2 / 3; i++)
+                            { 
+                                <a href="javascript:void(0);" class="photo-link">
+                                    <img src="@Url.Content(Model[i].Url)" class="photo-object"/>
+                                </a>
+                            }
+                        </div>
+                        <div class="col-md-4">
+                            @for (int i = Model.Count * 2 / 3; i < Model.Count; i++)
+                            { 
+                                <a href="javascript:void(0);" class="photo-link">
+                                    <img src="@Url.Content(Model[i].Url)" class="photo-object"/>
+                                </a>
+                            }
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <p class="no-s">2015 © Cyber</p>
+    </div>
+</div>

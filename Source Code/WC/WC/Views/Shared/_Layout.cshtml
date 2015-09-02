@@ -50,10 +50,12 @@
     <script src="~/Content/Script/bootstrap-datepicker.js"></script>
     <script type="text/javascript">
         function showMsg(content) {
+            $('#contentModal').html('');
             $('#contentModal').append(content);
             $('#msgModal').modal('toggle');
         }
         function showCloneMsg(content) {
+            $('#contentCloneModal').html('');
             $('#contentCloneModal').append(content);
             $('#msgCloneModal').modal('toggle');
         }
@@ -122,15 +124,15 @@
                 $.post(url, { "reportItem": recipient },
                     function (data) {
                         if (data === "AlreadyDone") {
-                            showCloneMsg("You're already report this item.");
+                            showMsg("You're already report this item.");
                         } else {
                             $('#report-modal').modal('toggle');
                         }
                     });
+
                 $("#button-report").data('id', recipient);
                 $("#button-report").data('type', actionType);
                 $('#report-content').css('min-height', '50px').autogrow();
-                return false;
             });
 
 
@@ -149,9 +151,9 @@
                         } else if (data === "Deleted") {
                             showMsg("This item has already been deleted.");
                         } else if (data === "AlreadyDone") {
-                            showCloneMsg("You're already report this item.");
+                            showMsg("You're already report this item.");
                         } else {
-                            showCloneMsg("Your report has been sent.");
+                            showMsg("Your report has been sent.");
                         }
                     });
                 $("#button-report-close").click();

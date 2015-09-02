@@ -175,6 +175,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Constants\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -375,7 +376,6 @@
     <Content Include="Content\Style\component.css" />
     <Content Include="Content\Style\custom.css" />
     <Content Include="Content\Style\datepicker.css" />
-    <Content Include="Content\Style\dropzone.css" />
     <Content Include="Content\Style\font-awesome.css" />
     <Content Include="Content\Style\fullcalendar.min.css" />
     <Content Include="Content\Style\green.css" />
@@ -429,10 +429,11 @@
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Calendar\Calendar.cshtml" />
     <Content Include="Views\Shared\MyEvents.cshtml" />
-    <Content Include="Views\Post\PostListPartial.cshtml" />
+    <Content Include="Views\Shared\PostListPartial.cshtml" />
     <Content Include="Views\Shared\PostList.cshtml" />
     <Content Include="Views\Shared\CommentList.cshtml" />
     <Content Include="Views\Shared\LiteAlbumPartial.cshtml" />
+    <Content Include="Views\Album\Photos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\UserUpload\" />

@@ -1,5 +1,32 @@
+.center-elt {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #FFF;
+}
+
+    .center-elt a {
+        color: #fff;
+        -webkit-transition: -webkit-transform .8s ease-in-out;
+        transition: transform .8s ease-in-out;
+    }
+
+        .center-elt a:hover {
+            color: #E9EDF2;
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+
+.center-elt-top {
+    top: 5px;
+}
+
+.center-elt-bottom {
+    bottom: 0;
+}
+
 #dropzone {
-    margin: 5px auto; 
+    margin: 5px auto;
 }
 
 .dropzone.dz-clickable {
@@ -10,7 +37,6 @@
     border: 2px dashed #0087F7;
     border-radius: 5px;
     background: white;
-
 }
 
     .dropzone, .dropzone * {
@@ -606,30 +632,35 @@ main {
         }
 }
 
-.post_one_img{
-    width:100%; 
+.post_one_img {
+    width: 100%;
 }
-.post_one_img a img{
-    width:100%;
-    max-width:685px; 
-}
-.post_two_img{
-    width:50%; 
-}
-.post_one_img a img{
-    width:100%;
-    max-width:342px; 
-}
-.post_many_img{
 
+    .post_one_img a img {
+        width: 100%;
+        max-width: 685px;
+    }
+
+.post_two_img {
+    width: 50%;
+}
+
+.post_one_img a img {
+    width: 100%;
+    max-width: 342px;
+}
+
+.post_many_img {
 }
 
 #dropzone {
-    margin: 5px auto; 
+    margin: 5px auto;
 }
-.border-dropzone{
+
+.border-dropzone {
     border: 3px solid #0087F7;
 }
+
 .dropzone.dz-clickable {
     cursor: pointer;
 }
@@ -638,5 +669,4 @@ main {
     border: 2px dashed #0087F7;
     border-radius: 5px;
     background: white;
-
 }

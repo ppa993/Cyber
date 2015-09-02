@@ -1,13 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
 @using WC.Utils
-<style type="text/css">
-    a.none-hover{
-        padding: 0 !important;
-    } 
-    a.none-hover:hover {
-        background-color: transparent !important;
-    }
-</style>
 @model List<WC.Hubs.ChatHubModel>
 @{ 
     var currentUserId = User.Identity.GetUserId();
@@ -26,7 +18,7 @@
     {
         <div class="chat-item chat-item-left">
             <div class="chat-image">
-                <a class="none-hover" href="@Url.Action(p.UserName, "Profile")"><img src="@Url.Content(p.ProfileImgUrl)"></a>
+                <a href="@Url.Action(p.Name, "Profile")"><img src="@Url.Content(p.ProfileImgUrl)" data-toggle="tooltip" title="@p.Name"></a>
             </div>
             <div class="chat-message" title="@Helper.PostTime(p.SentTime)">
                 @p.Message

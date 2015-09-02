@@ -46,11 +46,11 @@ namespace WC.Controllers
             return View(posts);
         }
 
-        [ChildActionOnly]
-        public ActionResult PostListPartial(List<Post> Model)
-        {
-            return PartialView(Model);
-        }
+        //[ChildActionOnly]
+        //public ActionResult PostList(List<Post> Model)
+        //{
+        //    return PartialView(Model);
+        //}
 
         [ChildActionOnly]
         public ActionResult CommentList(List<Comment> Model)
@@ -112,7 +112,7 @@ namespace WC.Controllers
 
             listView.Add(view);
 
-            var str = RenderPartialViewToString("PostListPartial", listView);
+            var str = RenderPartialViewToString("PostList", listView);
 
             return str;
 
@@ -492,7 +492,7 @@ namespace WC.Controllers
                 morePost.NoMore = false;
             }
 
-            morePost.Posts = RenderPartialViewToString("PostListPartial", posts);
+            morePost.Posts = RenderPartialViewToString("PostList", posts);
 
             return Json(morePost);
         }
@@ -655,14 +655,12 @@ namespace WC.Controllers
                 }
                 else
                 {
-                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                                        .Where(x => x.VisibleType == (int)VisibleType.Public
-                                                || (x.VisibleType == (int)VisibleType.Friend
-                                                    && x.User1.FriendLists.FirstOrDefault().Friends.Any(y => y.FriendId == CurrentUserID && y.FriendStatus))
-                                                || (x.VisibleType == (int)VisibleType.Private
-                                                    && x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)))
-                                        .OrderByDescending(x => x.PostedDate)
-                                        .ToList();
+                    //listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                    //                    .Where(x => IsAuthorizeToViewPost(x))
+                    //                    .OrderByDescending(x => x.PostedDate)
+                    //                    .ToList();
+                    var temp = db.Posts.Where(x => x.PostedOn == fromUser.Id).OrderByDescending(x => x.PostedDate);
+                    listView.AddRange(temp.Where(item => IsAuthorizeToViewPost(item)));
                 }
             }
             catch (Exception exception)
