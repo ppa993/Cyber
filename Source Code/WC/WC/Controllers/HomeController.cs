@@ -515,15 +515,24 @@ namespace WC.Controllers
                     //create sub hub context
                     var hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
 
-                    var data = db.Friends.Where(x => x.FriendId == receiver.UserID && !x.FriendStatus).Select(item => new FriendViewModel
-                    {
-                        FriendId = item.FriendsListId,
-                        Name = item.FriendList.User.FirstName + " " + item.FriendList.User.LastName,
-                        ProfileImgUrl = UrlImage("avatar", item.FriendsListId),
-                        UserName = item.FriendList.User.UserName
-                    }).ToList();
+                    var data = db.Friends.Where(x => x.FriendId == receiver.UserID && !x.FriendStatus).ToList();
+                    var friendRequest = new List<FriendViewModel>();
 
-                    var html = RenderPartialViewToString("FriendRequest", data);
+                    foreach (var item in data)
+                    {
+                        var requester = db.Users.First(x => x.UserID == item.FriendsListId);
+                        var request = new FriendViewModel
+                        {
+                            FriendId = item.FriendsListId,
+                            Name = requester.FirstName + " " + requester.LastName,
+                            ProfileImgUrl = UrlImage("avatar", item.FriendsListId),
+                            UserName = requester.UserName
+                        };
+
+                        friendRequest.Add(request);
+                    }
+
+                    var html = RenderPartialViewToString("FriendRequest", friendRequest);
                     hubContext.Clients.All.updateRequest(receiver.UserID, html);
                     hubContext.Clients.All.toastNotif(receiver.UserID, toastUrl, toastMessage);
                 }

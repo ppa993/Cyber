@@ -54,6 +54,8 @@ namespace WC.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
+                    //var signInManager = new SignInManager(UserManager, AuthenticationManager);
+                    //var signInStatus = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, true);
                     return RedirectToLocal(returnUrl);
                     //return RedirectToAction("Newsfeed","Home");
                 }
@@ -254,6 +256,14 @@ namespace WC.Controllers
                 var byUserId = CurrentUserID;
                 var byUser = db.Users.First(x => x.UserID == byUserId);
                 var displayName = string.Format("{0} {1}", byUser.FirstName, byUser.LastName);
+
+                var friendName = string.Empty;
+                if ((NotificationType) notifType == NotificationType.AcceptFriendRequest
+                    || (NotificationType) notifType == NotificationType.CancelFriendRequest)
+                {
+                    var friend = db.Users.First(x => x.UserName == itemId);
+                    friendName = string.Format("{0} {1}", friend.FirstName, friend.LastName);
+                }
                 string notifContent;
 
                 switch ((NotificationType)notifType)
@@ -275,10 +285,10 @@ namespace WC.Controllers
                         notifContent = string.Format(NotificationMessage.NOTIF_LIKE_MY_COMMENT, displayName);
                         break;
                     case NotificationType.AcceptFriendRequest:
-                        notifContent = string.Format(NotificationMessage.NOTIF_ACCEPT_REQUEST, displayName);
+                        notifContent = string.Format(NotificationMessage.NOTIF_ACCEPT_REQUEST, friendName);
                         break;
                     default:
-                        notifContent = string.Format(NotificationMessage.NOTIF_CANCEL_REQUEST, displayName);
+                        notifContent = string.Format(NotificationMessage.NOTIF_CANCEL_REQUEST, friendName);
                         break;
                 }
 

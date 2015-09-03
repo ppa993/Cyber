@@ -1275,3 +1275,156 @@ The method 'First' can only be used as a final query operation. Consider using t
 The method 'First' can only be used as a final query operation. Consider using the method 'FirstOrDefault' in this instance instead. - 
 
 
+1/9/2015 4:02:35 AM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+1/9/2015 9:44:57 AM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 3:25:47 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 3:40:50 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 3:40:51 PM
+An error occurred while updating the entries. See the inner exception for details. - System.Data.Entity.Core.UpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: Violation of PRIMARY KEY constraint 'PK__Friends__66C8F9B29B165FF5'. Cannot insert duplicate key in object 'dbo.Friends'. The duplicate key value is (31f1ff53-3794-495d-b1dd-24bb59ce4eab, e266f72f-f707-4018-bef7-9e9607a718d5).
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.<NonQuery>b__0(DbCommand t, DbCommandInterceptionContext`1 c)
+   at System.Data.Entity.Infrastructure.Interception.InternalDispatcher`1.Dispatch[TTarget,TInterceptionContext,TResult](TTarget target, Func`3 operation, TInterceptionContext interceptionContext, Action`3 executing, Action`3 executed)
+   at System.Data.Entity.Infrastructure.Interception.DbCommandDispatcher.NonQuery(DbCommand command, DbCommandInterceptionContext interceptionContext)
+   at System.Data.Entity.Internal.InterceptableDbCommand.ExecuteNonQuery()
+   at System.Data.Entity.Core.Mapping.Update.Internal.DynamicUpdateCommand.Execute(Dictionary`2 identifierValues, List`1 generatedValues)
+   at System.Data.Entity.Core.Mapping.Update.Internal.UpdateTranslator.Update()
+   --- End of inner exception stack trace ---
+   at System.Data.Entity.Core.Mapping.Update.Internal.UpdateTranslator.Update()
+   at System.Data.Entity.Core.EntityClient.Internal.EntityAdapter.<Update>b__2(UpdateTranslator ut)
+   at System.Data.Entity.Core.EntityClient.Internal.EntityAdapter.Update[T](T noChangesResult, Func`2 updateFunction)
+   at System.Data.Entity.Core.EntityClient.Internal.EntityAdapter.Update()
+   at System.Data.Entity.Core.Objects.ObjectContext.<SaveChangesToStore>b__35()
+   at System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   at System.Data.Entity.Core.Objects.ObjectContext.SaveChangesToStore(SaveOptions options, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction)
+   at System.Data.Entity.Core.Objects.ObjectContext.<>c__DisplayClass2a.<SaveChangesInternal>b__27()
+   at System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   at System.Data.Entity.Core.Objects.ObjectContext.SaveChangesInternal(SaveOptions options, Boolean executeInExistingTransaction)
+   at System.Data.Entity.Core.Objects.ObjectContext.SaveChanges(SaveOptions options)
+   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+
+
+3/9/2015 4:03:51 PM
+Sequence contains no elements - 
+
+
+3/9/2015 4:28:11 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:28:27 PM
+Sequence contains no elements - 
+
+
+3/9/2015 4:28:27 PM
+Sequence contains no elements - 
+
+
+3/9/2015 4:28:28 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:30:09 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:30:20 PM
+Sequence contains no elements - 
+
+
+3/9/2015 4:30:20 PM
+Sequence contains no elements - 
+
+
+3/9/2015 4:30:21 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:30:41 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:34:55 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:35:22 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:35:45 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:36:15 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:37:04 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:42:23 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:42:51 PM
+Object reference not set to an instance of an object. - 
+
+
+3/9/2015 4:43:24 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+3/9/2015 4:45:06 PM
+Object reference not set to an instance of an object. - 
+
+
+3/9/2015 4:58:04 PM
+Object reference not set to an instance of an object. - 
+
+
+3/9/2015 4:59:22 PM
+Object reference not set to an instance of an object. - 
+
+
+3/9/2015 5:00:19 PM
+Object reference not set to an instance of an object. - 
+
+
+3/9/2015 5:10:52 PM
+Object reference not set to an instance of an object. - 
+
+
+3/9/2015 5:27:48 PM
+Object reference not set to an instance of an object. - 
+
+
+3/9/2015 5:29:27 PM
+Object reference not set to an instance of an object. - 
+
+
+3/9/2015 5:35:50 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+

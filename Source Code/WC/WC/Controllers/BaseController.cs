@@ -122,7 +122,7 @@ namespace WC.Controllers
                             ProfileImgUrl = a.Url,
                             SentTime = cbd.SendDate
                         };
-            var data = query.ToList();
+            var data = query.OrderBy(x => x.SentTime).ToList();
             return data;
         }
         public string GetHtmlListChatItemOf(string fromUserId, string toUserId)
