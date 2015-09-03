@@ -3994,11 +3994,18 @@ body:not(.small-sidebar) .horizontal-bar .menu.accordion-menu > li > a > .menu-i
 }
 
 .profile-cover {
-    background: url(../images/profile-cover.png);
     background-size: cover;
     width: 100%;
     height: 300px;
     position: relative;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    zoom:1;
 }
 
 .profile-image {

@@ -175,14 +175,14 @@
 <input type="hidden" id="hidden-user-id" value="@Model.Id" />
 <link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
 <div class="page-inner" style="min-height: 1080px !important">
-    <div class="profile-cover" style="position:relative">
+    <div class="profile-cover" style="background:url('@Url.Content(Model.Cover)')">
         <div class="center-elt" id="cover-change">
         </div>
         <div class="row">
             <div class="col-md-4 profile-image">
                 <div id="imgprofile" class="profile-image-container" style="position:relative">
                     <a href="javascript:void(0);">
-                        <img src="@Url.Content(Model.Avatar)" alt="" /> 
+                        <img src="@Url.Content(Model.Avatar)" alt="" width="150" height="150" /> 
                     </a> 
                 </div>
 

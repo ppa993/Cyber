@@ -1,8 +1,7 @@
-﻿@using WC.Data
-@using WC.Models
-@model List<AlbumDetail>
+﻿@model WC.Models.AlbumViewModel
 @{
     Random rand = new Random();
+
 }
 <link href="~/Content/Style/dropzone.css" rel="stylesheet" />
 <script src="~/Content/Script/dropzone.js"></script>
@@ -27,12 +26,34 @@
 
     .photo-object {
         width: 100%;
-        margin-bottom:30px; 
+        margin-bottom: 15px;
+        margin-top: 15px;
     }
 
-    .photo-link{
-        
+    .photo-link {
     }
+
+    #head-photo-box:hover .fa-plus {
+        transition: 0.9s;
+        transform: rotate(360deg);
+    }
+
+    .box-item-photo {
+        position: relative;
+    }
+
+        .box-item-photo:hover {
+            -webkit-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+            box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+        }
+
+        .box-item-photo .box-item-control {
+            position: absolute;
+            top: -10px;
+            right: 2px;
+            font-size: 20px;
+        }
 </style>
 
 <script>
@@ -40,7 +61,7 @@
     $(function () {
         Dropzone.autoDiscover = false;
         coverDropzone = new Dropzone("#coverDropzone", {
-            url: '@Url.Action("UploadCover")',
+            url: '@Url.Action("UploadPhotos")',
             maxFilesize: 256,
             paramName: "file",
             autoProcessQueue: false,
@@ -86,26 +107,83 @@
             coverDropzone.processQueue();
         });
     });
+</script>
+<script>
+    $(function () {
+        $("#dropFileDialog").hide();
+        if ('@Model.IsMyTimeLine' == 'True') {
+            var control = '  <a href="javascript:void(0);" onclick="OpenUploadDialog();" class="btn btn-default"><i class="fa fa-plus"></i>Upload</a>';
+            $("#head-photo-box").append(control);
+        }
+    });
 
+    var showDropzone = 0;
+    function OpenUploadDialog() {
+        showDropzone++;
+        if (showDropzone == 1) {
+            $("#dropFileDialog").show();
+        }
+        if (showDropzone == 2) {
+            $("#dropFileDialog").hide();
+            showDropzone = 0;
+        }
+    }
+
+</script>
+<script>
+    function DeletePhoto(e) {
+        var id = $(e).attr("data-item-id");
+        $.post('@Url.Action("DeletePhoto")', { photoId: id }, function (data) {
+            if (data == "0") {
+                showCloneMsg('Remove failed...');
+            } else {
+                showMsg('Remove successful...');
+            }
+        });
+    }
+    function SetAvatar(e) {
+        var id = $(e).attr("data-item-id");
+        $.post('@Url.Action("SetAvatarPhoto")', { photoId: id }, function (data) {
+            if (data == "0") {
+                showCloneMsg('Set avatar failed...');
+            } else if (data == "1") {
+                showMsg('Set avatar successful...');
+            } else {
+                showCloneMsg('Choose another photo...');
+            }
+        });
+    }
+    function SetCover(e) {
+        var id = $(e).attr("data-item-id");
+        $.post('@Url.Action("SetCoverPhoto")', { photoId: id }, function (data) {
+            if (data == "0") {
+                showCloneMsg('Set cover failed...');
+            } else if (data == "1") {
+                showMsg('Set cover successful...');
+            }
+            else {
+                showCloneMsg('Choose another photo...');
+            }
+        });
+    }
 </script>
 <div class="page-inner" style="min-height: 1080px !important">
     <div id="main-wrapper">
-        <div class="row row-info " style="margin-top: 30px;">
+        <div class="row row-info" id="dropFileDialog" style="margin-top: 30px;">
             <div class="panel-body panel-white">
-                <div class="col-md-2" style="text-align:center;">
-                    <img src="~/Content/Images/Avatar/woman4.png" class="img-info" />
+                <div id="coverDropzone">
+                    <form action="@Url.Action("UploadPhotos")" class="dropzone dz-clickable" id="cover-upload-form" enctype="multipart/form-data">
+                        <div class="dz-message">
+                            Drop files here or click to upload.<br>
+                        </div>
+                        <div class="fallback">
+                            <input id="cover-upload-file" type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-10">
-                    <div id="coverDropzone">
-                        <form action="@Url.Action("UploadPhotos")" class="dropzone dz-clickable" id="cover-upload-form" enctype="multipart/form-data">
-                            <div class="dz-message">
-                                Drop files here or click to upload.<br>
-                            </div>
-                            <div class="fallback">
-                                <input id="cover-upload-file" type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
-                            </div>
-                        </form>
-                    </div>
+
+                <div style="margin-top:20px; height:30px;">
+                    <button class="btn btn-green" id="cover-upload-btn"><i class="fa fa-cloud-upload"></i>Submit</button>
                 </div>
             </div>
         </div>
@@ -113,12 +191,12 @@
         <div class="row row-info" style="margin-top:10px;">
             <div class="panel panel-white">
                 <div class="panel-heading">
-                    <div class="panel-title">
-                        Photo's ...
+                    <div class="panel-title" id="head-photo-box">
+                        Photo's @Model.Name
                     </div>
                 </div>
                 <div class="panel-body">
-                    @if (Model.Count == 0)
+                    @if (Model.Photo.Count == 0)
                     {
                         <div class="panel-title" style="text-align:center">
                             No photo
@@ -127,27 +205,123 @@
                     else
                     {
                         <div class="col-md-4">
-                            @for (int i = 0; i < Model.Count / 3; i++)
-                            { 
-                                <a href="javascript:void(0);" class="photo-link">
-                                    <img src="@Url.Content(Model[i].Url)" class="photo-object"/>
-                                </a>
+                            @for (int i = 0; i < Model.Photo.Count / 3; i++)
+                            {
+                                <div class="box-item-photo">
+                                    @if (Model.IsMyTimeLine)
+                                    {
+                                        <div class="box-item-control dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-sort-down"></i>
+                                            </a>
+                                            <ul class="dropdown-menu remove-content pull-right" aria-labelledby="" style="top:20px;" >
+                                                <li>
+                                                    <a href="@Url.Action("Editor","Album",new { photoID=Model.Photo[i].PhotoID })" class="delete-post-command" data-item-id="@Model.Photo[i].PhotoID">
+                                                        <span class="fa fa-image"></span>&nbsp;&nbsp;Blend
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" class="delete-post-command" onclick="DeletePhoto(this);" data-item-id="@Model.Photo[i].PhotoID">
+                                                        <span class="fa fa-remove"></span>&nbsp;&nbsp;Delete
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="delete-post-command" onclick="SetAvatar(this);" data-item-id="@Model.Photo[i].PhotoID">
+                                                        <span class="fa fa-user"></span>&nbsp;&nbsp;Make Avatar
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="delete-post-command" onclick="SetCover(this);" data-item-id="@Model.Photo[i].PhotoID">
+                                                        <span class="fa fa-institution"></span>&nbsp;&nbsp;Make Cover
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    <a href="javascript:void(0);" class="photo-link">
+                                        <img src="@Url.Content(Model.Photo[i].Url)" class="photo-object" style="@Model.Photo[i].Filter"/>
+                                    </a>
+                                </div>
                             }
                         </div>
                         <div class="col-md-4">
-                            @for (int i = Model.Count / 3; i < Model.Count * 2 / 3; i++)
-                            { 
-                                <a href="javascript:void(0);" class="photo-link">
-                                    <img src="@Url.Content(Model[i].Url)" class="photo-object"/>
-                                </a>
+                            @for (int i = Model.Photo.Count / 3; i < Model.Photo.Count * 2 / 3; i++)
+                            {
+                                <div class="box-item-photo">
+                                    @if (Model.IsMyTimeLine)
+                                    {
+                                        <div class="box-item-control dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-sort-down"></i>
+                                            </a>
+                                            <ul class="dropdown-menu remove-content pull-right" aria-labelledby="" style="top:20px;">
+                                                <li>
+                                                    <a href="@Url.Action("Editor","Album",new { photoID=Model.Photo[i].PhotoID })" class="delete-post-command">
+                                                        <span class="fa fa-image"></span>&nbsp;&nbsp;Blend
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" class="delete-post-command" onclick="DeletePhoto(this);" data-item-id="@Model.Photo[i].PhotoID">
+                                                        <span class="fa fa-remove"></span>&nbsp;&nbsp;Delete
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="delete-post-command" onclick="SetAvatar(this);" data-item-id="@Model.Photo[i].PhotoID">
+                                                        <span class="fa fa-user"></span>&nbsp;&nbsp;Make Avatar
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="delete-post-command" onclick="SetCover(this);" data-item-id="@Model.Photo[i].PhotoID">
+                                                        <span class="fa fa-institution"></span>&nbsp;&nbsp;Make Cover
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    <a href="javascript:void(0);" class="photo-link">
+                                        <img src="@Url.Content(Model.Photo[i].Url)" class="photo-object"  style="@Model.Photo[i].Filter"/>
+                                    </a>
+                                </div>
                             }
                         </div>
                         <div class="col-md-4">
-                            @for (int i = Model.Count * 2 / 3; i < Model.Count; i++)
-                            { 
-                                <a href="javascript:void(0);" class="photo-link">
-                                    <img src="@Url.Content(Model[i].Url)" class="photo-object"/>
-                                </a>
+                            @for (int i = Model.Photo.Count * 2 / 3; i < Model.Photo.Count; i++)
+                            {
+                                <div class="box-item-photo">
+                                    @if (Model.IsMyTimeLine)
+                                    {
+                                        <div class="box-item-control dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-sort-down"></i>
+                                            </a>
+                                            <ul class="dropdown-menu remove-content pull-right" aria-labelledby="" style="top:20px;">
+                                                <li>
+                                                    <a href="@Url.Action("Editor","Album",new { photoID=Model.Photo[i].PhotoID })" class="delete-post-command">
+                                                        <span class="fa fa-image"></span>&nbsp;&nbsp;Blend
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" class="delete-post-command" onclick="DeletePhoto(this);" data-item-id="@Model.Photo[i].PhotoID">
+                                                        <span class="fa fa-remove"></span>&nbsp;&nbsp;Delete
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="delete-post-command" onclick="SetAvatar(this);" data-item-id="@Model.Photo[i].PhotoID">
+                                                        <span class="fa fa-user"></span>&nbsp;&nbsp;Make Avatar
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="delete-post-command" onclick="SetCover(this);" data-item-id="@Model.Photo[i].PhotoID">
+                                                        <span class="fa fa-institution"></span>&nbsp;&nbsp;Make Cover
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    <a href="javascript:void(0);" class="photo-link">
+                                        <img src="@Url.Content(Model.Photo[i].Url)" class="photo-object"  style="@Model.Photo[i].Filter"/>
+                                    </a>
+                                </div>
                             }
                         </div>
 

@@ -269,5 +269,24 @@ namespace WC.Controllers
                     }).Where(x => x.FriendId == userId).ToList();
         }
 
+        [HttpPost]
+        public string GetHintUser(string key)
+        { 
+            var query = (from u in db.Users.Where(x => x.FirstName.Contains(key) || x.LastName.Contains(key))
+                        from ad in db.AlbumDetails
+                        where u.UserID == ad.PostedUserId
+                        && ad.AlbumId == "avatar" + ad.PostedUserId
+                        && ad.Active
+                        select new FriendViewModel()
+                        {
+                            Name = u.LastName + " " + u.FirstName,
+                            UserName = u.UserName,
+                            ProfileImgUrl = ad.Url
+                        }).ToList();
+
+            string html = "";
+            html += RenderPartialViewToString("HintFriendPartial", query);
+            return html;
+        }
     }
 }
