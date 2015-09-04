@@ -46,11 +46,11 @@ namespace WC.Controllers
             return View(posts);
         }
 
-        //[ChildActionOnly]
-        //public ActionResult PostList(List<Post> Model)
-        //{
-        //    return PartialView(Model);
-        //}
+        [ChildActionOnly]
+        public ActionResult PostListPartial(List<Post> Model)
+        {
+            return PartialView(Model);
+        }
 
         [ChildActionOnly]
         public ActionResult CommentList(List<Comment> Model)

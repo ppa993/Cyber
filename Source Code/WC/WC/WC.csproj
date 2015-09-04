@@ -447,6 +447,7 @@
     <Content Include="Views\Album\Photos.cshtml" />
     <Content Include="Views\Album\Editor.cshtml" />
     <Content Include="Views\Shared\HintFriendPartial.cshtml" />
+    <Content Include="Views\Post\PostListPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\UserUpload\" />
