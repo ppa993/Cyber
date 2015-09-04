@@ -66,8 +66,8 @@ namespace WC.Controllers
                 user.Posts = postList;
                 user.Work = fromUserInfo.Work;
                 user.ContactNumber = fromUserInfo.ContactNumber;
-                user.Avatar = UrlImage("avatar", fromUserInfo.UserID);
-                user.Cover = UrlImage("cover", fromUserInfo.UserID);
+                user.Avatar = UrlImage("avatar",CurrentUserID);
+                user.Cover = UrlImage("cover", CurrentUserID);
                 user.AllowOtherToPost = fromUserInfo.MySettings.First().AllowOtherToPost;
                 user.IsMyTimeline = fromUser.Id.Equals(toUser, StringComparison.InvariantCultureIgnoreCase);
                 user.Setting = fromUserInfo.MySettings.First();
@@ -128,6 +128,7 @@ namespace WC.Controllers
 
             return View(user);
         }
+         
 
         public ActionResult Settings(ManageMessageId? message)
         {

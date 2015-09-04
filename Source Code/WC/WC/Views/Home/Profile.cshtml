@@ -24,10 +24,9 @@
 <script src="~/Content/Script/dropzone.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <script type="text/javascript">
-    function PostStatus() {
 
-    }
     var dropzone = null;
+    
     $(function () {
         Dropzone.autoDiscover = false;
         dropzone = new Dropzone("#dropzone", {
@@ -53,7 +52,6 @@
         });
 
         dropzone.on("success", function (file) {
-
         });
         dropzone.on('dragover', function (e) {
             $("#dropzone").addClass('border-dropzone');
@@ -73,10 +71,7 @@
 
         });
         dropzone.on("complete", function (file) {
-            //dropzone.removeFile(file);
-            //if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-            //    doSomething();
-            //}
+            dropzone.removeFile(file);
         });
 
         var html = '';
@@ -101,13 +96,6 @@
 
 
         });
-        function uploadFile() {
-            alert(dropzone.files.length);
-
-            if (!dropzone.files.length) {
-                dropzone.processQueue();
-            }
-        }
     })
 
 </script>
@@ -187,13 +175,19 @@
 <input type="hidden" id="hidden-user-id" value="@Model.Id" />
 <link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
 <div class="page-inner" style="min-height: 1080px !important">
-    <div class="profile-cover">
+    <div class="profile-cover" style="background:url('@Url.Content(Model.Cover)')">
+        <div class="center-elt" id="cover-change">
+        </div>
         <div class="row">
             <div class="col-md-4 profile-image">
                 <div id="imgprofile" class="profile-image-container" style="position:relative">
                     <a href="javascript:void(0);">
-                        <img src="@Url.Content(Model.Avatar)" alt="" />
-                    </a>
+                        <img src="@Url.Content(Model.Avatar)" alt="" width="150" height="150" /> 
+                    </a> 
+                </div>
+
+                <div class="center-elt center-elt-bottom">
+                    <a href="javascript:void(0);"><i class="fa fa-refresh"></i></a>
                 </div>
             </div>
             <div class="col-md-12 profile-info">
@@ -207,10 +201,17 @@
     <div id="main-wrapper">
         <div class="row">
             <div class="col-md-4 user-profile">
-                <h3 class="text-center">@Model.DisplayName</h3>
+                <h3 class="text-center">
+                    @Model.DisplayName
+                </h3>
                 <hr>
                 <script type="text/javascript">
                     $(function () {
+                        var coverChange = "<a href=\"javascript:void(0);\"  data-toggle=\"modal\" data-target=\"#uploadCoverModal\"><i class=\"fa fa-refresh\"></i></a>";
+                        if ('@Model.IsMyTimeline' == 'True') {
+                            $("#cover-change").append(coverChange);
+                        }
+
                         var li = '<li><p><i class="#ICON m-r-xs"></i>#STRING</p></li>';
                         if ('@Model.Address' != '') {
                             var address = li.replace('#ICON', 'icon-map');
@@ -252,28 +253,28 @@
                 <ul id="box-profile" class="list-unstyled text-center"></ul>
                 <hr>
                 @if (!Model.IsMyTimeline && ViewData["FriendStatus"] != null)
+            {
+                switch (((AddFriendViewModel)ViewData["FriendStatus"]).Type)
                 {
-                    switch (((AddFriendViewModel)ViewData["FriendStatus"]).Type)
-                    {
-                        case FriendType.NoneFriend:
+                    case FriendType.NoneFriend:
                             <button class="btn btn-block btn-available" onclick="FriendControl(0);">
                                 <i class="fa fa-plus m-r-xs"></i>Add Friend
                             </button>
                             break;
                         case FriendType.MyPendingFriend:
-                        <button class="btn btn-block btn-wait-accept" onclick="FriendControl(1);">
-                            <i class="fa fa-plus m-r-xs"></i>Pending
-                        </button>
+                            <button class="btn btn-block btn-wait-accept" onclick="FriendControl(1);">
+                                <i class="fa fa-plus m-r-xs"></i>Pending
+                            </button>
                             break;
                         case FriendType.HisPendingFriend:
-                        <button class="btn btn-block btn-wait-accept" onclick="FriendControl(2);">
-                            <i class="fa fa-plus m-r-xs"></i>Accept
-                        </button>
+                            <button class="btn btn-block btn-wait-accept" onclick="FriendControl(2);">
+                                <i class="fa fa-plus m-r-xs"></i>Accept
+                            </button>
                             break;
                         case FriendType.Friend:
-                        <button class="btn btn-block btn-added" onclick="FriendControl(3);">
-                            <i class="fa fa-plus m-r-xs"></i>Friend
-                        </button>
+                            <button class="btn btn-block btn-added" onclick="FriendControl(3);">
+                                <i class="fa fa-plus m-r-xs"></i>Friend
+                            </button>
                             break;
                     }
                 }
@@ -281,7 +282,7 @@
                 <div id="box_photo" class="panel panel-white">
                     <div class="panel-heading">
                         <div class="panel-title">
-                            <a href="@Url.Action("Album", "Home", new { username = user.UserName })">Photo</a>
+                            <a href="@Url.Action("Photos", "Album", new { username = user.UserName })">Photo</a>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -324,7 +325,7 @@
             </div>
             <div class="col-md-7 m-t-lg">
                 @if ((Model.AllowOtherToPost && (ViewData["FriendStatus"] != null)) || Model.IsMyTimeline)
-                {
+            {
                     <div class="panel panel-white">
                         <div class="panel-body">
                             <div class="post">
@@ -343,6 +344,10 @@
                                 </div>
                                 <div class="post-options">
                                     <a href="javascript:void(0);" onclick="OpenUploadPost();"><i class="icon-camera"></i></a>
+                                    <a href="#"><i class="icon-camcorder"></i></a>
+                                    <a href="#"><i class="icon-music-tone-alt"></i></a>
+                                    <a href="#"><i class="icon-link"></i></a>
+                                    <a href="#"><i class="icon-microphone"></i></a>
                                     <button id="btn_upload_post" class="btn btn-facebook pull-right" @*onclick=" PostStatus();"*@>Post</button>
                                     @if (Model.IsMyTimeline)
                                     {
@@ -364,8 +369,8 @@
                     <ul class="list-unstyled" id="timeline-posts">
                         @if (Model.Posts.Count > 0)
                         {
-                            Html.RenderAction("PostListPartial", "Post", new { Model = Model.Posts as List<Post> });
-                            //Html.RenderPartial("PostListPartial", Model.Posts as List<Post>);
+                            //Html.RenderAction("PostList", "Post", new {Model = Model.Posts as List<Post>});
+                            Html.RenderPartial("PostListPartial", Model.Posts as List<Post>);
                         }
                     </ul>
                 </div>
@@ -450,7 +455,34 @@
         </div>
     }
 </div>
+<div id="uploadCoverModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cover Photo Upload</h4>
+            </div>
+            <div class="modal-body" id="contentUploadCoverModal">
+                <div id="coverDropzone">
+                    <form action="@Url.Action("UploadCover")" class="dropzone dz-clickable" id="cover-upload-form" enctype="multipart/form-data">
+                        <div class="dz-message">
+                            Drop files here or click to upload.<br>
+                        </div>
+                        <div class="fallback">
+                            <input id="cover-upload-file" type="file" multiple="multiple" class="dz-hidden-input" style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
+                        </div>
+                    </form>
 
+                </div>
+            </div> 
+            <div class="modal-footer">
+                <input type="submit"  id="cover-upload-btn"  class="btn btn-green" value="Submit"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     var NoMoreData = false;

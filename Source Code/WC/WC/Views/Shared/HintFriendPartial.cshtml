@@ -1,0 +1,12 @@
+﻿@model List<WC.Models.FriendViewModel>
+<ul class="menu-hint">
+    @foreach (var p in Model)
+    {
+        <li>
+            <a href="@Url.Action("Profile","Home",new { username = p.UserName})" class="item-hint" data-item-username="@p.UserName">
+                <img src="@Url.Content(p.ProfileImgUrl)" style="border-radius:50%"/>
+                @p.Name
+            </a>
+        </li>
+    }
+</ul>

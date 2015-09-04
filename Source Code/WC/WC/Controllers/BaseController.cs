@@ -118,7 +118,6 @@ namespace WC.Controllers
                             UserId = cbd.UserIdReply,
                             Message = cbd.Content,
                             Name = u.FirstName + " " + u.LastName,
-                            UserName = u.UserName,
                             ProfileImgUrl = a.Url,
                             SentTime = cbd.SendDate
                         };
@@ -151,7 +150,6 @@ namespace WC.Controllers
 
         public static string RenderViewToString(string controlName, object model)
         {
-            if (model == null || string.IsNullOrEmpty(controlName)) return string.Empty;
             ViewPage viewPage = new ViewPage() { ViewContext = new ViewContext() };
 
             viewPage.ViewData = new ViewDataDictionary(model);
@@ -232,15 +230,14 @@ namespace WC.Controllers
                         }).FirstOrDefault(x => x.PostedUserId == userId);
             if (data != null) return data.Url;
             return "";
-        }
-
+        } 
 
         public List<FriendViewModel> FriendList(string userId)
-        {           
+        {
             var list = db.FriendLists.FirstOrDefault(x => x.Id == userId).Friends.Where(x => x.FriendStatus);
 
             var friendList = new List<FriendViewModel>();
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 var request = new FriendViewModel
                 {
@@ -257,8 +254,7 @@ namespace WC.Controllers
         {
             var friends = db.Friends.Where(x => x.FriendId == userId && !x.FriendStatus);
             var friendRequest = new List<FriendViewModel>();
-
-            foreach(var item in friends)
+            foreach (var item in friends)
             {
                 var request = new FriendViewModel
                 {
@@ -269,8 +265,27 @@ namespace WC.Controllers
                 };
                 friendRequest.Add(request);
             }
-
             return friendRequest;
+        }
+
+        [HttpPost]
+        public string GetHintUser(string key)
+        { 
+            var query = (from u in db.Users.Where(x => x.FirstName.Contains(key) || x.LastName.Contains(key))
+                        from ad in db.AlbumDetails
+                        where u.UserID == ad.PostedUserId
+                        && ad.AlbumId == "avatar" + ad.PostedUserId
+                        && ad.Active
+                        select new FriendViewModel()
+                        {
+                            Name = u.LastName + " " + u.FirstName,
+                            UserName = u.UserName,
+                            ProfileImgUrl = ad.Url
+                        }).ToList();
+
+            string html = "";
+            html += RenderPartialViewToString("HintFriendPartial", query);
+            return html;
         }
     }
 }

@@ -1,0 +1,180 @@
+﻿@model WC.Data.AlbumDetail
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+    #imageContainer {
+        border: 2px solid #000;
+        display: inline-block;
+        padding: 5px;
+        vertical-align: top;
+        margin: 0 auto;
+        margin-left: 1%;
+        width: 80%;
+    }
+
+        #imageContainer img {
+            width: 100%;
+        }
+
+    #save-editor {
+        margin: 0 auto;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    @@media (max-width: 992px) {
+        #imageContainer {
+            width: 100%;
+        }
+    }
+
+    }
+
+    input[type=range]::-ms-track {
+        width: 300px;
+        height: 5px;
+        /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+        background: transparent;
+        /*leave room for the larger thumb to overflow with a transparent border */
+        border-color: transparent;
+        border-width: 6px 0;
+        /*remove default tick marks*/
+        color: transparent;
+    }
+
+    input[type=range]::-ms-fill-lower {
+        background: #777;
+        border-radius: 10px;
+    }
+
+    input[type=range]::-ms-fill-upper {
+        background: #ddd;
+        border-radius: 10px;
+    }
+
+    input[type=range]::-ms-thumb {
+        border: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: goldenrod;
+    }
+
+    input[type=range]:focus::-ms-fill-lower {
+        background: #888;
+    }
+
+    input[type=range]:focus::-ms-fill-upper {
+        background: #ccc;
+    }
+</style>
+<script>
+    var object = '';
+    function editImage() {
+        var gs = $("#gs").val(); // grayscale
+        var blur = $("#blur").val(); // blur
+        var br = $("#br").val(); // brightness
+        var ct = $("#ct").val(); // contrast
+        var huer = $("#huer").val(); //hue-rotate
+        var opacity = $("#opacity").val(); //opacity
+        var invert = $("#invert").val(); //invert
+        var saturate = $("#saturate").val(); //saturate
+        var sepia = $("#sepia").val(); //sepia
+
+        object = 'grayscale(' + gs + '%) blur(' + blur +
+                                       'px) brightness(' + br +
+                                       '%) contrast(' + ct +
+                                       '%) hue-rotate(' + huer +
+                                       'deg) opacity(' + opacity +
+                                       '%) invert(' + invert +
+                                       '%) saturate(' + saturate +
+                                       '%) sepia(' + sepia + '%)';
+
+        $("#imageContainer img").css("filter", object);
+
+        $("#imageContainer img").css("-webkit-filter", object);
+
+    }
+
+    ////When sliders change image will be updated via editImage() function
+    //$("input[type=range]").change(function () {
+    //    alert('ac');
+    //});
+    $(document).ready(function () {
+        $("[type=range]").change(editImage).mousemove(editImage);
+        $("#save-editor").click(function (e) {
+            var id = $(this).attr("data-item-id"); 
+            alert(id);
+            $.post('@Url.Action("SetFilter", "Album")', { photoId: id, filter: object }, function () {
+
+            });
+        });
+    });
+</script>
+<div class="page-inner" style="min-height: 1080px !important">
+    <div id="main-wrapper" style="margin-top:5px;">
+        <div class="row row-info">
+            <div class="panel panel-white">
+                <div class="panel-heading">
+                    <div class="panel-title" id="head-photo-box">
+                        Cyber blender
+                    </div>
+                </div>
+                <div class="panel-body">
+
+                    <div class="col-md-10">
+                        <div id="imageContainer" class="pull-right">
+                            <img src="@Url.Content(Model.Url)" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <form id="imageEditor">
+                            <p>
+                                <label for="gs">Grayscale</label>
+                                <input id="gs" name="gs" type="range" min=0 max=100 value=0>
+                            </p>
+                            <p>
+                                <label for="blur">Blur</label>
+                                <input id="blur" name="blur" type="range" min=0 max=10 value=0>
+                            </p>
+                            <p>
+                                <label for="br">Brightness</label>
+                                <input id="br" name="br" type="range" min=0 max=200 value=100>
+                            </p>
+                            <p>
+                                <label for="ct">Contrast</label>
+                                <input id="ct" name="ct" type="range" min=0 max=200 value=100>
+                            </p>
+                            <p>
+                                <label for="huer">Hue Rotate</label>
+                                <input id="huer" name="huer" type="range" min=0 max=360 value=0>
+                            </p>
+                            <p>
+                                <label for="opacity">Opacity</label>
+                                <input id="opacity" name="opacity" type="range" min=0 max=100 value=100>
+                            </p>
+                            <p>
+                                <label for="invert">Invert</label>
+                                <input id="invert" name="invert" type="range" min=0 max=100 value=0>
+                            </p>
+                            <p>
+                                <label for="saturate">Saturate</label>
+                                <input id="saturate" name="saturate" type="range" min=0 max=500 value=100>
+                            </p>
+                            <p>
+                                <label for="sepia">Sepia</label>
+                                <input id="sepia" name="sepia" type="range" min=0 max=100 value=0>
+                            </p>
+                        </form>
+
+                        <button id="save-editor" class="btn btn-blue" data-item-id="@Model.Id">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-footer">
+    <p class="no-s">2015 © Cyber</p>
+</div>
+</div>

@@ -24,6 +24,7 @@ namespace WC.Data
         public bool Active { get; set; }
         public bool Hide { get; set; }
         public string PostID { get; set; }
+        public string Filter { get; set; }
     
         public virtual Album Album { get; set; }
         public virtual User User { get; set; }

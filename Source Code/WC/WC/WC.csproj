@@ -175,6 +175,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Constants\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -292,6 +293,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LiteAlbum.cs" />
     <Compile Include="Models\NotificationViewModel.cs" />
+    <Compile Include="Models\PhotoViewModel.cs" />
     <Compile Include="Models\PostViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -323,6 +325,16 @@
     <Content Include="Content\Images\bg-input.png" />
     <Content Include="Content\Images\Avatar\men.png" />
     <Content Include="Content\Images\clear.png" />
+    <Content Include="Content\Images\Cover\cover1.jpg" />
+    <Content Include="Content\Images\Cover\cover10.jpg" />
+    <Content Include="Content\Images\Cover\cover2.jpg" />
+    <Content Include="Content\Images\Cover\cover3.jpg" />
+    <Content Include="Content\Images\Cover\cover4.jpg" />
+    <Content Include="Content\Images\Cover\cover5.jpg" />
+    <Content Include="Content\Images\Cover\cover6.jpg" />
+    <Content Include="Content\Images\Cover\cover7.jpg" />
+    <Content Include="Content\Images\Cover\cover8.jpg" />
+    <Content Include="Content\Images\Cover\cover9.jpg" />
     <Content Include="Content\Images\loading.gif" />
     <Content Include="Content\Images\post-image.jpg" />
     <Content Include="Content\Images\profile-cover.png" />
@@ -375,7 +387,6 @@
     <Content Include="Content\Style\component.css" />
     <Content Include="Content\Style\custom.css" />
     <Content Include="Content\Style\datepicker.css" />
-    <Content Include="Content\Style\dropzone.css" />
     <Content Include="Content\Style\font-awesome.css" />
     <Content Include="Content\Style\fullcalendar.min.css" />
     <Content Include="Content\Style\green.css" />
@@ -429,10 +440,13 @@
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Calendar\Calendar.cshtml" />
     <Content Include="Views\Shared\MyEvents.cshtml" />
-    <Content Include="Views\Post\PostListPartial.cshtml" />
+    <Content Include="Views\Shared\PostListPartial.cshtml" />
     <Content Include="Views\Shared\PostList.cshtml" />
     <Content Include="Views\Shared\CommentList.cshtml" />
     <Content Include="Views\Shared\LiteAlbumPartial.cshtml" />
+    <Content Include="Views\Album\Photos.cshtml" />
+    <Content Include="Views\Album\Editor.cshtml" />
+    <Content Include="Views\Shared\HintFriendPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\UserUpload\" />

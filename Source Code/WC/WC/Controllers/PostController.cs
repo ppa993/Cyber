@@ -46,11 +46,11 @@ namespace WC.Controllers
             return View(posts);
         }
 
-        [ChildActionOnly]
-        public ActionResult PostListPartial(List<Post> Model)
-        {
-            return PartialView(Model);
-        }
+        //[ChildActionOnly]
+        //public ActionResult PostList(List<Post> Model)
+        //{
+        //    return PartialView(Model);
+        //}
 
         [ChildActionOnly]
         public ActionResult CommentList(List<Comment> Model)
@@ -112,7 +112,7 @@ namespace WC.Controllers
 
             listView.Add(view);
 
-            var str = RenderPartialViewToString("PostListPartial", listView);
+            var str = RenderPartialViewToString("PostList", listView);
 
             return str;
 
@@ -492,7 +492,7 @@ namespace WC.Controllers
                 morePost.NoMore = false;
             }
 
-            morePost.Posts = RenderPartialViewToString("PostListPartial", posts);
+            morePost.Posts = RenderPartialViewToString("PostList", posts);
 
             return Json(morePost);
         }
