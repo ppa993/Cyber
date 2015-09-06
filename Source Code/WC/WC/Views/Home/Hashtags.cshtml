@@ -1,0 +1,66 @@
+﻿@using WC.Data
+@model List<Post>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Style/loading.css" rel="stylesheet" type="text/css">
+<div class="page-inner" style="min-height: 1080px !important">
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-9 m-t-lg">
+                <div class="profile-timeline">
+                    <ul class="list-unstyled" id="timeline-posts">
+                        @if (Model.Any())
+                        {
+                            Html.RenderPartial("PostListPartial", Model);
+                        }
+                    </ul>
+                </div>
+                <div id="circularG" class="cssload-loader" style="display: none">
+                    <div class="cssload-inner cssload-one"></div>
+                    <div class="cssload-inner cssload-two"></div>
+                    <div class="cssload-inner cssload-three"></div>
+                </div>
+                <div id="no-more-post" class="panel panel-white" role="alert" style="display: none">
+                    <div class="panel-body text-center">
+                        <strong>No more post!</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <p class="no-s">2015 © Cyber</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var NoMoreData = false;
+    var inProgress = false;
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() === $(document).height() -
+            $(window).height() && !NoMoreData && !inProgress) {
+
+            inProgress = true;
+            $("#circularG").show();
+            var delay = 500; //half seconds
+
+            setTimeout(function () {
+                var postCount = document.querySelectorAll('[id^=post-block]').length;
+
+                $.post("@Url.Action("LoadMoreNewsfeed")", { "hashtag": '@ViewBag.Title',"loadedPostCount": postCount},
+                    function (data) {
+                        NoMoreData = data.NoMore;
+                        $("#timeline-posts").append(data.Posts);
+                        $("#circularG").hide();
+                        inProgress = false;
+                        if (NoMoreData) {
+                            $("#no-more-post").show();
+                        }
+                    });
+            }, delay);
+        }
+    });
+</script>

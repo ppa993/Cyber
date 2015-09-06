@@ -175,6 +175,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Constants\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
@@ -295,6 +296,7 @@
     <Compile Include="Models\NotificationViewModel.cs" />
     <Compile Include="Models\PhotoViewModel.cs" />
     <Compile Include="Models\PostViewModel.cs" />
+    <Compile Include="Models\StatictisViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="fonts\Utils\Helper.cs" />
@@ -324,6 +326,7 @@
     <Content Include="Content\Images\bg-input-focus.png" />
     <Content Include="Content\Images\bg-input.png" />
     <Content Include="Content\Images\Avatar\men.png" />
+    <Content Include="Content\Images\cd-top-arrow.svg" />
     <Content Include="Content\Images\clear.png" />
     <Content Include="Content\Images\Cover\cover1.jpg" />
     <Content Include="Content\Images\Cover\cover10.jpg" />
@@ -342,10 +345,11 @@
     <Content Include="Content\Images\profile-picture.png" />
     <Content Include="Content\Images\sprite.png" />
     <Content Include="Content\Images\Avatar\women.png" />
+    <Content Include="Content\Script\Autolinker.min.js" />
     <Content Include="Content\Script\bootstrap-editable.min.js" />
     <Content Include="Content\Script\bootstrap.min.js" />
+    <Content Include="Content\Script\chartjs.js" />
     <Content Include="Content\Script\classie.js" />
-    <Content Include="Content\Script\curvedLines.js" />
     <Content Include="Content\Script\cyber.common.js" />
     <Content Include="Content\Script\dashboard.js" />
     <Content Include="Content\Script\dropzone.js" />
@@ -354,11 +358,7 @@
     <Content Include="Content\Script\jquery-ui.min.js" />
     <Content Include="Content\Script\jquery.blockui.js" />
     <Content Include="Content\Script\jquery.counterup.min.js" />
-    <Content Include="Content\Script\jquery.flot.min.js" />
-    <Content Include="Content\Script\jquery.flot.resize.min.js" />
-    <Content Include="Content\Script\jquery.flot.symbol.min.js" />
-    <Content Include="Content\Script\jquery.flot.time.min.js" />
-    <Content Include="Content\Script\jquery.flot.tooltip.min.js" />
+    <Content Include="Content\Script\jquery.hashtags.js" />
     <Content Include="Content\Script\jquery.nicescroll.min.js" />
     <Content Include="Content\Script\jquery.signalR-2.0.0.min.js" />
     <Content Include="Content\Script\jquery.slimscroll.min.js" />
@@ -378,6 +378,7 @@
     <Content Include="Content\Script\moment.min.js" />
     <Content Include="Content\Script\pace.min.js" />
     <Content Include="Content\Script\qtip.js" />
+    <Content Include="Content\Script\scrolltop.js" />
     <Content Include="Content\Script\snap.svg-min.js" />
     <Content Include="Content\Script\switchery.min.js" />
     <Content Include="Content\Script\toastr.min.js" />
@@ -390,6 +391,7 @@
     <Content Include="Content\Style\font-awesome.css" />
     <Content Include="Content\Style\fullcalendar.min.css" />
     <Content Include="Content\Style\green.css" />
+    <Content Include="Content\Style\jquery.hashtags.css" />
     <Content Include="Content\Style\loading.css" />
     <Content Include="Content\Style\menu_cornerbox.css" />
     <Content Include="Content\Style\MetroJs.min.css" />
@@ -417,6 +419,7 @@
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Views\Shared\PostListPartial.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -440,14 +443,18 @@
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Calendar\Calendar.cshtml" />
     <Content Include="Views\Shared\MyEvents.cshtml" />
-    <Content Include="Views\Shared\PostListPartial.cshtml" />
-    <Content Include="Views\Shared\PostList.cshtml" />
     <Content Include="Views\Shared\CommentList.cshtml" />
     <Content Include="Views\Shared\LiteAlbumPartial.cshtml" />
     <Content Include="Views\Album\Photos.cshtml" />
     <Content Include="Views\Album\Editor.cshtml" />
     <Content Include="Views\Shared\HintFriendPartial.cshtml" />
     <Content Include="Views\Post\PostListPartial.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Admin\Administrators.cshtml" />
+    <Content Include="Views\Admin\AdministratorPartial.cshtml" />
+    <Content Include="Views\Admin\AdminInfo.cshtml" />
+    <Content Include="Views\Home\Hashtags.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\UserUpload\" />

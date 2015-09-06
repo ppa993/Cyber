@@ -3,7 +3,7 @@
     @foreach (var p in Model)
     {
         <li>
-            <a href="@Url.Action("Profile","Home",new { username = p.UserName})" class="item-hint" data-item-username="@p.UserName">
+            <a href="@Url.Action("profile","Home",new { username = p.UserName})" class="item-hint" data-item-username="@p.UserName">
                 <img src="@Url.Content(p.ProfileImgUrl)" style="border-radius:50%"/>
                 @p.Name
             </a>

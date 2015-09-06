@@ -8,6 +8,12 @@
 
 @foreach (var item in Model)
 {
+    <script>
+        $(document).ready(function() {
+            var myTextEl = document.getElementById('post-edit-@item.PostID');
+            myTextEl.innerHTML = Autolinker.link(myTextEl.innerHTML);
+        });
+    </script>
     var isPoster = item.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
     var isOwner = item.PostedOn.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
     var photo = ((WC.Controllers.BaseController)this.ViewContext.Controller).UrlImage("avatar", item.UserID);
@@ -24,11 +30,11 @@
                 <div class="timeline-item-header post-header">
                     <img src="@Url.Content(photo)" alt="">
                     <p>
-                        <a href="@Url.Action(item.User.UserName, "Profile")">@item.User.FirstName @item.User.LastName</a>
+                        <a href="@Url.Action(item.User.UserName, "profile")">@item.User.FirstName @item.User.LastName</a>
                         @if (!item.UserID.Equals(item.PostedOn, StringComparison.InvariantCultureIgnoreCase))
                         {
                             <a class="no-decoration">&nbsp;<i class="fa fa-arrow-right"></i>&nbsp;</a>
-                            <a href="@Url.Action(item.User1.UserName, "Profile")">@item.User1.FirstName @item.User1.LastName</a>
+                            <a href="@Url.Action(item.User1.UserName, "profile")">@item.User1.FirstName @item.User1.LastName</a>
                         }
                     </p>
                     @{
@@ -47,7 +53,7 @@
                         }
                     }
                     <small class="pull-left">
-                        <a href="@Url.Action(item.PostID, "Posts")">@Helper.PostTime(item.PostedDate)</a>
+                        <a href="@Url.Action(item.PostID, "posts")">@Helper.PostTime(item.PostedDate)</a>
                     </small>
 
                     @if (item.PostedOn != currentUserId)
@@ -135,7 +141,13 @@
                                 //Html.RenderAction("CommentList", "Home", new { Model = item.Comments as List<WC.Data.Comment> });
 
                                 foreach (var comment in comments)
-                                {
+                                {    
+                                    <script>
+                                        $(document).ready(function () {
+                                            var myTextEl = document.getElementById('comment-edit-@comment.CommentID');
+                                            myTextEl.innerHTML = Autolinker.link(myTextEl.innerHTML);
+                                        });
+                                        </script>
                                     var isCommenter = comment.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase);
                                     var commentAlreadyLike = comment.CommentLikes.Any(x => x.UserID == User.Identity.GetUserId())
                                                         ? "Unlike"
@@ -145,7 +157,7 @@
                                         <div class="timeline-comment-header">
                                             <img src="@Url.Content(cmtPhoto)" alt="">
                                             <p>
-                                                <a href="@Url.Action(comment.User.UserName, "Profile")">@comment.User.FirstName @comment.User.LastName</a> <span id="comment-edit-@comment.CommentID" style="white-space: pre-line; font-weight: 400">@comment.CommentContent</span>
+                                                <a href="@Url.Action(comment.User.UserName, "profile")">@comment.User.FirstName @comment.User.LastName</a> <span id="comment-edit-@comment.CommentID" style="white-space: pre-line; font-weight: 400">@comment.CommentContent</span>
                                             </p>
                                             <div class="dropdown dropdown-caret pull-right">
                                                 <a id="drop-@comment.CommentID" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -179,7 +191,9 @@
                                 }
                             }
                         </div>
-                        <textarea class="form-control comment-form" id="comment-area-@item.PostID" post-id="@item.PostID" placeholder="Write a comment..."></textarea>
+                        <div style="background-color: #fff">
+                            <textarea class="form-control comment-form" id="comment-area-@item.PostID" post-id="@item.PostID" placeholder="Write a comment..."></textarea>
+                        </div>
                     </div>
                 </div>
             </div>

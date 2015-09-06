@@ -44,6 +44,7 @@ namespace WC.Constants
         public const string DDMMYYYY_HHMM = "dd/MM/yyyy HH:mm";
         public const string HHMM = "HH:mm";
         public const string DDMM = "dd/MM";
+        public const string MMMDD = "MMM dd";
         public const string DDMMYYYY = "dd/MM/yyyy";
         public const string YYYYMMDD = "yyyy-MM-dd";
         public const string YYYYMMDDHHMMSS = "yyyy-MM-dd HH:mm:ss";
@@ -82,6 +83,12 @@ namespace WC.Constants
     {
         Male,
         Female
+    }
+
+    public enum RoleType
+    {
+        SuperAdmin = 1,
+        Admin
     }
 
     public enum Relationship
@@ -133,7 +140,7 @@ namespace WC.Constants
     public class DefautValue
     {
         public static int PostLoad = 10;
-        public static int RecentNewsfeed = -7;
+        public static int RecentNewsfeed = -6;
     }
 
     public enum ShowBirthDay

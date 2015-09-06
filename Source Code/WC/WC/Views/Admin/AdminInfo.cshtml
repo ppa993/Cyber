@@ -1,0 +1,16 @@
+﻿@using WC.Models
+@model List<FriendViewModel>
+    @foreach (var admin in Model)
+    {
+        <div class="clear"></div>
+        <div class="friend-request">
+
+            <div class="msg-img">
+                <img class="img-circle" src="@Url.Content(admin.ProfileImgUrl)" alt="@admin.Name" title="@admin.Name">
+            </div>
+            <p class="msg-name admin-name">
+                <a href="@Url.Action(admin.UserName, "profile")">@admin.Name</a>
+            </p>
+        </div>
+    }
+

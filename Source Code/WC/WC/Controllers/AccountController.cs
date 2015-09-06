@@ -104,7 +104,8 @@ namespace WC.Controllers
                         UserName = model.UserName,
                         BirthDay = birthday,
                         Gender = model.Gender,
-                        Relationship = (int)Relationship.Single
+                        Relationship = (int)Relationship.Single,
+                        RegisteredDate = DateTime.UtcNow
                     };
                     db.Users.Add(userInfo);
                     db.SaveChanges(); 
@@ -164,7 +165,7 @@ namespace WC.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
-            ViewBag.ReturnUrl = Url.Action("Settings", "");
+            ViewBag.ReturnUrl = Url.Action("settings", "");
             return View();
         }
 
@@ -176,7 +177,7 @@ namespace WC.Controllers
         {
             bool hasPassword = HasPassword();
             ViewBag.HasLocalPassword = hasPassword;
-            ViewBag.ReturnUrl = Url.Action("Settings","");
+            ViewBag.ReturnUrl = Url.Action("settings","");
             if (hasPassword)
             {
                 if (ModelState.IsValid)
@@ -184,7 +185,7 @@ namespace WC.Controllers
                     IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Settings", "", new { Message = ManageMessageId.ChangePasswordSuccess });
+                        return RedirectToAction("settings", "", new { Message = ManageMessageId.ChangePasswordSuccess });
                     }
                     else
                     {
@@ -206,7 +207,7 @@ namespace WC.Controllers
                     IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Settings", "", new { Message = ManageMessageId.SetPasswordSuccess });
+                        return RedirectToAction("settings", "", new { Message = ManageMessageId.SetPasswordSuccess });
                     }
                     else
                     {
@@ -310,8 +311,8 @@ namespace WC.Controllers
                 //create toast for notif
                 var toastLinkAction = (NotificationType)notifType == NotificationType.AcceptFriendRequest
                                       || (NotificationType)notifType == NotificationType.CancelFriendRequest
-                    ? "Profile"
-                    : "Posts";
+                    ? "profile"
+                    : "posts";
                 var toastUrl = Url.Action(itemId, toastLinkAction);
                 var toastMessage = notifContent;
 

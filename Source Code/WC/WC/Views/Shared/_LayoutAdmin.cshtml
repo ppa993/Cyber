@@ -1,0 +1,421 @@
+﻿@using Microsoft.AspNet.Identity
+@using WC.Constants
+@using WC.Data
+@using WC.Models
+@{
+    var db = new CyberEntities();
+    var currentUserId = User.Identity.GetUserId();
+    var userInfo = new User();
+    var photo = db.AlbumDetails.FirstOrDefault(x => x.Active && x.PostedUserId == currentUserId && x.AlbumId == "avatar" + currentUserId);
+    var userPhoto = "";
+    if (userInfo != null) { userPhoto = photo.Url; }
+    var displayName = "";
+    var isSuperAdmin = false;
+    var friendList = new List<FriendViewModel>();
+    var friendRequest = new List<FriendViewModel>();
+    if (!String.IsNullOrEmpty(currentUserId))
+    {
+        userInfo = db.Users.FirstOrDefault(x => x.UserID.Equals(currentUserId, StringComparison.InvariantCultureIgnoreCase));
+        if (userInfo != null)
+        {
+            isSuperAdmin = db.Roles.Any(x => x.UserID == currentUserId && x.RoleType == (int) RoleType.SuperAdmin);
+            displayName = userInfo.FirstName;
+            friendList = ((WC.Controllers.BaseController)this.ViewContext.Controller).FriendList(currentUserId);
+            friendRequest = ((WC.Controllers.BaseController)this.ViewContext.Controller).FriendRequest(currentUserId);
+        }
+    }
+    var notify = db.Notifications.Where(x => x.UserID == currentUserId && !x.Seen).OrderByDescending(y => y.NotificationDate).ToList();
+}
+<!DOCTYPE html>
+<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- Title -->
+    <title>@ViewBag.Title</title>
+
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta charset="UTF-8">
+    <meta name="description" content="Admin Dashboard Template">
+    <meta name="keywords" content="admin,dashboard">
+    <meta name="author" content="Steelcoders">
+
+    <!-- Styles -->
+    @Styles.Render("~/bundles/Style")
+    @Scripts.Render("~/bundles/Theme")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Content/Script/jquery.nicescroll.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="/signalr/hubs"></script>
+    <script src="~/Hubs/cyber-chat.js"></script>
+    <link href="~/Content/Style/datepicker.css" rel="stylesheet" />
+    <script>
+        jQuery(document).ready(function ($) {
+            // browser window scroll (in pixels) after which the "back to top" link is shown
+            var offset = 50,
+                //browser window scroll (in pixels) after which the "back to top" link opacity is reduced
+                offset_opacity = 1000,
+                //duration of the top scrolling animation (in ms)
+                scroll_top_duration = 500,
+                //grab the "back to top" link
+                $back_to_top = $('.cd-top');
+
+            //hide or show the "back to top" link
+            $(window).scroll(function () {
+                ($(this).scrollTop() > offset) ? $back_to_top.addClass('cd-is-visible') : $back_to_top.removeClass('cd-is-visible cd-fade-out');
+                if ($(this).scrollTop() > offset_opacity) {
+                    $back_to_top.addClass('cd-fade-out');
+                }
+            });
+
+            //smooth scroll to top
+            $back_to_top.on('click', function (event) {
+                event.preventDefault();
+                $('body,html').animate({
+                    scrollTop: 0,
+                }, scroll_top_duration
+                );
+            });
+
+        });
+    </script>
+    <script type="text/javascript">
+        function htmlEncode(value) {
+            //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+            //then grab the encoded contents back out.  The div never exists on the page.
+            return $('<div/>').text(value).html();
+        }
+        function showMsg(content) {
+            $('#contentModal').html('');
+            $('#contentModal').append(content);
+            $('#msgModal').modal('toggle');
+        }
+        function showCloneMsg(content) {
+            $('#contentCloneModal').html('');
+            $('#contentCloneModal').append(content);
+            $('#msgCloneModal').modal('toggle');
+        }
+        function closeMsg() {
+            location.reload();
+        }
+
+        function showConfirmMsg(content, userid) {
+            $('#contentConfirmModals').html(content);
+            $('#btnConfirmYes').attr("data-item-id", userid);
+            $('#msgConfirmModal').modal('toggle');
+        }
+
+        function closeConfirmMsg(e) {
+            var targetId = e.getAttribute("data-item-id");
+            var url = '@Url.Action("RemoveAdmin","Admin")';
+
+            $.post(url, { userId: targetId },
+                function (data) {
+                if (data === "Succeed") {
+                    var element = document.getElementById('admin-block-' + targetId);
+                    element.parentNode.removeChild(element);
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).on('click', '.process-friend-request', function () {
+            var friendid = $(this).data("id");
+            var isaccept = $(this).data("accept");
+
+            var url = '@Url.Action("ProcessFriendRequest", "Home")';
+
+            $.post(url, { "friendId": friendid, "isAccept": isaccept },
+                function (data) {
+                    if (data === "Failed") {
+                        location.reload();
+                    }
+                });
+            return false;
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on('click', '.notification-item', function () {
+                var notifId = $(this).data("id");
+                var linkUrl = $(this).data("href");
+
+                var url = '@Url.Action("SeenNotification", "Home")';
+
+                $.post(url, { "notificationId": notifId },
+                    function (data) {
+                        if (data === "Succeed") {
+                            location.href = linkUrl;
+                        } else {
+                            location.reload();
+                        }
+                    });
+            });
+        });
+    </script>
+    <script>
+        function HintPeople(e) {
+            var value = document.getElementsByName("search"); 
+            if ($(value).val() != '') {
+                $.post('@Url.Action("GetHintUser")', { key: $(value).val() }, function (data) {
+                    $(".box-hint-search").html('');
+                    $(".box-hint-search").append(data);
+                })
+            }
+        }
+    </script>
+</head>
+<body class="page-header-fixed pace-done">
+    <div class="pace  pace-inactive">
+        <div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+            <div class="pace-progress-inner"></div>
+        </div>
+    </div>
+    <div class="overlay"></div>
+    <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s1">
+        <h3>
+            <span class="pull-left">Chat</span><a href="javascript:void(0);" class="pull-right close-chat" id="closeRight"><i class="fa fa-times"></i></a>
+        </h3>
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+            <div class="slimscroll" style="overflow: scroll; width: auto; height: 100%;">
+
+                @{
+                    Html.RenderPartial("FriendListPartial", friendList);
+                }
+
+            </div>
+        </div>
+    </nav>
+    <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
+        <h3>
+            <span id="chat-box-name" class="pull-left"></span> <a href="javascript:void(0);" class="pull-right close-chat" id="closeRight2"><i class="fa fa-angle-right"></i></a>
+        </h3>
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+            <div id="chat-box-content" class="slimscroll chat" style="overflow: scroll; width: auto; height: 100%;">
+
+            </div>
+        </div>
+        <div class="chat-write">
+            <form class="form-horizontal" action="javascript:void(0);">
+                <input type="text" class="form-control" placeholder="Say something" id="chat-box-message" data-item-url="@Url.Action("GetHtmlListChatItemOf")" data-item-fromid="@currentUserId" data-item-toid="">
+            </form>
+        </div>
+    </nav>
+    <form class="search-form" method="GET"> 
+        <div class="input-group">
+            <input type="text" name="search" class="form-control search-input" placeholder="Search..." onkeyup="HintPeople(this);">
+            <span class="input-group-btn">
+                <button class="btn btn-default close-search waves-effect waves-button waves-classic" type="button"><i class="fa fa-times"></i></button>
+            </span>
+
+        </div><!-- Input Group -->
+    </form><!-- Search Form -->
+    <main class="page-content content-wrap container">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="sidebar-pusher">
+                    <a href="javascript:void(0);" class="waves-effect waves-button waves-classic push-sidebar">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="logo-box">
+                    <a href="@Url.Action("Newsfeed", "Home")" class="logo-text"><span>Cyber</span></a>
+                </div><!-- Logo Box -->
+                <div class="search-button">
+                    <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
+                </div>
+                <div class="topmenu-outer" style="position:relative"> 
+                    <div class="box-hint-search"> 
+                        
+                        
+                    </div>
+                    <div class="top-menu">
+                        <ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect waves-button waves-classic sidebar-toggle hidden-lg hidden-md hidden-sm"><i class="fa fa-bars"></i></a>
+                            </li>
+                            @*<li>
+                                    <a href="#cd-nav" class="waves-effect waves-button waves-classic cd-nav-trigger"><i class="fa fa-diamond"></i></a>
+                                </li>*@
+                            <li>
+                                <a href="javascript:void(0);" class="waves-effect waves-button waves-classic toggle-fullscreen"><i class="fa fa-expand"></i></a>
+                            </li>
+                        </ul>
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
+                                </li>
+                                <li id="friend-request" class="dropdown">
+                                    @{
+                                        Html.RenderPartial("FriendRequest", friendRequest);
+                                    }
+                                </li>
+                                <li id="notify-box" class="dropdown">
+                                    @{
+                                        Html.RenderPartial("NotificationPartial", notify);
+                                    }
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="waves-effect waves-button waves-classic" id="showRight">
+                                        <i class="fa fa-comments"></i>
+                                    </a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" data-toggle="dropdown" aria-expanded="False" class="dropdown-toggle waves-effect waves-button waves-classic">
+                                        <span class="user-name">@displayName<i class="fa fa-angle-down"></i></span>
+                                        <img class="img-circle avatar" src="@Url.Content(userPhoto)" width="40" height="40" alt="">
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-list dropdown-profile" role="menu">
+                                        <li role="presentation">
+                                            <a href="@Url.Action(User.Identity.Name, "profile")">
+                                                <i class="fa fa-user"></i> Profile
+                                            </a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="../calendar">
+                                                <i class="fa fa-calendar"></i> Calendar
+                                            </a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="../settings">
+                                                <i class="fa fa-cogs"></i> Settings
+                                            </a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="javascript:document.getElementById('logoutForm').submit()" class="log-out waves-effect waves-button waves-classic">
+                                                <i class="fa fa-sign-out m-r-xs"></i>Log Off
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                                        }
+                        <!-- Nav -->
+                    </div><!-- Top Menu -->
+                </div>
+            </div>
+        </div><!-- Navbar -->
+        <div class="page-sidebar sidebar visible">
+            <div class="page-sidebar-fixed fixed">
+                <ul class="menu accordion-menu">
+                    <li>
+                        <a href="@Url.Action("Index", "Admin")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a>
+                    </li>
+                    @if (isSuperAdmin)
+                    {
+                        <li>
+                            <a href="@Url.Action("Administrators", "Admin")" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Administrators</p></a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        @RenderBody()
+    </main><!-- Page Content -->
+
+    <div class="cd-overlay"></div>
+    <a href="#0" class="cd-top">Top</a>
+    
+    <!-- Modal -->
+    <div id="msgModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="new function () { location.reload(); }">&times;</button>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                <div class="modal-body" id="contentModal">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-facebook" id="btn-close-message" data-dismiss="modal" onclick="closeMsg()">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="msgCloneModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                <div class="modal-body" id="contentCloneModal">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-facebook" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="msgConfirmModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                <div class="modal-body" id="contentConfirmModals">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-facebook" id="btnConfirmYes" data-item-url="" data-item-id="" data-dismiss="modal" onclick="closeConfirmMsg(this)">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Javascripts -->
+    @RenderSection("scripts", required: false)
+
+<div id="showRight_t2"></div><div id="flotTip" style="display: none; position: absolute;"></div>
+</body>
+
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('body').tooltip({
+            selector: '[data-toggle="tooltip"]'
+        });
+        $("html").niceScroll({
+            styler: "fb",
+            cursorcolor: "#22baa0",
+            cursorwidth: '6',
+            cursorborderradius: '10px',
+            background: '#F7F7F7',
+            cursorborder: '',
+            zindex: '600'
+        });
+        $(".slimscroll").niceScroll({
+            styler: "fb",
+            cursorcolor: "#22baa0",
+            cursorwidth: '3',
+            cursorborderradius: '10px',
+            background: '#F7F7F7',
+            cursorborder: '',
+            zindex: '600'
+        });
+        $("#chat-box-content").niceScroll({
+            styler: "fb",
+            cursorcolor: "#22baa0",
+            cursorwidth: '3',
+            cursorborderradius: '10px',
+            background: '#F7F7F7',
+            cursorborder: '',
+            zindex: '600'
+        });
+
+    });
+</script>

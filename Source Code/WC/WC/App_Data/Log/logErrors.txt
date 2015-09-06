@@ -1428,3 +1428,23 @@ Object reference not set to an instance of an object. -
 LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
 
 
+5/9/2015 2:54:19 AM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+6/9/2015 5:43:24 PM
+The specified type member 'Date' is not supported in LINQ to Entities. Only initializers, entity members, and entity navigation properties are supported. - 
+
+
+6/9/2015 5:43:31 PM
+The specified type member 'Date' is not supported in LINQ to Entities. Only initializers, entity members, and entity navigation properties are supported. - 
+
+
+6/9/2015 6:31:01 PM
+LINQ to Entities does not recognize the method 'System.String UrlImage(System.String, System.String)' method, and this method cannot be translated into a store expression. - 
+
+
+6/9/2015 7:39:08 PM
+The model item passed into the dictionary is of type 'System.Collections.Generic.List`1[System.Boolean]', but this dictionary requires a model item of type 'System.Collections.Generic.List`1[WC.Data.Post]'. - 
+
+

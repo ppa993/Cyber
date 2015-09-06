@@ -12,5 +12,6 @@ namespace WC.Hubs
         public string Message { set; get; }
         public string ProfileImgUrl { set; get; }
         public DateTime SentTime { get; set; }
+        public string UserName { get; set; }
     }
 }

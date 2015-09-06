@@ -26,8 +26,9 @@
 <script type="text/javascript">
 
     var dropzone = null;
-    
-    $(function () {
+    var postid = '';
+
+    $(function() {
         Dropzone.autoDiscover = false;
         dropzone = new Dropzone("#dropzone", {
             url: '@Url.Action("UploadImage")',
@@ -39,67 +40,86 @@
             clickable: true,
 
         });
-        dropzone.on("removedfile", function (file) {
+        dropzone.on("removedfile", function(file) {
             if (!this.files.length) {
                 $(".dz-message").show();
             }
         });
 
-        dropzone.on("addedfile", function (file) {
+        dropzone.on("addedfile", function(file) {
             if (this.files.length) {
                 $(".dz-message").hide();
             }
         });
 
-        dropzone.on("success", function (file) {
+        dropzone.on("success", function(file) {
         });
-        dropzone.on('dragover', function (e) {
+        dropzone.on('dragover', function(e) {
             $("#dropzone").addClass('border-dropzone');
         });
-        dropzone.on('dragenter', function () {
+        dropzone.on('dragenter', function() {
             $("#dropzone").addClass('border-dropzone');
         });
-        dropzone.on('dragleave', function () {
+        dropzone.on('dragleave', function() {
             $("#dropzone").removeClass('border-dropzone');
         });
-        dropzone.on('drop', function () {
+        dropzone.on('drop', function() {
             $("#dropzone").removeClass('border-dropzone');
         });
-        dropzone.on("queuecomplete", function (file) {
-
-            showMsg('Your status was uploaded !');
-
+        dropzone.on("queuecomplete", function(file) {
+            $.post('@Url.Action("GetPost", "Post")', { "postId": postid },
+                   function (data) {
+                       if (data === "Failed") {
+                           showMsg("Unable to load your status. Please try again.");
+                       } else {
+                           $("#timeline-posts").prepend(data);
+                       }
+                   });
         });
-        dropzone.on("complete", function (file) {
+        dropzone.on("complete", function(file) {
             dropzone.removeFile(file);
         });
 
-        var html = '';
-        $("#btn_upload_post").button().click(function () {
+        $("#btn_upload_post").button().click(function() {
             var text = $("#status-content").val();
+            var textbox = $("#status-content");
             if (text == '') {
                 showCloneMsg('Write something !');
                 return;
             }
 
+            text = htmlEncode(text);
 
-            $.post('@Url.Action("PostStatus", "Post")', { "postedOn": '@Model.Id', "content": text },
-                    function (data) {
+
+            var queued = dropzone.getQueuedFiles().length;
+            if (queued <= 0) {
+                $.post('@Url.Action("PostStatus", "Post")', { "postedOn": '@Model.Id', "content": text, "imageCount": queued },
+                    function(data) {
                         if (data === "Failed") {
-                            showCloneMsg("Unable to post your status. Please try again.");
+                            showMsg("Unable to post your status. Please try again.");
                         } else {
-                            html = data;
-                            dropzone.processQueue();
-                            $("#status-content").val('');
+                            $("#timeline-posts").prepend(data);
+                            textbox.val('');
+                            textbox.parent().parent().find(".highlighter").html('');
                         }
                     });
-
-
+            } else {
+                $.post('@Url.Action("PostStatus", "Post")', { "postedOn": '@Model.Id', "content": text, "imageCount": queued },
+                   function (data) {
+                       if (data === "Failed") {
+                           showMsg("Unable to post your status. Please try again.");
+                       } else {
+                           postid = data;
+                           dropzone.processQueue();
+                           textbox.val('');
+                           textbox.parent().parent().find(".highlighter").html('');
+                       }
+                   });
+            }
         });
-    })
+    });
 
 </script>
-
 <script type="text/javascript">
     function FriendControl(type) {
         var url = '@Url.Action("FriendControl")';
@@ -306,7 +326,7 @@
                             {
                                 var photo = db.AlbumDetails.FirstOrDefault(x => x.Active && x.PostedUserId == friend.FriendId && x.AlbumId == "avatar" + friend.FriendId);
                                 <div class="team-member">
-                                    <a href="@Url.Action(friend.User.UserName, "Profile")">
+                                    <a href="@Url.Action(friend.User.UserName, "profile")">
                                         <img src="@Url.Content(photo.Url)" alt="@friend.User.FirstName @friend.User.LastName" data-toggle="tooltip" title="@friend.User.FirstName @friend.User.LastName" />
                                     </a>
                                 </div>
@@ -369,8 +389,8 @@
                     <ul class="list-unstyled" id="timeline-posts">
                         @if (Model.Posts.Count > 0)
                         {
-                            //Html.RenderAction("PostList", "Post", new {Model = Model.Posts as List<Post>});
-                            Html.RenderPartial("PostListPartial", Model.Posts as List<Post>);
+                            Html.RenderAction("PostListPartial", "Post", new { Model = Model.Posts as List<Post> });
+                            //Html.RenderPartial("PostListPartial", Model.Posts as List<Post>);
                         }
                     </ul>
                 </div>

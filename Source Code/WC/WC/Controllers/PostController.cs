@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 using WC.Constants;
 using WC.Data;
@@ -60,7 +62,7 @@ namespace WC.Controllers
 
         #region Post Methods
         [HttpPost]
-        public string PostStatus(string postedOn, string content)
+        public string PostStatus(string postedOn, string content, int imageCount)
         {
             Post post;
             try
@@ -76,7 +78,7 @@ namespace WC.Controllers
                 post = new Post
                 {
                     PostID = Guid.NewGuid().ToString().Replace("-", string.Empty),
-                    PostContent = content.Trim(),
+                    PostContent = HttpUtility.HtmlDecode(content.Trim()),
                     UserID = CurrentUserID,
                     PostedOn = postedOn,
                     PostType = (int)PostType.Status,
@@ -104,18 +106,43 @@ namespace WC.Controllers
                 return ActionResults.Failed.ToString();
             }
 
-            var listView = new List<Post>();
-            var view = post;
-            view.User = db.Users.First(x => x.UserID == post.UserID);
-            view.PostLikes = db.PostLikes.Where(x => x.PostID == post.PostID).ToList();
-            view.Comments = db.Comments.Where(x => x.PostID == post.PostID).ToList();
+            if (imageCount <= 0)
+            {
+                var listView = new List<Post>();
+                var view = post;
+                view.User = db.Users.First(x => x.UserID == post.UserID);
+                view.PostLikes = db.PostLikes.Where(x => x.PostID == post.PostID).ToList();
+                view.Comments = db.Comments.Where(x => x.PostID == post.PostID).ToList();
 
-            listView.Add(view);
+                listView.Add(view);
 
-            var str = RenderPartialViewToString("PostList", listView);
+                var str = RenderPartialViewToString("PostListPartial", listView);
 
-            return str;
+                return str;
+            }
 
+            return post.PostID;
+
+        }
+
+        [HttpPost]
+        public string GetPost(string postId)
+        {
+            string html;
+            try
+            {
+                var listView = new List<Post>();
+                var view = db.Posts.FirstOrDefault(x => x.PostID == postId);
+
+                listView.Add(view);
+                html = RenderPartialViewToString("PostListPartial", listView);
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+                return ActionResults.Failed.ToString();
+            }
+            return html;
         }
 
         [HttpPost]
@@ -132,7 +159,7 @@ namespace WC.Controllers
                 {
                     CommentID = Guid.NewGuid().ToString().Replace("-", string.Empty),
                     PostID = postId,
-                    CommentContent = content.Trim(),
+                    CommentContent = HttpUtility.HtmlDecode(content.Trim()),
                     UserID = CurrentUserID,
                     CommentedDate = DateTime.UtcNow,
                     LastModified = DateTime.UtcNow,
@@ -283,6 +310,8 @@ namespace WC.Controllers
 
                         db.Comments.RemoveRange(post.Comments);
                         db.PostLikes.RemoveRange(post.PostLikes);
+                        var images = db.AlbumDetails.Where(x => x.PostID == post.PostID);
+                        db.AlbumDetails.RemoveRange(images);
                         db.SaveChanges();
 
                         db.Posts.Remove(post);
@@ -641,6 +670,27 @@ namespace WC.Controllers
         #endregion
 
         #region Private Methods
+
+        private string ParseContent(string rawContent)
+        {
+            Regex link = new Regex(@"http(s)?://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?");
+            Regex screenName = new Regex(@"@\w+");
+            Regex hashTag = new Regex(@"#\w+");
+
+            string formattedContent = link.Replace(rawContent, delegate(Match m)
+            {
+                string val = m.Value;
+                return "<a href='" + val + "'>" + val + "</a>";
+            });
+
+            formattedContent = hashTag.Replace(formattedContent, delegate(Match m)
+            {
+                string val = m.Value;
+                return string.Format("<a href='http://twitter.com/#search?q=%23{0}'>{1}</a>", val, val);
+            });
+
+            return formattedContent;
+        }
 
         private List<Post> GetPosts(ApplicationUser fromUser)
         {

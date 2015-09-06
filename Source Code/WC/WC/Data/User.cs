@@ -56,6 +56,7 @@ namespace WC.Data
         public string Work { get; set; }
         public string ContactNumber { get; set; }
         public string Studied { get; set; }
+        public System.DateTime RegisteredDate { get; set; }
     
         public virtual ICollection<Album> Albums { get; set; }
         public virtual ICollection<AlbumDetail> AlbumDetails { get; set; }

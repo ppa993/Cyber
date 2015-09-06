@@ -25,13 +25,9 @@ namespace WC
                         "~/Content/Script/jquery.waypoints.min.js",
                         "~/Content/Script/jquery.counterup.min.js",
                         "~/Content/Script/toastr.min.js",
-                        "~/Content/Script/jquery.flot.min.js",
-                        "~/Content/Script/jquery.flot.time.min.js",
-                        "~/Content/Script/jquery.flot.symbol.min.js",
-                        "~/Content/Script/jquery.flot.resize.min.js",
-                        "~/Content/Script/jquery.flot.tooltip.min.js",
-                        "~/Content/Script/curvedLines.js",
                         "~/Content/Script/MetroJs.min.js",
+                        "~/Content/Script/Autolinker.min.js",
+                        "~/Content/Script/jquery.hashtags.js",
                         "~/Content/Script/modern.min.js"));
                         //"~/Content/Script/dashboard.js"));
 
@@ -62,6 +58,7 @@ namespace WC
                       "~/Content/Style/MetroJs.min.css",
                       "~/Content/Style/toastr.min.css",
                       "~/Content/Style/modern.min.css",
+                      "~/Content/Style/jquery.hashtags.css",
                       "~/Content/Style/green.css",
                       "~/Content/Style/custom.css"));
         }

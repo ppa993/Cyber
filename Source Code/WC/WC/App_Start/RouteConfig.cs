@@ -15,8 +15,14 @@ namespace WC
 
             routes.MapRoute(
                 "UserProfile",                                           // Route name
-                "Profile/{username}",                            // URL with parameters
+                "profile/{username}",                            // URL with parameters
                 new { controller = "Home", action = "Profile", username = UrlParameter.Optional }  // Parameter defaults
+            );
+
+            routes.MapRoute(
+                "Hashtags",                                           // Route name
+                "hashtag/{hashtag}",                            // URL with parameters
+                new { controller = "Home", action = "Hashtags", hashtag = UrlParameter.Optional }  // Parameter defaults
             );
 
             routes.MapRoute(
@@ -33,13 +39,13 @@ namespace WC
 
             routes.MapRoute(
                 "UserSetting",                                           // Route name
-                "Settings",                            // URL with parameters
+                "settings",                            // URL with parameters
                 new { controller = "Home", action = "Settings" }  // Parameter defaults
             );
 
             routes.MapRoute(
                 "SignIn",                                           // Route name
-                "LogIn",                            // URL with parameters
+                "Login",                            // URL with parameters
                 new { controller = "Account", action = "LogIn" }  // Parameter defaults
             );
 
@@ -51,13 +57,13 @@ namespace WC
 
             routes.MapRoute(
                 "UserCalendar",                                           // Route name
-                "Calendar",                            // URL with parameters
+                "calendar",                            // URL with parameters
                 new { controller = "Calendar", action = "Calendar" }  // Parameter defaults
             );
 
             routes.MapRoute(
                 "ViewPost",                                           // Route name
-                "Posts/{postid}",                            // URL with parameters
+                "posts/{postid}",                            // URL with parameters
                 new { controller = "Post", action = "ViewPost", postid = UrlParameter.Optional }  // Parameter defaults
             );
              

@@ -10,8 +10,8 @@
                 <ul class="list-unstyled">
                     @foreach (var p in Model)
                     {
-                        var postUrl = Url.Action(p.NotificationItemID, "Posts");
-                        var userUrl = Url.Action(p.NotificationItemID, "Profile");
+                        var postUrl = Url.Action(p.NotificationItemID, "posts");
+                        var userUrl = Url.Action(p.NotificationItemID, "profile");
 
                         switch ((NotificationType)p.NotificationType)
                         {

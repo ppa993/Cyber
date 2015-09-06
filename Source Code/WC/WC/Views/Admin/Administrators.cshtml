@@ -1,0 +1,141 @@
+﻿@using WC.Data
+@using WC.Models
+@model List<FriendViewModel>
+@{
+    ViewBag.Title = "Administrators";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    .admin-name {
+        margin: 10px !important;
+    }
+
+    .remove-admin {
+        font-size: 11px;
+        color: darkgrey;
+    }
+
+        .remove-admin:hover {
+            cursor: pointer;
+        }
+    .min-height {
+        min-height: 100px;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        //call confirm remove admin
+        $(document).on('click', '.remove-admin', function() {
+            var userid = $(this).data("id");
+            showConfirmMsg('Are you sure you want to remove this administrator?', userid);
+        });
+
+        //auto submit comment when user press enter, add new line if Shift+Enter
+        $(document).on('keydown', '#admin-name', function(e) {
+            if (e.which === 13) {
+                if (e.shiftKey === false) {
+                    var url = '@Url.Action("GetInfo", "Admin")';
+                    var text = $(this).val();
+                    var textbox = $(this);
+                    if (text === "") return;
+                    text = htmlEncode(text);
+
+                    $.post(url, { "username": text },
+                        function(data) {
+                            if (data === "Deleted") {
+                                showCloneMsg('Username is not existed');
+                            } else if (data === "AlreadyDone") {
+                                showCloneMsg('This user is already an administrator');
+                            } else {
+                                textbox.val('');
+                                var modalContent = $("#admin-info");
+                                modalContent.append(data);
+                                $('#admin-confirm-modal').modal('toggle');
+                                $("#btn-confirm").attr("data-username", text);
+                            }
+                    });
+                }
+            }
+        });
+
+        $("#btn-confirm").click(function() {
+            var url = '@Url.Action("AddAdmin", "Admin")';
+            var text = $(this).data("username");
+            $("#admin-info").html('');
+            $("#admin-info").append('<span>Are you sure you want to add this user as Administrator?</span>');
+
+            $.post(url, { "username": text },
+                function (data) {
+                    if (data === "Deleted") {
+                        showCloneMsg('Username is not existed');
+                    } else if (data === "AlreadyDone") {
+                        showCloneMsg('This user is already an administrator');
+                    } else {
+                        var adminList = $("#admin-list");
+                        adminList.append(data);
+                    }
+                });
+        })
+    });
+</script>
+<!-- Modal -->
+<div id="admin-confirm-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body min-height" id="admin-info">
+                <span>Are you sure you want to add this user as Administrator?</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-facebook" id="btn-confirm" data-username="" data-dismiss="modal" onclick="closeConfirmMsg(this)">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-inner" style="min-height:768px !important">
+    <div class="page-title">
+        <h3>Administrators</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="@Url.Action("Index","Admin")">Administration</a></li>
+                <li class="active">Manage Administrators</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body">
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" id="admin-name" placeholder="Type username to grant administrator permission..." />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel info-box panel-white">
+                    <div id="admin-list" class="panel-body">
+                        @if (Model.Count > 0)
+                        {
+                            Html.RenderAction("AdministratorPartial", "Admin", new { Model });
+                        }
+                    </div>
+                </div>
+            </div>
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    <div class="page-footer">
+        <p class="no-s">2015 © Cyber</p>
+    </div>
+</div>
+

@@ -36,7 +36,7 @@ namespace WC.Controllers
                 },
                 new Album(){
                     AlbumId="upload"+userId,
-                    AlbumName="Uploat",
+                    AlbumName="Upload",
                     CreatedDate=DateTime.Now,
                     CreatedUserId=userId,
                     Deleted=false,
@@ -119,7 +119,8 @@ namespace WC.Controllers
                             Message = cbd.Content,
                             Name = u.FirstName + " " + u.LastName,
                             ProfileImgUrl = a.Url,
-                            SentTime = cbd.SendDate
+                            SentTime = cbd.SendDate,
+                            UserName = u.UserName
                         };
             var data = query.OrderBy(x => x.SentTime).ToList();
             return data;

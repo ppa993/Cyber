@@ -4058,6 +4058,7 @@ body:not(.small-sidebar) .horizontal-bar .menu.accordion-menu > li > a > .menu-i
 
     .team .team-member img {
         width: 40px;
+        height: 40px;
         float: left;
         border-radius: 50%;
         margin: 0 5px;
@@ -4140,6 +4141,7 @@ body:not(.small-sidebar) .horizontal-bar .menu.accordion-menu > li > a > .menu-i
 
         .timeline-comment .timeline-comment-header img {
             width: 30px;
+            height: 30px;
             border-radius: 50%;
             float: left;
             margin-right: 10px;

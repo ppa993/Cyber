@@ -18,7 +18,7 @@
     {
         <div class="chat-item chat-item-left">
             <div class="chat-image">
-                <a href="@Url.Action(p.Name, "Profile")"><img src="@Url.Content(p.ProfileImgUrl)" data-toggle="tooltip" title="@p.Name"></a>
+                <a href="@Url.Action(p.UserName, "profile")" class="chat-avatar"><img src="@Url.Content(p.ProfileImgUrl)"></a>
             </div>
             <div class="chat-message" title="@Helper.PostTime(p.SentTime)">
                 @p.Message

@@ -33,13 +33,21 @@ namespace WC.Controllers
             return View(view);
         }
 
+        public ActionResult Hashtags(string hashtag)
+        {
+            ViewBag.Title = hashtag;
+            var posts = GetHashTags(hashtag);
+
+            return View(posts.ToList());
+        }
+
         public ActionResult Profile(string username)
         {
             if (string.IsNullOrEmpty(username)) return RedirectToAction("Newsfeed", "Home");
             //fromUser: whose profile is being load
             //toUser: who request to view fromUser's profile
             var fromUser = UserManager.FindByName(username);
-            if(fromUser == null) return RedirectToAction("Newsfeed", "Home");
+            if (fromUser == null) return RedirectToAction("Newsfeed", "Home");
             var fromUserInfo = db.Users.FirstOrDefault(x => x.UserID == fromUser.Id);
             var toUser = CurrentUserID;
 
@@ -56,9 +64,9 @@ namespace WC.Controllers
                 user.DisplayName = fromUserInfo.FirstName + " " + fromUserInfo.LastName;
                 user.Address = fromUserInfo.Address;
                 user.Email = fromUserInfo.Email;
-                user.BirthDay = fromUserInfo.MySettings.First().ShowBirthday == (int) ShowBirthDay.Show
+                user.BirthDay = fromUserInfo.MySettings.First().ShowBirthday == (int)ShowBirthDay.Show
                     ? fromUserInfo.BirthDay.ToString(DateTimeFormat.DDMMYYYY)
-                    : fromUserInfo.MySettings.First().ShowBirthday == (int) ShowBirthDay.HideYear
+                    : fromUserInfo.MySettings.First().ShowBirthday == (int)ShowBirthDay.HideYear
                         ? fromUserInfo.BirthDay.ToString(DateTimeFormat.DDMM)
                         : string.Empty;
                 user.Gender = fromUserInfo.Gender;
@@ -129,7 +137,6 @@ namespace WC.Controllers
             return View(user);
         }
          
-
         public ActionResult Settings(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -285,6 +292,35 @@ namespace WC.Controllers
         }
 
         [HttpPost]
+        public ActionResult LoadMoreHashtag(string hashtag, int loadedPostCount)
+        {
+            var morePost = new MorePostViewModel();
+
+            var posts = GetHashTags(hashtag).ToList();
+            var notLoadedCount = posts.Count - loadedPostCount;
+
+            if (notLoadedCount <= DefautValue.PostLoad)
+            {
+                posts = posts.Skip(loadedPostCount).Take(notLoadedCount).ToList();
+                morePost.NoMore = true;
+            }
+            else
+            {
+                posts = posts.Skip(loadedPostCount).Take(DefautValue.PostLoad).ToList();
+                morePost.NoMore = false;
+            }
+            if (morePost.NoMore)
+            {
+                morePost.Posts = "";
+                return Json(morePost);
+            }
+
+            morePost.Posts = RenderPartialViewToString("PostListPartial", posts);
+
+            return Json(morePost);
+        }
+
+        [HttpPost]
         public void UnFriend(string targetUserId)
         {
             var curId = User.Identity.GetUserId();
@@ -397,7 +433,7 @@ namespace WC.Controllers
             u.About = about;
             db.SaveChanges();
 
-            return RedirectToAction("Profile", new { username = u.UserName });
+            return RedirectToAction("profile", new { username = u.UserName });
         }
 
         [HttpPost]
@@ -468,36 +504,6 @@ namespace WC.Controllers
 
         #region Private Methods
 
-        private List<Post> GetPosts(ApplicationUser fromUser)
-        {
-            var listView = new List<Post>();
-            try
-            {
-                if (CurrentUserName == fromUser.UserName)
-                {
-                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                                        .OrderByDescending(x => x.PostedDate)
-                                        .ToList();
-                }
-                else
-                {
-                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
-                                        .Where(x => x.VisibleType == (int)VisibleType.Public
-                                                || (x.VisibleType == (int)VisibleType.Friend
-                                                    && x.User1.FriendLists.FirstOrDefault().Friends.Any(y => y.FriendId == CurrentUserID && y.FriendStatus))
-                                                || (x.VisibleType == (int)VisibleType.Private
-                                                    && x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)))
-                                        .OrderByDescending(x => x.PostedDate)
-                                        .ToList();
-                }
-            }
-            catch (Exception exception)
-            {
-                Helper.WriteLog(exception);
-            }
-            return listView;
-        }
-
         private void FriendToast(string receiverId)
         {
             try
@@ -509,7 +515,7 @@ namespace WC.Controllers
                 if (sender != null && receiver != null)
                 {
                     //create toast for notif
-                    var toastUrl = Url.Action(sender.UserName, "Profile");
+                    var toastUrl = Url.Action(sender.UserName, "profile");
                     var toastMessage = string.Format(NotificationMessage.NOTIF_ADD_FRIEND,
                         sender.FirstName + " " + sender.LastName, sender.Gender ? "his" : "her");
 
@@ -544,6 +550,36 @@ namespace WC.Controllers
             }
         }
 
+        private List<Post> GetPosts(ApplicationUser fromUser)
+        {
+            var listView = new List<Post>();
+            try
+            {
+                if (CurrentUserName == fromUser.UserName)
+                {
+                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                                        .OrderByDescending(x => x.PostedDate)
+                                        .ToList();
+                }
+                else
+                {
+                    listView = db.Posts.Where(x => x.PostedOn == fromUser.Id)
+                                        .Where(x => x.VisibleType == (int)VisibleType.Public
+                                                || (x.VisibleType == (int)VisibleType.Friend
+                                                    && x.User1.FriendLists.FirstOrDefault().Friends.Any(y => y.FriendId == CurrentUserID && y.FriendStatus))
+                                                || (x.VisibleType == (int)VisibleType.Private
+                                                    && x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)))
+                                        .OrderByDescending(x => x.PostedDate)
+                                        .ToList();
+                }
+            }
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return listView;
+        }
+
         private IEnumerable<Post> GetNewsfeed()
         {
             var listView = new List<Post>();
@@ -556,9 +592,12 @@ namespace WC.Controllers
 
                 foreach (var friend in friends)
                 {
+                    var temp = DateTime.UtcNow.AddDays(DefautValue.RecentNewsfeed);
+                    var beginDay = new DateTime(temp.Year, temp.Month, temp.Day);
+
                     listView.AddRange(
                         friend.User.Posts.Where(
-                            x => x.PostedDate.Date >= DateTime.UtcNow.AddDays(DefautValue.RecentNewsfeed).Date
+                            x => x.PostedDate.Date >= beginDay
                                  && (x.VisibleType == (int)VisibleType.Public
                                                 || (x.VisibleType == (int)VisibleType.Friend
                                                     && x.User1.FriendLists.FirstOrDefault().Friends.Any(y => y.FriendId == CurrentUserID && y.FriendStatus))
@@ -577,31 +616,34 @@ namespace WC.Controllers
             return listView;
         }
 
-        private bool IsAuthorizeToViewPost(Post post)
+        private IEnumerable<Post> GetHashTags(string hashtag)
         {
-            switch (post.VisibleType)
+            var listView = new List<Post>();
+            try
             {
-                case (int)VisibleType.Public:
-                    return true;
+                var temp = DateTime.UtcNow.AddDays(DefautValue.RecentNewsfeed);
 
-                case (int)VisibleType.Friend:
-                    if (post.User1.FriendLists.First().Friends.Any(x => x.FriendId == CurrentUserID && x.FriendStatus)
-                        || post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
-                        || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return true;
-                    }
-                    break;
+                var beginDay = new DateTime(temp.Year, temp.Month, temp.Day);
 
-                case (int)VisibleType.Private:
-                    if (post.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
-                        || post.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return true;
-                    }
-                    break;
+                listView.AddRange(
+                    db.Posts.Where(x => x.PostedDate >= beginDay
+                                    && (x.VisibleType == (int)VisibleType.Public
+                                                || (x.VisibleType == (int)VisibleType.Friend
+                                                    && x.User1.FriendLists.FirstOrDefault().Friends.Any(y => y.FriendId == CurrentUserID && y.FriendStatus))
+                                                || (x.VisibleType == (int)VisibleType.Private
+                                                    && x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)))));
+
+                listView.AddRange(db.Posts.Where(x => x.UserID.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)
+                                                        || x.PostedOn.Equals(CurrentUserID, StringComparison.InvariantCultureIgnoreCase)));
+                listView = listView.Distinct().Where(x => x.PostContent.ToLower().Contains("#" + hashtag.ToLower())).ToList();
+
+                return listView.Take(100).OrderByDescending(x => x.PostedDate);
             }
-            return false;
+            catch (Exception exception)
+            {
+                Helper.WriteLog(exception);
+            }
+            return listView;
         }
         #endregion
     }

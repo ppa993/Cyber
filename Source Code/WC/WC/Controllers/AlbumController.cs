@@ -18,7 +18,7 @@ namespace WC.Controllers
             var query = (from u in db.Users
                          from ad in db.AlbumDetails
                          where u.UserID == ad.PostedUserId
-                         && !ad.Hide && !ad.Deleted
+                         && !ad.Hide && !ad.Deleted && u.UserName == username
                          select new PhotoViewModel()
                          {
                              UserID = u.UserID,
@@ -38,7 +38,7 @@ namespace WC.Controllers
             var user = db.Users.FirstOrDefault(x => x.UserName == username);
             if (user != null)
             {
-                alb.Name = user.LastName + " " + user.FirstName;
+                alb.Name = user.FirstName + " " + user.LastName;
                 if (user.UserID == CurrentUserID)
                 {
                     alb.IsMyTimeLine = true;
