@@ -678,8 +678,9 @@ main {
         max-width: 685px;
     }
 
-.post_two_img {
+.post_two_img img {
     width: 50%;
+    float: left;
 }
 
 .post_one_img a img {
@@ -687,7 +688,9 @@ main {
     max-width: 342px;
 }
 
-.post_many_img {
+.post_many_img img {
+    width: 33%;
+    float: left;
 }
 
 #dropzone {

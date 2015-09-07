@@ -109,7 +109,7 @@
                                             </div>
                                         }
                                     }
-                                    else
+                                    else if (photos.Count == 2)
                                     {
                                         for (int i=0; i<2; i++)
                                         {
@@ -121,9 +121,21 @@
                                             </div>
                                         }
                                     }
+                                    else
+                                    {
+                                        for (int i = 0; i < photos.Count; i++)
+                                        {
+                                            <div class="post_many_img">
+                                                <a href="javascript:void(0);" data-img-id="@photos[i].Id" data-album-img-id="@photos[i].AlbumId"
+                                                   data-post-id="@photos[i].PostID">
+                                                    <img src="@Url.Content(photos[i].Url)" />
+                                                </a>
+                                            </div>
+                                        }
+                                    }
 
                                 }
-                            }
+}
                         </div>
                         <div class="timeline-options">
                             <a class="post-like" href="#" post-id="@item.PostID" data-toogle="@alreadyLike" data-inprocess="0">

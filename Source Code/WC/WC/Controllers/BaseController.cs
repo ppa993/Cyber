@@ -203,10 +203,9 @@ namespace WC.Controllers
                         PostedUserId = postInfo[1],
                         PostedDate = DateTime.UtcNow
                     });
-                    Session["PostIDPosted"] = null;
                 }
             }
-            //Session["PostIDPosted"] = p;
+            Session["PostIDPosted"] = null;
             if (ad.Count != 0)
             {
                 db.AlbumDetails.AddRange(ad);
