@@ -1448,3 +1448,11 @@ LINQ to Entities does not recognize the method 'System.String UrlImage(System.St
 The model item passed into the dictionary is of type 'System.Collections.Generic.List`1[System.Boolean]', but this dictionary requires a model item of type 'System.Collections.Generic.List`1[WC.Data.Post]'. - 
 
 
+07/09/2015 09:01:34
+Object reference not set to an instance of an object. - 
+
+
+07/09/2015 09:01:42
+Object reference not set to an instance of an object. - 
+
+

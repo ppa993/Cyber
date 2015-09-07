@@ -388,6 +388,7 @@
     <Content Include="Content\Style\component.css" />
     <Content Include="Content\Style\custom.css" />
     <Content Include="Content\Style\datepicker.css" />
+    <Content Include="Content\Style\dropzone.css" />
     <Content Include="Content\Style\font-awesome.css" />
     <Content Include="Content\Style\fullcalendar.min.css" />
     <Content Include="Content\Style\green.css" />
