@@ -203,7 +203,6 @@ namespace WC.Controllers
                         PostedUserId = postInfo[1],
                         PostedDate = DateTime.UtcNow
                     });
-
                     Session["PostIDPosted"] = null;
                 }
             }

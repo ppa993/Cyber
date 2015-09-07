@@ -37,7 +37,8 @@
             addRemoveLinks: true,
             previewsContainer: '#demo-upload',
             clickable: true,
-            acceptedFiles: 'image/*'
+            acceptedFiles: 'image/*',
+            uploadMultiple: true
         });
         dropzone.on("removedfile", function (file) {
             if (!this.files.length) {
@@ -142,7 +143,7 @@
                             </div>
                             <div class="post-options">
                                 <a href="javascript:void(0);" onclick="OpenUploadPost();"><i class="icon-camera"></i></a>
-                                <button id="btn_upload_post" class="btn btn-facebook pull-right" @*onclick=" PostStatus();"*@>Post</button>
+                                <button id="btn_upload_post" type="button" class="btn btn-facebook pull-right" @*onclick=" PostStatus();"*@>Post</button>
                                 @{ Html.RenderPartial("_SelectVisibility", Model.Setting); }
                             </div>
                         </div>

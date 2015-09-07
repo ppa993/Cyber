@@ -2176,11 +2176,11 @@ tr.group, tr.group:hover {
     padding: 5px;
 }
 
-.dropzone {
-    /*border: 1px solid #f1f1f1;*/
+/*.dropzone {
+    /*border: 1px solid #f1f1f1;
     border-radius: 0;
     background: #f9f9f9;
-}
+}*/
 
 .img-preview {
     height: 150px;
